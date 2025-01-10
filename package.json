@@ -26,7 +26,6 @@
         "colorful": "^2.1.0",
         "font-awesome": "^4.7.0",
         "framer-motion": "^11.15.0",
-        "gasp": "^0.0.2",
         "gsap": "^3.12.5",
         "ionicons": "^7.4.0",
         "lottie-react": "^2.4.0",
@@ -47,7 +46,8 @@
         "styled-components": "^6.1.13",
         "swiper": "^11.2.0",
         "three": "^0.158.0",
-        "next": "15.1.3"
+        "next": "15.1.3",
+        "vite": "^4.4.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.17.0",
@@ -62,11 +62,8 @@
         "globals": "^15.14.0",
         "postcss": "^8.4.49",
         "tailwindcss": "^3.4.17",
-        "vite": "^4.4.0",
-        "typescript": "^5",
-        "@types/node": "^20",
-        "@types/react": "^19",
-        "@types/react-dom": "^19",
+        "typescript": "^5.0.0",
+        "@types/node": "^20.0.0",
         "eslint-config-next": "15.1.3",
         "@eslint/eslintrc": "^3"
     }
