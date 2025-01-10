@@ -1,0 +1,98 @@
+  const artworks = [
+    {
+      id: 1,
+      src: Bushra,
+      title: "Abstract Art",
+      description: "An abstract piece that captures the essence of freedom.",
+    },
+    {
+      id: 2,
+      src: Bushra,
+      title: "Nature's Beauty",
+      description: "A stunning portrayal of the natural world.",
+    },
+    {
+      id: 3,
+      src: Bushra,
+      title: "Cosmic Dreams",
+      description: "A digital representation of the universe's mysteries.",
+    },
+    {
+      id: 4,
+      src: Bushra,
+      title: "Modern Aesthetics",
+      description: "A modern approach to visualizing beauty.",
+    },
+    {
+      id: 5,
+      src: Bushra,
+      title: "Abstract Art",
+      description: "An abstract piece that captures the essence of freedom.",
+    },
+    {
+      id: 6,
+      src: Bushra,
+      title: "Nature's Beauty",
+      description: "A stunning portrayal of the natural world.",
+    },
+    {
+      id: 7,
+      src: Bushra,
+      title: "Cosmic Dreams",
+      description: "A digital representation of the universe's mysteries.",
+    },
+    {
+      id: 8,
+      src: Bushra,
+      title: "Modern Aesthetics",
+      description: "A modern approach to visualizing beauty.",
+    },
+    {
+      id: 1,
+      src: Bushra,
+      title: "Abstract Art",
+      description: "An abstract piece that captures the essence of freedom.",
+    },
+    {
+      id: 2,
+      src: Bushra,
+      title: "Nature's Beauty",
+      description: "A stunning portrayal of the natural world.",
+    },
+    {
+      id: 3,
+      src: Bushra,
+      title: "Cosmic Dreams",
+      description: "A digital representation of the universe's mysteries.",
+    },
+    {
+      id: 4,
+      src: Bushra,
+      title: "Modern Aesthetics",
+      description: "A modern approach to visualizing beauty.",
+    },
+    {
+      id: 5,
+      src: Bushra,
+      title: "Abstract Art",
+      description: "An abstract piece that captures the essence of freedom.",
+    },
+    {
+      id: 6,
+      src: Bushra,
+      title: "Nature's Beauty",
+      description: "A stunning portrayal of the natural world.",
+    },
+    {
+      id: 7,
+      src: Bushra,
+      title: "Cosmic Dreams",
+      description: "A digital representation of the universe's mysteries.",
+    },
+    {
+      id: 8,
+      src: Bushra,
+      title: "Modern Aesthetics",
+      description: "A modern approach to visualizing beauty.",
+    },
+  ];
