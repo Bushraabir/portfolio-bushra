@@ -8,12 +8,12 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Node modules and build outputs
-node_modules
-dist
-dist-ssr
-.build
-.next
-.out
+node_modules/
+dist/
+dist-ssr/
+.build/
+.next/
+.out/
 
 # Lockfiles and debug
 *.local
