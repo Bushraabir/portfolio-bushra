@@ -5,7 +5,7 @@ import { OrbitControls, Environment, PerspectiveCamera } from '@react-three/drei
 import { Bloom, EffectComposer, SSAO, DepthOfField } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import { motion } from 'framer-motion';
-import spaceBackground from '../assets/space-background-realistic-starry-night-cosmos-shining-stars-milky-way-stardust-color-galaxy.jpg';
+import spaceBackground from '../assets/background.jpg';
 
 
 
