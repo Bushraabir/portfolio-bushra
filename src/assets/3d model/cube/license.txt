@@ -1,0 +1,11 @@
+Model Information:
+* title:	Impossible Cube
+* source:	https://sketchfab.com/3d-models/impossible-cube-044a6f65abc14b959ff636ce0f37a858
+* author:	tomciomalina (https://sketchfab.com/tomciomalina)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Impossible Cube" (https://sketchfab.com/3d-models/impossible-cube-044a6f65abc14b959ff636ce0f37a858) by tomciomalina (https://sketchfab.com/tomciomalina) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
