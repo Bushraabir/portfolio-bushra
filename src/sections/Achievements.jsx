@@ -128,7 +128,7 @@ const AnimatedModel = () => {
       />
       <directionalLight position={[10, 15, 10]} intensity={3.5} color="#A1B9D9" />
       <Suspense fallback={<LoadingFallback />}>
-      <Model modelPath="/portfolio-bushra/src/assets/3d_model/scene.gltf" />
+      <Model modelPath="/3d_model/scene.gltf" />
     </Suspense>
       <OrbitControls enableZoom={false} enablePan={true} autoRotate autoRotateSpeed={1.5} />
     </Canvas>
