@@ -111,17 +111,17 @@ Welcome to My Odyssey
                     <img
                         src={profileImage}
                         alt="Bushra Khandoker"
-                        className="transition-transform duration-300 transform shadow-lg hover:scale-102"
+                        className="transition-transform duration-300 transform shadow-lg hover:scale-102 lg:w-[400px] lg:h-[400px]"
                         style={{
-                            width: "clamp(520px, 20vw, 520px)", // Default size
-                            height: "clamp(520px, 20vw, 520px)", // Default size
+                            width: "clamp(520px, 20vw, 520px)",
+                            height: "clamp(520px, 20vw, 520px)",
                             objectFit: "cover",
-                            clipPath: "polygon(50% 0%, 90% 15%, 100% 50%, 90% 85%, 50% 100%, 10% 85%, 0% 50%, 10% 15%)", // Soft, angular, professional shape
-                            boxShadow: "0px 20px 30px rgba(0, 0, 0, 0.15)", // Soft, refined shadow
+                            clipPath: "polygon(50% 0%, 90% 15%, 100% 50%, 90% 85%, 50% 100%, 10% 85%, 0% 50%, 10% 15%)",
+                            boxShadow: "0px 20px 30px rgba(0, 0, 0, 0.15)",
                         }}
-                        className="lg:w-[400px] lg:h-[400px]" // Larger size on large screens
                     />
                 </motion.div>
+                    
             </div>
 
             {/* Instruction */}
