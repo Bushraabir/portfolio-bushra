@@ -98,7 +98,7 @@ const achievements = [
 ];
 
 const Model = () => {
-  const { scene } = useGLTF("/src/assets/3d_model/scene.gltf");
+  const { scene } = useGLTF("/portfolio-bushra/src/assets/3d_model/scene.gltf");
   return <primitive object={scene} scale={1.5} />;
 };
 
