@@ -4,9 +4,12 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { FaTrophy } from 'react-icons/fa';
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -96,11 +99,19 @@ const achievements = [
     ]
   },
 ];
-
-const Model = () => {
-  const { scene } = useGLTF("/portfolio-bushra/src/assets/3d_model/scene.gltf");
-  return <primitive object={scene} scale={1.5} />;
+const Model = ({ modelPath }) => {
+  const gltf = useLoader(GLTFLoader, modelPath);
+  return <primitive object={gltf.scene} scale={1.5} />;
 };
+
+
+const LoadingFallback = () => (
+  <mesh>
+    <boxGeometry args={[1, 1, 1]} />
+    <meshStandardMaterial color="gray" />
+  </mesh>
+);
+
 
 const AnimatedModel = () => {
   return (
@@ -116,14 +127,15 @@ const AnimatedModel = () => {
         color="#B8C8FF"
       />
       <directionalLight position={[10, 15, 10]} intensity={3.5} color="#A1B9D9" />
-      <Suspense fallback={null}>
-        <Model />
-      </Suspense>
+      <Suspense fallback={<LoadingFallback />}>
+      <Model modelPath="/portfolio-bushra/src/assets/3d_model/scene.gltf" />
+    </Suspense>
       <OrbitControls enableZoom={false} enablePan={true} autoRotate autoRotateSpeed={1.5} />
     </Canvas>
   );
 };
 
+// Achievement Card Component
 const AchievementCard = ({ achievement }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -138,7 +150,7 @@ const AchievementCard = ({ achievement }) => {
         color: "#F4F9FF",
         overflow: "hidden",
         borderRadius: "12px",
-        boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)"
+        boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
       }}
       contentArrowStyle={{ borderRight: "7px solid #576CA8" }}
       iconStyle={{ background: "transparent", boxShadow: "none" }}
