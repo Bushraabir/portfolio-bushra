@@ -1,0 +1,11 @@
+Model Information:
+* title:	Abstract Ball
+* source:	https://sketchfab.com/3d-models/abstract-ball-ffafe62053a745b8b2c8182e59239e79
+* author:	Arigaia Sekuin (https://sketchfab.com/arigaia.sekuin)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Abstract Ball" (https://sketchfab.com/3d-models/abstract-ball-ffafe62053a745b8b2c8182e59239e79) by Arigaia Sekuin (https://sketchfab.com/arigaia.sekuin) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
