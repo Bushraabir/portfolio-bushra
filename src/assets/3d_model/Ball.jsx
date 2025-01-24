@@ -3,7 +3,7 @@ import React from 'react'
 import { useGLTF } from '@react-three/drei'
 
 export default function Model(props) {
-  const { nodes, materials } = useGLTF('/assets/3d_model/ball.gltf');
+  const { nodes, materials } = useGLTF('assets/3d_model/ball.gltf');
   return (
     <group {...props} dispose={null} scale={1.5}>
       <group rotation={[-Math.PI / 2, 0, 0]}>
@@ -16,4 +16,4 @@ export default function Model(props) {
   )
 }
 
-useGLTF.preload('/assets/3d_model/ball.gltf')
+useGLTF.preload('assets/3d_model/ball.gltf')
