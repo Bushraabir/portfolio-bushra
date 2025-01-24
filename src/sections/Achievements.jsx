@@ -108,7 +108,7 @@ const LoadingFallback = () => (
 
 const AnimatedModel = () => {
   return (
-    <Canvas
+    <Canvas shadows
       style={{ width: 150, height: 150, position: "absolute", top: "-20px", left: "-40px", zIndex: 10 }}
     >
 <ambientLight intensity={0.2} color="#6A5ACD" /> {/* Subtle purple ambient light */}
