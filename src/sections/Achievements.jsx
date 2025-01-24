@@ -4,11 +4,10 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import { Canvas, useLoader } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
-import { FaTrophy } from 'react-icons/fa';
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-
+import { FaTrophy } from "react-icons/fa";
+import Ball from '../assets/3d_model/Ball';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -99,11 +98,6 @@ const achievements = [
     ]
   },
 ];
-const Model = ({ modelPath }) => {
-  const gltf = useLoader(GLTFLoader, modelPath);
-  return <primitive object={gltf.scene} scale={1.5} />;
-};
-
 
 const LoadingFallback = () => (
   <mesh>
@@ -112,30 +106,41 @@ const LoadingFallback = () => (
   </mesh>
 );
 
-
 const AnimatedModel = () => {
   return (
     <Canvas
       style={{ width: 150, height: 150, position: "absolute", top: "-20px", left: "-40px", zIndex: 10 }}
     >
-      <ambientLight intensity={0.8} color="#A3C4F1" />
-      <spotLight
-        position={[15, 20, 5]}
-        angle={1.5}
-        penumbra={1.5}
-        intensity={40}
-        color="#B8C8FF"
-      />
-      <directionalLight position={[10, 15, 10]} intensity={3.5} color="#A1B9D9" />
+<ambientLight intensity={0.2} color="#6A5ACD" /> {/* Subtle purple ambient light */}
+<spotLight
+  position={[20, 30, 10]}
+  angle={0.7} // Narrower angle for focused lighting
+  penumbra={0.9} // Softer edges
+  intensity={50} // Increase intensity for more impact
+  color="#ADD8E6" // Bluish tone for dramatic effect
+  castShadow // Enable shadows for added drama
+/>
+<directionalLight
+  position={[-10, 20, -10]} // Backlight for dramatic edge lighting
+  intensity={6}
+  color="#8A2BE2" // Purple tone for dramatic depth
+/>
+<pointLight
+  position={[0, 5, 10]} // Close light source for dramatic highlights
+  intensity={25}
+  color="#6A5ACD" // Cool blue for intense shadows and highlights
+  decay={2} // Natural light falloff
+/>
+
+
       <Suspense fallback={<LoadingFallback />}>
-      <Model modelPath="../assets/3d_model/scene.gltf" />
-    </Suspense>
+        <Ball />
+      </Suspense>
       <OrbitControls enableZoom={false} enablePan={true} autoRotate autoRotateSpeed={1.5} />
     </Canvas>
   );
 };
 
-// Achievement Card Component
 const AchievementCard = ({ achievement }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
