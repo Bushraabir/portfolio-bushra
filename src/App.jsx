@@ -1,9 +1,7 @@
 import React from "react";
 import Hero from "./sections/Hero";
 import Websites from "./sections/Websites.jsx";
-
 import Artworks from "./sections/Artworks";
-
 import Research from "./sections/Research";
 import Organization from "./sections/Organization";
 import Olympiads from "./sections/Olympiads.jsx";
@@ -14,14 +12,27 @@ import AboutMe from "./sections/Aboutme.jsx";
 import ParticleScene from "./components/Particle.jsx";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import Gallery from "./sections/Gallery.jsx";
 import DigitalArt from "./sections/DigitalArt.jsx";
 
+// Color Palette (for styling)
+const colors = {
+  richTeal: "#007C8A",
+  burntOrange: "#FF6F3C",
+  deepCharcoal: "#1A1A1A",
+  creamWhite: "#F9F5F0",
+  gold: "#FFC857",
+  lavenderGray: "#ADA7C9",
+};
 
+// Font styles
+const fonts = {
+  headings: "'Playfair Display', serif",
+  body: "'Roboto', sans-serif",
+};
 
 const navLinks = [
-  
   { name: "My Odyssey", id: "hero" },
   { name: "The climb", id: "achievements" },
   { name: "Code Canvas", id: "websites" },
@@ -144,7 +155,7 @@ function NavbarComponent() {
                 style={linkStyle}
                 whileHover={{
                   scale: 1.1,
-                  color: "#ff7eb3",
+                  color: colors.burntOrange,
                   backgroundColor: "rgba(255, 255, 255, 0.15)",
                 }}
                 transition={{
@@ -176,7 +187,7 @@ const toggleButton = {
   width: "70px",
   height: "70px",
   borderRadius: "50%",
-  background: "linear-gradient(145deg, #ff7eb3, #ff758c)",
+  background: `linear-gradient(145deg, ${colors.burntOrange}, #ff758c)`,
   border: "none",
   cursor: "pointer",
   display: "flex",
@@ -206,7 +217,7 @@ const navbar = {
   flexDirection: "column",
   alignItems: "flex-start",
   justifyContent: "flex-start",
-  background: "linear-gradient(145deg, #1f1f1f, #292929)",
+  background: `linear-gradient(145deg, ${colors.deepCharcoal}, #292929)`,
   borderRadius: "20px",
   boxShadow: "0px 10px 10px rgba(0, 0, 0, 0.1)",
   overflow: "hidden",
@@ -215,6 +226,10 @@ const navbar = {
   minWidth: "200px", // Ensure it doesn't become too small
   padding: "20px",
   transition: "all 0.3s ease-in-out", // Smooth animations for resizing
+  "@media (max-width: 768px)": {
+    width: "100%",
+    padding: "15px",
+  },
 };
 
 const navList = {
@@ -229,20 +244,21 @@ const navItem = {
   marginBottom: "15px",
   padding: "15px 20px",
   borderRadius: "10px",
-  background: "linear-gradient(145deg, #252525, #303030)",
+  background: `linear-gradient(145deg, ${colors.lavenderGray}, #303030)`,
   cursor: "pointer",
 };
 
 const linkStyle = {
   textDecoration: "none",
-  color: "#f0f0f0",
+  color: colors.creamWhite,
   fontSize: "18px",
   fontWeight: "bold",
+  fontFamily: fonts.body,
 };
 
 const App = () => {
   return (
-    <div className="bg-dark text-light scroll-smooth">
+    <div className="bg-dark text-light scroll-smooth" style={{ fontFamily: fonts.body }}>
       {/* Navbar */}
       <NavbarComponent />
       <div className="absolute top-0 left-0 w-full h-full">
@@ -260,37 +276,40 @@ const App = () => {
         <section id="achievements" className="w-full px-0">
           <Achievements />
         </section>
-        <section id="gallery" >
-        
-        <Gallery />
-      
+        <section id="gallery">
+          <Gallery />
         </section>
-        <section id="websites" >
+        <section id="websites">
           <Websites />
         </section>
-
-        <section id="digital" >
+        <section id="digital">
           <DigitalArt />
         </section>
-        <section id="artworks" >
+        <section id="artworks">
           <Artworks />
         </section>
-
-        <section id="research" className="px-4 bg-light text-dark sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32">
+        <section
+          id="research"
+          className="px-4 bg-light text-dark sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32"
+        >
           <Research />
         </section>
-        <section id="organization" className="px-4 bg-gray-800 text-light sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32">
+        <section
+          id="organization"
+          className="px-4 bg-gray-800 text-light sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32"
+        >
           <Organization />
         </section>
-        <section id="olympiads" className="px-4 bg-light text-dark sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32">
+        <section
+          id="olympiads"
+          className="px-4 bg-light text-dark sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32"
+        >
           <Olympiads />
         </section>
-
         <section id="testimonials">
           <Testimonials />
         </section>
       </main>
-
       {/* Footer */}
       <Footer />
     </div>

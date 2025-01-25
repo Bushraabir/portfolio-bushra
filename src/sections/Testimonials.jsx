@@ -46,22 +46,23 @@ gsap.registerPlugin(ScrollTrigger);
 
 const TestimonialPolygon = () => {
   const containerRef = useRef(null);
-  const [cubeSize, setCubeSize] = useState(60); // Further reduced initial cube size
-  const cubeRef = useRef(); // Ref for cube
-  const controlsRef = useRef(); // Ref for OrbitControls
+  const [cubeSize, setCubeSize] = useState(60);
+  const cubeRef = useRef();
+  const controlsRef = useRef();
 
-  // Update the cube size based on container's width
   const updateCubeSize = () => {
     if (containerRef.current) {
-      const newSize = Math.min(containerRef.current.offsetWidth, containerRef.current.offsetHeight) / 10; // Smaller cube size
-      setCubeSize(newSize); // Adjust the size dynamically
+      const newSize = Math.min(
+        containerRef.current.offsetWidth,
+        containerRef.current.offsetHeight
+      ) / 10;
+      setCubeSize(newSize);
     }
   };
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Initialize scene, camera, and renderer
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -70,18 +71,19 @@ const TestimonialPolygon = () => {
       1000
     );
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(containerRef.current.offsetWidth, containerRef.current.offsetHeight);
+    renderer.setSize(
+      containerRef.current.offsetWidth,
+      containerRef.current.offsetHeight
+    );
     renderer.outputEncoding = THREE.sRGBEncoding;
     containerRef.current.appendChild(renderer.domElement);
 
-    // Load HDRi for environment lighting
     const rgbeLoader = new RGBELoader();
     rgbeLoader.load(hdrImagePath, (hdrTexture) => {
       hdrTexture.mapping = THREE.EquirectangularReflectionMapping;
       scene.environment = hdrTexture;
     });
 
-    // Create cube geometry and materials with brighter colors
     const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
 
     const cubeMaterials = testimonials.map((testimonial) => {
@@ -90,39 +92,42 @@ const TestimonialPolygon = () => {
       canvas.height = 1024;
       const context = canvas.getContext("2d");
 
-      // Background for the text
-      context.fillStyle = "rgba(0, 0, 0, 0.7)";
+      context.fillStyle = "rgba(26, 26, 26, 0.85)"; // Deep Charcoal
       context.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Text styling
-      context.fillStyle = "#fff";
-      context.font = "bold 40px Arial";
+      context.fillStyle = "#FFC857"; // Gold for text
+      context.font = "bold 40px 'Playfair Display', serif";
       context.textAlign = "center";
-      context.fillText(testimonial.quote, canvas.width / 2, canvas.height / 3, 800);
+      context.fillText(
+        testimonial.quote,
+        canvas.width / 2,
+        canvas.height / 3,
+        800
+      );
 
-      context.font = "italic 30px Arial";
-      context.fillText(testimonial.name, canvas.width / 2, canvas.height / 2 + 50);
-      context.fillText(testimonial.designation, canvas.width / 2, canvas.height / 2 + 100);
+      context.font = "italic 30px 'Roboto', sans-serif";
+      context.fillText(
+        testimonial.name,
+        canvas.width / 2,
+        canvas.height / 2 + 50
+      );
+      context.fillText(
+        testimonial.designation,
+        canvas.width / 2,
+        canvas.height / 2 + 100
+      );
 
       const texture = new THREE.CanvasTexture(canvas);
 
       return new THREE.MeshPhysicalMaterial({
         map: texture,
-        color: 0xE6E6FA,  // Dodger blue
-        roughness: 0.1,    // Slight roughness for smoothness
-        metalness: 0.8,    // Semi-metallic surface
-        clearcoat: 1,      // Clear reflective layer
-        clearcoatRoughness: 0.5,  // Subtle imperfections in the clearcoat
-        reflectivity: 0.8,        // Sharp reflections
-        envMapIntensity: 1,        // Stronger environment map reflections
-        transmission: 0.9,         // High transparency for glass effect
-        ior: 1.45,                 // Index of refraction for glass effect
-        thickness: 1.2,            // Thickness of the glass
-        sheen: 1,                  // Pearlescent sheen effect
-        sheenColor: new THREE.Color(0xE6E6FA),  // Golden sheen effect
-        emissive: new THREE.Color(0xE6E6FA),    // Firebrick glowing effect
-        emissiveIntensity: 1.5,                  // Intensity of glow
-        emissiveMap: texture,                    // Optionally use texture for the emissive map
+        color: 0xffffff,
+        roughness: 0.2,
+        metalness: 0.8,
+        clearcoat: 1,
+        clearcoatRoughness: 0.1,
+        reflectivity: 0.8,
+        envMapIntensity: 1.2,
       });
     });
 
@@ -130,73 +135,45 @@ const TestimonialPolygon = () => {
     cubeRef.current = cube;
     scene.add(cube);
 
-    // Camera position for better visibility
-    camera.position.z = 120; // Adjusted for a better view (slightly closer)
-    camera.position.y = 20;  // Raise camera slightly for better view
-    camera.lookAt(0, 0, 0);  // Look at the center of the cube
+    camera.position.z = 120;
+    camera.position.y = 20;
+    camera.lookAt(0, 0, 0);
 
-    // Lighting setup with vibrant colors
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5); // Strong ambient light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
     scene.add(ambientLight);
 
-    // Blue point light
-    const blueLight = new THREE.PointLight(0x4B9CD3, 2, 100);
-    blueLight.position.set(50, 50, 50);
-    scene.add(blueLight);
-
-    // Orange Point Light
-    const orangeLight = new THREE.PointLight(0xF5A623, 2, 100);
-    orangeLight.position.set(-50, -50, 50);
-    scene.add(orangeLight);
-
-    // Purple Point Light
-    const purpleLight = new THREE.PointLight(0x9B59B6, 2, 100);
-    purpleLight.position.set(50, -50, -50);
-    scene.add(purpleLight);
-
-    // Spotlight with golden color
-    const goldLight = new THREE.SpotLight(0xFFD700, 1.5, 100, Math.PI / 4, 0.5, 5);
+    const goldLight = new THREE.SpotLight(0xFFC857, 1.5, 100, Math.PI / 4, 0.5);
     goldLight.position.set(0, 100, 0);
     goldLight.target.position.set(0, 0, 0);
     scene.add(goldLight);
     scene.add(goldLight.target);
 
-    // Directional light for sunset effect
-    const directionalLight = new THREE.DirectionalLight(0xFF6F61, 1.5);
-    directionalLight.position.set(100, 100, 100);
-    directionalLight.target.position.set(0, 0, 0);
-    scene.add(directionalLight);
-    scene.add(directionalLight.target);
-
-    // OrbitControls for user interaction
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true; // Enable smooth damping
+    controls.enableDamping = true;
     controls.dampingFactor = 0.25;
-    controls.screenSpacePanning = false; // Disable panning in the z-axis
-    controls.maxPolarAngle = Math.PI; // Allow full vertical rotation (from top to bottom)
-    controls.enableZoom = false; // Disable zoom functionality
     controlsRef.current = controls;
 
-    // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
-      controls.update(); // Update the controls
+      controls.update();
       renderer.render(scene, camera);
     };
 
     animate();
 
-    // Adjust on window resize
     const onWindowResize = () => {
-      camera.aspect = containerRef.current.offsetWidth / containerRef.current.offsetHeight;
+      camera.aspect =
+        containerRef.current.offsetWidth / containerRef.current.offsetHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(containerRef.current.offsetWidth, containerRef.current.offsetHeight);
-      updateCubeSize(); // Update the cube size on resize
+      renderer.setSize(
+        containerRef.current.offsetWidth,
+        containerRef.current.offsetHeight
+      );
+      updateCubeSize();
     };
 
     window.addEventListener("resize", onWindowResize);
 
-    // ScrollTrigger animation for cube
     gsap.to(cube.rotation, {
       y: 2 * Math.PI,
       scrollTrigger: {
@@ -219,23 +196,21 @@ const TestimonialPolygon = () => {
       },
     });
 
-    // Clean up
     return () => {
       window.removeEventListener("resize", onWindowResize);
       if (containerRef.current) {
         containerRef.current.removeChild(renderer.domElement);
       }
     };
-  }, [cubeSize]); // Re-render whenever cubeSize changes
+  }, [cubeSize]);
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-screen p-6 bg-indigo-950 lg:flex-row"
+      className="flex flex-col items-center justify-center min-h-screen p-6 bg-[#F9F5F0] lg:flex-row"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      {/* Cube Section (Left) */}
       <motion.div
         ref={containerRef}
         className="w-full lg:w-8/12 h-[900px] lg:h-[900px] bg-transparent"
@@ -243,19 +218,21 @@ const TestimonialPolygon = () => {
         transition={{ duration: 1, ease: "easeOut" }}
       ></motion.div>
 
-      {/* Text Section (Right) */}
       <motion.div
-        className="w-full p-6 text-left lg:w-1/2"
+        className="relative w-full p-8 overflow-hidden text-left lg:w-1/2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5, delay: 0.5 }}
       >
-        <h2 className="mb-4 text-4xl font-bold text-indigo-100">What They Say</h2>
-        <p className="text-lg leading-relaxed text-gray-600">
+        <h2 className="mb-6 text-5xl font-bold text-[#007C8A] font-serif tracking-wide leading-tight transform transition duration-300 ease-in-out hover:text-[#004f5c] shadow-lg">
+          What They Say
+        </h2>
+        <p className="text-lg text-[#ADA7C9] leading-relaxed font-sans tracking-wide">
           See what others have to say about Bushra's hard work, creativity, and
           leadership abilities. These testimonials highlight his dedication and
           unique skills.
         </p>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#FFC857] to-[#FF6F3C] opacity-10 -z-10"></div>
       </motion.div>
     </motion.div>
   );

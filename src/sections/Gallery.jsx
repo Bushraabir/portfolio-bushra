@@ -32,7 +32,7 @@ const images = [
   },
   {
     src: house,
-    description: "On 29th January 2023 HonourableRespected Minister of State, Public Administration, Mr. Farhad Hossain, MP visited Military Collegiate School Khulna",
+    description: "On 29th January 2023 Honourable Respected Minister of State, Public Administration, Mr. Farhad Hossain, MP visited Military Collegiate School Khulna",
   },
   {
     src: children,
@@ -52,7 +52,7 @@ const images = [
   },
   {
     src: interhouse_drill_compitition,
-    description: "I brommed the new intake batches to be trained as the cadets and perform the novices drill and finally we are the champion.",
+    description: "I brought the new intake batches to be trained as cadets and perform the novices drill and finally, we are the champion.",
   },
   {
     src: prefectship,
@@ -140,7 +140,7 @@ const Gallery = () => {
           In Frame
         </motion.h1>
 
-        <div className="author">
+        <div className="author fa-align-right">
           <h2>Stories Captured</h2>
           <p>
             <b>Adventures of my life</b>
@@ -165,3 +165,4 @@ const Gallery = () => {
 };
 
 export default Gallery;
+

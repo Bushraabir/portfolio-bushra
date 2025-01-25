@@ -58,7 +58,6 @@ const About = () => {
                 }}
             >
                 {/* Placeholder for 3D Model */}
-
                 {/* Replace this with actual 3D model rendering */}
             </div>
 
@@ -71,9 +70,10 @@ const About = () => {
             >
                 {/* Floating Writing Card */}
                 <motion.div
-                    className="p-6 text-center shadow-lg text-whiterounded-lg md:w-1/3 bg-opacity-40 md:text-left"
+                    className="p-6 text-center text-white bg-opacity-100 rounded-lg shadow-lg md:w-1/3 md:text-left"
                     style={{
-                        backdropFilter: "blur(5px)",
+                        backdropFilter: "blur(1px)",
+                        backgroundColor: "rgba(255, 255, 255, 0.1)",
                         maxHeight: "90vh",
                         overflowY: "auto",
                         zIndex: 10,
@@ -82,17 +82,19 @@ const About = () => {
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                    <h2 className="mb-4 text-2xl font-bold sm:text-3xl">My Odyssey</h2>
-                    <p className="mb-4 text-base sm:text-lg">
+                    <h2 className="mb-4 text-2xl font-bold sm:text-3xl text-[#FFC857] font-playfairDisplay">
+                        My Odyssey
+                    </h2>
+                    <p className="mb-4 text-base sm:text-lg text-[#ADA7C9)] font-roboto">
                         I’m Bushra Khandoker, a passionate creator navigating the realms of computer science and technology. My journey is driven by an insatiable curiosity and an unwavering commitment to learning. From crafting code in Python and C++ to exploring the world of 3D simulations and ethical hacking, I thrive on pushing boundaries and mastering new skills.
                     </p>
-                    <p className="mb-4 text-base sm:text-lg">
+                    <p className="mb-4 text-base sm:text-lg text-[#ADA7C9)] font-roboto">
                         Currently, I’m preparing to embark on an academic journey, applying for undergraduate scholarships to immerse myself in world-class education. My ambition is to blend creativity with technology, solving complex challenges and creating innovative solutions that leave a meaningful impact on the world.
                     </p>
-                    <p className="mb-4 text-base sm:text-lg">
+                    <p className="mb-4 text-base sm:text-lg text-[#ADA7C9)] font-roboto">
                         Outside of the digital world, I embrace my creative spirit through sketching and exploring artistic compositions. I believe in balancing analytical precision with imaginative expression, which fuels my passion for both technology and the arts.
                     </p>
-                    <p className="text-base sm:text-lg">
+                    <p className="text-base sm:text-lg text-[#ADA7C9)] font-roboto">
                         Feel free to explore my portfolio and see how my journey unfolds through my projects, skills, and passions.
                     </p>
                 </motion.div>

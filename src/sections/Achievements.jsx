@@ -9,7 +9,6 @@ import { OrbitControls, useGLTF } from "@react-three/drei";
 import { FaTrophy } from "react-icons/fa";
 import Ball from '../assets/3d_model/Ball';
 
-
 gsap.registerPlugin(ScrollTrigger);
 
 const achievements = [
@@ -99,6 +98,16 @@ const achievements = [
   },
 ];
 
+// Updated color palette
+const colors = {
+  primaryTeal: "#007C8A",
+  burntOrange: "#FF6F3C",
+  deepCharcoal: "#1A1A1A",
+  creamWhite: "#F9F5F0",
+  gold: "#FFC857",
+  lavenderGray: "#ADA7C9",
+};
+
 const LoadingFallback = () => (
   <mesh>
     <boxGeometry args={[1, 1, 1]} />
@@ -108,28 +117,28 @@ const LoadingFallback = () => (
 
 const AnimatedModel = () => {
   return (
-    <Canvas shadows
+    <Canvas
       style={{ width: 150, height: 150, position: "absolute", top: "-20px", left: "-40px", zIndex: 10 }}
     >
-<ambientLight intensity={0.2} color="#6A5ACD" /> {/* Subtle purple ambient light */}
+<ambientLight intensity={0.2} color="#ADA7C9" /> {/* Lavender Gray for subtle ambient light */}
 <spotLight
   position={[20, 30, 10]}
-  angle={0.7} // Narrower angle for focused lighting
-  penumbra={0.9} // Softer edges
-  intensity={50} // Increase intensity for more impact
-  color="#ADD8E6" // Bluish tone for dramatic effect
-  castShadow // Enable shadows for added drama
+  angle={0.7}
+  penumbra={0.9}
+  intensity={50}
+  color="#FF6F3C" // Burnt Orange for a warm, focused spotlight
+  castShadow
 />
 <directionalLight
-  position={[-10, 20, -10]} // Backlight for dramatic edge lighting
+  position={[-10, 20, -10]}
   intensity={6}
-  color="#8A2BE2" // Purple tone for dramatic depth
+  color="#007C8A" // Rich Teal for sophistication and innovation
 />
 <pointLight
-  position={[0, 5, 10]} // Close light source for dramatic highlights
+  position={[0, 5, 10]}
   intensity={25}
-  color="#6A5ACD" // Cool blue for intense shadows and highlights
-  decay={2} // Natural light falloff
+  color="#FFC857" // Gold for a luxurious and dramatic highlight
+  decay={2}
 />
 
 
@@ -151,13 +160,14 @@ const AchievementCard = ({ achievement }) => {
   return (
     <VerticalTimelineElement
       contentStyle={{
-        background: "linear-gradient(135deg, #4A4E9E, #576CA8)",
-        color: "#F4F9FF",
+        background: "linear-gradient(135deg, #007C8A, #FF6F3C)",
+        color: "#F9F5F0",
         overflow: "hidden",
         borderRadius: "12px",
         boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
+        backdropFilter: "blur(10px)",
       }}
-      contentArrowStyle={{ borderRight: "7px solid #576CA8" }}
+      contentArrowStyle={{ borderRight: "7px solid #FF6F3C" }}
       iconStyle={{ background: "transparent", boxShadow: "none" }}
       icon={
         <div style={{ width: 100, height: 100, position: "relative" }}>
@@ -216,14 +226,14 @@ const Achievements = () => {
   }, []);
 
   return (
-    <section className="p-6 space-y-10 md:p-12 lg:p-16">
+    <section className="p-6 space-y-10 md:p-12 lg:p-16" style={{ background: "transparent" }}>
       <motion.div
         className="text-center achievement-heading"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-3xl md:text-4xl font-semibold text-[#4B5C84]">
+        <h2 className="text-3xl md:text-4xl font-semibold text-[#007C8A]">
           My Achievements
         </h2>
       </motion.div>
