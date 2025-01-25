@@ -45,9 +45,10 @@ const Hero = () => {
         <section
             className="relative flex flex-col items-center justify-center min-h-screen p-6"
             style={{
-                backgroundColor: "transparent",
+                backgroundColor: "transparent", // Transparent background
                 zIndex: 1,
                 pointerEvents: "none", // Ensure background remains interactive
+                fontFamily: "Roboto, sans-serif", // Set default font for body text
             }}
         >
             {/* Text and Profile Image */}
@@ -57,39 +58,40 @@ const Hero = () => {
             >
                 {/* Main Text */}
                 <div className="flex flex-col items-center text-left lg:items-start">
-                <motion.p
-    className="mt-4 text-lg sm:text-xl md:text-2xl text-glow"
-    initial={{ opacity: 0, y: 50 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
->
-Welcome to My Odyssey
-</motion.p>
-                <motion.h1
-    className="text-4xl font-bold text-left text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 bg-clip-text"
-    initial={{ opacity: 0, y: 50 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 1.5, ease: "easeOut" }}
->
-    
-    <br />I'm Bushra Khandoker<br/>
-</motion.h1>
-<motion.p
-    className="mt-4 text-lg sm:text-xl md:text-2xl text-glow"
-    initial={{ opacity: 0, y: 50 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
->
-    A visionary creator on a journey to blend technology with creativity. <br />
-    Fueled by curiosity and a passion for innovation, <br />
-    I'm shaping the future with bold ideas and creative solutions.
-</motion.p>
+                    <motion.p
+                        className="mt-4 text-lg sm:text-xl md:text-2xl text-glow"
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
+                        style={{ color: "#007C8A", fontFamily: "Playfair Display, serif" }} // Teal for heading
+                    >
+                        Welcome to My Odyssey
+                    </motion.p>
+                    <motion.h1
+                        className="text-4xl font-bold text-left text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-[#FFC857] via-[#FF6F3C] to-[#007C8A] bg-clip-text"
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                    >
+                        <br />I'm Bushra Khandoker<br />
+                    </motion.h1>
+                    <motion.p
+                        className="mt-4 text-lg sm:text-xl md:text-2xl text-glow "
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
+                        style={{ color: "#ADA7C9" }} 
+                    >
+                        A visionary creator on a journey to blend technology with creativity. <br />
+                        Fueled by curiosity and a passion for innovation, <br />
+                        I'm shaping the future with bold ideas and creative solutions.
+                    </motion.p>
                     <motion.button
                         className="px-8 py-3 mt-6 text-white hero-btn hero-btn:hover focus:outline-none"
-                        style={{ pointerEvents: "auto" }}
+                        style={{ pointerEvents: "auto", backgroundColor: "#FF6F3C" }} // Burnt orange for button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() =>
@@ -132,7 +134,7 @@ Welcome to My Odyssey
                 transition={{ duration: 1.5, ease: "easeOut" }}
                 style={{ pointerEvents: "none" }}
             >
-                <p className="text-sm sm:text-md text-glow">
+                <p className="text-sm sm:text-md text-glow" style={{ color: "#ADA7C9" }}>
                     ✨ Psst! Did you know you can play with the floating balls? Give it a try! 🎮
                 </p>
             </motion.div>

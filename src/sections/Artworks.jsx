@@ -70,7 +70,7 @@ const Artworks = () => {
     return (
       isModalOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0f0f1e] via-[#1a1a3d] to-[#26264b] bg-opacity-90"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0F3460] via-[#16213E] to-[#1A1A1A] bg-opacity-90"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -78,7 +78,7 @@ const Artworks = () => {
           onClick={handleCloseModal}
         >
           <motion.div
-            className="relative max-w-3xl p-8 mx-auto rounded-lg shadow-lg cursor-default modal-content bg-gradient-to-r from-[#4a47a3] via-[#34344f] to-[#1b1b34]"
+            className="relative max-w-3xl p-8 mx-auto rounded-lg shadow-lg cursor-default modal-content bg-gradient-to-r from-[#007C8A] via-[#34344F] to-[#1B1B34]"
             onClick={(e) => e.stopPropagation()}
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
@@ -86,7 +86,7 @@ const Artworks = () => {
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             <button
-              className="absolute text-3xl font-bold text-[#e94560] transition-colors top-4 right-4 hover:text-[#f77a96]"
+              className="absolute text-3xl font-bold text-[#FFC857] transition-colors top-4 right-4 hover:text-[#FF6F3C]"
               onClick={handleCloseModal}
             >
               ×
@@ -100,7 +100,7 @@ const Artworks = () => {
               transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
             />
             <motion.p
-              className="mt-4 text-xl text-center text-[#a2d2ff]"
+              className="mt-4 text-xl text-center text-[#F9F5F0]"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
@@ -108,7 +108,7 @@ const Artworks = () => {
               {selectedArtwork.description}
             </motion.p>
             <motion.button
-              className="px-4 py-2 mt-6 text-lg text-white transition-colors bg-[#4a47a3] rounded-md hover:bg-[#5b57b7]"
+              className="px-4 py-2 mt-6 text-lg text-white transition-colors bg-[#007C8A] rounded-md hover:bg-[#1A1A1A]"
               onClick={handleCloseModal}
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -123,11 +123,11 @@ const Artworks = () => {
   };
 
   return (
-    <section className="w-full py-16 bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460]">
+    <section className="w-full py-16 bg-gradient-to-br from-[#1A1A1A] via-[#16213E] to-[#0F3460]">
       <div className="container px-6 mx-auto lg:px-20">
         <div className="mb-8 text-center">
-          <h2 className="text-4xl font-bold text-[#e94560]">Artworks</h2>
-          <p className="mt-4 text-lg text-[#a2d2ff]">
+          <h2 className="text-4xl font-['Playfair Display'] font-bold text-[#FFC857]">Artworks</h2>
+          <p className="mt-4 text-lg text-[#F9F5F0]">
             Explore my collection of artistic creations across various mediums.
           </p>
         </div>
@@ -138,8 +138,8 @@ const Artworks = () => {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`text-xl font-semibold ${
-                activeTab === tab ? "text-[#e94560]" : "text-[#a2d2ff]"
+              className={`text-xl font-['Roboto'] font-semibold ${
+                activeTab === tab ? "text-[#FFC857]" : "text-[#ADA7C9]"
               } transition-colors duration-300`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
