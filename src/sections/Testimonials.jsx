@@ -63,13 +63,18 @@ const TestimonialPolygon = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Create the Three.js scene
     const scene = new THREE.Scene();
+
+    // Set up the camera
     const camera = new THREE.PerspectiveCamera(
       75,
       containerRef.current.offsetWidth / containerRef.current.offsetHeight,
       0.1,
       1000
     );
+
+    // Set up the renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(
       containerRef.current.offsetWidth,
@@ -78,12 +83,15 @@ const TestimonialPolygon = () => {
     renderer.outputEncoding = THREE.sRGBEncoding;
     containerRef.current.appendChild(renderer.domElement);
 
+    // Load the HDR image for environment mapping
     const rgbeLoader = new RGBELoader();
     rgbeLoader.load(hdrImagePath, (hdrTexture) => {
       hdrTexture.mapping = THREE.EquirectangularReflectionMapping;
       scene.environment = hdrTexture;
+      scene.background = hdrTexture; // Use the HDRI as the background as well
     });
 
+    // Create cube geometry with testimonials as materials
     const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
 
     const cubeMaterials = testimonials.map((testimonial) => {
@@ -131,28 +139,34 @@ const TestimonialPolygon = () => {
       });
     });
 
+    // Create cube mesh with the testimonial materials
     const cube = new THREE.Mesh(geometry, cubeMaterials);
     cubeRef.current = cube;
     scene.add(cube);
 
+    // Set the camera position and orientation
     camera.position.z = 120;
     camera.position.y = 20;
     camera.lookAt(0, 0, 0);
 
+    // Add ambient lighting to the scene
     const ambientLight = new THREE.AmbientLight(0xffffff, 1);
     scene.add(ambientLight);
 
+    // Add a gold spotlight for a more dramatic effect
     const goldLight = new THREE.SpotLight(0xFFC857, 1.5, 100, Math.PI / 4, 0.5);
     goldLight.position.set(0, 100, 0);
     goldLight.target.position.set(0, 0, 0);
     scene.add(goldLight);
     scene.add(goldLight.target);
 
+    // Set up the OrbitControls to allow camera interaction
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
     controlsRef.current = controls;
 
+    // Animation loop to render the scene and update controls
     const animate = () => {
       requestAnimationFrame(animate);
       controls.update();
@@ -161,6 +175,7 @@ const TestimonialPolygon = () => {
 
     animate();
 
+    // Handle window resizing
     const onWindowResize = () => {
       camera.aspect =
         containerRef.current.offsetWidth / containerRef.current.offsetHeight;
@@ -174,6 +189,7 @@ const TestimonialPolygon = () => {
 
     window.addEventListener("resize", onWindowResize);
 
+    // Apply scroll animations using GSAP
     gsap.to(cube.rotation, {
       y: 2 * Math.PI,
       scrollTrigger: {

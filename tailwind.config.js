@@ -16,28 +16,36 @@ export default {
                 scale: "transform, scaleX",
             },
             textGradient: {
-                gradient: 'text-transparent bg-clip-text bg-gradient-to-r from-gold to-accent',
-            },
+                gradient:
+                  'text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#FFC857] to-[#FF5733]',
+              },
+              
             colors: {
-                gold: "#FFD700", // Gold for accents
-                primary: "#1F3A56", // Dark Blue
-                secondary: "#5B6D80", // Muted Blue
-                accent: "#6D8291", // Accent Blue
+                primary: "#2F3A58", // Slate Blue
+                primaryDark: "#1C273B", // Darker shade of primary
+                primaryLight: "#4A5672", // Lighter tint of primary
+                secondary: "#E6B800", // Golden Yellow
+                secondaryDark: "#C59700", // Darker shade of secondary
+                secondaryLight: "#F2D966", // Lighter tint of secondary
+                accent1: "#00A7D0", // Bright Turquoise
+                accent1Dark: "#0088A6", // Darker shade of accent1
+                accent1Light: "#4FC7E2", // Lighter tint of accent1
+                accent2: "#F26B38", // Soft Coral
+                accent2Dark: "#CC5630", // Darker shade of accent2
+                accent2Light: "#F79D7D", // Lighter tint of accent2
+                neutral: "#B8B8B8", // Cool Gray
                 dark: "#0B132B", // Deep Navy
                 light: "#F5F7FA", // Light Gray
-                error: "#E63946", // Red for errors
-                success: "#38B000", // Green for success
-                hover: "#FFC300", // Hover for buttons or accents
             },
             boxShadow: {
                 xl: '0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1)',
                 '2xl': '0 25px 50px rgba(0, 0, 0, 0.15)',
-                '3xl': '0 35px 60px rgba(0, 0, 0, 0.2)', // Deeper shadow for standout elements
+                '3xl': '0 35px 60px rgba(0, 0, 0, 0.2)', 
             },
             fontFamily: {
-                sans: ['Inter', 'sans-serif'], // Elegant default sans-serif font
-                serif: ['Playfair Display', 'serif'], // Elegant serif for headings or emphasis
-                mono: ['Source Code Pro', 'monospace'], // Monospace for code blocks
+                sans: ['Montserrat', 'sans-serif'], // Modern sans-serif for headings
+                serif: ['Playfair Display', 'serif'], // Elegant serif for emphasis
+                mono: ['Source Code Pro', 'monospace'], // Monospace for code
             },
             fontSize: {
                 xxs: '0.65rem', // Extra small font for subtle elements
@@ -58,16 +66,14 @@ export default {
                 '3xl': '2rem',
                 full: '9999px', // For fully circular shapes
             },
-            backgroundImage: {
-                'hero-pattern': "url('/src/assets/Bushra.png')", // Custom background image for your hero section
-                'footer-texture': "url('/src/assets/Bushra.png')", // Texture for the footer
-            },
+            
             animation: {
-                'fade-in': 'fade-in 1.5s ease-out', // Smooth fade-in animation
+                'fade-in': 'fade-in 1.5s ease-out',
                 'slide-up': 'slide-up 1s ease-out',
-                bounce: 'bounce 1.2s infinite', // Bouncing effect for interactive buttons
-                pulse: 'pulse 1.5s infinite', // Pulsing animation for feedback
+                bounce: 'bounce 1.2s infinite',
+                pulse: 'pulse 1.5s infinite',
             },
+            
             keyframes: {
                 'fade-in': {
                     '0%': { opacity: '0' },
