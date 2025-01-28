@@ -1,20 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import Hero from "./sections/Hero";
-import Websites from "./sections/Websites.jsx";
+import Websites from "./sections/Websites";
 import Artworks from "./sections/Artworks";
 import Research from "./sections/Research";
 import Organization from "./sections/Organization";
-import Olympiads from "./sections/Olympiads.jsx";
+import Olympiads from "./sections/Olympiads";
 import Achievements from "./sections/Achievements";
 import Testimonials from "./sections/Testimonials";
 import Footer from "./sections/Footer";
-import AboutMe from "./sections/Aboutme.jsx";
-import ParticleScene from "./components/Particle.jsx";
+import AboutMe from "./sections/Aboutme";
+import ParticleScene from "./components/Particle";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Gallery from "./sections/Gallery.jsx";
-import DigitalArt from "./sections/DigitalArt.jsx";
+import Gallery from "./sections/Gallery";
+import DigitalArt from "./sections/DigitalArt";
 
 // Color Palette (for styling)
 const colors = {
@@ -32,6 +31,7 @@ const fonts = {
   body: "'Roboto', sans-serif",
 };
 
+// Navigation Links
 const navLinks = [
   { name: "My Odyssey", id: "hero" },
   { name: "The climb", id: "achievements" },
@@ -44,31 +44,21 @@ const navLinks = [
   { name: "In their words", id: "testimonials" },
 ];
 
-// Animation variants for the sidebar
+// Animation Variants for Sidebar
 const sidebarVariants = {
   open: {
     width: "320px",
     opacity: 1,
-    transition: {
-      type: "spring",
-      stiffness: 30,
-      damping: 15,
-      staggerChildren: 0.1,
-    },
+    transition: { type: "spring", stiffness: 30, damping: 15, staggerChildren: 0.1 },
   },
   closed: {
     width: "0",
     opacity: 0,
-    transition: {
-      type: "spring",
-      stiffness: 30,
-      damping: 15,
-      staggerChildren: 0.05,
-    },
+    transition: { type: "spring", stiffness: 30, damping: 15, staggerChildren: 0.05 },
   },
 };
 
-// Animation variants for nav links
+// Animation Variants for Nav Links
 const navItemVariants = {
   open: {
     x: 0,
@@ -82,28 +72,17 @@ const navItemVariants = {
   },
 };
 
-// Toggle button with smoother animations
-function ToggleButton({ isOpen, setIsOpen }) {
+// Toggle Button with smoother animations
+const ToggleButton = ({ isOpen, setIsOpen }) => {
   return (
     <motion.div style={toggleButtonContainer}>
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         style={toggleButton}
-        whileHover={{
-          scale: 1.15,
-          rotateZ: isOpen ? -15 : 15,
-        }}
-        whileTap={{
-          scale: 0.9,
-        }}
-        animate={{
-          rotate: isOpen ? 360 : 0,
-          rotateY: isOpen ? 180 : 0,
-        }}
-        transition={{
-          duration: 0.6,
-          ease: [0.25, 0.8, 0.25, 1],
-        }}
+        whileHover={{ scale: 1.15, rotateZ: isOpen ? -15 : 15 }}
+        whileTap={{ scale: 0.9 }}
+        animate={{ rotate: isOpen ? 360 : 0, rotateY: isOpen ? 180 : 0 }}
+        transition={{ duration: 0.6, ease: [0.25, 0.8, 0.25, 1] }}
       >
         <motion.span
           style={buttonFace}
@@ -115,9 +94,9 @@ function ToggleButton({ isOpen, setIsOpen }) {
       </motion.button>
     </motion.div>
   );
-}
+};
 
-function NavbarComponent() {
+const NavbarComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const scrollToSection = (id) => {
@@ -170,7 +149,61 @@ function NavbarComponent() {
       </motion.nav>
     </div>
   );
-}
+};
+
+const App = () => {
+  return (
+    <div className="bg-dark text-light scroll-smooth" style={{ fontFamily: fonts.body }}>
+      {/* Navbar */}
+      <NavbarComponent />
+      {/* Background Particle Animation */}
+      <div className="absolute top-0 left-0 w-full h-full">
+        <ParticleScene />
+      </div>
+      {/* Main Content */}
+      <main className="min-h-screen">
+        {/* Sections */}
+        <section id="hero">
+          <Hero />
+        </section>
+        <section id="about">
+          <AboutMe />
+        </section>
+        <section id="achievements" className="w-full px-0">
+          <Achievements />
+        </section>
+        <section id="gallery">
+          <Gallery />
+        </section>
+        <section id="websites">
+          <Websites />
+        </section>
+        <section id="digital">
+          <DigitalArt />
+        </section>
+        <section id="artworks">
+          <Artworks />
+        </section>
+        <section id="research" className="px-4 bg-light text-dark sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32">
+          <Research />
+        </section>
+        <section id="organization">
+          <Organization />
+        </section>
+        <section id="olympiads" >
+          <Olympiads />
+        </section>
+        <section id="testimonials">
+          <Testimonials />
+        </section>
+      </main>
+      {/* Footer */}
+      <Footer />
+    </div>
+  );
+};
+
+export default App;
 
 /* Styles */
 const toggleButtonContainer = {
@@ -255,65 +288,3 @@ const linkStyle = {
   fontWeight: "bold",
   fontFamily: fonts.body,
 };
-
-const App = () => {
-  return (
-    <div className="bg-dark text-light scroll-smooth" style={{ fontFamily: fonts.body }}>
-      {/* Navbar */}
-      <NavbarComponent />
-      <div className="absolute top-0 left-0 w-full h-full">
-        <ParticleScene />
-      </div>
-      {/* Main Content */}
-      <main className="min-h-screen">
-        {/* Sections */}
-        <section id="hero">
-          <Hero />
-        </section>
-        <section id="about">
-          <AboutMe />
-        </section>
-        <section id="achievements" className="w-full px-0">
-          <Achievements />
-        </section>
-        <section id="gallery">
-          <Gallery />
-        </section>
-        <section id="websites">
-          <Websites />
-        </section>
-        <section id="digital">
-          <DigitalArt />
-        </section>
-        <section id="artworks">
-          <Artworks />
-        </section>
-        <section
-          id="research"
-          className="px-4 bg-light text-dark sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32"
-        >
-          <Research />
-        </section>
-        <section
-          id="organization"
-          className="px-4 bg-gray-800 text-light sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32"
-        >
-          <Organization />
-        </section>
-        <section
-          id="olympiads"
-          className="px-4 bg-light text-dark sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32"
-        >
-          <Olympiads />
-        </section>
-        <section id="testimonials">
-          <Testimonials />
-        </section>
-      </main>
-      {/* Footer */}
-      <Footer />
-    </div>
-  );
-};
-
-export default App;
