@@ -6,7 +6,7 @@ import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeli
 import "react-vertical-timeline-component/style.min.css";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
-import { FaTrophy } from "react-icons/fa";
+import { FaCheck, FaStar, FaTrophy } from "react-icons/fa";
 import Ball from '../assets/3d_model/Ball';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -97,17 +97,6 @@ const achievements = [
     ]
   },
 ];
-
-// Updated color palette
-const colors = {
-  primaryTeal: "#007C8A",
-  burntOrange: "#FF6F3C",
-  deepCharcoal: "#1A1A1A",
-  creamWhite: "#F9F5F0",
-  gold: "#FFC857",
-  lavenderGray: "#ADA7C9",
-};
-
 const LoadingFallback = () => (
   <mesh>
     <boxGeometry args={[1, 1, 1]} />
@@ -120,28 +109,26 @@ const AnimatedModel = () => {
     <Canvas
       style={{ width: 150, height: 150, position: "absolute", top: "-20px", left: "-40px", zIndex: 10 }}
     >
-<ambientLight intensity={0.2} color="#ADA7C9" /> {/* Lavender Gray for subtle ambient light */}
-<spotLight
-  position={[20, 30, 10]}
-  angle={0.7}
-  penumbra={0.9}
-  intensity={50}
-  color="#FF6F3C" // Burnt Orange for a warm, focused spotlight
-  castShadow
-/>
-<directionalLight
-  position={[-10, 20, -10]}
-  intensity={6}
-  color="#007C8A" // Rich Teal for sophistication and innovation
-/>
-<pointLight
-  position={[0, 5, 10]}
-  intensity={25}
-  color="#FFC857" // Gold for a luxurious and dramatic highlight
-  decay={2}
-/>
-
-
+      <ambientLight intensity={0.3} color="#FFC857" />
+      <spotLight
+        position={[20, 30, 10]}
+        angle={0.7}
+        penumbra={0.9}
+        intensity={40}
+        color="#E6B800"
+        castShadow
+      />
+      <directionalLight
+        position={[-10, 20, -10]}
+        intensity={8}
+        color="#F79D7D"
+      />
+      <pointLight
+        position={[0, 5, 10]}
+        intensity={25}
+        color="#F26B38"
+        decay={2}
+      />
       <Suspense fallback={<LoadingFallback />}>
         <Ball />
       </Suspense>
@@ -158,61 +145,79 @@ const AchievementCard = ({ achievement }) => {
   };
 
   return (
-    <VerticalTimelineElement
-      contentStyle={{
-        background: "linear-gradient(135deg, #007C8A, #FF6F3C)",
-        color: "#F9F5F0",
-        overflow: "hidden",
-        borderRadius: "12px",
-        boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
-        backdropFilter: "blur(10px)",
-      }}
-      contentArrowStyle={{ borderRight: "7px solid #FF6F3C" }}
-      iconStyle={{ background: "transparent", boxShadow: "none" }}
-      icon={
-        <div style={{ width: 100, height: 100, position: "relative" }}>
-          <AnimatedModel />
-        </div>
-      }
-    >
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        whileHover={{ scale: 1.05, boxShadow: "0px 12px 25px rgba(0, 0, 0, 0.3)" }}
-        transition={{ duration: 0.3 }}
-        onClick={toggleCard}
-        style={{ cursor: "pointer" }}
-      >
-        <h3 className="text-white text-[24px] font-bold hover:text-indigo-200 transition-all duration-300">
-          {achievement.title}
-        </h3>
-        <p className="text-[#D1D8E0] text-[16px] font-semibold hover:text-gray-300 transition-all duration-300">
-          {achievement.description}
-        </p>
-      </motion.div>
 
-      <motion.div
-        initial={{ height: 0, opacity: 0 }}
-        animate={isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        style={{ overflow: "hidden", marginTop: "10px" }}
-      >
-        <ul className="mt-3 space-y-3">
-          {achievement.points.map((point, index) => (
-            <motion.li
-              key={`achievement-point-${index}`}
-              initial={{ opacity: 0, y: 15 }}
-              animate={isExpanded ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-              transition={{ delay: index * 0.15 }}
-              className="flex items-center space-x-3 text-[#B4C9E2] text-[16px] font-medium pl-2 pr-3 tracking-wider hover:text-indigo-400 hover:bg-[#2C3A56] hover:scale-105 hover:shadow-lg rounded-lg transition-all duration-300 ease-in-out"
-            >
-              <FaTrophy className="text-2xl text-indigo-300" />
-              <span>{point}</span>
-            </motion.li>
-          ))}
-        </ul>
-      </motion.div>
-    </VerticalTimelineElement>
+
+<VerticalTimelineElement
+  contentStyle={{
+    background: "rgba(255, 255, 255, 0.1)", // Semi-transparent white for glassmorphism effect
+    backdropFilter: "blur(10px)", // Blur the background to achieve glassmorphism
+    color: "theme('colors.primaryDark')", // Darker Slate Blue text
+    borderRadius: "theme('borderRadius.2xl')", // Smooth corners
+    padding: "1.5rem",
+    boxShadow: "theme('boxShadow.xl')", // Subtle shadow for a lifted effect
+    border: "2px solid theme('colors.primaryLight')", // Light border for glassmorphism effect
+  }}
+  contentArrowStyle={{ borderRight: `8px solid rgba(255, 255, 255, 0.1)` }} // Matches the transparent background
+  iconStyle={{
+    background: "theme('colors.accent2')", // Soft Coral icon
+    color: "theme('colors.light')", // Light Gray icon text
+    boxShadow: "theme('boxShadow.xl')", // Consistent shadow
+    border: "2px solid theme('colors.primaryLight')", // Adding border around the icon
+  }}
+  icon={
+    <div className="relative w-24 h-24">
+      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-accent1Dark to-accent2Dark blur-xl opacity-90" />
+      <AnimatedModel />
+    </div>
+  }
+>
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    whileHover={{ scale: 1.03 }}
+    transition={{ duration: 0.3 }}
+    className="cursor-pointer"
+    onClick={toggleCard}
+    role="button"
+    aria-expanded={isExpanded}
+  >
+    <h3 className="font-serif text-2xl font-bold b-4 sm:text-3xl text-gradient">
+      {achievement.title}
+    </h3>
+    <p className="mt-2 text-base leading-relaxed text-neutral">
+      {achievement.description}
+    </p>
+  </motion.div>
+
+  <motion.div
+    initial={{ height: 0, opacity: 0 }}
+    animate={isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+    transition={{ duration: 0.5, ease: "easeInOut" }}
+    style={{ overflow: "hidden", marginTop: "1rem" }}
+  >
+    <ul className="space-y-3">
+      {achievement.points.map((point, index) => (
+        <motion.li
+          key={`achievement-point-${index}`}
+          initial={{ opacity: 0, y: 10 }}
+          animate={isExpanded ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          transition={{ delay: index * 0.1 }}
+          className="flex items-start space-x-3 text-sm text-primary"
+        >
+          <div className="flex items-center justify-center w-6 h-6 text-white border-2 rounded-full shadow bg-secondaryDark border-primaryLight">
+            <FaCheck className="text-xs" />
+          </div>
+          <span>{point}</span>
+        </motion.li>
+      ))}
+    </ul>
+  </motion.div>
+</VerticalTimelineElement>
+
+
+  
+
+
   );
 };
 
@@ -226,14 +231,14 @@ const Achievements = () => {
   }, []);
 
   return (
-    <section className="p-6 space-y-10 md:p-12 lg:p-16" style={{ background: "transparent" }}>
+    <section className="p-6 mt-20 space-y-10 md:p-12 lg:p-16" >
       <motion.div
         className="text-center achievement-heading"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-3xl md:text-4xl font-semibold text-[#007C8A]">
+        <h2 className="text-4xl font-bold text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-secondaryLight to-accent1 bg-clip-text sm:-mt-10 md:-mt-12">
           My Achievements
         </h2>
       </motion.div>

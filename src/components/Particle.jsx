@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Canvas , useThree } from '@react-three/fiber';
+import { Canvas, useThree } from '@react-three/fiber';
 import { Physics, useSphere, usePlane } from '@react-three/cannon';
 import { OrbitControls, Environment, PerspectiveCamera } from '@react-three/drei';
 import { Bloom, EffectComposer, SSAO, DepthOfField } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import { motion } from 'framer-motion';
 import spaceBackground from '../assets/background.jpg';
-
-
 
 // Interactive Particle Component
 const InteractiveParticle = ({ position, color, radius }) => {
@@ -23,22 +21,23 @@ const InteractiveParticle = ({ position, color, radius }) => {
 
   const handleClick = () => {
     const colors = [
-      '#FF5733', // Bright orange
-      '#33FF57', // Bright green
-      '#3357FF', // Bright blue
-      '#F1C40F', // Bright yellow
-      '#8E44AD', // Bright purple
-      '#FF1493', // Bright pink
-      '#FF4500', // Bright red-orange
-      '#1E90FF', // Bright sky blue
-      '#ADFF2F', // Bright lime green
-      '#FFD700'  // Bright gold
+      '#00A7D0', // Bright Turquoise (accent1)
+      '#F26B38', // Soft Coral (accent2)
+      '#E6B800', // Golden Yellow (secondary)
+      '#2F3A58', // Slate Blue (primary)
+      '#4A5672', // Lighter tint of primary
+      '#F2D966', // Lighter tint of secondary
+      '#0088A6', // Darker shade of accent1
+      '#F79D7D', // Lighter tint of accent2
+      '#C59700', // Darker shade of secondary
+      '#B8B8B8',  // Cool Gray (neutral)
     ];
     
     const newColor = colors[Math.floor(Math.random() * colors.length)];
     setParticleColor(newColor);
     console.log('Particle clicked! New color:', newColor);
   };
+
   function generateNoiseTexture() {
     const size = 256; // Size of the texture
     const data = new Uint8Array(size * size);
@@ -49,23 +48,24 @@ const InteractiveParticle = ({ position, color, radius }) => {
     texture.needsUpdate = true;
     return texture;
   }
+
   return (
     <mesh ref={ref} castShadow onClick={handleClick}>
       {/* High-detail sphere geometry */}
       <sphereGeometry args={[radius, 128, 128]} /> {/* Increased segments for smoothness */}
       <meshPhysicalMaterial
-      color={particleColor}
-      metalness={0.9} // Metallic surface
-      roughness={0.05} // Low roughness for sharp reflections
-      clearcoat={1} // Adds clear reflective coat
-      clearcoatRoughness={0.15} // Subtle imperfection in the clearcoat
-      reflectivity={0.95} // High reflectivity
-      envMapIntensity={0.5} // Enhance environment map reflections
-      transmission={0.8} // Glass-like transparency
-      ior={1.45} // Index of refraction for realistic glass
-      thickness={1.2} // Thickness of glass
-      sheen={1} // Pearlescent sheen effect
-      sheenColor={new THREE.Color(0xffffff)} // Subtle white sheen Boost environment reflections
+        color={particleColor}
+        metalness={0.9} // Metallic surface
+        roughness={0.05} // Low roughness for sharp reflections
+        clearcoat={1} // Adds clear reflective coat
+        clearcoatRoughness={0.15} // Subtle imperfection in the clearcoat
+        reflectivity={0.95} // High reflectivity
+        envMapIntensity={0.5} // Enhance environment map reflections
+        transmission={0.8} // Glass-like transparency
+        ior={1.45} // Index of refraction for realistic glass
+        thickness={1.2} // Thickness of glass
+        sheen={1} // Pearlescent sheen effect
+        sheenColor={new THREE.Color(0xffffff)} // Subtle white sheen Boost environment reflections
       >
         {/* Adding procedural detail */}
         <primitive attach="displacementMap" object={generateNoiseTexture()} />
@@ -74,10 +74,6 @@ const InteractiveParticle = ({ position, color, radius }) => {
     </mesh>
   );
 };
-
-
-
-
 
 // Ground Plane Component
 const GroundPlane = () => {
@@ -90,7 +86,7 @@ const GroundPlane = () => {
   return (
     <mesh ref={ref} receiveShadow>
       <planeGeometry args={[200, 200]} />
-      <meshStandardMaterial color="#0E1A40" roughness={0.8} metalness={0.2} />
+      <meshStandardMaterial color="#2F3A58" roughness={0.8} metalness={0.2} /> {/* Slate Blue for ground */}
     </mesh>
   );
 };
@@ -100,7 +96,7 @@ const BackgroundScene = () => (
   <group>
     <mesh position={[0, -50, -50]}>
       <sphereGeometry args={[100, 64, 64]} />
-      <meshStandardMaterial color="#0E1A40" metalness={0.2} roughness={0.8} side={THREE.BackSide} />
+      <meshStandardMaterial color="#1C273B" metalness={0.2} roughness={0.8} side={THREE.BackSide} /> {/* Darker shade for background */}
     </mesh>
   </group>
 );
@@ -111,7 +107,7 @@ const ParticleSystem = ({ addParticleAt, setAddParticleAt, initialParticles }) =
 
   useEffect(() => {
     if (addParticleAt) {
-      const colors = ['#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#8E44AD'];
+      const colors = ['#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672'];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
       const randomRadius = Math.random() * 0.5 + 0.5;
 
@@ -150,17 +146,13 @@ const ParticleScene = () => {
           (Math.random() - 0.5) * 20,
         ],
         color: [
-          '#FF5733', // Bright orange
-          '#33FF57', // Bright green
-          '#3357FF', // Bright blue
-          '#F1C40F', // Bright yellow
-          '#8E44AD', // Bright purple
-          '#FF1493', // Bright pink
-          '#FF4500', // Bright red-orange
-          '#1E90FF', // Bright sky blue
-          '#ADFF2F', // Bright lime green
-          '#FFD700'  // Bright gold
-        ][Math.floor(Math.random() * 10)],
+          '#00A7D0', // Bright Turquoise
+          '#F26B38', // Soft Coral
+          '#E6B800', // Golden Yellow
+          '#2F3A58', // Slate Blue
+          '#4A5672', // Lighter tint of primary
+          '#F2D966', // Lighter tint of secondary
+        ][Math.floor(Math.random() * 6)],
         
         radius: Math.random() * 0.5 + 0.5,
       });
@@ -260,7 +252,6 @@ const ParticleScene = () => {
         <DepthOfField focusDistance={0.02} focalLength={0.1} bokehScale={2.5} />
       </EffectComposer>
     </Canvas>
-    
   );
 };
 
