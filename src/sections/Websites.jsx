@@ -288,32 +288,32 @@ const Websites = () => {
   return (
 <section className="relative w-full py-16 bg-gradient-to-r from-primaryDark via-primaryLight to-accent2">
 {/* Background Enhancements */}
-<div className="absolute inset-0 bg-gradient-to-b from-neutral via-secondaryLight to-accent1 opacity-80">
+<div className="absolute inset-0 bg-gradient-to-b from-dark via-secondaryLight to-primaryLight opacity-90">
   <div
     className="absolute inset-0 opacity-80"
     style={{
       background: `
-        radial-gradient(circle at top left, #FFC857, transparent 70%),
-        radial-gradient(circle at bottom right, #00A7D0, transparent 60%),
-        linear-gradient(to bottom, rgba(173, 167, 201, 0.8), rgba(0, 124, 138, 0.8))
+        radial-gradient(circle at top left, #E6B800 20%, transparent 70%),
+        radial-gradient(circle at bottom right, #00A7D0 25%, transparent 60%),
+        linear-gradient(to bottom, rgba(47, 58, 88, 0.7), rgba(73, 86, 114, 0.8))
       `,
     }}
   ></div>
   <div
-    className="absolute inset-0 animate-gradient-move opacity-80"
+    className="absolute inset-0 animate-gradient-move opacity-70"
     style={{
       background: `
         linear-gradient(
           120deg,
-          rgba(255, 111, 60, 0.3) 25%,
+          rgba(242, 107, 56, 0.4) 25%,
           rgba(255, 200, 87, 0.3) 50%,
-          rgba(0, 124, 138, 0.3) 75%
+          rgba(0, 124, 138, 0.4) 75%
         )
       `,
       mixBlendMode: "overlay",
     }}
   ></div>
-  <div className="absolute inset-0 bg-noise opacity-20"></div>
+  <div className="absolute inset-0 bg-noise opacity-10"></div>
   <div className="absolute inset-0 bg-glow"></div>
 </div>
 
@@ -327,7 +327,7 @@ const Websites = () => {
     >
       {/* Left Side - Description */}
       <div className="lg:w-1/2">
-        <h1 className="font-serif text-4xl font-extrabold text-secondary drop-shadow-lg">
+        <h1 className="font-serif text-4xl font-extrabold text-primary text-bold drop-shadow-lg">
           Code Canvas
         </h1>
         <p className="mt-4 font-sans leading-relaxed tracking-wide text-light">
@@ -356,8 +356,8 @@ const Websites = () => {
   <button
     className={`py-3 px-8 text-lg font-medium rounded-full transition-all duration-300 shadow-xl transform hover:scale-105 hover:shadow-2xl ${
       activeTab === "websites"
-        ? "bg-gradient-to-r from-accent1 to-secondary text-light drop-shadow-2xl border border-transparent"
-        : "bg-transparent text-accent1 border border-accent1 hover:bg-gradient-to-r hover:from-accent1 hover:to-accent2 hover:text-light hover:border-transparent"
+        ? "bg-gradient-to-r from-[#FFC857] to-[#007C8A] text-[#F9F5F0] drop-shadow-lg"
+        : "bg-transparent text-[#FFC857] border border-[#FFC857] hover:bg-gradient-to-r hover:from-[#FFC857] hover:to-[#FF6F3C] hover:text-[#F9F5F0]"
     }`}
     onClick={() => setActiveTab("websites")}
   >
@@ -366,8 +366,8 @@ const Websites = () => {
   <button
     className={`py-3 px-8 text-lg font-medium rounded-full transition-all duration-300 shadow-xl transform hover:scale-105 hover:shadow-2xl ${
       activeTab === "projects"
-        ? "bg-gradient-to-r from-accent1 to-secondary text-light drop-shadow-2xl border border-transparent"
-        : "bg-transparent text-accent1 border border-accent1 hover:bg-gradient-to-r hover:from-accent1 hover:to-accent2 hover:text-light hover:border-transparent"
+        ? "bg-gradient-to-r from-[#FFC857] to-[#007C8A] text-[#F9F5F0] drop-shadow-lg"
+        : "bg-transparent text-[#FFC857] border border-[#FFC857] hover:bg-gradient-to-r hover:from-[#FFC857] hover:to-[#FF6F3C] hover:text-[#F9F5F0]"
     }`}
     onClick={() => setActiveTab("projects")}
   >

@@ -92,7 +92,7 @@ const Hero = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
             >
-                <br />I'm Bushra Khandoker<br />
+                <br />Crying Stars<br />
             </motion.h1>
             <motion.p
                 className="mt-4 text-lg sm:text-xl md:text-2xl text-glow text-accent2Light"
@@ -101,9 +101,7 @@ const Hero = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
             >
-                A visionary creator on a journey to blend technology with creativity. <br />
-                Fueled by curiosity and a passion for innovation, <br />
-                I'm shaping the future with bold ideas and creative solutions.
+               Every time I cry,<br/> I look up at the sky and wonder, <br/>is there a <strong>Bushra</strong> among the stars? What are they doing?
             </motion.p>
         </div>
 
@@ -197,7 +195,7 @@ const Hero = () => {
         style={{ pointerEvents: "none" }}
     >
         <p className="text-sm sm:text-md text-glow text-accent2Light">
-            ✨ Psst! Did you know you can play with the floating balls? Give it a try! 🎮
+            ✨Am I on a spaceship as big as a planet, and could it be called Earth?🎮
         </p>
     </motion.div>
 

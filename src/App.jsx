@@ -1,19 +1,7 @@
-import React, { useState } from "react";
-import Hero from "./sections/Hero";
-import Websites from "./sections/Websites";
-import Artworks from "./sections/Artworks";
-import Research from "./sections/Research";
-import Organization from "./sections/Organization";
-import Olympiads from "./sections/Olympiads";
-import Achievements from "./sections/Achievements";
-import Testimonials from "./sections/Testimonials";
-import Footer from "./sections/Footer";
-import AboutMe from "./sections/Aboutme";
-import ParticleScene from "./components/Particle";
+import React, { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Gallery from "./sections/Gallery";
-import DigitalArt from "./sections/DigitalArt";
+import Loader from "./components/Loader"; // Importing the loader
 
 // Color Palette (for styling)
 const colors = {
@@ -23,6 +11,13 @@ const colors = {
   creamWhite: "#F9F5F0",
   gold: "#FFC857",
   lavenderGray: "#ADA7C9",
+  accent1: "#FF6F3C", // burnt orange
+  accent2: "#ADA7C9", // lavender gray
+  primaryDark: "#0D233A", // dark blue
+  primary: "#507C7F", // teal
+  accent1Light: "#FF9C6A",
+  accent1Dark: "#D35E3A",
+  light: "#F9F5F0", // cream white for text
 };
 
 // Font styles
@@ -31,18 +26,20 @@ const fonts = {
   body: "'Roboto', sans-serif",
 };
 
-// Navigation Links
-const navLinks = [
-  { name: "My Odyssey", id: "hero" },
-  { name: "The climb", id: "achievements" },
-  { name: "Code Canvas", id: "websites" },
-  { name: "Imaginary Pixels", id: "digital" },
-  { name: "Strokers of legacy", id: "artworks" },
-  { name: "Knowledge Repository", id: "research" },
-  { name: "Empowered Network", id: "organization" },
-  { name: "Olympiads", id: "olympiads" },
-  { name: "In their words", id: "testimonials" },
-];
+// Lazy-loaded components
+const Hero = React.lazy(() => import("./sections/Hero"));
+const Websites = React.lazy(() => import("./sections/Websites"));
+const Artworks = React.lazy(() => import("./sections/Artworks"));
+const Research = React.lazy(() => import("./sections/Research"));
+const Organization = React.lazy(() => import("./sections/Organization"));
+const Olympiads = React.lazy(() => import("./sections/Olympiads"));
+const Achievements = React.lazy(() => import("./sections/Achievements"));
+const Testimonials = React.lazy(() => import("./sections/Testimonials"));
+const Footer = React.lazy(() => import("./sections/Footer"));
+const AboutMe = React.lazy(() => import("./sections/Aboutme"));
+const ParticleScene = React.lazy(() => import("./components/Particle"));
+const Gallery = React.lazy(() => import("./sections/Gallery"));
+const DigitalArt = React.lazy(() => import("./sections/DigitalArt"));
 
 // Animation Variants for Sidebar
 const sidebarVariants = {
@@ -106,6 +103,20 @@ const NavbarComponent = () => {
     }
   };
 
+  const navLinks = [
+    { id: "hero", name: "Hero" },
+    { id: "about", name: "About Me" },
+    { id: "achievements", name: "Achievements" },
+    { id: "gallery", name: "Gallery" },
+    { id: "websites", name: "Websites" },
+    { id: "digital", name: "Digital Art" },
+    { id: "artworks", name: "Artworks" },
+    { id: "research", name: "Research" },
+    { id: "organization", name: "Organization" },
+    { id: "olympiads", name: "Olympiads" },
+    { id: "testimonials", name: "Testimonials" },
+  ];
+
   return (
     <div style={navbarContainer}>
       <ToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -152,75 +163,119 @@ const NavbarComponent = () => {
 };
 
 const App = () => {
+  const [loading, setLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  useEffect(() => {
+    const loadingInterval = setInterval(() => {
+      setLoadingProgress((prevProgress) => {
+        if (prevProgress >= 100) {
+          clearInterval(loadingInterval); // Clear interval when loading is complete
+          setLoading(false); // Set loading to false after loading finishes
+          return 100;
+        }
+        return prevProgress + 10; // Increment loading progress
+      });
+    }, 700); // Update loading progress every 700ms
+
+    return () => clearInterval(loadingInterval); // Cleanup on unmount
+  }, []);
+
   return (
     <div className="bg-dark text-light scroll-smooth" style={{ fontFamily: fonts.body }}>
-      {/* Navbar */}
-      <NavbarComponent />
-      {/* Background Particle Animation */}
-      <div className="absolute top-0 left-0 w-full h-full">
-        <ParticleScene />
-      </div>
-      {/* Main Content */}
-      <main className="min-h-screen">
-        {/* Sections */}
-        <section id="hero">
-          <Hero />
-        </section>
-        <section id="about">
-          <AboutMe />
-        </section>
-        <section id="achievements" className="w-full px-0">
-          <Achievements />
-        </section>
-        <section id="gallery">
-          <Gallery />
-        </section>
-        <section id="websites">
-          <Websites />
-        </section>
-        <section id="digital">
-          <DigitalArt />
-        </section>
-        <section id="artworks">
-          <Artworks />
-        </section>
-        <section id="research" className="px-4 bg-light text-dark sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32">
-          <Research />
-        </section>
-        <section id="organization">
-          <Organization />
-        </section>
-        <section id="olympiads" >
-          <Olympiads />
-        </section>
-        <section id="testimonials">
-          <Testimonials />
-        </section>
-      </main>
-      {/* Footer */}
-      <Footer />
+      {loading ? (
+        <Loader progress={loadingProgress} />
+      ) : (
+        <>
+          <NavbarComponent />
+          <div className="absolute top-0 left-0 w-full h-full">
+            <Suspense fallback={<div>Loading...</div>}>
+              <ParticleScene />
+            </Suspense>
+          </div>
+          <main className="min-h-screen">
+            <section id="hero">
+              <Suspense fallback={<div>Loading...</div>}>
+                <Hero />
+              </Suspense>
+            </section>
+            <section id="about">
+              <Suspense fallback={<div>Loading...</div>}>
+                <AboutMe />
+              </Suspense>
+            </section>
+            <section id="achievements">
+              <Suspense fallback={<div>Loading...</div>}>
+                <Achievements />
+              </Suspense>
+            </section>
+            <section id="gallery">
+              <Suspense fallback={<div>Loading...</div>}>
+                <Gallery />
+              </Suspense>
+            </section>
+            <section id="websites">
+              <Suspense fallback={<div>Loading...</div>}>
+                <Websites />
+              </Suspense>
+            </section>
+            <section id="digital">
+              <Suspense fallback={<div>Loading...</div>}>
+                <DigitalArt />
+              </Suspense>
+            </section>
+            <section id="artworks">
+              <Suspense fallback={<div>Loading...</div>}>
+                <Artworks />
+              </Suspense>
+            </section>
+            <section id="research">
+              <Suspense fallback={<div>Loading...</div>}>
+                <Research />
+              </Suspense>
+            </section>
+            <section id="organization">
+              <Suspense fallback={<div>Loading...</div>}>
+                <Organization />
+              </Suspense>
+            </section>
+            <section id="olympiads">
+              <Suspense fallback={<div>Loading...</div>}>
+                <Olympiads />
+              </Suspense>
+            </section>
+            <section id="testimonials">
+              <Suspense fallback={<div>Loading...</div>}>
+                <Testimonials />
+              </Suspense>
+            </section>
+          </main>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Footer />
+          </Suspense>
+        </>
+      )}
     </div>
   );
 };
 
 export default App;
 
-/* Styles */
+// Styles
 const toggleButtonContainer = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  width: 70,
-  height: 70,
+  width: "70px",
+  height: "70px",
   margin: "20px",
-  perspective: "1000px", // Add perspective for 3D effect
 };
 
 const toggleButton = {
   width: "70px",
   height: "70px",
   borderRadius: "50%",
-  background: `linear-gradient(145deg, ${colors.burntOrange}, #ff758c)`,
+  background: `linear-gradient(145deg, ${colors.accent2}, ${colors.primaryDark})`, // Dark Blue and Lavender Gray
   border: "none",
   cursor: "pointer",
   display: "flex",
@@ -229,12 +284,15 @@ const toggleButton = {
   boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.4)",
   transition: "all 0.3s ease",
   transformStyle: "preserve-3d", // Enables 3D transformation
+  "&:hover": {
+    boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.5)", // Hover effect for more interactivity
+  },
 };
 
 const buttonFace = {
   fontSize: "24px",
   fontWeight: "bold",
-  color: "#ffffff",
+  color: colors.light, // Using light color from the palette
   transformOrigin: "center", // Make the rotation happen from the center
 };
 
@@ -250,41 +308,33 @@ const navbar = {
   flexDirection: "column",
   alignItems: "flex-start",
   justifyContent: "flex-start",
-  background: `linear-gradient(145deg, ${colors.deepCharcoal}, #292929)`,
+  background: `linear-gradient(145deg, ${colors.primaryDark}, ${colors.primary})`, // Using Slate Blue tones
   borderRadius: "20px",
-  boxShadow: "0px 10px 10px rgba(0, 0, 0, 0.1)",
-  overflow: "hidden",
-  width: "80vw", // Adjust width based on viewport width
-  maxWidth: "250px", // Limit the max width for larger screens
-  minWidth: "200px", // Ensure it doesn't become too small
-  padding: "20px",
-  transition: "all 0.3s ease-in-out", // Smooth animations for resizing
-  "@media (max-width: 768px)": {
-    width: "100%",
-    padding: "15px",
-  },
+  boxShadow: "0px 10px 10px rgba(0, 0, 0, 0.3)",
+  position: "fixed",
+  top: "60px",
+  left: "0",
+  padding: "1rem",
+  height: "100vh",
+  width: "0",
 };
 
 const navList = {
-  listStyle: "none",
-  display: "flex",
-  flexDirection: "column",
-  padding: "10px",
-  margin: 0,
+  listStyleType: "none",
+  padding: "0",
+  margin: "0",
 };
 
 const navItem = {
-  marginBottom: "15px",
-  padding: "15px 20px",
-  borderRadius: "10px",
-  background: `linear-gradient(145deg, ${colors.lavenderGray}, #303030)`,
-  cursor: "pointer",
+  marginBottom: "20px",
 };
 
 const linkStyle = {
   textDecoration: "none",
   color: colors.creamWhite,
-  fontSize: "18px",
-  fontWeight: "bold",
-  fontFamily: fonts.body,
+  fontFamily: fonts.headings,
+  fontSize: "20px",
+  fontWeight: "700",
+  textTransform: "uppercase",
+  letterSpacing: "2px",
 };
