@@ -80,7 +80,7 @@ const Research = () => {
   };
 
   return (
-    <div className="px-8 py-16 mx-auto max-w-7xl">
+    <div className="px-8 py-16 mx-auto max-w-7xl bg-dark text-light">
       {/* Hero Section */}
       <div className="mb-16 text-center">
         <h1 className="mb-4 font-serif text-5xl text-gradient gradient">
@@ -93,12 +93,12 @@ const Research = () => {
 
       {/* Search and Filter Section */}
       <div className="flex flex-col items-center justify-center gap-6 mb-12 lg:flex-row">
-        <div className="flex items-center p-2 shadow-xl bg-light rounded-2xl">
+        <div className="flex items-center p-2 shadow-xl bg-primaryDark rounded-2xl">
           <button
             className={`px-6 py-3 font-medium rounded-lg transition-all duration-300 text-lg ${
               filter === "books"
                 ? "bg-accent1 text-white shadow-lg"
-                : "bg-neutral text-dark hover:bg-accent1Light"
+                : "bg-primaryLight text-neutral hover:bg-accent1Light"
             }`}
             onClick={() => setFilter("books")}
           >
@@ -108,7 +108,7 @@ const Research = () => {
             className={`px-6 py-3 font-medium rounded-lg transition-all duration-300 text-lg ${
               filter === "articles"
                 ? "bg-accent1 text-white shadow-lg"
-                : "bg-neutral text-dark hover:bg-accent1Light"
+                : "bg-primaryLight text-neutral hover:bg-accent1Light"
             }`}
             onClick={() => setFilter("articles")}
           >
@@ -119,7 +119,7 @@ const Research = () => {
         <input
           type="text"
           placeholder="Search..."
-          className="w-full max-w-lg px-4 py-3 bg-white border shadow border-neutral rounded-xl focus:outline-none focus:ring-2 focus:ring-accent1"
+          className="w-full max-w-lg px-4 py-3 border shadow bg-primaryDark border-neutral rounded-xl focus:outline-none focus:ring-2 focus:ring-accent1 text-light"
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
@@ -138,7 +138,7 @@ const Research = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
               transition={{ duration: 0.4 }}
-              className="overflow-hidden transition-transform shadow-xl bg-light rounded-3xl group hover:shadow-2xl hover:scale-105"
+              className="overflow-hidden transition-transform shadow-xl bg-primaryDark rounded-3xl group hover:shadow-2xl hover:scale-105"
             >
               {filter === "books" ? (
                 <>
@@ -150,7 +150,7 @@ const Research = () => {
                     />
                   </div>
                   <div className="p-6">
-                    <h3 className="mb-2 font-serif text-xl text-primary">
+                    <h3 className="mb-2 font-serif text-xl text-accent1">
                       {item.title}
                     </h3>
                     <p className="mb-4 text-sm text-neutral">
@@ -177,7 +177,7 @@ const Research = () => {
                       alt={item.title}
                       className="w-16 h-16 rounded-full"
                     />
-                    <h3 className="ml-4 font-serif text-xl text-primary">
+                    <h3 className="ml-4 font-serif text-xl text-accent1">
                       {item.title}
                     </h3>
                   </div>
@@ -200,26 +200,7 @@ const Research = () => {
         </AnimatePresence>
       </div>
 
-      {/* Pagination */}
-      <div className="flex items-center justify-center gap-4 mt-12">
-        <button
-          onClick={() => changePage(-1)}
-          disabled={currentPage === 1}
-          className="px-6 py-2 rounded-lg shadow text-neutral bg-accent2Light hover:bg-accent2 disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <span className="text-lg font-medium text-primary">
-          {currentPage} of {Math.ceil(filteredData.length / itemsPerPage)}
-        </span>
-        <button
-          onClick={() => changePage(1)}
-          disabled={currentPage * itemsPerPage >= filteredData.length}
-          className="px-6 py-2 rounded-lg shadow text-neutral bg-accent2Light hover:bg-accent2 disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div>
+
     </div>
   );
 };

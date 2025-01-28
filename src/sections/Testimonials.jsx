@@ -221,36 +221,43 @@ const TestimonialPolygon = () => {
   }, [cubeSize]);
 
   return (
-    <motion.div
-      className="flex flex-col items-center justify-center min-h-screen p-6 bg-[#F9F5F0] lg:flex-row"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      <motion.div
-        ref={containerRef}
-        className="w-full lg:w-8/12 h-[900px] lg:h-[900px] bg-transparent"
-        animate={{ scale: [0.8, 1] }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      ></motion.div>
+<motion.div
+  className="flex flex-col items-center justify-center min-h-screen p-6 bg-dark lg:flex-row"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 1 }}
+>
+  <motion.div
+    ref={containerRef}
+    className="w-full lg:w-8/12 h-[900px] bg-gradient-to-b from-dark to-primaryDark"
+    animate={{ scale: [0.8, 1] }}
+    transition={{ duration: 1, ease: "easeOut" }}
+  ></motion.div>
 
-      <motion.div
-        className="relative w-full p-8 overflow-hidden text-left lg:w-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.5, delay: 0.5 }}
-      >
-        <h2 className="mb-6 text-5xl font-bold text-[#007C8A] font-serif tracking-wide leading-tight transform transition duration-300 ease-in-out hover:text-[#004f5c] shadow-lg">
-          What They Say
-        </h2>
-        <p className="text-lg text-[#ADA7C9] leading-relaxed font-sans tracking-wide">
-          See what others have to say about Bushra's hard work, creativity, and
-          leadership abilities. These testimonials highlight his dedication and
-          unique skills.
-        </p>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#FFC857] to-[#FF6F3C] opacity-10 -z-10"></div>
-      </motion.div>
-    </motion.div>
+  <motion.div
+    className="relative w-full p-8 lg:w-1/2"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 1.5, delay: 0.5 }}
+  >
+    <motion.h1
+                    className="text-4xl font-bold text-left text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-secondaryLight to-accent1 bg-clip-text sm:-mt-10 md:-mt-12"
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.5, ease: "easeOut" }}
+                >
+                    <br />What they say<br />
+                </motion.h1>
+    <p className="text-lg leading-relaxed tracking-wide text-neutral">
+      See what others have to say about Bushra's hard work, creativity, and
+      leadership abilities. These testimonials highlight dedication and unique
+      skills.
+    </p>
+    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-secondary to-secondaryLight opacity-10 -z-10"></div>
+  </motion.div>
+</motion.div>
+
   );
 };
 
