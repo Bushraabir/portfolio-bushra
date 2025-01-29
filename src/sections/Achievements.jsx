@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense ,memo} from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -97,6 +97,7 @@ const achievements = [
     ]
   },
 ];
+
 const LoadingFallback = () => (
   <mesh>
     <boxGeometry args={[1, 1, 1]} />
@@ -104,141 +105,103 @@ const LoadingFallback = () => (
   </mesh>
 );
 
-const AnimatedModel = () => {
+const AnimatedModel = memo(() => {
   return (
-    <Canvas
-      style={{ width: 150, height: 150, position: "absolute", top: "-20px", left: "-40px", zIndex: 10 }}
+    <Canvas className="model-canvas"
+    style={{ width: 150, height: 150, position: "absolute", top: "-20px", left: "-40px", zIndex: 10 }}
+    
     >
       <ambientLight intensity={0.3} color="#FFC857" />
-      <spotLight
-        position={[20, 30, 10]}
-        angle={0.7}
-        penumbra={0.9}
-        intensity={40}
-        color="#E6B800"
-        castShadow
-      />
-      <directionalLight
-        position={[-10, 20, -10]}
-        intensity={8}
-        color="#F79D7D"
-      />
-      <pointLight
-        position={[0, 5, 10]}
-        intensity={25}
-        color="#F26B38"
-        decay={2}
-      />
+      <spotLight position={[20, 30, 10]} angle={0.7} penumbra={0.9} intensity={40} color="#E6B800" castShadow />
+      <directionalLight position={[-10, 20, -10]} intensity={8} color="#F79D7D" />
+      <pointLight position={[0, 5, 10]} intensity={25} color="#F26B38" decay={2} />
       <Suspense fallback={<LoadingFallback />}>
         <Ball />
       </Suspense>
       <OrbitControls enableZoom={false} enablePan={true} autoRotate autoRotateSpeed={1.5} />
     </Canvas>
   );
-};
+});
 
 const AchievementCard = ({ achievement }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-
-  const toggleCard = () => {
-    setIsExpanded((prev) => !prev);
-  };
+  const toggleCard = () => setIsExpanded((prev) => !prev);
 
   return (
+    <VerticalTimelineElement
+    contentStyle={{
+      background: "rgba(255, 255, 255, 0.1)", // Semi-transparent white for glassmorphism effect
+      backdropFilter: "blur(10px)", // Blur the background to achieve glassmorphism
+      color: "theme('colors.primaryDark')", // Darker Slate Blue text
+      borderRadius: "theme('borderRadius.2xl')", // Smooth corners
+      padding: "1.5rem",
+      boxShadow: "theme('boxShadow.xl')", // Subtle shadow for a lifted effect
+      border: "2px solid theme('colors.primaryLight')", // Light border for glassmorphism effect
+    }}
+      contentArrowStyle={{ borderRight: "8px solid rgba(255, 255, 255, 0.1)" }}
+      iconStyle={{
+        background: "#FF6F3C",
+        color: "#fff",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+        border: "2px solid #FFC857",
+      }}
+      icon={<AnimatedModel />}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.03 }}
+        transition={{ duration: 0.3 }}
+        className="cursor-pointer"
+        onClick={toggleCard}
+        role="button"
+        aria-expanded={isExpanded}
+      >
+        <h3 className="font-serif text-2xl font-bold text-gradient sm:text-3xl">{achievement.title}</h3>
+        <p className="mt-2 text-base leading-relaxed text-neutral-700">{achievement.description}</p>
+      </motion.div>
 
-
-<VerticalTimelineElement
-  contentStyle={{
-    background: "rgba(255, 255, 255, 0.1)", // Semi-transparent white for glassmorphism effect
-    backdropFilter: "blur(10px)", // Blur the background to achieve glassmorphism
-    color: "theme('colors.primaryDark')", // Darker Slate Blue text
-    borderRadius: "theme('borderRadius.2xl')", // Smooth corners
-    padding: "1.5rem",
-    boxShadow: "theme('boxShadow.xl')", // Subtle shadow for a lifted effect
-    border: "2px solid theme('colors.primaryLight')", // Light border for glassmorphism effect
-  }}
-  contentArrowStyle={{ borderRight: `8px solid rgba(255, 255, 255, 0.1)` }} // Matches the transparent background
-  iconStyle={{
-    background: "theme('colors.accent2')", // Soft Coral icon
-    color: "theme('colors.light')", // Light Gray icon text
-    boxShadow: "theme('boxShadow.xl')", // Consistent shadow
-    border: "2px solid theme('colors.primaryLight')", // Adding border around the icon
-  }}
-  icon={
-    <div className="relative w-24 h-24">
-      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-accent1Dark to-accent2Dark blur-xl opacity-90" />
-      <AnimatedModel />
-    </div>
-  }
->
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    whileHover={{ scale: 1.03 }}
-    transition={{ duration: 0.3 }}
-    className="cursor-pointer"
-    onClick={toggleCard}
-    role="button"
-    aria-expanded={isExpanded}
-  >
-    <h3 className="font-serif text-2xl font-bold b-4 sm:text-3xl text-gradient">
-      {achievement.title}
-    </h3>
-    <p className="mt-2 text-base leading-relaxed text-neutral">
-      {achievement.description}
-    </p>
-  </motion.div>
-
-  <motion.div
-    initial={{ height: 0, opacity: 0 }}
-    animate={isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
-    transition={{ duration: 0.5, ease: "easeInOut" }}
-    style={{ overflow: "hidden", marginTop: "1rem" }}
-  >
-    <ul className="space-y-3">
-      {achievement.points.map((point, index) => (
-        <motion.li
-          key={`achievement-point-${index}`}
-          initial={{ opacity: 0, y: 10 }}
-          animate={isExpanded ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-          transition={{ delay: index * 0.1 }}
-          className="flex items-start space-x-3 text-sm text-primary"
-        >
-          <div className="flex items-center justify-center w-6 h-6 text-white border-2 rounded-full shadow bg-secondaryDark border-primaryLight">
-            <FaCheck className="text-xs" />
-          </div>
-          <span>{point}</span>
-        </motion.li>
-      ))}
-    </ul>
-  </motion.div>
-</VerticalTimelineElement>
-
-
-  
-
-
+      <motion.div
+        initial={{ height: 0, opacity: 0 }}
+        animate={isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+        style={{ overflow: "hidden", marginTop: "1rem" }}
+      >
+        <ul className="space-y-3">
+          {achievement.points.map((point, index) => (
+            <motion.li
+              key={`achievement-point-${index}`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={isExpanded ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+              transition={{ delay: index * 0.1 }}
+              className="flex items-start space-x-3 text-sm text-primary"
+            >
+              <div className="flex items-center justify-center w-6 h-6 text-white border-2 rounded-full shadow bg-secondaryDark border-primaryLight">
+                <FaCheck className="text-xs" />
+              </div>
+              <span>{point}</span>
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+    </VerticalTimelineElement>
   );
 };
 
 const Achievements = () => {
   useEffect(() => {
-    gsap.fromTo(
-      ".achievement-heading",
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, delay: 0.2 }
-    );
+    gsap.fromTo(".achievement-heading", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, delay: 0.2 });
   }, []);
 
   return (
-    <section className="p-6 mt-20 space-y-10 md:p-12 lg:p-16" >
+    <section className="p-6 mt-20 space-y-10 md:p-12 lg:p-16">
       <motion.div
         className="text-center achievement-heading"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-4xl font-bold text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-secondaryLight to-accent1 bg-clip-text sm:-mt-10 md:-mt-12">
+        <h2 className="text-4xl font-bold text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-blue-500 to-yellow-400 bg-clip-text sm:-mt-10 md:-mt-12">
           My Achievements
         </h2>
       </motion.div>

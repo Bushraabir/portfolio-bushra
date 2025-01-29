@@ -1,20 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
 import Lottie from "react-lottie";
-import { gsap } from "gsap"; 
-import loaderAnimation from "../assets/animation/loader.json"; 
+import { gsap } from "gsap";
+import loaderAnimation from "../assets/animation/loader.json";
 
 const Loader = () => {
+  const shapeRefs = useRef([]);
+
   // GSAP's advanced particle animation with random movement, scaling, and rotation
   const glideMotion = (element) => {
-    const randomX = Math.random() * 500 - 250; 
-    const randomY = Math.random() * 500 - 250; 
-    const randomScale = Math.random() * 0.5 + 0.8; 
-    const randomRotation = Math.random() * 360; 
-    const randomDuration = Math.random() * 5 + 4;
-    const randomDelay = Math.random() * 1; 
-
-    // GSAP animation on the element
+    if (!element) return;
+  
+    const randomX = Math.random() * 500 - 250;
+    const randomY = Math.random() * 500 - 250;
+    const randomScale = Math.random() * 0.5 + 0.8;
+    const randomRotation = Math.random() * 360;
+    const randomDuration = Math.random() * 10 + 15; 
+    const randomDelay = Math.random() * 5;
+  
     gsap.to(element, {
       x: randomX,
       y: randomY,
@@ -23,31 +26,26 @@ const Loader = () => {
       duration: randomDuration,
       ease: "power2.inOut",
       repeat: -1,
-      yoyo: true, 
+      yoyo: true,
       delay: randomDelay,
     });
   };
+  
 
-  // UseEffect to trigger GSAP animations after component mounts
-  useEffect(() => {
-    // Apply GSAP animation to each element after the component is mounted
-    const elements = document.querySelectorAll(".shape");
-    elements.forEach((element) => {
-      glideMotion(element);
-    });
+  useLayoutEffect(() => {
+    shapeRefs.current.forEach((el) => glideMotion(el));
   }, []);
 
   // Lottie animation options
   const lottieOptions = {
     animationData: loaderAnimation,
     loop: true,
-    autoplay: true, 
+    autoplay: true,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
 
-  // Theme colors from your Tailwind configuration
   const particleColors = [
     "linear-gradient(145deg, #007C8A, #FFC857)", // Teal to Gold
     "linear-gradient(145deg, #FF6F3C, #ADA7C9)", // Burnt Orange to Lavender
@@ -68,37 +66,33 @@ const Loader = () => {
       >
         {[...Array(10)].map((_, index) => (
           <motion.div
+            ref={(el) => (shapeRefs.current[index] = el)}
             key={index}
             className="absolute shape"
             style={{
-              width: `${Math.random() * 60 + 40}px`, 
-              height: `${Math.random() * 60 + 40}px`, 
-              background: particleColors[index % particleColors.length], 
+              width: `${Math.random() * 60 + 40}px`,
+              height: `${Math.random() * 60 + 40}px`,
+              background: particleColors[index % particleColors.length],
               top: `${Math.random() * 80}%`,
-              left: `${Math.random() * 80}%`, 
+              left: `${Math.random() * 80}%`,
               borderRadius: "50%",
               boxShadow: `0 0 ${Math.random() * 15 + 10}px rgba(0, 0, 0, 0.3)`,
-              filter: `blur(${Math.random() * 3 + 1}px)`, 
-              opacity: Math.random() * 0.5 + 0.4, 
+              filter: `blur(${Math.random() * 3 + 1}px)`,
+              opacity: Math.random() * 0.5 + 0.4,
             }}
           />
         ))}
       </motion.div>
 
       {/* Lottie animation in the foreground */}
-      <Lottie
-        options={lottieOptions}
-        height={550} 
-        width={550} 
-        className="z-20" 
-      />
+      <Lottie options={lottieOptions} height={350} width={350} className="z-20" />
 
       {/* Animated message below Lottie */}
       <motion.div
         className="absolute z-30 text-xl text-center text-white bottom-20 sm:text-2xl md:text-3xl"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.5 }}
+        transition={{ duration: 3, delay: 1 }}
       >
         <p>Hey... wait a sec...</p>
       </motion.div>

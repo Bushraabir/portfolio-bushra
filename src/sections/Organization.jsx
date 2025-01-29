@@ -43,7 +43,7 @@ const Organization = () => {
             Empowered Ed
           </h2>
           <p className="text-xl text-neutral">
-            Empowering individuals through education, innovation, and creativity.
+          EmpowerEd fosters creativity and innovation, transforming challenges into opportunities.
           </p>
         </div>
 
@@ -53,10 +53,7 @@ const Organization = () => {
             Our Mission
           </h3>
           <p className="mt-6 text-lg text-dark">
-            Empowered Ed is a platform dedicated to fostering a community of growth, 
-            learning, and innovation. Through skill-building programs and educational 
-            initiatives, we aim to uplift and empower individuals to turn their 
-            creative ideas into impactful realities.
+          EmpowerEd is a non-profit organization with a mission to make education accessible to everyone, everywhere. We believe that every student deserves the same starting line, and we’re here to make that happen—at no cost to you!
           </p>
         </div>
 
