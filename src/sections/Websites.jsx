@@ -286,230 +286,193 @@ const Websites = () => {
   };
 
   return (
-<section className="relative w-full py-16 bg-gradient-to-r from-primaryDark via-primaryLight to-accent2">
-{/* Background Enhancements */}
-<div className="absolute inset-0 bg-gradient-to-b from-dark via-secondaryLight to-primaryLight opacity-90">
-  <div
-    className="absolute inset-0 opacity-80"
-    style={{
-      background: `
-        radial-gradient(circle at top left, #E6B800 20%, transparent 70%),
-        radial-gradient(circle at bottom right, #00A7D0 25%, transparent 60%),
-        linear-gradient(to bottom, rgba(47, 58, 88, 0.7), rgba(73, 86, 114, 0.8))
-      `,
-    }}
-  ></div>
-  <div
-    className="absolute inset-0 animate-gradient-move opacity-70"
-    style={{
-      background: `
-        linear-gradient(
-          120deg,
-          rgba(242, 107, 56, 0.4) 25%,
-          rgba(255, 200, 87, 0.3) 50%,
-          rgba(0, 124, 138, 0.4) 75%
-        )
-      `,
-      mixBlendMode: "overlay",
-    }}
-  ></div>
-  <div className="absolute inset-0 bg-noise opacity-10"></div>
-  <div className="absolute inset-0 bg-glow"></div>
-</div>
+    <section className="relative py-16 overflow-hidden lg:py-24 bg-primaryDark text-light">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-primary to-primaryLight opacity-60"></div>
 
-
-  <div className="container relative z-10 px-6 mx-auto lg:px-20">
-    <motion.div
-      className="flex flex-col items-center justify-between mb-12 lg:flex-row"
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2, duration: 0.8 }}
-    >
-      {/* Left Side - Description */}
-      <div className="lg:w-1/2">
-        <h1 className="font-serif text-4xl font-extrabold text-primary text-bold drop-shadow-lg">
-          Code Canvas
-        </h1>
-        <p className="mt-4 font-sans leading-relaxed tracking-wide text-light">
-          In collaboration with my partner Muzahidul Islam Abir, we have embarked on a transformative journey to design and develop innovative projects and websites that address pressing real-world challenges.
-        </p>
-        <p className="mt-4 font-sans leading-relaxed tracking-wide text-light">
-          From conceptualizing ideas to implementing solutions, we have demonstrated expertise in C, C++, Python, HTML, CSS, JavaScript, React, Vite, Three.js, GSAP, Framer Motion, Plotly, and Firebase.
-        </p>
-        <p className="mt-4 font-sans leading-relaxed tracking-wide text-light">
-          At the heart of our work lies a passion for innovation and a drive to overcome challenges.
-        </p>
-      </div>
-
-      {/* Right Side - Lottie Animation */}
-      <div className="flex justify-center mt-12 lg:w-1/2 lg:mt-0">
-        <Lottie
-          options={lottieOptions}
-          height={"80%"}
-          width={"80%"}
-          className="drop-shadow-2xl"
-        />
-      </div>
-    </motion.div>
-
-    <div className="flex justify-center mb-8 space-x-6">
-  <button
-    className={`py-3 px-8 text-lg font-medium rounded-full transition-all duration-300 shadow-xl transform hover:scale-105 hover:shadow-2xl ${
-      activeTab === "websites"
-        ? "bg-gradient-to-r from-[#FFC857] to-[#007C8A] text-[#F9F5F0] drop-shadow-lg"
-        : "bg-transparent text-[#FFC857] border border-[#FFC857] hover:bg-gradient-to-r hover:from-[#FFC857] hover:to-[#FF6F3C] hover:text-[#F9F5F0]"
-    }`}
-    onClick={() => setActiveTab("websites")}
-  >
-    Websites
-  </button>
-  <button
-    className={`py-3 px-8 text-lg font-medium rounded-full transition-all duration-300 shadow-xl transform hover:scale-105 hover:shadow-2xl ${
-      activeTab === "projects"
-        ? "bg-gradient-to-r from-[#FFC857] to-[#007C8A] text-[#F9F5F0] drop-shadow-lg"
-        : "bg-transparent text-[#FFC857] border border-[#FFC857] hover:bg-gradient-to-r hover:from-[#FFC857] hover:to-[#FF6F3C] hover:text-[#F9F5F0]"
-    }`}
-    onClick={() => setActiveTab("projects")}
-  >
-    Projects
-  </button>
-</div>
-
-
-
-    {/* Projects or Websites Cards */}
-    <motion.div
-      className="grid grid-cols-1 gap-8 px-4 lg:grid-cols-3 sm:px-8"
-      initial="hidden"
-      animate="visible"
-      variants={{
-        hidden: { opacity: 0, y: 50 },
-        visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.2, delay: 0.4 } },
-      }}
-    >
-      {activeTab === "projects" &&
-        projects.map((project, index) => (
-          <motion.div
-            key={index}
-            variants={{
-              hidden: { opacity: 0, y: 30 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-            }}
-          >
-            <ProjectCard index={index} {...project} />
-          </motion.div>
-        ))}
-      {activeTab === "websites" &&
-        websites.map((website, index) => (
-          <motion.div
-            key={index}
-            variants={{
-              hidden: { opacity: 0, y: 30 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-            }}
-          >
-            <WebsiteCard index={index} {...website} />
-          </motion.div>
-        ))}
-    </motion.div>
-
-    {/* Detailed project or website modal */}
-{/* Detailed project or website modal */}
-{selectedProject && (
-  <motion.div
-    className="fixed inset-0 z-50 flex items-center justify-center bg-dark bg-opacity-70"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.3 }}
-  >
-    <motion.div
-      className="bg-gradient-to-br from-primaryDark via-primaryLight to-accent2 p-8 rounded-2xl w-4/5 lg:w-1/2 max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-md border border-opacity-20 border-[#FFF] relative"
-      initial={{ scale: 0.8, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0.8, opacity: 0 }}
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      }}
-    >
-      {/* Close Button */}
-      <motion.button
-        onClick={closeDetails}
-        className="absolute p-2 text-white transition-transform rounded-full shadow-md top-4 right-4 bg-accent2 hover:scale-110 hover:shadow-lg"
-        whileHover={{
-          scale: 1.1,
-          rotate: 15,
-          transition: { type: "spring", stiffness: 300 },
-        }}
-      >
-        ✕
-      </motion.button>
-
-      {/* Title */}
-      <motion.h2
-        className="mb-4 font-serif text-3xl font-extrabold text-secondary"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
-      >
-        {selectedProject.name || selectedProject.title}
-      </motion.h2>
-
-      {/* Description */}
-      <motion.p
-        className="mb-6 font-sans text-lg leading-relaxed text-light"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.6 }}
-      >
-        {selectedProject.detailedDescription}
-      </motion.p>
-
-      {/* Images Section */}
-      <motion.div
-        className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.7, duration: 0.6 }}
-      >
-        {selectedProject.images.map((image, index) => (
-          <motion.img
-            key={index}
-            src={image}
-            alt={`image ${index}`}
-            className="object-cover w-full h-32 transition-transform transform shadow-md rounded-xl hover:scale-105 hover:shadow-lg"
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: index * 0.2, duration: 0.4 }}
-          />
-        ))}
-      </motion.div>
-
-      {/* View Source Code Button */}
-      <motion.div
-          className="flex justify-center mt-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.6 }}
+      <div className="container relative z-10 px-6 mx-auto lg:px-20">
+        {/* Header Section */}
+        <motion.div
+          className="flex flex-col items-center mb-12 lg:flex-row"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
         >
-          <a
-            href={selectedProject.source_code_link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-2 text-lg font-medium transition-transform transform rounded-full shadow-md text-light bg-gradient-to-r from-accent1 to-accent2 hover:shadow-lg hover:opacity-90 hover:scale-105"
-          >
-            View Source Code
-          </a>
-        </motion.div>
-              
-    </motion.div>
-  </motion.div>
-)}
+          {/* Left Side - Description */}
+          <div className="max-w-xl text-center lg:w-1/2 lg:text-left">
+            <h1 className="mb-6 font-serif text-5xl font-extrabold leading-tight tracking-wide text-secondary">
+              Code Canvas
+            </h1>
+            <p className="mb-4 text-lg text-light">
+              Partnering with Muzahidul Islam Abir, we're creating impactful projects that solve real-world problems through innovative solutions.
+            </p>
+            <p className="mb-4 text-lg text-light">
+              Our expertise spans C, C++, Python, HTML, CSS, JavaScript, React, Vite, Three.js, GSAP, Framer Motion, Plotly, and Firebase.
+            </p>
+            <p className="text-lg text-light">
+              We're driven by a passion for creativity and a dedication to overcoming challenges.
+            </p>
+          </div>
 
-  </div>
-</section>
+          {/* Right Side - Lottie Animation */}
+          <div className="mt-12 lg:w-1/2 lg:mt-0">
+            <Lottie options={lottieOptions} height={"80%"} width={"80%"} />
+          </div>
+        </motion.div>
+
+        {/* Tab Navigation */}
+        <div className="flex justify-center mb-8 space-x-6">
+          <button
+            className={`py-3 px-8 text-lg font-medium rounded-full transition-all duration-300 shadow-lg transform hover:scale-105 ${
+              activeTab === "websites"
+                ? "bg-gradient-to-r from-secondary to-accent2 text-light"
+                : "bg-transparent text-secondary border border-secondary hover:bg-gradient-to-r hover:from-secondary hover:to-accent2 hover:text-light"
+            }`}
+            onClick={() => setActiveTab("websites")}
+          >
+            Websites
+          </button>
+          <button
+            className={`py-3 px-8 text-lg font-medium rounded-full transition-all duration-300 shadow-lg transform hover:scale-105 ${
+              activeTab === "projects"
+                ? "bg-gradient-to-r from-secondary to-accent2 text-light"
+                : "bg-transparent text-secondary border border-secondary hover:bg-gradient-to-r hover:from-secondary hover:to-accent2 hover:text-light"
+            }`}
+            onClick={() => setActiveTab("projects")}
+          >
+            Projects
+          </button>
+        </div>
+
+        {/* Projects or Websites Grid */}
+        <motion.div
+          className="grid grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3 sm:px-8"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0, y: 50 },
+            visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.2, delay: 0.4 } },
+          }}
+        >
+          {activeTab === "projects" &&
+            projects.map((project, index) => (
+              <motion.div
+                key={index}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+                }}
+              >
+                <ProjectCard index={index} {...project} />
+              </motion.div>
+            ))}
+          {activeTab === "websites" &&
+            websites.map((website, index) => (
+              <motion.div
+                key={index}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+                }}
+              >
+                <WebsiteCard index={index} {...website} />
+              </motion.div>
+            ))}
+        </motion.div>
+
+        {/* Detailed Modal for Projects or Websites */}
+        {selectedProject && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-dark bg-opacity-70"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div
+              className="bg-gradient-to-br from-primaryDark via-primaryLight to-accent2 p-8 rounded-2xl w-4/5 lg:w-1/2 max-h-[80vh] overflow-y-auto shadow-xl backdrop-blur-md border border-opacity-20 border-[#FFF] relative"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+              }}
+            >
+              {/* Close Button */}
+              <motion.button
+                onClick={closeDetails}
+                className="absolute p-2 transition-all rounded-full shadow-md top-4 right-4 text-light bg-accent2 hover:scale-110 hover:shadow-lg"
+                whileHover={{
+                  scale: 1.1,
+                  rotate: 15,
+                  transition: { type: "spring", stiffness: 300 },
+                }}
+              >
+                ✕
+              </motion.button>
+
+              {/* Modal Content */}
+              <motion.h2
+                className="mb-4 font-serif text-3xl font-extrabold text-secondary"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+              >
+                {selectedProject.name || selectedProject.title}
+              </motion.h2>
+              <motion.p
+                className="mb-6 text-lg leading-relaxed text-light"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
+              >
+                {selectedProject.detailedDescription}
+              </motion.p>
+
+              {/* Image Gallery */}
+              <motion.div
+                className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7, duration: 0.6 }}
+              >
+                {selectedProject.images.map((image, index) => (
+                  <motion.img
+                    key={index}
+                    src={image}
+                    alt={`Image ${index}`}
+                    className="object-cover w-full h-32 transition-transform transform rounded-xl hover:scale-105"
+                    initial={{ scale: 0.9 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: index * 0.2, duration: 0.4 }}
+                  />
+                ))}
+              </motion.div>
+
+              {/* Source Code Button */}
+              <motion.div
+                className="flex justify-center mt-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 0.6 }}
+              >
+                <a
+                  href={selectedProject.source_code_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-2 text-lg font-medium transition-transform transform rounded-full shadow-lg text-light bg-gradient-to-r from-accent1 to-accent2 hover:shadow-2xl hover:opacity-90 hover:scale-105"
+                >
+                  View Source Code
+                </a>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </div>
+    </section>
+
 
 
 
