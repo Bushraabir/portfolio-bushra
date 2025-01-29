@@ -2,42 +2,42 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import Bushra from "../assets/Bushra.png"; // Assuming you have this asset
+import Bushra from "../assets/Bushra.png"; 
+
+
+
+//illustration
+import kingdom_1 from "../assets/sIllustration/kingdom_1.jpg";
+import Bloody from "../assets/src/assets/Illustration/Warrior.jpg";
+import Boston from "../assets/Acrylic/Boston_city.jpg";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Artworks = () => {
-  const [activeTab, setActiveTab] = useState("acrylic");
+  const [activeTab, setActiveTab] = useState("illustration");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArtwork, setSelectedArtwork] = useState(null);
   const [loading, setLoading] = useState(true); 
   const [galleryHeight, setGalleryHeight] = useState(0); 
 
-  const tabs = ["acrylic", "watercolor", "pencil sketch", "crafts and models"];
+  const tabs = ["illustration", "Modeling"];
 
   const artworks = {
-    acrylic: [
-      { src: Bushra, description: "Acrylic painting 1" },
+    illustration: [
+      { src: kingdom_1, description: "Acrylic painting 1" },
       { src: Bushra, description: "Acrylic painting 2" },
       { src: Bushra, description: "Acrylic painting 3" },
       { src: Bushra, description: "Acrylic painting 4" },
       { src: Bushra, description: "Acrylic painting 5" },
       { src: Bushra, description: "Acrylic painting 6" },
     ],
-    watercolor: [
+    Modeling: [
       { src: Bushra, description: "Watercolor painting 1" },
       { src: Bushra, description: "Watercolor painting 2" },
       { src: Bushra, description: "Watercolor painting 3" },
     ],
-    "pencil sketch": [
-      { src: Bushra, description: "Pencil sketch 1" },
-      { src: Bushra, description: "Pencil sketch 2" },
-      { src: Bushra, description: "Pencil sketch 3" },
-    ],
-    "crafts and models": [
-      { src: Bushra, description: "Craft model 1" },
-      { src: Bushra, description: "Craft model 2" },
-    ],
+
   };
 
   // Set up GSAP ScrollTrigger for animations when gallery appears in view

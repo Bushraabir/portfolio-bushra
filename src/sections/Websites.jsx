@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Tilt } from "react-tilt";
 import Lottie from "react-lottie";
-import animationData from "../assets/animation/coding.json"; // Your Lottie animation file
-
+import animationData from "../assets/animation/coding.json";
+import atheletics from "../assets/gallery/2022_atheletics.jpg";
 const Websites = () => {
   const [activeTab, setActiveTab] = useState("projects");
   const [selectedProject, setSelectedProject] = useState(null);
@@ -16,7 +16,7 @@ const Websites = () => {
         { name: "React", color: "text-cyan-400" },
         { name: "Framer Motion", color: "text-pink-400" },
       ],
-      images: ["src/assets/Bushra.png", "src/assets/Bushra.png"],
+      images: [atheletics, atheletics],
       detailedDescription:
         "Project One is a web-based application developed using React, showcasing dynamic animations with Framer Motion. It uses GSAP for advanced transitions and is mobile-responsive.",
       source_code_link: "https://github.com/project-one",
@@ -28,7 +28,7 @@ const Websites = () => {
         { name: "JavaScript", color: "text-yellow-500" },
         { name: "GSAP", color: "text-green-500" },
       ],
-      images: ["src/assets/Bushra.png", "src/assets/Bushra.png"],
+      images: [atheletics, atheletics],
       detailedDescription:
         "Project Two focuses on performance optimization and advanced animations with GSAP. This project includes a multi-step interactive user interface.",
       source_code_link: "https://github.com/project-two",
@@ -43,7 +43,7 @@ const Websites = () => {
         { name: "HTML", color: "text-red-400" },
         { name: "CSS", color: "text-green-400" },
       ],
-      images: ["src/assets/Bushra.png", "src/assets/Bushra.png"],
+      images: [atheletics, atheletics],
       detailedDescription:
         "Website One is an interactive portfolio created using pure HTML, CSS, and JavaScript. It showcases my skills and projects dynamically.",
       source_code_link: "https://github.com/website-one",
@@ -55,7 +55,7 @@ const Websites = () => {
         { name: "CSS Grid", color: "text-purple-500" },
         { name: "Responsive", color: "text-blue-400" },
       ],
-      images: ["src/assets/Bushra.png", "src/assets/Bushra.png"],
+      images: [atheletics, atheletics],
       detailedDescription:
         "Website Two is a responsive business landing page with multiple sections that auto-align based on screen size. It utilizes modern CSS Grid and Flexbox for layout.",
       source_code_link: "https://github.com/website-two",
