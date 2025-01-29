@@ -5,8 +5,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
-import { FaCheck, FaStar, FaTrophy } from "react-icons/fa";
+import { OrbitControls } from "@react-three/drei";
+import { FaCheck,  } from "react-icons/fa";
 import Ball from '../assets/3d_model/Ball';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -105,23 +105,18 @@ const LoadingFallback = () => (
   </mesh>
 );
 
-const AnimatedModel = memo(() => {
-  return (
-    <Canvas className="model-canvas"
-    style={{ width: 150, height: 150, position: "absolute", top: "-20px", left: "-40px", zIndex: 10 }}
-    
-    >
-      <ambientLight intensity={0.3} color="#FFC857" />
-      <spotLight position={[20, 30, 10]} angle={0.7} penumbra={0.9} intensity={40} color="#E6B800" castShadow />
-      <directionalLight position={[-10, 20, -10]} intensity={8} color="#F79D7D" />
-      <pointLight position={[0, 5, 10]} intensity={25} color="#F26B38" decay={2} />
-      <Suspense fallback={<LoadingFallback />}>
-        <Ball />
-      </Suspense>
-      <OrbitControls enableZoom={false} enablePan={true} autoRotate autoRotateSpeed={1.5} />
-    </Canvas>
-  );
-});
+const AnimatedModel = memo(() => (
+  <Canvas style={{ width: 150, height: 150, position: "absolute", top: "-20px", left: "-40px", zIndex: 10 }}>
+    <ambientLight intensity={0.3} color="#FFC857" />
+    <spotLight position={[20, 30, 10]} angle={0.7} penumbra={0.9} intensity={40} color="#E6B800" castShadow />
+    <directionalLight position={[-10, 20, -10]} intensity={8} color="#F79D7D" />
+    <pointLight position={[0, 5, 10]} intensity={25} color="#F26B38" decay={2} />
+    <Suspense fallback={<LoadingFallback />}>
+      <Ball />
+    </Suspense>
+    <OrbitControls enableZoom={false} enablePan autoRotate autoRotateSpeed={1.5} />
+  </Canvas>
+));
 
 const AchievementCard = ({ achievement }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -129,38 +124,15 @@ const AchievementCard = ({ achievement }) => {
 
   return (
     <VerticalTimelineElement
-    contentStyle={{
-      background: "rgba(255, 255, 255, 0.1)", // Semi-transparent white for glassmorphism effect
-      backdropFilter: "blur(10px)", // Blur the background to achieve glassmorphism
-      color: "theme('colors.primaryDark')", // Darker Slate Blue text
-      borderRadius: "theme('borderRadius.2xl')", // Smooth corners
-      padding: "1.5rem",
-      boxShadow: "theme('boxShadow.xl')", // Subtle shadow for a lifted effect
-      border: "2px solid theme('colors.primaryLight')", // Light border for glassmorphism effect
-    }}
+      contentStyle={{ background: "rgba(255, 255, 255, 0.1)", backdropFilter: "blur(10px)", borderRadius: "20px", padding: "1.5rem" }}
       contentArrowStyle={{ borderRight: "8px solid rgba(255, 255, 255, 0.1)" }}
-      iconStyle={{
-        background: "#FF6F3C",
-        color: "#fff",
-        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-        border: "2px solid #FFC857",
-      }}
+      iconStyle={{ background: "#FF6F3C", color: "#fff", boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)", border: "2px solid #FFC857" }}
       icon={<AnimatedModel />}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 1.03 }}
-        transition={{ duration: 0.3 }}
-        className="cursor-pointer"
-        onClick={toggleCard}
-        role="button"
-        aria-expanded={isExpanded}
-      >
+      <motion.div onClick={toggleCard} role="button" aria-expanded={isExpanded}>
         <h3 className="font-serif text-2xl font-bold text-gradient sm:text-3xl">{achievement.title}</h3>
         <p className="mt-2 text-base leading-relaxed text-neutral-700">{achievement.description}</p>
       </motion.div>
-
       <motion.div
         initial={{ height: 0, opacity: 0 }}
         animate={isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
@@ -169,13 +141,7 @@ const AchievementCard = ({ achievement }) => {
       >
         <ul className="space-y-3">
           {achievement.points.map((point, index) => (
-            <motion.li
-              key={`achievement-point-${index}`}
-              initial={{ opacity: 0, y: 10 }}
-              animate={isExpanded ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-start space-x-3 text-sm text-primary"
-            >
+            <motion.li key={index} className="flex items-start space-x-3 text-sm text-primary">
               <div className="flex items-center justify-center w-6 h-6 text-white border-2 rounded-full shadow bg-secondaryDark border-primaryLight">
                 <FaCheck className="text-xs" />
               </div>
@@ -205,6 +171,37 @@ const Achievements = () => {
           My Achievements
         </h2>
       </motion.div>
+
+
+      <section className="flex justify-center">
+        <motion.div
+          className="w-full max-w-4xl p-6 text-center text-white bg-opacity-100 rounded-lg shadow-2xl"
+          data-aos="fade-up"
+          style={{
+            backdropFilter: "blur(1px)",
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            maxHeight: "80vh",
+            overflowY: "auto",
+            zIndex: 10,
+          }}
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          {["I’m Bushra Khandoker, a passionate creator...", 
+            "Currently, I’m preparing to embark on an academic journey...", 
+            "Outside of the digital world, I embrace my creative spirit...", 
+            "Feel free to explore my portfolio and see how my journey unfolds..."].map((text, i) => (
+            <p
+              key={i}
+              className="mb-4 text-base sm:text-lg text-accent2Light"
+              data-aos={i % 2 === 0 ? "fade-right" : "fade-up"}
+            >
+              {text}
+            </p>
+          ))}
+        </motion.div>
+      </section>
       <VerticalTimeline>
         {achievements.map((achievement, index) => (
           <AchievementCard key={index} achievement={achievement} />

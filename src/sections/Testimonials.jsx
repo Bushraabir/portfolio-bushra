@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"; // Import OrbitControls
-
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import hdr from "../assets/industrial_sunset_puresky_1k.hdr"
 // Paths to your assets
-const hdrImagePath = "src/assets/industrial_sunset_puresky_1k.hdr";
+const hdrImagePath = hdr;
 
 const testimonials = [
   {
@@ -46,27 +46,22 @@ gsap.registerPlugin(ScrollTrigger);
 
 const TestimonialPolygon = () => {
   const containerRef = useRef(null);
-  const [cubeSize, setCubeSize] = useState(60);
-  const cubeRef = useRef();
-  const controlsRef = useRef();
+  const cubeRef = useRef(null);
+  const controlsRef = useRef(null);
+  const hdrTextureRef = useRef(null);
 
-  const updateCubeSize = () => {
-    if (containerRef.current) {
-      const newSize = Math.min(
-        containerRef.current.offsetWidth,
-        containerRef.current.offsetHeight
-      ) / 10;
-      setCubeSize(newSize);
-    }
+  // Calculate cube size based on container size
+  const getCubeSize = () => {
+    return Math.min(
+      containerRef.current.offsetWidth,
+      containerRef.current.offsetHeight
+    ) / 10;
   };
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Create the Three.js scene
     const scene = new THREE.Scene();
-
-    // Set up the camera
     const camera = new THREE.PerspectiveCamera(
       75,
       containerRef.current.offsetWidth / containerRef.current.offsetHeight,
@@ -74,7 +69,6 @@ const TestimonialPolygon = () => {
       1000
     );
 
-    // Set up the renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(
       containerRef.current.offsetWidth,
@@ -83,18 +77,22 @@ const TestimonialPolygon = () => {
     renderer.outputEncoding = THREE.sRGBEncoding;
     containerRef.current.appendChild(renderer.domElement);
 
-    // Load the HDR image for environment mapping
-    const rgbeLoader = new RGBELoader();
-    rgbeLoader.load(hdrImagePath, (hdrTexture) => {
-      hdrTexture.mapping = THREE.EquirectangularReflectionMapping;
-      scene.environment = hdrTexture;
-      scene.background = hdrTexture; // Use the HDRI as the background as well
-    });
+    // Load HDR image only once
+    if (!hdrTextureRef.current) {
+      const rgbeLoader = new RGBELoader();
+      rgbeLoader.load(hdrImagePath, (hdrTexture) => {
+        hdrTexture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.environment = hdrTexture;
+        scene.background = hdrTexture;
+        hdrTextureRef.current = hdrTexture;
+      });
+    }
 
-    // Create cube geometry with testimonials as materials
+    const cubeSize = getCubeSize();
     const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
 
-    const cubeMaterials = testimonials.map((testimonial) => {
+    // Reuse canvas for textures to optimize memory
+    const generateCanvasTexture = (testimonial) => {
       const canvas = document.createElement("canvas");
       canvas.width = 1024;
       canvas.height = 1024;
@@ -125,8 +123,12 @@ const TestimonialPolygon = () => {
         canvas.height / 2 + 100
       );
 
-      const texture = new THREE.CanvasTexture(canvas);
+      return new THREE.CanvasTexture(canvas);
+    };
 
+    // Create cube materials based on testimonials
+    const cubeMaterials = testimonials.map((testimonial) => {
+      const texture = generateCanvasTexture(testimonial);
       return new THREE.MeshPhysicalMaterial({
         map: texture,
         color: 0xffffff,
@@ -149,24 +151,53 @@ const TestimonialPolygon = () => {
     camera.position.y = 20;
     camera.lookAt(0, 0, 0);
 
-    // Add ambient lighting to the scene
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-    scene.add(ambientLight);
 
-    // Add a gold spotlight for a more dramatic effect
-    const goldLight = new THREE.SpotLight(0xFFC857, 1.5, 100, Math.PI / 4, 0.5);
-    goldLight.position.set(0, 100, 0);
-    goldLight.target.position.set(0, 0, 0);
-    scene.add(goldLight);
-    scene.add(goldLight.target);
 
-    // Set up the OrbitControls to allow camera interaction
+// Ambient light with lower intensity for a sophisticated and warm atmosphere
+const ambientLight = new THREE.AmbientLight(0xF2D966, 2); // Softer, golden ambient light, aligned with the secondary light in the theme
+scene.add(ambientLight);
+
+// Directional light to create dramatic highlights and shadows with a warm, luxurious tone
+const directionalLight = new THREE.DirectionalLight(0xF79D7D, 5); // Softer pinkish light to evoke elegance and luxury
+directionalLight.position.set(10, 20, 10); // Positioned to create dynamic shadows and highlights
+scene.add(directionalLight);
+
+// SpotLight for highlighting specific areas with a cool, calm accent
+const spotLight = new THREE.SpotLight(0x00A7D0, 500, 50, Math.PI / 4, 0.5, 10000); // Bright turquoise with a focused beam, adding a premium touch
+spotLight.position.set(5, 10, 0); // Adjust position to highlight specific objects or areas
+scene.add(spotLight);
+
+// Add a gold spotlight for dramatic effect
+const goldLight = new THREE.SpotLight(0xFFC857, 100.5, 100, Math.PI / 4, 5); 
+goldLight.position.set(0, 100, 0); // Positioned high above for a dramatic top-down effect
+goldLight.target.position.set(0, 0, 0); // Target the center for focus
+scene.add(goldLight);
+scene.add(goldLight.target);
+
+// Additional Point Light for warm, subtle accents
+const warmPointLight = new THREE.PointLight(0xE6B800, 3, 500); // Warm yellow light to add depth and elegance
+warmPointLight.position.set(-10, 5, -10); // Positioned at a lower angle for soft illumination
+scene.add(warmPointLight);
+
+// A cool blue accent light to add contrast and sophistication
+const coolPointLight = new THREE.PointLight(0x00A7D0, 1, 50); // Cool turquoise light
+coolPointLight.position.set(10, 5, 10); // Positioned on the opposite side of the warm point light for balance
+scene.add(coolPointLight);
+
+
+
+// Soft fill light to bring more warmth
+const fillLight = new THREE.PointLight(0xF79D7D, 1, 300); // Soft pinkish light for gentle fill
+fillLight.position.set(5, 15, 5); // Positioned to softly illuminate the scene from above
+scene.add(fillLight);
+
+    // Setup OrbitControls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
     controlsRef.current = controls;
 
-    // Animation loop to render the scene and update controls
+    // Animation loop to update the scene and controls
     const animate = () => {
       requestAnimationFrame(animate);
       controls.update();
@@ -175,8 +206,12 @@ const TestimonialPolygon = () => {
 
     animate();
 
-    // Handle window resizing
+    // Handle window resize
     const onWindowResize = () => {
+      const cubeSize = getCubeSize();
+      cube.geometry.dispose();
+      cube.geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+
       camera.aspect =
         containerRef.current.offsetWidth / containerRef.current.offsetHeight;
       camera.updateProjectionMatrix();
@@ -184,12 +219,11 @@ const TestimonialPolygon = () => {
         containerRef.current.offsetWidth,
         containerRef.current.offsetHeight
       );
-      updateCubeSize();
     };
 
     window.addEventListener("resize", onWindowResize);
 
-    // Apply scroll animations using GSAP
+    // Scroll animations with GSAP
     gsap.to(cube.rotation, {
       y: 2 * Math.PI,
       scrollTrigger: {
@@ -217,19 +251,24 @@ const TestimonialPolygon = () => {
       if (containerRef.current) {
         containerRef.current.removeChild(renderer.domElement);
       }
+      cube.geometry.dispose();
+      cube.material.forEach((material) => material.dispose());
+      if (hdrTextureRef.current) {
+        hdrTextureRef.current.dispose();
+      }
     };
-  }, [cubeSize]);
+  }, []);
 
   return (
 <motion.div
-  className="flex flex-col items-center justify-center min-h-screen p-6 bg-dark lg:flex-row"
+  className="flex flex-col items-center justify-center min-h-screen p-6 bg-gradient-to-b from-dark via-primaryDark to-dark lg:flex-row"
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 1 }}
 >
   <motion.div
     ref={containerRef}
-    className="w-full lg:w-8/12 h-[900px] bg-gradient-to-b from-dark to-primaryDark"
+    className="w-full lg:w-8/12 h-[900px]"
     animate={{ scale: [0.8, 1] }}
     transition={{ duration: 1, ease: "easeOut" }}
   ></motion.div>
@@ -241,14 +280,14 @@ const TestimonialPolygon = () => {
     transition={{ duration: 1.5, delay: 0.5 }}
   >
     <motion.h1
-                    className="text-4xl font-bold text-left text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-secondaryLight to-accent1 bg-clip-text sm:-mt-10 md:-mt-12"
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                >
-                    <br />What they say<br />
-                </motion.h1>
+      className="text-4xl font-bold text-left text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-secondaryLight to-accent1 bg-clip-text sm:-mt-10 md:-mt-12"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
+    >
+      <br />What they say<br />
+    </motion.h1>
     <p className="text-lg leading-relaxed tracking-wide text-neutral">
       See what others have to say about Bushra's hard work, creativity, and
       leadership abilities. These testimonials highlight dedication and unique

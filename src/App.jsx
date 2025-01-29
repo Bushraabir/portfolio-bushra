@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Loader from "./components/Loader"; // Importing the loader
 
+
 // Color Palette (for styling)
 const colors = {
   richTeal: "#007C8A",
@@ -39,7 +40,7 @@ const Footer = React.lazy(() => import("./sections/Footer"));
 const AboutMe = React.lazy(() => import("./sections/Aboutme"));
 const ParticleScene = React.lazy(() => import("./components/Particle"));
 const Gallery = React.lazy(() => import("./sections/Gallery"));
-const DigitalArt = React.lazy(() => import("./sections/DigitalArt"));
+const Art = React.lazy(() => import("./sections/Art"));
 
 // Animation Variants for Sidebar
 const sidebarVariants = {
@@ -219,16 +220,17 @@ const App = () => {
                 <Websites />
               </Suspense>
             </section>
-            <section id="digital">
-              <Suspense fallback={<div>Loading...</div>}>
-                <DigitalArt />
-              </Suspense>
-            </section>
             <section id="artworks">
               <Suspense fallback={<div>Loading...</div>}>
                 <Artworks />
               </Suspense>
             </section>
+            <section id="digital">
+              <Suspense fallback={<div>Loading...</div>}>
+                <Art />
+              </Suspense>
+            </section>
+
             <section id="research">
               <Suspense fallback={<div>Loading...</div>}>
                 <Research />

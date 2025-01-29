@@ -5,7 +5,7 @@ import forms from '@tailwindcss/forms';
 
 export default {
   content: [
-    "./src/**/*.{html,js,jsx,ts,tsx}", // Includes all potential files
+    "./src/**/*.{html,js,jsx,ts,tsx}", 
   ],
   theme: {
     extend: {
@@ -16,21 +16,21 @@ export default {
         scale: "transform, scaleX",
       },
       colors: {
-        primary: "#2F3A58", // Slate Blue
-        primaryDark: "#1C273B", // Darker shade of primary
-        primaryLight: "#4A5672", // Lighter tint of primary
-        secondary: "#E6B800", // Golden Yellow
-        secondaryDark: "#C59700", // Darker shade of secondary
-        secondaryLight: "#F2D966", // Lighter tint of secondary
-        accent1: "#00A7D0", // Bright Turquoise
-        accent1Dark: "#0088A6", // Darker shade of accent1
-        accent1Light: "#4FC7E2", // Lighter tint of accent1
-        accent2: "#F26B38", // Soft Coral
-        accent2Dark: "#CC5630", // Darker shade of accent2
-        accent2Light: "#F79D7D", // Lighter tint of accent2
-        neutral: "#B8B8B8", // Cool Gray
-        dark: "#0B132B", // Deep Navy
-        light: "#F5F7FA", // Light Gray
+        primary: "#2F3A58", 
+        primaryDark: "#1C273B",
+        primaryLight: "#4A5672", 
+        secondary: "#E6B800", 
+        secondaryDark: "#C59700", 
+        secondaryLight: "#F2D966", 
+        accent1: "#00A7D0", 
+        accent1Dark: "#0088A6",
+        accent1Light: "#4FC7E2", 
+        accent2: "#F26B38", 
+        accent2Dark: "#CC5630", 
+        accent2Light: "#F79D7D", 
+        neutral: "#B8B8B8",
+        dark: "#0B132B",
+        light: "#F5F7FA", 
       },
       boxShadow: {
         xl: "0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1)",
@@ -38,28 +38,28 @@ export default {
         "3xl": "0 35px 60px rgba(0, 0, 0, 0.2)",
       },
       fontFamily: {
-        sans: ["Montserrat", "sans-serif"], // Modern sans-serif for headings
-        serif: ["Playfair Display", "serif"], // Elegant serif for emphasis
-        mono: ["Source Code Pro", "monospace"], // Monospace for code
+        sans: ["Montserrat", "sans-serif"], 
+        serif: ["Playfair Display", "serif"], 
+        mono: ["Source Code Pro", "monospace"],
       },
       fontSize: {
-        xxs: "0.65rem", // Extra small font for subtle elements
-        "4xl": "2.5rem", // Slightly larger for headings
-        "5xl": "3rem", // For larger hero titles
-        "6xl": "4rem", // Extra large for bold hero titles
+        xxs: "0.65rem", 
+        "4xl": "2.5rem", 
+        "5xl": "3rem", 
+        "6xl": "4rem", 
       },
       spacing: {
         72: "18rem",
         84: "21rem",
         96: "24rem",
-        128: "32rem", // For larger paddings/margins
+        128: "32rem",
       },
       borderRadius: {
         lg: "0.5rem",
-        xl: "1rem", // For smoother corners
+        xl: "1rem",
         "2xl": "1.5rem",
         "3xl": "2rem",
-        full: "9999px", // For fully circular shapes
+        full: "9999px",
       },
       animation: {
         "gradient-move": "gradient-move 6s infinite linear",
