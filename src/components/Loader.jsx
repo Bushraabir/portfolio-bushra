@@ -47,16 +47,18 @@ const Loader = () => {
   };
 
   const particleColors = [
-    "linear-gradient(145deg, #007C8A, #FFC857)", // Teal to Gold
-    "linear-gradient(145deg, #FF6F3C, #ADA7C9)", // Burnt Orange to Lavender
-    "linear-gradient(145deg, #00A7D0, #F79D7D)", // Bright Turquoise to Soft Coral
-    "linear-gradient(145deg, #4FC7E2, #E6B800)", // Light Turquoise to Golden Yellow
-    "linear-gradient(145deg, #F2D966, #F26B38)", // Light Yellow to Soft Coral
-    "linear-gradient(145deg, #1C273B, #00A7D0)", // Dark Blue to Turquoise
+    "linear-gradient(145deg, #fbf8cc, #fefef5)", // Lemon Chiffon to Champagne Pink
+    "linear-gradient(145deg, #fde4cf, #fff9f5)", // Champagne Pink to Tea Rose
+    "linear-gradient(145deg, #ffcfd2, #fff6f6)", // Tea Rose to Pink Lavender
+    "linear-gradient(145deg, #f1c0e8, #fcf2fa)", // Pink Lavender to Mauve
+    "linear-gradient(145deg, #a3c4f3, #edf3fd)", // Jordy Blue to Non Photo Blue
+    "linear-gradient(145deg, #90dbf4, #e9f8fd)", // Non Photo Blue to Electric Blue
+    "linear-gradient(145deg, #98f5e1, #ebfdf9)", // Aquamarine to Deep Indigo
+    "linear-gradient(145deg, #2a1b3d, #1d142b)", // Deep Indigo to Dark Teal
   ];
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-primary to-primaryLight">
+    <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-deep_indigo to-dark_teal">
       {/* Particle animation in the background */}
       <motion.div
         className="absolute top-0 left-0 z-10 w-full h-full"
