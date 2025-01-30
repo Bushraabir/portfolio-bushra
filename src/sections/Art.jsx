@@ -3,7 +3,11 @@ import { motion } from "framer-motion";
 import { Tilt } from "react-tilt";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import PlaceholderImage from "../assets/Bushra.png"; 
+
+
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css'; // Optional, adds a blur effect while loading
+
 
 
 
@@ -69,11 +73,17 @@ import chess_1 from "../assets/crafts/10.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
+
+
+
+
+
 const Art = () => {
   const [activeTab, setActiveTab] = useState("acrylic");
   const [selectedArtwork, setSelectedArtwork] = useState(null);
   const containerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+
 
   const tabs = [
     { id: "acrylic", title: "Acrylic", description: "Explore vibrant and textured acrylic art pieces." },
@@ -160,49 +170,46 @@ const Art = () => {
   const closeDetails = () => setSelectedArtwork(null);
 
   return (
-
-<section className="relative bg-gradient-to-b from-[#1F2A47] via-[#2A3A61] to-[#F2C12E] p-16 overflow-hidden">
+<section className="relative bg-gradient-to-b from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] p-16 overflow-hidden">
   {/* Background Gradient with Glassmorphism Effect */}
-  <div className="absolute inset-0 bg-gradient-to-r from-[#1F2A47] via-[#2A3A61] to-[#F2C12E] opacity-70 backdrop-blur-[10px] rounded-3xl shadow-2xl"></div>
+  <div className="absolute inset-0 bg-gradient-to-r from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] opacity-70 backdrop-blur-[10px] shadow-2xl"></div>
 
-  <div className="container relative z-10 px-6 mx-auto lg:px-20">
-    {/* Header Section with High-end Font Styling and Luxurious Details */}
+  <div className="container relative z-10 px-6 mx-auto lg:px-20" ref={containerRef}>
+    {/* Header Section */}
     <motion.div
       className="mb-20 text-center"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1.5 }}
     >
-      <h1 className="text-7xl font-serif font-extrabold text-[#F2C12E] tracking-widest drop-shadow-xl transform transition-all ease-in-out duration-300">
+      <h1 className="text-7xl font-serif font-extrabold text-[#F5F8CC] tracking-widest drop-shadow-xl">
         Exquisite Artworks
       </h1>
-      <p className="mt-6 text-2xl text-[#F5F7FA] font-sans tracking-tight leading-relaxed opacity-90 shadow-xl">
-        A collection of masterful pieces—designed to evoke emotion and captivate the senses. Experience the blend of color, texture, and technique.
+      <p className="mt-6 text-2xl text-[#F1C0E8] font-sans opacity-90">
+        A collection of masterful pieces—designed to evoke emotion and captivate the senses.
       </p>
     </motion.div>
 
-    {/* Refined Tab Selection with Subtle Hover and Border Effects */}
+    {/* Tab Selection */}
     <div className="flex flex-wrap justify-center gap-8 mb-16">
       {tabs.map((tab) => (
         <motion.button
           key={tab.id}
-          className={`py-3 px-10 text-xl font-semibold rounded-full border-4 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-md hover:border-[#F2C12E] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F2C12E] ${
+          className={`py-3 px-10 text-xl font-semibold rounded-full border-4 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-md hover:border-[#F5F8CC] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${
             activeTab === tab.id
-              ? "bg-gradient-to-r from-[#F2C12E] to-[#F26B38] text-[#1F2A47] border-[#F2C12E]"
-              : "bg-transparent text-[#F2C12E] border-[#F2C12E] hover:bg-gradient-to-r hover:from-[#F26B38] hover:to-[#F2C12E] hover:text-[#1F2A47]"
+              ? "bg-gradient-to-r from-[#F5F8CC] to-[#FDE4CF] text-[#2A1B3D] border-[#F5F8CC]"
+              : "bg-transparent text-[#F5F8CC] border-[#F5F8CC]"
           }`}
           onClick={() => setActiveTab(tab.id)}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.98 }}
         >
           {tab.title}
         </motion.button>
       ))}
     </div>
 
-    {/* Tab Description with Premium Typography */}
+    {/* Tab Description */}
     <motion.div
-      className="text-center text-[#F2C12E] mb-16 text-xl font-serif"
+      className="text-center text-[#F5F8CC] mb-16 text-xl font-serif"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
@@ -210,7 +217,7 @@ const Art = () => {
       {tabs.find((tab) => tab.id === activeTab)?.description}
     </motion.div>
 
-    {/* Artworks Grid with Enhanced Hover Effects */}
+    {/* Artworks Grid */}
     <motion.div
       className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3"
       initial="hidden"
@@ -234,7 +241,7 @@ const Art = () => {
             options={{ max: 15, scale: 1.02, speed: 900 }}
             className="relative w-full h-[500px] bg-transparent backdrop-blur-lg bg-opacity-30 p-8 rounded-3xl shadow-xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:opacity-90"
           >
-            <motion.img
+            <LazyLoadImage
               src={artwork.src}
               alt={artwork.description}
               className="object-cover w-full h-full transition-all duration-500 transform rounded-xl group-hover:scale-110 group-hover:rotate-3"
@@ -249,7 +256,7 @@ const Art = () => {
       ))}
     </motion.div>
 
-    {/* Loading Spinner with Premium Aesthetic */}
+    {/* Loading Spinner */}
     {isLoading && (
       <motion.div
         className="absolute inset-0 flex items-center justify-center"
@@ -257,14 +264,14 @@ const Art = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="w-12 h-12 border-t-4 border-[#F2C12E] border-solid rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-t-4 border-[#F5F8CC] border-solid rounded-full animate-spin"></div>
       </motion.div>
     )}
 
-    {/* Modal for Artwork Details with 3D Transitions and Glassmorphism */}
+    {/* Modal for Artwork Details */}
     {selectedArtwork && (
       <motion.div
-        className="fixed inset-0 z-50 flex items-center justify-center h-screen bg-black bg-opacity-80"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -272,32 +279,32 @@ const Art = () => {
       >
         {/* Glassmorphism Backdrop */}
         <motion.div
-          className="absolute inset-0 w-full h-screen bg-gradient-to-br from-[#2A3A61] to-[#F2C12E] backdrop-blur-3xl opacity-70"
+          className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#2A1B3D] to-[#F5F8CC] backdrop-blur-3xl opacity-70"
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1.2, ease: "easeInOut" }}
         />
 
-        {/* Modal Content with Premium Feel */}
+        {/* Modal Content with Border */}
         <motion.div
-          className="relative bg-gradient-to-br from-[#2A3A61] to-[#F2C12E] backdrop-blur-lg bg-opacity-80 p-20 rounded-3xl shadow-2xl w-[90%] sm:w-3/4 lg:w-2/4 border-8 border-[#F2C12E]"
+          className="relative bg-gradient-to-br from-[#2A1B3D] to-[#F5F8CC] backdrop-blur-lg bg-opacity-80 p-6 sm:p-10 lg:p-20 rounded-3xl shadow-2xl w-[90%] sm:w-3/4 lg:w-2/4 max-w-3xl min-h-screen sm:h-[90vh] border-8 border-[#F5F8CC]"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 250, damping: 40 }}
         >
-          {/* Close Button with Elegant Hover Animation */}
+          {/* Close Button */}
           <button
             onClick={closeDetails}
-            className="absolute top-6 right-6 bg-[#F26B38] text-white p-4 rounded-full shadow-2xl hover:scale-125 transition-all transform hover:rotate-45"
+            className="absolute top-6 right-6 bg-[#FDE4CF] text-deep_indigo p-4 rounded-full shadow-2xl hover:scale-125 transition-all transform hover:rotate-45"
           >
             ✕
           </button>
 
-          {/* Title with Enhanced Drop Shadow */}
+          {/* Artwork Title */}
           <motion.h2
-            className="text-6xl font-serif text-[#F2C12E] font-extrabold text-center mb-14"
+            className="text-5xl sm:text-6xl font-serif text-[#F5F8CC] font-extrabold text-center mb-12 sm:mb-14"
             initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
@@ -305,31 +312,31 @@ const Art = () => {
             {selectedArtwork.title}
           </motion.h2>
 
-          {/* Image with Advanced 3D Hover Effect */}
+          {/* Artwork Image */}
           <motion.div
             className="relative overflow-hidden group"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
           >
-            <img
+            <LazyLoadImage
               src={selectedArtwork.src}
               alt={selectedArtwork.description}
               className="object-cover w-full h-full transition-transform duration-500 rounded-xl group-hover:scale-110 group-hover:rotate-3"
             />
           </motion.div>
 
-          {/* Description with Premium Font and Advanced Animations */}
+          {/* Artwork Description */}
           <motion.div
-            className="mt-12 space-y-6 text-center"
+            className="mt-8 space-y-6 text-center sm:mt-12"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.6 }}
           >
-            <p className="text-xl text-[#F5F7FA] font-sans leading-relaxed">
+            <p className="text-lg sm:text-xl text-[#F1C0E8] font-sans leading-relaxed">
               {selectedArtwork.description}
             </p>
-            <p className="text-md text-[#F2C12E]">
+            <p className="text-md text-[#F5F8CC]">
               Created: {selectedArtwork.date}
             </p>
           </motion.div>
@@ -338,11 +345,6 @@ const Art = () => {
     )}
   </div>
 </section>
-
-
-
-
-
 
   );
 };

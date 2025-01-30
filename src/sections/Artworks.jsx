@@ -47,7 +47,7 @@ const Artworks = () => {
   }, []);
 
   return (
-<section className="w-full py-16 bg-gradient-to-br from-[#0B132B] via-[#1C273B] to-[#2F3A58]">
+<section className="w-full py-16 bg-gradient-to-br from-[#2a1b3d] via-[#1d3557] to-[#16263e]">
   <div className="container px-6 mx-auto text-center lg:px-20">
     {/* Header Section */}
     <h2 className="text-4xl font-extrabold text-[#FFC857] font-serif">
@@ -64,7 +64,7 @@ const Artworks = () => {
           key={tab}
           onClick={() => setActiveTab(tab)}
           className={`text-lg font-semibold transition-colors duration-300 hover:text-[#FFC857] ${
-            activeTab === tab ? "text-[#FFC857]" : "text-[#ADA7C9]"
+            activeTab === tab ? "text-[#FFC857]" : "text-[#cfbaf0]"
           }`}
         >
           {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -82,7 +82,7 @@ const Artworks = () => {
         artworks[activeTab].map((artwork, index) => (
           <motion.div
             key={index}
-            className="relative overflow-hidden transition-all duration-500 rounded-lg shadow-lg cursor-pointer hover:scale-105 hover:shadow-xl"
+            className="relative overflow-hidden transition-all duration-500 rounded-lg shadow-xl cursor-pointer hover:scale-105 hover:shadow-2xl"
             whileHover={{ scale: 1.05 }}
             onClick={() => setSelectedArtwork(artwork)}
           >
@@ -150,6 +150,7 @@ const Artworks = () => {
     </motion.div>
   )}
 </section>
+
 
   );
 };

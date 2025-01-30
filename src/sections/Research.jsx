@@ -168,54 +168,61 @@ const Research = () => {
   AOS.init({ duration: 1000, once: true });
 
   return (
-    <div className="px-8 py-16 mx-auto max-w-7xl bg-dark text-light">
+    <div className="w-full px-8 py-16 mx-auto bg-lemon_chiffon text-deep_indigo">
       {/* Hero Section */}
       <div className="mb-16 text-center" data-aos="fade-up">
-        <h1 className="mb-4 font-serif text-5xl text-gradient gradient">My Research & Publications</h1>
-        <p className="max-w-2xl mx-auto text-lg text-neutral">
-          Discover my books and articles on technology, design, and innovation.
+        <h1 className="mb-6 font-serif text-5xl leading-tight text-gradient gradient">
+          My Research & Publications
+        </h1>
+        <p className="max-w-2xl mx-auto text-lg text-deep_indigo">
+          Explore my books, articles, and research in technology, design, and innovation.
         </p>
       </div>
-
+      
       {/* Search and Filter Section */}
-      <div className="flex flex-col items-center justify-center gap-6 mb-12 lg:flex-row">
-        <div className="flex items-center p-2 shadow-xl bg-primaryDark rounded-2xl">
-          <button
-            className={`px-6 py-3 font-medium rounded-lg transition-all duration-300 text-lg ${
+      <div className="flex flex-col items-center justify-center gap-8 mb-12 lg:flex-row">
+        {/* Filter Buttons */}
+        <div className="flex items-center p-2 space-x-6 shadow-xl bg-champagne_pink rounded-2xl">
+          <motion.button
+            className={`px-8 py-4 font-medium rounded-lg transition-all duration-300 text-lg ${
               filter === "books"
-                ? "bg-accent1 text-white shadow-lg"
-                : "bg-primaryLight text-neutral hover:bg-accent1Light"
+                ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white shadow-lg"
+                : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
             }`}
             onClick={() => setFilter("books")}
+            whileHover={{ scale: 1.05 }}
           >
             Books
-          </button>
-          <button
-            className={`px-6 py-3 font-medium rounded-lg transition-all duration-300 text-lg ${
+          </motion.button>
+          <motion.button
+            className={`px-8 py-4 font-medium rounded-lg transition-all duration-300 text-lg ${
               filter === "articles"
-                ? "bg-accent1 text-white shadow-lg"
-                : "bg-primaryLight text-neutral hover:bg-accent1Light"
+                ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white shadow-lg"
+                : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
             }`}
             onClick={() => setFilter("articles")}
+            whileHover={{ scale: 1.05 }}
           >
             Articles
-          </button>
+          </motion.button>
         </div>
-
-        <input
+          
+        {/* Search Input */}
+        <motion.input
           type="text"
           placeholder="Search..."
-          className="w-full max-w-lg px-4 py-3 border shadow bg-primaryDark border-neutral rounded-xl focus:outline-none focus:ring-2 focus:ring-accent1 text-light"
+          className="w-full max-w-lg px-6 py-3 border-2 shadow-lg bg-champagne_pink border-deep_indigo rounded-xl focus:outline-none focus:ring-2 focus:ring-accent1 focus:ring-opacity-50 text-deep_indigo placeholder:text-deep_indigo"
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
             handleSearch(e.target.value);
           }}
+          whileFocus={{ scale: 1.03 }}
         />
       </div>
-
+        
       {/* Content Display */}
-      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
         <AnimatePresence>
           {paginatedData.map((item, index) => (
             <motion.div
@@ -223,8 +230,8 @@ const Research = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.4 }}
-              className="overflow-hidden transition-transform shadow-xl bg-primaryDark rounded-3xl group hover:shadow-2xl hover:scale-105"
+              transition={{ duration: 0.5 }}
+              className="overflow-hidden transition-all transform shadow-2xl bg-champagne_pink rounded-3xl group hover:shadow-3xl hover:scale-105"
               data-aos="fade-up"
             >
               {filter === "books" ? (
@@ -233,18 +240,18 @@ const Research = () => {
                     <img
                       src={item.img}
                       alt={item.title}
-                      className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
+                      className="object-cover w-full h-full transition-all duration-300 rounded-t-xl group-hover:scale-110"
                     />
                   </div>
                   <div className="p-6">
-                    <h3 className="mb-2 font-serif text-xl text-accent1">{item.title}</h3>
-                    <p className="mb-4 text-sm text-neutral">Published: {item.year}</p>
-                    <p className="mb-4 text-neutral">{item.description}</p>
-                    <div className="flex flex-wrap gap-2">
+                    <h3 className="mb-4 font-serif text-2xl text-accent1">{item.title}</h3>
+                    <p className="mb-4 text-sm text-deep_indigo">Published: {item.year}</p>
+                    <p className="text-deep_indigo">{item.description}</p>
+                    <div className="flex flex-wrap gap-2 mt-4">
                       {item.tags.map((tag, i) => (
                         <span
                           key={i}
-                          className="px-3 py-1 text-sm font-semibold transition-transform transform rounded-full shadow-md opacity-55 text-dark bg-secondaryLight hover:scale-105 hover:bg-secondaryDark hover:text-light"
+                          className="px-4 py-1 text-sm font-semibold transition-transform transform rounded-full shadow-md opacity-75 bg-secondaryLight text-dark hover:scale-110 hover:bg-secondaryDark hover:text-light"
                         >
                           #{tag}
                         </span>
@@ -260,15 +267,15 @@ const Research = () => {
                       alt={item.title}
                       className="w-16 h-16 rounded-full"
                     />
-                    <h3 className="ml-4 font-serif text-xl text-accent1">{item.title}</h3>
+                    <h3 className="ml-4 font-serif text-2xl text-accent1">{item.title}</h3>
                   </div>
-                  <p className="mb-4 text-sm text-neutral">Platform: {item.platform}</p>
-                  <p className="mb-4 text-neutral">{item.description}</p>
+                  <p className="mb-4 text-sm text-deep_indigo">Platform: {item.platform}</p>
+                  <p className="text-deep_indigo">{item.description}</p>
                   <a
                     href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-accent1 hover:underline"
+                    className="block mt-4 text-accent1 hover:underline"
                   >
                     Read Article →
                   </a>
@@ -276,7 +283,7 @@ const Research = () => {
                     {item.tags.map((tag, i) => (
                       <span
                         key={i}
-                        className="px-3 py-1 text-sm font-semibold transition-transform transform rounded-full shadow-md opacity-55 text-dark bg-secondaryLight hover:scale-105 hover:bg-secondaryDark hover:text-light"
+                        className="px-4 py-1 text-sm font-semibold transition-transform transform rounded-full shadow-md opacity-75 bg-secondaryLight text-dark hover:scale-110 hover:bg-secondaryDark hover:text-light"
                       >
                         #{tag}
                       </span>
@@ -288,32 +295,38 @@ const Research = () => {
           ))}
         </AnimatePresence>
       </div>
-
+        
       {/* Pagination */}
-      <div className="flex items-center justify-center gap-4 mt-8">
-        <p className="text-lg text-neutral">
+      <div className="flex items-center justify-center gap-8 mt-16">
+        <p className="text-lg font-semibold text-deep_indigo">
           Page {currentPage} of {Math.ceil(filteredData.length / itemsPerPage)}
         </p>
-        <div className="flex gap-4">
+        <div className="flex gap-8">
           {currentPage > 1 && (
-            <button
+            <motion.button
               onClick={() => changePage(-1)}
-              className="px-6 py-3 text-white rounded-lg bg-accent1 hover:bg-accent1Light"
+              className="px-8 py-4 text-white transition-all duration-300 transform rounded-lg shadow-2xl bg-gradient-to-r from-electric_blue to-aquamarine hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-electric_blue"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             >
               Previous
-            </button>
+            </motion.button>
           )}
           {currentPage * itemsPerPage < filteredData.length && (
-            <button
+            <motion.button
               onClick={() => changePage(1)}
-              className="px-6 py-3 text-white rounded-lg bg-accent1 hover:bg-accent1Light"
+              className="px-8 py-4 text-white transition-all duration-300 transform rounded-lg shadow-2xl bg-gradient-to-r from-electric_blue to-aquamarine hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-electric_blue"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             >
               Next
-            </button>
+            </motion.button>
           )}
         </div>
       </div>
     </div>
+
+  
   );
 };
 

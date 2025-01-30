@@ -116,26 +116,27 @@ const Olympiad = () => {
         {competition.icon}
       </div>
 
-      <div className="flex flex-col justify-between h-full p-6 space-y-4 border-2 border-transparent shadow-xl border-primaryLight/30 bg-primaryDark/80 rounded-3xl group-hover:border-accent2Light">
-        <h2 className="text-2xl font-semibold text-accent1 group-hover:text-accent2">
+      <div className="flex flex-col justify-between h-full p-6 space-y-4 border-2 shadow-xl border-jordy_blue border-primaryLight/30 bg-primaryDark/80 rounded-3xl group-hover:border-accent2Light">
+        <h2 className="text-2xl font-semibold text-jordy_blue group-hover:text-accent2">
           {competition.title}
         </h2>
-        <p className="text-sm text-neutral">{competition.description}</p>
+        <p className="text-sm text-deep_indigo-700">{competition.description}</p>
         <div className="flex items-center justify-between mt-auto">
-          <span className="text-sm font-medium text-accent1Light">Year: {competition.year}</span>
+          <span className="text-sm font-medium text-deep_indigo">Year: {competition.year}</span>
         </div>
       </div>
     </div>
   );
 
   return (
-<div className="relative min-h-screen p-8 bg-gradient-to-b from-accent2 via-primaryDark to-dark">
-  {/* Overlay with Blur Effect for Premium Look */}
-  <div className="absolute inset-0 z-0 bg-black opacity-40 backdrop-blur-md"></div>
+    <section className="relative min-h-screen p-8 bg-gradient-to-b from-lemon_chiffon via-tea_rose to-deep_indigo">
+      {/* Overlay with Blur Effect for Premium Look */}
+     
 
-  <h1 className="mb-12 text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-accent2 via-primary to-accent1Dark md:text-6xl">
-    My Olympiad Achievements
-  </h1>
+      <h1 className="mb-12 text-5xl font-extrabold text-center text-transparent border-b-4 bg-clip-text bg-gradient-to-r from-acquamarine via-jordy_blue to-tea_rose md:text-6xl border-jordy_blue ">
+         My Olympiad Achievements
+      </h1>
+
 
       <div
         ref={scrollContainerRef}
@@ -157,7 +158,7 @@ const Olympiad = () => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

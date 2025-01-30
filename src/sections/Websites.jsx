@@ -94,12 +94,12 @@ const Websites = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
-      className="w-full max-w-[360px] p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl hover:opacity-100"
+      className="w-full max-w-[360px] p-8 rounded-3xl shadow-2xl transition-transform transform hover:scale-110 hover:shadow-3xl hover:opacity-100"
       style={{
-        background: 'rgba(255, 255, 255, 0.1)',  // Semi-transparent background for Glassmorphism
-        backdropFilter: 'blur(15px)',  // Blur effect for the background
-        WebkitBackdropFilter: 'blur(15px)',  // For Safari compatibility
-        border: '6px solid rgba(255, 255, 255, 0.2)',  // Light border to enhance glass effect
+        background: 'rgba(255, 255, 255, 0.12)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
       }}
       onClick={() => {
         setActiveTab("projects");
@@ -114,34 +114,35 @@ const Websites = () => {
         });
       }}
     >
-      {/* Image Section */}
-      <Tilt options={{ max: 25, scale: 1.05, speed: 400 }} className="relative w-full h-[230px] mb-4 overflow-hidden rounded-xl">
+      <Tilt
+        options={{ max: 25, scale: 1.1, speed: 450 }}
+        className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl"
+      >
         <motion.img
           src={images[0]}
           alt={name}
-          className="object-cover w-full h-full transition-all duration-300 ease-in-out transform rounded-xl hover:scale-110 hover:rotate-2"
+          className="object-cover w-full h-full transition-all duration-500 ease-in-out transform rounded-xl hover:scale-125 hover:rotate-2"
         />
-        <div className="absolute inset-0 flex justify-end m-3">
+        <div className="absolute inset-0 flex justify-end m-4">
           <motion.div
             onClick={() => window.open(source_code_link, "_blank")}
-            className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-[#FFC857] to-[#FF6F3C] rounded-full cursor-pointer shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+            className="flex items-center justify-center transition-all duration-500 rounded-full shadow-lg cursor-pointer w-14 h-14 bg-gradient-to-r from-aquamarine to-jordy_blue hover:scale-110 hover:shadow-xl"
           >
             <img
               src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png"
               alt="GitHub"
-              className="w-6 h-6"
+              className="w-7 h-7"
             />
           </motion.div>
         </div>
       </Tilt>
   
-      {/* Title and Description */}
-      <div className="mt-5">
+      <div className="mt-6">
         <motion.h3
           variants={typingAnimation}
           initial="hidden"
           animate="visible"
-          className="text-2xl font-bold text-[#FFC857] transition-all duration-300 hover:text-[#FF6F3C]"
+          className="text-3xl font-semibold transition-all duration-500 text-aquamarine hover:text-jordy_blue"
         >
           {name}
         </motion.h3>
@@ -149,21 +150,20 @@ const Websites = () => {
           variants={typingAnimation}
           initial="hidden"
           animate="visible"
-          className="mt-2 text-[#F9F5F0] transition-all duration-200 hover:text-[#C1D3E5]"
+          className="mt-3 transition-all duration-300 text-lemon_chiffon hover:text-champagne_pink"
         >
           {description}
         </motion.p>
       </div>
   
-      {/* Tags */}
-      <div className="flex flex-wrap gap-2 mt-4">
+      <div className="flex flex-wrap gap-3 mt-6">
         {tags.map((tag, tagIndex) => (
           <motion.span
             key={tagIndex}
             variants={typingAnimation}
             initial="hidden"
             animate="visible"
-            className={`text-sm font-medium text-[#F9F5F0] ${tag.color} px-4 py-2 rounded-full shadow-sm`}
+            className={`text-sm font-semibold text-lemon_chiffon ${tag.color} px-5 py-2 rounded-full shadow-xl transition-all duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
           >
             #{tag.name}
           </motion.span>
@@ -171,6 +171,7 @@ const Websites = () => {
       </div>
     </motion.div>
   );
+  
   
   const WebsiteCard = ({
     index,
@@ -187,12 +188,12 @@ const Websites = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
-      className="w-full max-w-[360px] p-6 rounded-2xl shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl hover:opacity-100"
+      className="w-full max-w-[360px] p-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105 hover:shadow-2xl hover:opacity-100"
       style={{
-        background: 'rgba(255, 255, 255, 0.1)',  // Semi-transparent background for Glassmorphism
-        backdropFilter: 'blur(15px)',  // Blur effect for the background
-        WebkitBackdropFilter: 'blur(15px)',  // For Safari compatibility
-        border: '6px solid rgba(255, 255, 255, 0.2)',  // Light border to enhance glass effect
+        background: 'rgba(255, 255, 255, 0.12)',
+        backdropFilter: 'blur(25px)',
+        WebkitBackdropFilter: 'blur(25px)',
+        border: '1px solid rgba(255, 255, 255, 0.15)',
       }}
       onClick={() => {
         setActiveTab("websites");
@@ -207,37 +208,35 @@ const Websites = () => {
         });
       }}
     >
-      {/* Image Section */}
       <Tilt
-        options={{ max: 25, scale: 1.1, speed: 400 }}
-        className="relative w-full h-[230px] mb-6 overflow-hidden rounded-xl"
+        options={{ max: 25, scale: 1.1, speed: 450 }}
+        className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl"
       >
         <motion.img
           src={images[0]}
           alt={title}
-          className="object-cover w-full h-full transition-all duration-300 ease-in-out transform rounded-xl hover:scale-110 hover:rotate-2"
+          className="object-cover w-full h-full transition-all duration-500 ease-in-out transform rounded-xl hover:scale-110 hover:rotate-2"
         />
-        <div className="absolute inset-0 flex justify-end m-3">
+        <div className="absolute inset-0 flex justify-end m-4">
           <motion.div
             onClick={() => window.open(source_code_link, "_blank")}
-            className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-[#FFC857] to-[#FF6F3C] rounded-full cursor-pointer shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+            className="flex items-center justify-center transition-all duration-500 rounded-full shadow-lg cursor-pointer w-14 h-14 bg-gradient-to-r from-aquamarine to-jordy_blue hover:scale-110 hover:shadow-2xl"
           >
             <img
               src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png"
               alt="GitHub"
-              className="w-6 h-6"
+              className="w-7 h-7"
             />
           </motion.div>
         </div>
       </Tilt>
   
-      {/* Title and Description */}
-      <div className="mt-5">
+      <div className="mt-6">
         <motion.h3
           variants={typingAnimation}
           initial="hidden"
           animate="visible"
-          className="text-2xl font-bold text-[#FFC857] transition-all duration-300 hover:text-[#FF6F3C]"
+          className="text-3xl font-semibold transition-all duration-500 text-aquamarine hover:text-jordy_blue"
         >
           {title}
         </motion.h3>
@@ -245,21 +244,20 @@ const Websites = () => {
           variants={typingAnimation}
           initial="hidden"
           animate="visible"
-          className="mt-2 text-[#F9F5F0] transition-all duration-200 hover:text-[#C1D3E5]"
+          className="mt-3 transition-all duration-300 text-lemon_chiffon hover:text-champagne_pink"
         >
           {description}
         </motion.p>
       </div>
   
-      {/* Tags */}
-      <div className="flex flex-wrap gap-2 mt-4">
+      <div className="flex flex-wrap gap-3 mt-6">
         {tags.map((tag, tagIndex) => (
           <motion.span
             key={tagIndex}
             variants={typingAnimation}
             initial="hidden"
             animate="visible"
-            className={`text-sm font-medium text-[#F9F5F0] ${tag.color} px-4 py-2 rounded-full shadow-sm`}
+            className={`text-sm font-semibold text-lemon_chiffon ${tag.color} px-5 py-2 rounded-full shadow-lg transition-all duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
           >
             #{tag.name}
           </motion.span>
@@ -286,192 +284,194 @@ const Websites = () => {
   };
 
   return (
-    <section className="relative py-16 overflow-hidden lg:py-24 bg-primaryDark text-light">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary to-primaryLight opacity-60"></div>
+<section className="relative py-16 overflow-hidden lg:py-24 bg-dark_teal text-lemon_chiffon">
+  {/* Background Gradient */}
+  <div className="absolute inset-0 bg-gradient-to-b from-non_photo_blue to-tea_rose opacity-60"></div>
 
-      <div className="container relative z-10 px-6 mx-auto lg:px-20">
-        {/* Header Section */}
-        <motion.div
-          className="flex flex-col items-center mb-12 lg:flex-row"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-        >
-          {/* Left Side - Description */}
-          <div className="max-w-xl text-center lg:w-1/2 lg:text-left">
-            <h1 className="mb-6 font-serif text-5xl font-extrabold leading-tight tracking-wide text-secondary">
-              Code Canvas
-            </h1>
-            <p className="mb-4 text-lg text-light">
-              Partnering with Muzahidul Islam Abir, we're creating impactful projects that solve real-world problems through innovative solutions.
-            </p>
-            <p className="mb-4 text-lg text-light">
-              Our expertise spans C, C++, Python, HTML, CSS, JavaScript, React, Vite, Three.js, GSAP, Framer Motion, Plotly, and Firebase.
-            </p>
-            <p className="text-lg text-light">
-              We're driven by a passion for creativity and a dedication to overcoming challenges.
-            </p>
-          </div>
-
-          {/* Right Side - Lottie Animation */}
-          <div className="mt-12 lg:w-1/2 lg:mt-0">
-            <Lottie options={lottieOptions} height={"80%"} width={"80%"} />
-          </div>
-        </motion.div>
-
-        {/* Tab Navigation */}
-        <div className="flex justify-center mb-8 space-x-6">
-          <button
-            className={`py-3 px-8 text-lg font-medium rounded-full transition-all duration-300 shadow-lg transform hover:scale-105 ${
-              activeTab === "websites"
-                ? "bg-gradient-to-r from-secondary to-accent2 text-light"
-                : "bg-transparent text-secondary border border-secondary hover:bg-gradient-to-r hover:from-secondary hover:to-accent2 hover:text-light"
-            }`}
-            onClick={() => setActiveTab("websites")}
-          >
-            Websites
-          </button>
-          <button
-            className={`py-3 px-8 text-lg font-medium rounded-full transition-all duration-300 shadow-lg transform hover:scale-105 ${
-              activeTab === "projects"
-                ? "bg-gradient-to-r from-secondary to-accent2 text-light"
-                : "bg-transparent text-secondary border border-secondary hover:bg-gradient-to-r hover:from-secondary hover:to-accent2 hover:text-light"
-            }`}
-            onClick={() => setActiveTab("projects")}
-          >
-            Projects
-          </button>
-        </div>
-
-        {/* Projects or Websites Grid */}
-        <motion.div
-          className="grid grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3 sm:px-8"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: { opacity: 0, y: 50 },
-            visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.2, delay: 0.4 } },
-          }}
-        >
-          {activeTab === "projects" &&
-            projects.map((project, index) => (
-              <motion.div
-                key={index}
-                variants={{
-                  hidden: { opacity: 0, y: 30 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-                }}
-              >
-                <ProjectCard index={index} {...project} />
-              </motion.div>
-            ))}
-          {activeTab === "websites" &&
-            websites.map((website, index) => (
-              <motion.div
-                key={index}
-                variants={{
-                  hidden: { opacity: 0, y: 30 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-                }}
-              >
-                <WebsiteCard index={index} {...website} />
-              </motion.div>
-            ))}
-        </motion.div>
-
-        {/* Detailed Modal for Projects or Websites */}
-        {selectedProject && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-dark bg-opacity-70"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <motion.div
-              className="bg-gradient-to-br from-primaryDark via-primaryLight to-accent2 p-8 rounded-2xl w-4/5 lg:w-1/2 max-h-[80vh] overflow-y-auto shadow-xl backdrop-blur-md border border-opacity-20 border-[#FFF] relative"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 30,
-              }}
-            >
-              {/* Close Button */}
-              <motion.button
-                onClick={closeDetails}
-                className="absolute p-2 transition-all rounded-full shadow-md top-4 right-4 text-light bg-accent2 hover:scale-110 hover:shadow-lg"
-                whileHover={{
-                  scale: 1.1,
-                  rotate: 15,
-                  transition: { type: "spring", stiffness: 300 },
-                }}
-              >
-                ✕
-              </motion.button>
-
-              {/* Modal Content */}
-              <motion.h2
-                className="mb-4 font-serif text-3xl font-extrabold text-secondary"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-              >
-                {selectedProject.name || selectedProject.title}
-              </motion.h2>
-              <motion.p
-                className="mb-6 text-lg leading-relaxed text-light"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
-              >
-                {selectedProject.detailedDescription}
-              </motion.p>
-
-              {/* Image Gallery */}
-              <motion.div
-                className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.7, duration: 0.6 }}
-              >
-                {selectedProject.images.map((image, index) => (
-                  <motion.img
-                    key={index}
-                    src={image}
-                    alt={`Image ${index}`}
-                    className="object-cover w-full h-32 transition-transform transform rounded-xl hover:scale-105"
-                    initial={{ scale: 0.9 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: index * 0.2, duration: 0.4 }}
-                  />
-                ))}
-              </motion.div>
-
-              {/* Source Code Button */}
-              <motion.div
-                className="flex justify-center mt-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 0.6 }}
-              >
-                <a
-                  href={selectedProject.source_code_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-2 text-lg font-medium transition-transform transform rounded-full shadow-lg text-light bg-gradient-to-r from-accent1 to-accent2 hover:shadow-2xl hover:opacity-90 hover:scale-105"
-                >
-                  View Source Code
-                </a>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        )}
+  <div className="container relative z-10 px-6 mx-auto lg:px-20">
+    {/* Header Section */}
+    <motion.div
+      className="flex flex-col items-center mb-12 lg:flex-row"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2, duration: 0.8 }}
+    >
+      {/* Left Side - Description */}
+      <div className="max-w-xl text-center lg:w-1/2 lg:text-left">
+        <h1 className="mb-6 font-serif text-5xl font-extrabold leading-tight tracking-wide text-champagne_pink">
+          Code Canvas
+        </h1>
+        <p className="mb-4 text-lg text-lemon_chiffon">
+          Partnering with Muzahidul Islam Abir, we're creating impactful projects that solve real-world problems through innovative solutions.
+        </p>
+        <p className="mb-4 text-lg text-lemon_chiffon">
+          Our expertise spans C, C++, Python, HTML, CSS, JavaScript, React, Vite, Three.js, GSAP, Framer Motion, Plotly, and Firebase.
+        </p>
+        <p className="text-lg text-lemon_chiffon">
+          We're driven by a passion for creativity and a dedication to overcoming challenges.
+        </p>
       </div>
-    </section>
+
+      {/* Right Side - Lottie Animation */}
+      <div className="mt-12 lg:w-1/2 lg:mt-0">
+        <Lottie options={lottieOptions} height={"80%"} width={"80%"} />
+      </div>
+    </motion.div>
+
+    {/* Tab Navigation */}
+    <div className="flex justify-center mb-8 space-x-6">
+      <button
+        className={`py-3 px-8 text-lg font-medium rounded-full transition-all duration-300 shadow-lg transform hover:scale-105 ${
+          activeTab === "websites"
+            ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
+            : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
+        }`}
+        onClick={() => setActiveTab("websites")}
+      >
+        Websites
+      </button>
+      <button
+        className={`py-3 px-8 text-lg font-medium rounded-full transition-all duration-300 shadow-lg transform hover:scale-105 ${
+          activeTab === "projects"
+            ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
+            : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
+        }`}
+        onClick={() => setActiveTab("projects")}
+      >
+        Projects
+      </button>
+    </div>
+
+    {/* Projects or Websites Grid */}
+    <motion.div
+      className="grid grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3 sm:px-8"
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: { opacity: 0, y: 50 },
+        visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.2, delay: 0.4 } },
+      }}
+    >
+      {activeTab === "projects" &&
+        projects.map((project, index) => (
+          <motion.div
+            key={index}
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+            }}
+          >
+            <ProjectCard index={index} {...project} />
+          </motion.div>
+        ))}
+      {activeTab === "websites" &&
+        websites.map((website, index) => (
+          <motion.div
+            key={index}
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+            }}
+          >
+            <WebsiteCard index={index} {...website} />
+          </motion.div>
+        ))}
+    </motion.div>
+
+{/* Detailed Modal for Projects or Websites */}
+{selectedProject && (
+  <motion.div
+    className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-70"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.4, ease: "easeInOut" }}
+  >
+    <motion.div
+      className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-8 rounded-2xl w-4/5 lg:w-1/2 max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-md border-4 border-opacity-80 border-[#FFF] relative"
+      initial={{ scale: 0.85 }}
+      animate={{ scale: 1 }}
+      exit={{ scale: 0.85 }}
+      transition={{
+        type: "spring",
+        stiffness: 320,
+        damping: 35,
+      }}
+    >
+      {/* Close Button */}
+      <motion.button
+        onClick={closeDetails}
+        className="absolute p-2 transition-all rounded-full shadow-xl top-4 right-4 text-lemon_chiffon bg-aquamarine hover:scale-110 hover:shadow-2xl"
+        whileHover={{
+          scale: 1.1,
+          rotate: 15,
+          transition: { type: "spring", stiffness: 400 },
+        }}
+      >
+        ✕
+      </motion.button>
+
+      {/* Modal Content */}
+      <motion.h2
+        className="mb-6 font-serif text-4xl font-extrabold text-dark_teal"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+      >
+        {selectedProject.name || selectedProject.title}
+      </motion.h2>
+      <motion.p
+        className="mb-8 text-lg leading-relaxed text-deep_indigo"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.6 }}
+      >
+        {selectedProject.detailedDescription}
+      </motion.p>
+
+      {/* Image Gallery */}
+      <motion.div
+        className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.7, duration: 0.6 }}
+      >
+        {selectedProject.images.map((image, index) => (
+          <motion.img
+            key={index}
+            src={image}
+            alt={`Image ${index}`}
+            className="object-cover w-full h-32 transition-all transform rounded-xl hover:scale-105 hover:shadow-xl"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: index * 0.2, duration: 0.4 }}
+          />
+        ))}
+      </motion.div>
+
+      {/* Source Code Button */}
+      <motion.div
+        className="flex justify-center mt-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 0.6 }}
+      >
+        <a
+          href={selectedProject.source_code_link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-6 py-3 text-lg font-medium transition-all transform rounded-full shadow-2xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue hover:opacity-90 hover:scale-110"
+        >
+          View Source Code
+        </a>
+      </motion.div>
+    </motion.div>
+  </motion.div>
+)}
+
+
+  </div>
+</section>
 
 
 
