@@ -3,6 +3,9 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import Lottie from "react-lottie";
 import animationData from "../assets/animation/myself.json";
+import color from "../assets/animation/gradient.json";
+
+
 
 import atheletics from "../assets/gallery/2022_atheletics.jpg";
 import house_champion from "../assets/gallery/2022_house_champion.jpg";
@@ -114,23 +117,30 @@ const Gallery = () => {
   };
 
   return (
-    <div className="mt-15 banner">
-      <div className="slider" style={{ "--quantity": images.length }}>
+<div className="relative py-16 overflow-hidden banner bg-lemon_chiffon">
+
+
+  {/* Other content */}
+  <div className="absolute inset-0 shadow-lg bg-gradient-to-b from-lemon_chiffon via-light_gold to-soft_peach opacity-90 backdrop-blur-md z-5"></div>
+  <div className="absolute inset-0 bg-radial-gradient(closest-corner, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.25)) opacity-20 mix-blend-overlay z-5"></div>
+
+        
+      <div className=" slider rounded-3xl" style={{ "--quantity": images.length }}>
         {images.map((image, index) => (
           <div
-            className="item"
+            className="border-2 shadow-lg item border-lemon_chiffon rounded-xl"
             key={index}
             style={{ "--position": index + 1 }}
             onMouseEnter={(e) => handleHover(e, true)}
             onMouseLeave={(e) => handleHover(e, false)}
           >
             <img src={image.src} alt={image.description} />
-            <div className="image-description">{image.description}</div>
+            <div className="image-description bg-lavender-gray text-golden-yellow">{image.description}</div>
           </div>
         ))}
       </div>
 
-      <div className="content">
+      <div className="content mt-15">
         <motion.h1
           data-content="In Frame"
           initial={{ opacity: 0, y: 30 }}
@@ -140,13 +150,12 @@ const Gallery = () => {
           In Frame
         </motion.h1>
 
-        <div className="author fa-align-right">
-          <h2>Stories Captured</h2>
-          <p>
-            <b>Adventures of my life</b>
-          </p>
-          <p>Explore moments that define my journey and shape my dreams!</p>
+        <div className="font-sans text-lg text-right author text-dark_teal">
+          <h2 className="mb-2 font-serif text-4xl">Stories Captured</h2>
+          <p className="text-xl font-bold">Adventures of my life</p>
+          <p className="mt-2 text-lg">Explore moments that define my journey and shape my dreams!</p>
         </div>
+
 
         <div className="model">
           <Lottie
@@ -156,9 +165,22 @@ const Gallery = () => {
               autoplay: true,
             }}
             height={900}
-            width={800}
+            width="100%"
           />
         </div>
+          {/* Color animation */}
+  <div className="absolute inset-0 bottom-0 z-10 w">
+    <Lottie
+      options={{
+        animationData: color, // Use the correct color animation data
+        loop: true,
+        autoplay: true,
+      }}
+      height={500}
+      width="100%"
+      className="opacity-800" 
+    />
+  </div>
       </div>
     </div>
   );

@@ -186,10 +186,25 @@ scene.add(coolPointLight);
 
 
 
-// Soft fill light to bring more warmth
-const fillLight = new THREE.PointLight(0xF79D7D, 1, 300); // Soft pinkish light for gentle fill
-fillLight.position.set(5, 15, 5); // Positioned to softly illuminate the scene from above
+
+const fillLight = new THREE.PointLight(0xF79D7D, 1, 300); 
+fillLight.position.set(5, 15, 5); 
 scene.add(fillLight);
+
+
+const yellowLight = new THREE.PointLight(0xFFFC00, 520, 350); 
+yellowLight.position.set(-5, 20, -5); 
+scene.add(yellowLight);
+
+
+const pinkLight = new THREE.PointLight(0xFFC0CB, 1500, 250); 
+pinkLight.position.set(10, 10, 10); 
+scene.add(pinkLight);
+
+
+const amberLight = new THREE.PointLight(0xFF7F50, 800, 400); 
+amberLight.position.set(-10, 10, 15); 
+scene.add(amberLight);
 
     // Setup OrbitControls
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -261,7 +276,7 @@ scene.add(fillLight);
 
   return (
 <motion.div
-  className="flex flex-col items-center justify-center min-h-screen p-6 bg-gradient-to-b from-dark via-primaryDark to-dark lg:flex-row"
+  className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-b from-deep_indigo to-dark_teal lg:flex-row"
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 1 }}
@@ -280,7 +295,7 @@ scene.add(fillLight);
     transition={{ duration: 1.5, delay: 0.5 }}
   >
     <motion.h1
-      className="text-4xl font-bold text-left text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-secondaryLight to-accent1 bg-clip-text sm:-mt-10 md:-mt-12"
+      className="text-4xl font-extrabold text-left text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-aquamarine via-jordy_blue to-tea_rose bg-clip-text sm:-mt-10 md:-mt-12"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -293,9 +308,10 @@ scene.add(fillLight);
       leadership abilities. These testimonials highlight dedication and unique
       skills.
     </p>
-    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-secondary to-secondaryLight opacity-10 -z-10"></div>
+    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-acquamarine via-jordy_blue to-tea_rose opacity-10 -z-10"></div>
   </motion.div>
 </motion.div>
+
 
   );
 };

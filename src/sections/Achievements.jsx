@@ -107,50 +107,74 @@ const LoadingFallback = () => (
 
 const AnimatedModel = memo(() => (
   <Canvas style={{ width: 150, height: 150, position: "absolute", top: "-20px", left: "-40px", zIndex: 10 }}>
-    <ambientLight intensity={0.3} color="#FFC857" />
-    <spotLight position={[20, 30, 10]} angle={0.7} penumbra={0.9} intensity={40} color="#E6B800" castShadow />
-    <directionalLight position={[-10, 20, -10]} intensity={8} color="#F79D7D" />
-    <pointLight position={[0, 5, 10]} intensity={25} color="#F26B38" decay={2} />
+    {/* Ambient light with a soft blue from your Tailwind palette */}
+    <ambientLight intensity={5} color="#a3c4f3" /> {/* Jordy Blue */}
+    
+    {/* Spot light with a soft purple tint, matching with Pink Lavender */}
+    <spotLight position={[20, 30, 10]} angle={0.7} penumbra={0.9} intensity={50} color="#f1c0e8" castShadow /> {/* Pink Lavender */}
+    
+    {/* Directional light with a pink glow, adjusted to Tea Rose */}
+    <directionalLight position={[-10, 20, -10]} intensity={8} color="#ffcfd2" /> {/* Tea Rose */}
+    
+    {/* Point light with a warm golden highlight, aligned with Champagne Pink */}
+    <pointLight position={[0, 5, 10]} intensity={50} color="#fde4cf" decay={2} /> {/* Champagne Pink */}
+    
     <Suspense fallback={<LoadingFallback />}>
       <Ball />
     </Suspense>
+    
     <OrbitControls enableZoom={false} enablePan autoRotate autoRotateSpeed={1.5} />
   </Canvas>
 ));
+
 
 const AchievementCard = ({ achievement }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleCard = () => setIsExpanded((prev) => !prev);
 
   return (
-    <VerticalTimelineElement
-      contentStyle={{ background: "rgba(255, 255, 255, 0.1)", backdropFilter: "blur(10px)", borderRadius: "20px", padding: "1.5rem" }}
-      contentArrowStyle={{ borderRight: "8px solid rgba(255, 255, 255, 0.1)" }}
-      iconStyle={{ background: "#FF6F3C", color: "#fff", boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)", border: "2px solid #FFC857" }}
-      icon={<AnimatedModel />}
-    >
-      <motion.div onClick={toggleCard} role="button" aria-expanded={isExpanded}>
-        <h3 className="font-serif text-2xl font-bold text-gradient sm:text-3xl">{achievement.title}</h3>
-        <p className="mt-2 text-base leading-relaxed text-neutral-700">{achievement.description}</p>
-      </motion.div>
-      <motion.div
-        initial={{ height: 0, opacity: 0 }}
-        animate={isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        style={{ overflow: "hidden", marginTop: "1rem" }}
+      <VerticalTimelineElement
+        contentStyle={{ 
+          background: "rgba(30, 30, 60, 0.5)", 
+          backdropFilter: "blur(12px)", 
+          borderRadius: "20px", 
+          padding: "1.5rem", 
+          border: "1px solid rgba(255, 255, 255, 0.2)"
+        }}
+        contentArrowStyle={{ borderRight: "8px solid rgba(30, 30, 60, 0.5)" }}
+        iconStyle={{ 
+          background: "linear-gradient(135deg, #7B61FF, #FF6F3C)", 
+          color: "#fff", 
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)", 
+          border: "2px solid #FFC857" 
+        }}
+        icon={<AnimatedModel />}
       >
-        <ul className="space-y-3">
-          {achievement.points.map((point, index) => (
-            <motion.li key={index} className="flex items-start space-x-3 text-sm text-primary">
-              <div className="flex items-center justify-center w-6 h-6 text-white border-2 rounded-full shadow bg-secondaryDark border-primaryLight">
-                <FaCheck className="text-xs" />
-              </div>
-              <span>{point}</span>
-            </motion.li>
-          ))}
-        </ul>
-      </motion.div>
-    </VerticalTimelineElement>
+        <motion.div onClick={toggleCard} role="button" aria-expanded={isExpanded}>
+        <h3 className="font-serif text-2xl font-bold text-transparent sm:text-3xl bg-gradient-to-r from-jordy_blue to-mauve bg-clip-text">
+           {achievement.title}
+         </h3>
+          <p className="mt-2 text-base leading-relaxed text-neutral-200">{achievement.description}</p>
+        </motion.div>
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          style={{ overflow: "hidden", marginTop: "1rem" }}
+        >
+          <ul className="space-y-3">
+            {achievement.points.map((point, index) => (
+              <motion.li key={index} className="flex items-start space-x-3 text-sm text-accent">
+                <div className="flex items-center justify-center w-6 h-6 text-white border-2 border-purple-300 rounded-full shadow-lg bg-gradient-to-r from-indigo-500 to-purple-500">
+                  <FaCheck className="text-xs" />
+                </div>
+                <span>{point}</span>
+              </motion.li>
+            ))}
+          </ul>
+        </motion.div>
+      </VerticalTimelineElement>
+
   );
 };
 
@@ -160,26 +184,26 @@ const Achievements = () => {
   }, []);
 
   return (
-    <section className="p-6 mt-20 space-y-10 md:p-12 lg:p-16">
+    <section className="p-6 mt-20 space-y-10 shadow-xl md:p-12 lg:p-16 bg-gradient-to-b from-deep_indigo via-mauve to-pink_lavender bg-opacity-90 backdrop-blur-sm ">
+    <div className="absolute inset-0 opacity-50 bg-gradient-to-r from-aquamarine to-jordy_blue mix-blend-multiply"></div>
+    <div className="absolute inset-0 bg-radial-gradient(closest-corner, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.2)) opacity-20"></div>
       <motion.div
-        className="text-center achievement-heading"
+        className="mb-10 text-center achievement-heading"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-4xl font-bold text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-blue-500 to-yellow-400 bg-clip-text sm:-mt-10 md:-mt-12">
+        <h2 className="text-4xl font-bold text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-mauve to-pink_lavender bg-clip-text sm:-mt-10 md:-mt-12">
           My Achievements
         </h2>
       </motion.div>
 
-
-      <section className="flex justify-center">
+      <section className="flex justify-center mb-5">
         <motion.div
-          className="w-full max-w-4xl p-6 text-center text-white bg-opacity-100 rounded-lg shadow-2xl"
+          className="w-full max-w-4xl p-6 text-center rounded-lg shadow-2xl backdrop-blur-lg bg-mauve/30 text-deep_indigo"
           data-aos="fade-up"
           style={{
-            backdropFilter: "blur(1px)",
-            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            backdropFilter: "blur(10px)",
             maxHeight: "80vh",
             overflowY: "auto",
             zIndex: 10,
@@ -194,7 +218,7 @@ const Achievements = () => {
             "Feel free to explore my portfolio and see how my journey unfolds..."].map((text, i) => (
             <p
               key={i}
-              className="mb-4 text-base sm:text-lg text-accent2Light"
+              className="mb-4 text-base sm:text-lg text-jordy_blue"
               data-aos={i % 2 === 0 ? "fade-right" : "fade-up"}
             >
               {text}
@@ -207,6 +231,7 @@ const Achievements = () => {
           <AchievementCard key={index} achievement={achievement} />
         ))}
       </VerticalTimeline>
+
     </section>
   );
 };

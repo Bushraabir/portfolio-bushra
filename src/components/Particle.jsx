@@ -188,7 +188,7 @@ const ParticleScene = () => {
 
   return (
     <Canvas
-      style={{ height: '210vh', width: '100vw' }}
+      style={{ height: '213vh', width: '100vw' }}
       shadows
       onClick={handleCanvasClick}
     >
