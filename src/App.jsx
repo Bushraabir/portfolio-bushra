@@ -277,7 +277,7 @@ const toggleButton = {
   width: "70px",
   height: "70px",
   borderRadius: "50%",
-  background: `linear-gradient(145deg, ${colors.accent2}, ${colors.primaryDark})`, // Dark Blue and Lavender Gray
+  background: "linear-gradient(145deg, #2a1b3d 0%, #6e3f6b 35%, #fde4cf 75%, #f0c4b4 100%)",
   border: "none",
   cursor: "pointer",
   display: "flex",
@@ -285,17 +285,18 @@ const toggleButton = {
   justifyContent: "center",
   boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.4)",
   transition: "all 0.3s ease",
-  transformStyle: "preserve-3d", // Enables 3D transformation
+  transformStyle: "preserve-3d",
   "&:hover": {
-    boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.5)", // Hover effect for more interactivity
+    boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.5)", 
   },
+  zIndex :99999 ,
 };
 
 const buttonFace = {
   fontSize: "24px",
   fontWeight: "bold",
-  color: colors.light, // Using light color from the palette
-  transformOrigin: "center", // Make the rotation happen from the center
+  color: colors.light, 
+  transformOrigin: "center",
 };
 
 const navbarContainer = {
@@ -310,16 +311,21 @@ const navbar = {
   flexDirection: "column",
   alignItems: "flex-start",
   justifyContent: "flex-start",
-  background: `linear-gradient(145deg, ${colors.primaryDark}, ${colors.primary})`, // Using Slate Blue tones
+
   borderRadius: "20px",
   boxShadow: "0px 10px 10px rgba(0, 0, 0, 0.3)",
   position: "fixed",
   top: "60px",
   left: "0",
   padding: "1rem",
-  height: "100vh",
-  width: "0",
+  height: "57vh",
+  width: "150px", // You can adjust the width based on your layout needs
+  backdropFilter: "blur(20px)", // Adds the blur effect
+  backgroundColor: "rgba(255, 255, 255, 0.1)", // Adds transparency to the background
+  border: "1px solid rgba(255, 255, 255, 0.2)", // Optional: subtle border to enhance the glass effect
 };
+
+
 
 const navList = {
   listStyleType: "none",
@@ -328,6 +334,7 @@ const navList = {
 };
 
 const navItem = {
+  marginTop: "20px",
   marginBottom: "20px",
 };
 

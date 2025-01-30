@@ -76,6 +76,7 @@ const InteractiveParticle = ({ position, color, radius }) => {
 };
 
 // Ground Plane Component
+// Ground Plane Component
 const GroundPlane = () => {
   const [ref] = usePlane(() => ({
     position: [0, -2.5, 0],
@@ -86,20 +87,50 @@ const GroundPlane = () => {
   return (
     <mesh ref={ref} receiveShadow>
       <planeGeometry args={[200, 200]} />
-      <meshStandardMaterial color="#2F3A58" roughness={0.8} metalness={0.2} /> {/* Slate Blue for ground */}
+      <meshStandardMaterial color="#2a1b3d" roughness={0.8} metalness={0.2} /> {/* Soft gray for ground */}
     </mesh>
   );
 };
 
+
 // Background Scene Component
-const BackgroundScene = () => (
-  <group>
-    <mesh position={[0, -50, -50]}>
-      <sphereGeometry args={[100, 64, 64]} />
-      <meshStandardMaterial color="#1C273B" metalness={0.2} roughness={0.8} side={THREE.BackSide} /> {/* Darker shade for background */}
-    </mesh>
-  </group>
-);
+// Background Scene Component with Gradient
+const BackgroundScene = () => {
+  const gradientMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+      topColor: { value: new THREE.Color("#1d3557") }, // Pink Lavender color at the top
+      bottomColor: { value: new THREE.Color("#fbf8cc") }, // Lemon Chiffon color at the bottom
+    },
+    vertexShader: `
+      varying vec3 vPosition;
+      void main() {
+        vPosition = position;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec3 vPosition;
+      uniform vec3 topColor;
+      uniform vec3 bottomColor;
+      void main() {
+        gl_FragColor = vec4(mix(bottomColor, topColor, vPosition.y / 50.0), 1.0);
+      }
+    `,
+    side: THREE.BackSide,
+    depthWrite: false,
+    transparent: true,
+  });
+
+  return (
+    <group>
+      <mesh position={[0, -50, -50]}>
+        <sphereGeometry args={[100, 64, 64]} />
+        <meshBasicMaterial attach="material" color="#8eecf5" />
+        <primitive object={new THREE.Mesh(new THREE.SphereGeometry(100, 64, 64), gradientMaterial)} />
+      </mesh>
+    </group>
+  );
+};
 
 // Particle System Component
 const ParticleSystem = ({ addParticleAt, setAddParticleAt, initialParticles }) => {
@@ -188,7 +219,7 @@ const ParticleScene = () => {
 
   return (
     <Canvas
-      style={{ height: '213vh', width: '100vw' }}
+      style={{ height: '215vh', width: '100vw' }}
       shadows
       onClick={handleCanvasClick}
     >
