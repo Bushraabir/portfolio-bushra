@@ -104,7 +104,7 @@ const Gallery = () => {
   };
 
   return (
-<div className="relative py-16 overflow-hidden banner bg-lemon_chiffon">
+<div className="relative py-16 overflow-hidden banner bg-lemon_chiffon h-[100vh]">
 
 
   {/* Other content */}
