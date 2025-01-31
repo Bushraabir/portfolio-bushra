@@ -1,7 +1,7 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense , useRef} from "react";
 import { motion } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Loader from "./components/Loader"; // Importing the loader
+import Loader from "./components/Loader";
 
 
 // Color Palette (for styling)
@@ -127,7 +127,7 @@ const NavbarComponent = () => {
         variants={sidebarVariants}
         style={{
           ...navbar,
-          pointerEvents: isOpen ? "auto" : "none", // Disable interactions when closed
+          pointerEvents: isOpen ? "auto" : "none", 
         }}
       >
         <motion.ul style={navList}>
@@ -163,100 +163,49 @@ const NavbarComponent = () => {
   );
 };
 
+
+
+
 const App = () => {
-  const [loading, setLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
+
+
+const [isLoaded, setIsLoaded] = useState(false);
+const observer = useRef();
 
   useEffect(() => {
-    const loadingInterval = setInterval(() => {
-      setLoadingProgress((prevProgress) => {
-        if (prevProgress >= 100) {
-          clearInterval(loadingInterval); // Clear interval when loading is complete
-          setLoading(false); // Set loading to false after loading finishes
-          return 100;
-        }
-        return prevProgress + 10; // Increment loading progress
-      });
-    }, 700); // Update loading progress every 700ms
-
-    return () => clearInterval(loadingInterval); // Cleanup on unmount
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) setIsLoaded(true);
+    }, { threshold: 0.1 });
+    return () => observer.current?.disconnect();
   }, []);
+  
 
   return (
     <div className="bg-dark text-light scroll-smooth" style={{ fontFamily: fonts.body }}>
-      {loading ? (
-        <Loader progress={loadingProgress} />
-      ) : (
-        <>
           <NavbarComponent />
           <div className="absolute top-0 left-0 w-full h-full">
-            <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={isLoaded ? null : <Loader />}>
               <ParticleScene />
             </Suspense>
           </div>
           <main className="min-h-screen">
-            <section id="hero">
-              <Suspense fallback={<div>Loading...</div>}>
-                <Hero />
-              </Suspense>
-            </section>
-            <section id="about">
-              <Suspense fallback={<div>Loading...</div>}>
-                <AboutMe />
-              </Suspense>
-            </section>
-            <section id="achievements">
-              <Suspense fallback={<div>Loading...</div>}>
-                <Achievements />
-              </Suspense>
-            </section>
-            <section id="gallery">
-              <Suspense fallback={<div>Loading...</div>}>
-                <Gallery />
-              </Suspense>
-            </section>
-            <section id="websites">
-              <Suspense fallback={<div>Loading...</div>}>
-                <Websites />
-              </Suspense>
-            </section>
-            <section id="artworks">
-              <Suspense fallback={<div>Loading...</div>}>
-                <Artworks />
-              </Suspense>
-            </section>
-            <section id="digital">
-              <Suspense fallback={<div>Loading...</div>}>
-                <Art />
-              </Suspense>
-            </section>
 
-            <section id="research">
-              <Suspense fallback={<div>Loading...</div>}>
-                <Research />
-              </Suspense>
-            </section>
-            <section id="organization">
-              <Suspense fallback={<div>Loading...</div>}>
-                <Organization />
-              </Suspense>
-            </section>
-            <section id="olympiads">
-              <Suspense fallback={<div>Loading...</div>}>
-                <Olympiads />
-              </Suspense>
-            </section>
-            <section id="testimonials">
-              <Suspense fallback={<div>Loading...</div>}>
-                <Testimonials />
-              </Suspense>
-            </section>
-          </main>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Footer />
-          </Suspense>
-        </>
-      )}
+          <Suspense fallback={isLoaded ? null : <Loader />}>
+          <Hero  id="hero"/>
+          <AboutMe id="about"/>
+          <Achievements />
+          <Gallery  id="gallery"  className="h-[120vh]"/>
+          <Websites id="websites"/>
+          <Artworks id="artworks" />
+          <Art id="digital" />
+          <Research id="research"/>
+          <Organization  id="organization"/>
+          <Olympiads  id="olympiads"/>
+          <Testimonials  id="testimonials"/>
+          <Footer />
+        </Suspense>
+            </main>
+
     </div>
   );
 };
