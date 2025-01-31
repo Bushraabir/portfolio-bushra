@@ -8,6 +8,8 @@ import EcoFriendly from "../assets/EmpowerEd/ecofriendly.jpg";
 import Health from "../assets/EmpowerEd/mental health.png";
 import logo from "../assets/EmpowerEd/logo.png";
 import gsap from "gsap";
+import color from "../assets/animation/arrow.json";
+import Lottie from "react-lottie";
 
 export default function OrganizationGallery() {
   const items = [
@@ -57,7 +59,7 @@ export default function OrganizationGallery() {
 
   return (
     <article id="gallery" className="w-full">
-      <header className="relative h-[70vh] flex justify-center items-center bg-gradient-to-r from-electric_blue to-aquamarine overflow-hidden">
+      <header className="relative h-[90vh] flex justify-center items-center bg-gradient-to-r from-electric_blue to-aquamarine overflow-hidden">
         <div className="absolute inset-0 opacity-50 bg-gradient-to-r from-electric_blue to-deep_indigo animate-gradient-move"></div>
         
         <div className="relative z-10 px-6 text-center">
@@ -79,6 +81,18 @@ export default function OrganizationGallery() {
           <p className="max-w-2xl mx-auto mt-4 font-sans text-lg leading-relaxed text-dark_teal">
             EmpowerEd is a non-profit organization with a mission to make education accessible to everyone, everywhere. We believe that every student deserves the same starting line, and we’re here to make that happen—at no cost to you!
           </p>
+
+          <div >
+            <Lottie 
+              options={{
+                animationData: color,
+                loop: true,
+                autoplay: true, // loop the animation
+              }}
+              height={400} // adjust as necessary
+              width={400} // adjust as necessary
+            />
+          </div>
         </div>
       </header>
 

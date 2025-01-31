@@ -49,14 +49,7 @@ const images = [
     src: house_champion_3,
     description: "The trophies reflect our collective discipline, growth, and unyielding dedication as a united house.",
   },
-  {
-    src: house_champion,
-    description: "We have navigated challenges together, fostering greater unity and driving our collective success.",
-  },
-  {
-    src: interhouse_drill_compitition,
-    description: "I brought the new intake batches to be trained as cadets and perform the novices drill and finally, we are the champion.",
-  },
+
   {
     src: prefectship,
     description: "Served as Junior House Prefect, driving unity, discipline, and growth among house members.",
@@ -65,14 +58,8 @@ const images = [
     src: oath,
     description: "I promise to lead with integrity and serve others responsibly after being entrusted with great responsibility.",
   },
-  {
-    src: painting,
-    description: "Explored creativity through art, earning recognition in competitions.",
-  },
-  {
-    src: HSC,
-    description: "Achieved 91% in HSC exams, contributing to the outstanding performance of the 'Ineffable 7th' batch.",
-  },
+
+
   {
     src: cadetship,
     description: "Earned distinction for completing 6 transformative years of cadetship, marked by discipline and leadership.",
@@ -140,7 +127,7 @@ const Gallery = () => {
         ))}
       </div>
 
-      <div className="content mt-15">
+      <div className="content">
         <motion.h1
           data-content="In Frame"
           initial={{ opacity: 0, y: 30 }}
@@ -164,23 +151,11 @@ const Gallery = () => {
               loop: true,
               autoplay: true,
             }}
-            height={900}
-            width="100%"
+            height={800}
+            width="80%"
           />
         </div>
-          {/* Color animation */}
-  <div className="absolute inset-0 bottom-0 z-10 w">
-    <Lottie
-      options={{
-        animationData: color, // Use the correct color animation data
-        loop: true,
-        autoplay: true,
-      }}
-      height={500}
-      width="100%"
-      className="opacity-800" 
-    />
-  </div>
+
       </div>
     </div>
   );
