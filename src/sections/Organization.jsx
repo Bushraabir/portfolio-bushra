@@ -1,126 +1,138 @@
-import React, { useEffect } from "react";
-import Bushra from "../assets/Bushra.png"; 
-import { useState } from "react";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+"use client";
 
-const Organization = () => {
-  const achievements = [
-    "Empowered over 500 individuals through workshops and webinars.",
-    "Organized skill-development programs in design, programming, and innovation.",
-    "Launched community projects focused on education and empowerment.",
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { animate, scroll } from "motion";
+import AntiSmoking from "../assets/EmpowerEd/antismoking.jpg";
+import EcoFriendly from "../assets/EmpowerEd/ecofriendly.jpg";
+import Health from "../assets/EmpowerEd/mental health.png";
+import logo from "../assets/EmpowerEd/logo.png";
+import gsap from "gsap";
+
+export default function OrganizationGallery() {
+  const items = [
+    { img: AntiSmoking, 
+      title: "Anti Smoking Campgain" ,
+      subtitle : "🚭 Smoking Ages You Faster! 🚭" ,
+      description :"Smoking speeds up the aging process, causing wrinkles, dull skin, and premature aging. Quit today to look and feel younger!",
+      
+     },
+    { 
+      img: EcoFriendly,
+      title: "Eco-Friendly Canpgain",
+      subtitle : "Mycorrhizal fungi: The unseen warriors of our planet 🌍" ,
+      description :"Mycorrhizal fungi make partnerships with about 90 of all plant species. They form complex networks underground. Plants feed them carbon in the form of sugars and fats, and in return, the fungi forage in the soil and provide nitrogen and phosphorus. The fungi track the flows of the nutrients inside the networks to understand how fungi make decisions, where and when to trade their nutrients. They enact sophisticated trade strategies like holding on to resources until they get a better price or moving resources into a place where demand is higher. It's an underground economy that has been around for hundreds of millions of years."
+    },
+    { img: Health, 
+      title: "Mental Well Being",
+      subtitle : "Water can keep you well" ,
+      description :"Feeling stressed? 😟 Anxious? 😰 Depressed? 😞 Sometimes, all you need is a glass of water. 💧 Stay hydrated, refresh your mind, and keep going! 💪✨ ",
+    
+    },
   ];
 
-  const programs = [
-    {
-      title: "Creative Design Bootcamp",
-      description: "A hands-on workshop on Adobe Illustrator, Photoshop, and 3D modeling.",
-      img: Bushra,
-    },
-    {
-      title: "Python for Beginners",
-      description: "An introductory programming course empowering young learners.",
-      img: Bushra,
-    },
-    {
-      title: "AI and ML Hackathon",
-      description: "Collaborative problem-solving event focusing on AI and machine learning.",
-      img: Bushra,
-    },
-  ];
+  const containerRef = useRef(null);
+  const groupRef = useRef(null);
 
-  // Initialize AOS animation library
   useEffect(() => {
-    AOS.init({ duration: 1000 });
-  }, []);
+    if (groupRef.current && containerRef.current) {
+      const itemCount = items.length;
+
+      // Using motion to animate horizontal scroll
+      scroll(
+        animate(groupRef.current, {
+          transform: ["none", `translateX(-${itemCount - 1}00vw)`],
+        }),
+        { target: containerRef.current }
+      );
+
+      // GSAP animation for Empowered heading
+      gsap.fromTo(
+        ".empowered-heading",
+        { opacity: 0, y: -50 },
+        { opacity: 1, y: 0, duration: 2, ease: "power3.out", delay: 0.5 }
+      );
+    }
+  }, [items.length]);
 
   return (
-<section className="w-full py-20 bg-gradient-to-r from-aquamarine to-electric_blue text-deep_indigo">
-  <div className="w-full px-8 mx-auto max-w-7xl lg:px-16">
-    {/* Section Header */}
-    <div className="space-y-6 text-center" data-aos="fade-in">
-      <h2 className="text-6xl font-extrabold leading-tight tracking-tight text-transparent bg-gradient-to-r from-teal-500 to-cyan-600 bg-clip-text">
-        Empowered Ed
-      </h2>
-      <p className="text-xl text-light_gray">
-        EmpowerEd fosters creativity and innovation, transforming challenges into opportunities.
-      </p>
-    </div>
-
-    {/* Mission Statement */}
-    <div className="w-full p-12 mt-12 transition-all duration-500 transform shadow-xl bg-pink_lavender rounded-3xl hover:scale-105" data-aos="slide-up">
-      <h3 className="text-4xl font-semibold text-gradient-to-r from-deep_indigo to-dark_teal">
-        Our Mission
-      </h3>
-      <p className="mt-6 text-lg text-dark_teal">
-        EmpowerEd is a non-profit organization with a mission to make education accessible to everyone, everywhere. We believe that every student deserves the same starting line, and we’re here to make that happen—at no cost to you!
-      </p>
-    </div>
-
-    {/* Achievements */}
-    <div className="mt-12 text-center" data-aos="fade-in">
-      <h3 className="text-4xl font-semibold text-gradient-to-r from-deep_indigo to-dark_teal">
-        Key Achievements
-      </h3>
-      <div className="grid gap-12 mt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {achievements.map((item, index) => (
-          <div
-            key={index}
-            className="flex items-center p-8 space-x-6 transition-all duration-300 transform shadow-2xl bg-lemon_chiffon rounded-3xl hover:scale-105 hover:shadow-2xl"
-            data-aos="fade-up"
+    <article id="gallery" className="w-full">
+      <header className="relative h-[70vh] flex justify-center items-center bg-gradient-to-r from-electric_blue to-aquamarine overflow-hidden">
+        <div className="absolute inset-0 opacity-50 bg-gradient-to-r from-electric_blue to-deep_indigo animate-gradient-move"></div>
+        
+        <div className="relative z-10 px-6 text-center">
+          <img
+            src={logo}
+            alt="EmpowerEd Logo"
+            className="h-auto mx-auto mb-6 w-80 drop-shadow-2xl animate-spin-slow"
+          />
+          
+          <motion.h2
+            className="font-serif text-6xl font-semibold leading-tight tracking-tight empowered-heading text-dark_teal drop-shadow-2xl"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
           >
-            <div className="flex items-center justify-center rounded-full shadow-lg w-14 h-14 bg-aquamarine">
-              <i className="text-2xl fas fa-check text-light"></i>
-            </div>
-            <p className="text-lg text-deep_indigo">{item}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+            Empowered Education
+          </motion.h2>
+          
+          <p className="max-w-2xl mx-auto mt-4 font-sans text-lg leading-relaxed text-dark_teal">
+            EmpowerEd is a non-profit organization with a mission to make education accessible to everyone, everywhere. We believe that every student deserves the same starting line, and we’re here to make that happen—at no cost to you!
+          </p>
+        </div>
+      </header>
 
-    {/* Programs */}
-    <div className="mt-16">
-      <h3 className="mb-10 text-4xl font-semibold text-gradient-to-r from-deep_indigo to-dark_teal">
-        Programs & Events
-      </h3>
-      <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {programs.map((program, index) => (
-          <div
-            key={index}
-            className="relative overflow-hidden transition-all duration-500 transform shadow-xl bg-jordy_blue rounded-3xl hover:scale-105 hover:shadow-2xl"
-            data-aos="flip-left"
+      <section className="img-group-container h-[500vh] relative -left-10" ref={containerRef}>
+        <div className="sticky top-0 overflow-hidden h-[100vh] w-[155vw]">
+          <ul className="flex" ref={groupRef}>
+            {items.map((item, index) => (
+              <li
+                key={index}
+                className="flex w-[100vw] h-[100vh] flex-none flex-col items-center justify-center bg-lemon_chiffon transition-all ease-out duration-300"
+              >
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-[350px] h-[450px] object-cover rounded-xl shadow-lg hover:scale-105 transition-transform ease-out duration-300"
+                />
+                <h3 className="text-[80px] font-serif font-semibold tracking-tight leading-[1.2] relative bottom-[30px] text-dark_teal opacity-90 hover:opacity-100 transition-all duration-300 ease-out transform hover:scale-105 hover:translate-y-[-8px]">
+                  {item.title}
+                </h3>
+                          
+                <h6 className="text-[22px] font-serif font-medium tracking-tight leading-[1.5] text-dark_teal opacity-80 hover:opacity-100 transition-all duration-300 ease-out transform hover:scale-105 hover:translate-y-[-4px]">
+                  {item.subtitle}
+                </h6>
+                          
+                <p className="text-[16px] font-serif font-light tracking-tight leading-[1.6] text-dark_teal opacity-80 hover:opacity-100 transition-all duration-300 ease-out transform hover:scale-105 hover:translate-y-[-3px] max-w-[80%] text-center mx-auto">
+                  {item.description}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+
+      <section className="h-[70vh] flex justify-center items-center bg-lemon_chiffon">
+        <div className="text-center">
+          <p className="max-w-3xl mx-auto text-lg font-semibold text-dark_teal">
+            Empowered Ed is more than an initiative—it’s a spark in the dark, a bridge where knowledge meets innovation. Co-founded by me and Muzahidul Islam Abir, it transforms rigid learning into an adventure, where students don’t just memorize but discover, create, and conquer. Through interactive tools and mentorship, we turn confusion into clarity, fear into confidence, and learners into trailblazers. This isn’t just education; it’s the dawn of a new era in learning.
+          </p>
+
+          <motion.a
+            href="https://bushraabir.github.io/empowereducation/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-8 py-3 mt-8 text-lg font-bold text-white transition-all duration-300 rounded-lg bg-electric_blue hover:bg-aquamarine"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <img
-              src={program.img}
-              alt={program.title}
-              className="object-cover w-full transition-transform duration-500 transform h-80 rounded-t-3xl hover:scale-110"
-            />
-            <div className="absolute bottom-0 left-0 right-0 p-8 bg-opacity-20 bg-deep_indigo rounded-b-3xl">
-              <h4 className="text-2xl font-bold text-light">{program.title}</h4>
-              <p className="mt-4 text-lg text-light">{program.description}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    {/* Website Button */}
-    <div className="mt-20 text-center">
-      <a
-        href="https://bushraabir.github.io/empowereducation/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="px-10 py-5 mt-4 text-lg font-bold transition-all duration-300 transform rounded-full shadow-2xl bg-lemon_chiffon text-deep_indigo hover:scale-105 hover:bg-tea_rose hover:text-light"
-      >
-        Visit Our Website
-      </a>
-    </div>
-  </div>
-</section>
+            Learn More
+          </motion.a>
+        </div>
+      </section>
 
 
-
+    </article>
   );
-};
-
-export default Organization;
+}

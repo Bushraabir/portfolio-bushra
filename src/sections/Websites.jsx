@@ -286,7 +286,7 @@ const Websites = () => {
   return (
 <section className="relative py-16 overflow-hidden lg:py-24 bg-dark_teal text-lemon_chiffon">
   {/* Background Gradient */}
-  <div className="absolute inset-0 bg-gradient-to-b from-non_photo_blue to-tea_rose opacity-60"></div>
+  <div className="absolute inset-0 bg-gradient-to-b from-deep_indigo to-tea_rose opacity-60"></div>
 
   <div className="container relative z-10 px-6 mx-auto lg:px-20">
     {/* Header Section */}

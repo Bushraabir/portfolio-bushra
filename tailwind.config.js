@@ -63,6 +63,7 @@ export default {
         "slide-up": "slide-up 1s ease-out",
         bounce: "bounce 1.2s infinite",
         pulse: "pulse 1.5s infinite",
+        "spin-slow": "spin 10s linear infinite",
       },
       keyframes: {
         "fade-in": {
