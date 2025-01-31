@@ -94,23 +94,24 @@ const Art = () => {
 
   const artworks = {
     acrylic: [
-      { src: Nature, description: "Acrylic painting 1", title: "Sunset Glory", date: "2022" },
-      { src: BlueMosque, description: "Acrylic painting 2", title: "Ocean Breeze", date: "2021" },
-      { src: Bloody, description: "Acrylic painting 3", title: "Mountain Escape", date: "2020" },
-      { src: Boston, description: "Acrylic painting 1", title: "Sunset Glory", date: "2022" },
-      { src: Fight, description: "Acrylic painting 2", title: "Ocean Breeze", date: "2021" },
-      { src: Imagination, description: "Acrylic painting 2", title: "Ocean Breeze", date: "2021" },
-      { src: Vase, description: "Acrylic painting 3", title: "Mountain Escape", date: "2020" },
-      { src: Bridge, description: "Acrylic painting 2", title: "Ocean Breeze", date: "2021" },
-      { src: Sunset, description: "Acrylic painting 3", title: "Mountain Escape", date: "2020" },
+      { src: Imagination, description: "Acrylic painting 2", title: "Imagination", date: "2020" },
+      { src: Fight, description: "Acrylic painting 2", title: "Survival", date: "2019" },
+      { src: Nature, description: "Acrylic painting 1", title: "The Mist", date: "2023" },
+      { src: Boston, description: "Acrylic painting 1", title: "Boston City", date: "2021" },
+      { src: Bridge, description: "Acrylic painting 2", title: " The  bridge", date: "2024" },
+      { src: BlueMosque, description: "Acrylic painting 2", title: "Blue Mosue", date: "2020" },
+      { src: Bloody, description: "Acrylic painting 3", title: "Bloody", date: "2018" },
+      { src: Vase, description: "Acrylic painting 3", title: "Splash of flowers", date: "2017" },     
+      { src: Sunset, description: "Acrylic painting 3", title: "The Beginning", date: "2024" },
     ],
     watercolor: [
-      { src: China, description: "Acrylic painting 1", title: "Sunset Glory", date: "2022" },
-      { src: flower1, description: "Acrylic painting 2", title: "Ocean Breeze", date: "2021" },
-      { src: flower3, description: "Acrylic painting 1", title: "Sunset Glory", date: "2022" },
-      { src: lamp, description: "Acrylic painting 2", title: "Ocean Breeze", date: "2021" },
-      { src: sunset, description: "Acrylic painting 2", title: "Ocean Breeze", date: "2021" },
-      { src: magic, description: "Acrylic painting 3", title: "Mountain Escape", date: "2020" },
+      { src: China, description: "Acrylic painting 1", title: "The Chinese Architecture", date: "2024" },
+      { src: flower1, description: "Acrylic painting 2", title: "frangipani", date: "2022" },
+      { src: flower3, description: "Acrylic painting 1", title: "Roses", date: "2020" },
+      { src: lamp, description: "Acrylic painting 2", title: "Enlighten", date: "2024" },
+      { src: magic, description: "Acrylic painting 3", title: "The Magic of Life", date: "2020" },
+      { src: sunset, description: "Acrylic painting 2", title: "Ocean Breeze", date: "2020" },
+      
  
     ],
     "pencil sketch": [
