@@ -47,13 +47,13 @@ const Artworks = () => {
   }, []);
 
   return (
-<section className="w-full py-16 bg-gradient-to-br from-[#2a1b3d] via-[#1d3557] to-[#16263e]">
+<section className="w-full py-16 bg-gradient-to-br from-lemon_chiffon via-champagne_pink to-tea_rose">
   <div className="container px-6 mx-auto text-center lg:px-20">
     {/* Header Section */}
     <h2 className="text-4xl font-extrabold text-[#FFC857] font-serif">
       Artworks
     </h2>
-    <p className="mt-4 text-lg text-[#F5F7FA] opacity-80">
+    <p className="mt-4 text-lg opacity-50 text-deep_indigo">
       Explore my collection of artistic creations across various mediums.
     </p>
 
