@@ -10,10 +10,11 @@ import spaceBackground from '../assets/background.jpg';
 // Interactive Particle Component
 const InteractiveParticle = ({ position, color, radius }) => {
   const [particleColor, setParticleColor] = useState(color);
+  const [particleRadius, setParticleRadius] = useState(radius);
   const [ref] = useSphere(() => ({
     mass: 0.5,
     position,
-    args: [radius],
+    args: [particleRadius],
     material: { friction: 0.8, restitution: 0.95 },
     linearDamping: 0.1,
     angularDamping: 0.1,
@@ -34,8 +35,10 @@ const InteractiveParticle = ({ position, color, radius }) => {
     ];
     
     const newColor = colors[Math.floor(Math.random() * colors.length)];
+    const newRadius = Math.random() * 0.5 + 0.5; // Randomize radius on click
     setParticleColor(newColor);
-    console.log('Particle clicked! New color:', newColor);
+    setParticleRadius(newRadius);
+    console.log('Particle clicked! New color:', newColor, 'New radius:', newRadius);
   };
 
   function generateNoiseTexture() {
@@ -52,7 +55,7 @@ const InteractiveParticle = ({ position, color, radius }) => {
   return (
     <mesh ref={ref} castShadow onClick={handleClick}>
       {/* High-detail sphere geometry */}
-      <sphereGeometry args={[radius, 128, 128]} /> {/* Increased segments for smoothness */}
+      <sphereGeometry args={[particleRadius, 128, 128]} /> {/* Increased segments for smoothness */}
       <meshPhysicalMaterial
         color={particleColor}
         metalness={0.9} // Metallic surface
@@ -76,7 +79,6 @@ const InteractiveParticle = ({ position, color, radius }) => {
 };
 
 // Ground Plane Component
-// Ground Plane Component
 const GroundPlane = () => {
   const [ref] = usePlane(() => ({
     position: [0, -2.5, 0],
@@ -92,9 +94,7 @@ const GroundPlane = () => {
   );
 };
 
-
 // Background Scene Component
-// Background Scene Component with Gradient
 const BackgroundScene = () => {
   const gradientMaterial = new THREE.ShaderMaterial({
     uniforms: {
@@ -185,7 +185,7 @@ const ParticleScene = () => {
           '#F2D966', // Lighter tint of secondary
         ][Math.floor(Math.random() * 6)],
         
-        radius: Math.random() * 0.5 + 0.5,
+        radius: Math.random() * (1.5 - 0.5) + 0.5,
       });
     }
     return particles;
@@ -237,7 +237,7 @@ const ParticleScene = () => {
       <BackgroundScene />
 
       {/* Lighting */}
-      <ambientLight intensity={0.2} color="#404040" />
+      <ambientLight intensity={.2} color="#404040" />
       <directionalLight
         position={[15, 20, 10]}
         intensity={1.2}

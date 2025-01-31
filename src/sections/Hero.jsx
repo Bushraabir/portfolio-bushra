@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import profileImage from "../assets/Bushra.png";
 
+
 gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
@@ -11,28 +12,7 @@ const Hero = () => {
     const profileRef = useRef(null);
     const buttonRef = useRef(null);
 
-    const [particles, setParticles] = useState([]);
 
-    const handleMouseEnter = (e) => {
-        const buttonRect = buttonRef.current.getBoundingClientRect();
-        const xPos = buttonRect.left + buttonRect.width / 2;
-        const yPos = buttonRect.top + buttonRect.height / 2;
-
-        const particlesArray = [];
-        for (let i = 0; i < 30; i++) {
-            particlesArray.push({
-                x: xPos,
-                y: yPos,
-                key: Math.random(),
-            });
-        }
-
-        setParticles(particlesArray);
-    };
-
-    const handleMouseLeave = () => {
-        setParticles([]);
-    };
 
     useEffect(() => {
         gsap.fromTo(
@@ -136,8 +116,8 @@ const Hero = () => {
         .getElementById("about")
         ?.scrollIntoView({ behavior: "smooth" })
     }
-    onMouseEnter={handleMouseEnter}
-    onMouseLeave={handleMouseLeave}
+   
+    
     style={{ pointerEvents: "auto" }}
   >
     <motion.div
