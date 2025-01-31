@@ -6,15 +6,13 @@ const Star = ({ cursorPosition }) => {
 
   useEffect(() => {
     if (cursorPosition) {
-      // Function to generate the star-shaped particles
       const generateStarParticles = () => {
-        const size = Math.random() * 6 + 8; // Size between 8px and 14px for a refined look
-        const animationDuration = Math.random() * 6 + 6; // Elegant animation duration
-        const delay = Math.random() * 1 + 1.5; // Subtle delay for smoothness
-        const color = `rgba(255, 255, 255, 0.8)`; // Soft, white glow for stars
-        const borderColor = `hsl(${Math.random() * 360}, 50%, 85%)`; // Soft metallic or pastel hue
-
-        const rotationAngle = Math.random() * 360; // Random rotation for elegance
+        const size = Math.random() * 6 + 8;
+        const animationDuration = Math.random() * 6 + 6;
+        const delay = Math.random() * 1 + 1.5;
+        const color = `rgba(255, 255, 255, 0.8)`;
+        const borderColor = `hsl(${Math.random() * 360}, 50%, 85%)`;
+        const rotationAngle = Math.random() * 360;
 
         const particle = document.createElement('div');
         particle.style.position = 'absolute';
@@ -22,7 +20,7 @@ const Star = ({ cursorPosition }) => {
         particle.style.height = `${size}px`;
         particle.style.borderRadius = '50%';
         particle.style.backgroundColor = color;
-        particle.style.clipPath = 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'; // Star shape
+        particle.style.clipPath = 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)';
         particle.style.border = `0.8px solid ${borderColor}`;
         particle.style.boxShadow = `0 0 ${size / 1.5}px ${size / 2}px ${borderColor}, 0 0 ${size}px 3px rgba(255, 255, 255, 0.4)`;
         particle.style.left = `${cursorPosition.x - size / 2 + Math.random() * 120 - 60}px`;
@@ -44,27 +42,25 @@ const Star = ({ cursorPosition }) => {
         }, 1000);
       };
 
-      // Function to generate the glowing tiny dot particles
       const generateDotParticles = () => {
-        const size = Math.random() * 1 + 1; // Dot size between 1px and 2px (tiny stars)
-        const animationDuration = Math.random() * 3 + 4; // Subtle pulse animation
-        const delay = Math.random() * 0.5 + 1; // Gentle delay for variety
-        const color = `rgba(255, 255, 255, 0.5)`; // Soft glowing dot color
-        const borderColor = `hsl(${Math.random() * 360}, 100%, 80%)`; // Slightly metallic or pastel border
+        const size = Math.random() * 1 + 1;
+        const animationDuration = Math.random() * 3 + 4;
+        const delay = Math.random() * 0.5 + 1;
+        const color = `rgba(255, 255, 255, 0.5)`;
+        const borderColor = `hsl(${Math.random() * 360}, 100%, 80%)`;
 
         const particle = document.createElement('div');
         particle.style.position = 'absolute';
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
-        particle.style.borderRadius = '50%'; // Circular shape for the dots
-        particle.style.backgroundColor = color; // Soft white with glowing opacity
+        particle.style.borderRadius = '50%';
+        particle.style.backgroundColor = color;
         particle.style.border = `0.5px solid ${borderColor}`;
         particle.style.left = `${cursorPosition.x - size / 2 + Math.random() * 120 - 60}px`;
         particle.style.top = `${cursorPosition.y - size / 2 + Math.random() * 120 - 60}px`;
         particle.style.opacity = '1';
         particle.style.animation = `pulse ${animationDuration}s infinite ${delay}s`;
 
-        // Append dot particle to the body
         document.body.appendChild(particle);
         dotRef.current.push(particle);
 
@@ -77,11 +73,10 @@ const Star = ({ cursorPosition }) => {
         }, 1500);
       };
 
-      // Generate fewer particles for both stars and dots
-      for (let i = 0; i < 3; i++) { // Reduced to 3 stars for subtlety
+      for (let i = 0; i < 3; i++) {
         generateStarParticles();
       }
-      for (let i = 0; i < 10; i++) { // Increased to 10 tiny dots for more sparkle
+      for (let i = 0; i < 10; i++) {
         generateDotParticles();
       }
     }
@@ -90,7 +85,6 @@ const Star = ({ cursorPosition }) => {
   return null;
 };
 
-// Refined CSS for animations (twinkle, move, and pulse)
 const style = document.createElement('style');
 style.innerHTML = `
   @keyframes twinkle {
