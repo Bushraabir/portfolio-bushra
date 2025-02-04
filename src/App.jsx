@@ -1,8 +1,10 @@
-import React, { useState, useEffect, Suspense, useRef } from "react";
+import React, { useState, useEffect, Suspense , useRef} from "react";
 import { motion } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Loader from "./components/Loader";
 
+
+// Lazy-loaded components
 const Hero = React.lazy(() => import("./sections/Hero"));
 const Websites = React.lazy(() => import("./sections/Websites"));
 const Artworks = React.lazy(() => import("./sections/Artworks"));
@@ -16,6 +18,7 @@ const AboutMe = React.lazy(() => import("./sections/Aboutme"));
 const ParticleScene = React.lazy(() => import("./components/Particle"));
 const Gallery = React.lazy(() => import("./sections/Gallery"));
 const Art = React.lazy(() => import("./sections/Art"));
+
 
 const sidebarVariants = {
   open: {
@@ -142,9 +145,14 @@ const NavbarComponent = () => {
   );
 };
 
+
+
+
 const App = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const observer = useRef();
+
+
+const [isLoaded, setIsLoaded] = useState(false);
+const observer = useRef();
 
   useEffect(() => {
     observer.current = new IntersectionObserver((entries) => {
@@ -152,30 +160,36 @@ const App = () => {
     }, { threshold: 0.1 });
     return () => observer.current?.disconnect();
   }, []);
+  
 
   return (
-    <div className="bg-lemon_chiffon text-light font-body scroll-smooth">
-      <Suspense fallback={isLoaded ? null : <Loader />}>
-        <NavbarComponent />
-        <div className="absolute top-0 left-0 w-full h-full">
-          <ParticleScene />
-        </div>
-        <main className="min-h-screen">
-          <Hero id="hero" />
-          <AboutMe id="about" />
-          <Achievements id="achievements" />
-          <Gallery className="h-[120vh]" />
-          <Websites id="websites" />
+    <div className="bg-dark text-light scroll-smooth" >
+          <NavbarComponent />
+          <div className="absolute top-0 left-0 w-full h-full">
+          <Suspense fallback={isLoaded ? null : <Loader />}>
+              <ParticleScene />
+            </Suspense>
+          </div>
+          <main className="min-h-screen">
+
+          <Suspense fallback={isLoaded ? null : <Loader />}>
+          <Hero  id="hero"/>
+          <AboutMe id="about"/>
+          <Achievements />
+          <Gallery  id="gallery"  className="h-[120vh]"/>
+          <Websites id="websites"/>
           <Artworks id="artworks" />
-          <Art />
-          <Research />
-          <Organization />
-          <Testimonials />
+          <Art id="digital" />
+          <Research id="research"/>
+          <Organization  id="organization"/>
+          <Testimonials  id="testimonials"/>
           <Footer />
-        </main>
-      </Suspense>
+        </Suspense>
+            </main>
+
     </div>
   );
 };
 
 export default App;
+
