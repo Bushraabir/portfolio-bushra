@@ -1,33 +1,8 @@
-import React, { useState, useEffect, Suspense , useRef} from "react";
+import React, { useState, useEffect, Suspense, useRef } from "react";
 import { motion } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Loader from "./components/Loader";
 
-
-// Color Palette (for styling)
-const colors = {
-  richTeal: "#007C8A",
-  burntOrange: "#FF6F3C",
-  deepCharcoal: "#1A1A1A",
-  creamWhite: "#F9F5F0",
-  gold: "#FFC857",
-  lavenderGray: "#ADA7C9",
-  accent1: "#FF6F3C", // burnt orange
-  accent2: "#ADA7C9", // lavender gray
-  primaryDark: "#0D233A", // dark blue
-  primary: "#507C7F", // teal
-  accent1Light: "#FF9C6A",
-  accent1Dark: "#D35E3A",
-  light: "#F9F5F0", // cream white for text
-};
-
-// Font styles
-const fonts = {
-  headings: "'Playfair Display', serif",
-  body: "'Roboto', sans-serif",
-};
-
-// Lazy-loaded components
 const Hero = React.lazy(() => import("./sections/Hero"));
 const Websites = React.lazy(() => import("./sections/Websites"));
 const Artworks = React.lazy(() => import("./sections/Artworks"));
@@ -42,116 +17,120 @@ const ParticleScene = React.lazy(() => import("./components/Particle"));
 const Gallery = React.lazy(() => import("./sections/Gallery"));
 const Art = React.lazy(() => import("./sections/Art"));
 
-// Animation Variants for Sidebar
 const sidebarVariants = {
   open: {
-    width: "320px",
+    width: "250px",
     opacity: 1,
-    transition: { type: "spring", stiffness: 30, damping: 15, staggerChildren: 0.1 },
+    transition: {
+      type: "tween",
+      ease: "easeOut", 
+      duration: 1, 
+    },
   },
   closed: {
     width: "0",
     opacity: 0,
-    transition: { type: "spring", stiffness: 30, damping: 15, staggerChildren: 0.05 },
+    transition: {
+      type: "tween",
+      ease: "easeIn", 
+      duration: 1, 
+    },
   },
 };
 
-// Animation Variants for Nav Links
 const navItemVariants = {
   open: {
     x: 0,
     opacity: 1,
-    transition: { type: "spring", stiffness: 50 },
+    scale: 1,
+    transition: {
+      type: "tween",
+      ease: "easeOut",
+      delay: .9,
+      duration: 0.7, 
+    },
   },
   closed: {
     x: -20,
     opacity: 0,
-    transition: { type: "spring", stiffness: 50 },
+    scale: 0.95,
+    transition: {
+      type: "tween",
+      ease: "easeInOut",
+      duration: 0.7, 
+    },
   },
 };
 
-// Toggle Button with smoother animations
-const ToggleButton = ({ isOpen, setIsOpen }) => {
-  return (
-    <motion.div style={toggleButtonContainer}>
-      <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        style={toggleButton}
-        whileHover={{ scale: 1.15, rotateZ: isOpen ? -15 : 15 }}
-        whileTap={{ scale: 0.9 }}
-        animate={{ rotate: isOpen ? 360 : 0, rotateY: isOpen ? 180 : 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.8, 0.25, 1] }}
+const ToggleButton = ({ isOpen, setIsOpen }) => (
+  <motion.div className="flex items-center justify-center w-16 h-16 m-5">
+    <motion.button
+      onClick={() => setIsOpen(!isOpen)}
+      className="w-16 h-16 transition-all duration-200 ease-in-out transform border-2 rounded-full shadow-xl cursor-pointer bg-gradient-to-r from-dark_teal to-deep_indigo border-lemon_chiffon"
+      whileHover={{ scale: 1.15, rotateZ: isOpen ? -10 : 10 }}
+      whileTap={{ scale: 0.95 }}
+      animate={{ rotate: isOpen ? 360 : 0, rotateY: isOpen ? 180 : 0 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }} // smoother rotation transition
+    >
+      <motion.span
+        className="text-xl font-bold text-light"
+        animate={{ rotateY: isOpen ? 180 : 0 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
       >
-        <motion.span
-          style={buttonFace}
-          animate={{ rotateY: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-        >
-          {isOpen ? "✖" : "☰"}
-        </motion.span>
-      </motion.button>
-    </motion.div>
-  );
-};
+        {isOpen ? "✖" : "☰"}
+      </motion.span>
+    </motion.button>
+  </motion.div>
+);
 
 const NavbarComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const scrollToSection = (id) => {
     const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
+    if (section) section.scrollIntoView({ behavior: "smooth" });
   };
 
   const navLinks = [
-    { id: "hero", name: "Hero" },
     { id: "about", name: "About Me" },
     { id: "achievements", name: "Achievements" },
-    { id: "gallery", name: "Gallery" },
     { id: "websites", name: "Websites" },
-    { id: "digital", name: "Digital Art" },
     { id: "artworks", name: "Artworks" },
     { id: "research", name: "Research" },
     { id: "organization", name: "Organization" },
-    { id: "olympiads", name: "Olympiads" },
     { id: "testimonials", name: "Testimonials" },
   ];
 
   return (
-    <div style={navbarContainer}>
+    <div className="fixed top-0 left-0 z-50">
       <ToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
       <motion.nav
         initial="closed"
         animate={isOpen ? "open" : "closed"}
         variants={sidebarVariants}
-        style={{
-          ...navbar,
-          pointerEvents: isOpen ? "auto" : "none", 
-        }}
+        className="absolute left-0 flex flex-col items-start justify-start w-40 p-6 transition-all duration-300 border-4 shadow-2xl bg-deep_indigo bg-opacity-70 backdrop-blur-lg rounded-xl md:w-80 border-gradient-to-r from-lemon_chiffon to-electric_blue transform-gpu"
       >
-        <motion.ul style={navList}>
+        <motion.ul className="p-0 m-0 list-none">
           {navLinks.map((link) => (
             <motion.li
               key={link.id}
-              style={navItem}
+              className="my-6"
               onClick={() => {
                 scrollToSection(link.id);
                 setIsOpen(false);
               }}
               variants={navItemVariants}
+              whileHover={{
+                scale: 1.05,
+                x: 5,
+                y: -2,
+                transition: { duration: 0.3, ease: "easeOut" }, 
+              }}
+              whileTap={{ scale: 0.95 }}
             >
               <motion.a
                 href={`#${link.id}`}
-                style={linkStyle}
-                whileHover={{
-                  scale: 1.1,
-                  color: colors.burntOrange,
-                  backgroundColor: "rgba(255, 255, 255, 0.15)",
-                }}
-                transition={{
-                  duration: 0.3,
-                }}
+                className="text-lg font-semibold tracking-wider uppercase transition-all duration-200 ease-in-out transform text-mauve-500 hover:text-lemon_chiffon hover:bg-opacity-25 hover:pl-2"
               >
                 {link.name}
               </motion.a>
@@ -163,14 +142,9 @@ const NavbarComponent = () => {
   );
 };
 
-
-
-
 const App = () => {
-
-
-const [isLoaded, setIsLoaded] = useState(false);
-const observer = useRef();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const observer = useRef();
 
   useEffect(() => {
     observer.current = new IntersectionObserver((entries) => {
@@ -178,121 +152,30 @@ const observer = useRef();
     }, { threshold: 0.1 });
     return () => observer.current?.disconnect();
   }, []);
-  
 
   return (
-    <div className="bg-dark text-light scroll-smooth" style={{ fontFamily: fonts.body }}>
-          <NavbarComponent />
-          <div className="absolute top-0 left-0 w-full h-full">
-          <Suspense fallback={isLoaded ? null : <Loader />}>
-              <ParticleScene />
-            </Suspense>
-          </div>
-          <main className="min-h-screen">
-
-          <Suspense fallback={isLoaded ? null : <Loader />}>
-          <Hero  id="hero"/>
-          <AboutMe id="about"/>
-          <Achievements />
-          <Gallery  id="gallery"  className="h-[120vh]"/>
-          <Websites id="websites"/>
+    <div className="bg-lemon_chiffon text-light font-body scroll-smooth">
+      <Suspense fallback={isLoaded ? null : <Loader />}>
+        <NavbarComponent />
+        <div className="absolute top-0 left-0 w-full h-full">
+          <ParticleScene />
+        </div>
+        <main className="min-h-screen">
+          <Hero id="hero" />
+          <AboutMe id="about" />
+          <Achievements id="achievements" />
+          <Gallery className="h-[120vh]" />
+          <Websites id="websites" />
           <Artworks id="artworks" />
-          <Art id="digital" />
-          <Research id="research"/>
-          <Organization  id="organization"/>
-          <Olympiads  id="olympiads"/>
-          <Testimonials  id="testimonials"/>
+          <Art />
+          <Research />
+          <Organization />
+          <Testimonials />
           <Footer />
-        </Suspense>
-            </main>
-
+        </main>
+      </Suspense>
     </div>
   );
 };
 
 export default App;
-
-// Styles
-const toggleButtonContainer = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  width: "70px",
-  height: "70px",
-  margin: "20px",
-};
-
-const toggleButton = {
-  width: "70px",
-  height: "70px",
-  borderRadius: "50%",
-  background: "linear-gradient(145deg, #2a1b3d 0%, #6e3f6b 35%, #fde4cf 75%, #f0c4b4 100%)",
-  border: "none",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.4)",
-  transition: "all 0.3s ease",
-  transformStyle: "preserve-3d",
-  "&:hover": {
-    boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.5)", 
-  },
-  zIndex :99999 ,
-};
-
-const buttonFace = {
-  fontSize: "24px",
-  fontWeight: "bold",
-  color: colors.light, 
-  transformOrigin: "center",
-};
-
-const navbarContainer = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  zIndex: 9999,
-};
-
-const navbar = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "flex-start",
-  justifyContent: "flex-start",
-
-  borderRadius: "20px",
-  boxShadow: "0px 10px 10px rgba(0, 0, 0, 0.3)",
-  position: "fixed",
-  top: "60px",
-  left: "0",
-  padding: "1rem",
-  height: "57vh",
-  width: "150px", // You can adjust the width based on your layout needs
-  backdropFilter: "blur(20px)", // Adds the blur effect
-  backgroundColor: "rgba(255, 255, 255, 0.1)", // Adds transparency to the background
-  border: "1px solid rgba(255, 255, 255, 0.2)", // Optional: subtle border to enhance the glass effect
-};
-
-
-
-const navList = {
-  listStyleType: "none",
-  padding: "0",
-  margin: "0",
-};
-
-const navItem = {
-  marginTop: "20px",
-  marginBottom: "20px",
-};
-
-const linkStyle = {
-  textDecoration: "none",
-  color: colors.creamWhite,
-  fontFamily: fonts.headings,
-  fontSize: "20px",
-  fontWeight: "700",
-  textTransform: "uppercase",
-  letterSpacing: "2px",
-};

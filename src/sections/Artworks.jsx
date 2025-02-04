@@ -47,7 +47,7 @@ const Artworks = () => {
   }, []);
 
   return (
-<section className="w-full py-16 bg-gradient-to-br from-lemon_chiffon via-champagne_pink to-tea_rose">
+<section id="artworks" className="w-full py-16 bg-gradient-to-br from-lemon_chiffon via-champagne_pink to-tea_rose">
   <div className="container px-6 mx-auto text-center lg:px-20">
     {/* Header Section */}
     <h2 className="text-4xl font-extrabold text-[#FFC857] font-serif">

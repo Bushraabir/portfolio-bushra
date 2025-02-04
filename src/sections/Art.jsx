@@ -83,6 +83,9 @@ const Art = () => {
   const [selectedArtwork, setSelectedArtwork] = useState(null);
   const containerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
+
 
 
   const tabs = [
@@ -146,6 +149,7 @@ const Art = () => {
     ],
   };
 
+
   useEffect(() => {
     gsap.fromTo(
       containerRef.current,
@@ -164,189 +168,228 @@ const Art = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500); // Simulate a loading state for images
+    const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
 
   const closeDetails = () => setSelectedArtwork(null);
 
+  const indexOfLastArtwork = currentPage * itemsPerPage;
+  const indexOfFirstArtwork = indexOfLastArtwork - itemsPerPage;
+  const currentArtworks = artworks[activeTab]?.slice(indexOfFirstArtwork, indexOfLastArtwork);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const totalPages = Math.ceil(artworks[activeTab]?.length / itemsPerPage);
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    setCurrentPage(1);
+    preloadImages(artworks[tabId]);
+  };
+
+  const preloadImages = (artworkList) => {
+    artworkList.forEach((artwork) => {
+      const img = new Image();
+      img.src = artwork.src; // Preload image
+    });
+  };
+
+  const artworkHover = (e) => {
+    const artwork = e.target.closest(".artwork");
+    gsap.to(artwork, {
+      scale: 1.1,
+      rotation: 5,
+      duration: 0.3,
+      ease: "power2.out",
+    });
+  };
+
+  const artworkHoverOut = (e) => {
+    const artwork = e.target.closest(".artwork");
+    gsap.to(artwork, {
+      scale: 1,
+      rotation: 0,
+      duration: 0.3,
+      ease: "power2.out",
+    });
+  };
+
+  const openModal = (artwork) => {
+    setSelectedArtwork(artwork);
+    gsap.fromTo(
+      ".modal-content",
+      { opacity: 0, scale: 0.8, y: -50 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "back.out(1.7)" }
+    );
+  };
+
+  const closeModal = () => {
+    gsap.to(".modal-content", {
+      opacity: 0,
+      scale: 0.8,
+      y: 50,
+      duration: 0.3,
+      ease: "back.in(1.7)",
+      onComplete: () => setSelectedArtwork(null),
+    });
+  };
+
+  useEffect(() => {
+    gsap.fromTo(
+      ".artwork",
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power2.out",
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: ".artwork",
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
+  }, []);
+
   return (
-<section className="relative bg-gradient-to-b from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] p-16 overflow-hidden">
-  {/* Background Gradient with Glassmorphism Effect */}
-  <div className="absolute inset-0 bg-gradient-to-r from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] opacity-70 backdrop-blur-[10px] shadow-2xl"></div>
+    <section className="relative bg-gradient-to-b from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] p-16 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] opacity-70 backdrop-blur-[10px] shadow-2xl"></div>
 
-  <div className="container relative z-10 px-6 mx-auto lg:px-20" ref={containerRef}>
-    {/* Header Section */}
-    <motion.div
-      className="mb-20 text-center"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1.5 }}
-    >
-      <h1 className="text-7xl font-serif font-extrabold text-[#F5F8CC] tracking-widest drop-shadow-xl">
-        Exquisite Artworks
-      </h1>
-      <p className="mt-6 text-2xl text-[#F1C0E8] font-sans opacity-90">
-        A collection of masterful pieces—designed to evoke emotion and captivate the senses.
-      </p>
-    </motion.div>
+      <div className="container relative z-10 px-6 mx-auto lg:px-20" ref={containerRef}>
+        {/* Title */}
+        <div className="mb-20 text-center">
+          <h1 className="text-7xl font-serif font-extrabold text-[#F5F8CC] tracking-widest drop-shadow-xl">
+            Exquisite Artworks
+          </h1>
+          <p className="mt-6 text-2xl text-[#F1C0E8] font-sans opacity-90">
+            A collection of masterful pieces—designed to evoke emotion and captivate the senses.
+          </p>
+        </div>
 
-    {/* Tab Selection */}
-    <div className="flex flex-wrap justify-center gap-8 mb-16">
-      {tabs.map((tab) => (
-        <motion.button
-          key={tab.id}
-          className={`py-3 px-10 text-xl font-semibold rounded-full border-4 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-md hover:border-[#F5F8CC] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${
-            activeTab === tab.id
-              ? "bg-gradient-to-r from-[#F5F8CC] to-[#FDE4CF] text-[#2A1B3D] border-[#F5F8CC]"
-              : "bg-transparent text-[#F5F8CC] border-[#F5F8CC]"
-          }`}
-          onClick={() => setActiveTab(tab.id)}
-        >
-          {tab.title}
-        </motion.button>
-      ))}
-    </div>
+        {/* Tabs */}
+        <div className="flex flex-wrap justify-center gap-8 mb-16">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              className={`py-3 px-10 text-xl font-semibold rounded-full border-4 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-md hover:border-[#F5F8CC] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${
+                activeTab === tab.id
+                  ? "bg-gradient-to-r from-[#F5F8CC] to-[#FDE4CF] text-[#2A1B3D] border-[#F5F8CC]"
+                  : "bg-transparent text-[#F5F8CC] border-[#F5F8CC]"
+              }`}
+              onClick={() => handleTabChange(tab.id)}
+            >
+              {tab.title}
+            </button>
+          ))}
+        </div>
 
-    {/* Tab Description */}
-    <motion.div
-      className="text-center text-[#F5F8CC] mb-16 text-xl font-serif"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      {tabs.find((tab) => tab.id === activeTab)?.description}
-    </motion.div>
+        {/* Description for Active Tab */}
+        <div className="text-center text-[#F5F8CC] mb-16 text-xl font-serif">
+          {tabs.find((tab) => tab.id === activeTab)?.description}
+        </div>
 
-    {/* Artworks Grid */}
-    <motion.div
-      className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3"
-      initial="hidden"
-      animate="visible"
-      variants={{
-        hidden: { opacity: 0, y: 50 },
-        visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.5 } },
-      }}
-    >
-      {artworks[activeTab].map((artwork, index) => (
-        <motion.div
-          key={index}
-          variants={{
-            hidden: { opacity: 0, y: 30 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-          }}
-          onClick={() => setSelectedArtwork(artwork)}
-          className="cursor-pointer group"
-        >
-          <Tilt
-            options={{ max: 15, scale: 1.02, speed: 900 }}
-            className="relative w-full h-[500px] bg-transparent backdrop-blur-lg bg-opacity-30 p-8 rounded-3xl shadow-xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:opacity-90"
-          >
-            <LazyLoadImage
-              src={artwork.src}
-              alt={artwork.description}
-              className="object-cover w-full h-full transition-all duration-500 transform rounded-xl group-hover:scale-110 group-hover:rotate-3"
-              loading="lazy"
-            />
-            <div className="absolute text-white bottom-5 left-5">
-              <h3 className="text-3xl font-semibold">{artwork.title}</h3>
-              <p className="text-lg">{artwork.date}</p>
+        {/* Artwork Grid */}
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
+          {currentArtworks.map((artwork, index) => (
+            <div
+              key={index}
+              className="artwork group"
+              onClick={() => openModal(artwork)}
+              onMouseEnter={artworkHover}
+              onMouseLeave={artworkHoverOut}
+            >
+              <Tilt
+                options={{ max: 15, scale: 1.02, speed: 900 }}
+                className="relative w-full h-[400px] bg-transparent backdrop-blur-lg bg-opacity-30 p-8 rounded-3xl shadow-xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:opacity-90"
+              >
+                <LazyLoadImage
+                  src={artwork.src}
+                  alt={artwork.description}
+                  className="object-cover w-full h-full transition-all duration-500 transform rounded-xl group-hover:scale-110 group-hover:rotate-3"
+                  loading="lazy"
+                  placeholderSrc={artwork.placeholderSrc} // LQIP (Low Quality Image Placeholder)
+                />
+                <div className="absolute text-white bottom-5 left-5">
+                  <h3 className="text-3xl font-semibold">{artwork.title}</h3>
+                  <p className="text-lg">{artwork.date}</p>
+                </div>
+              </Tilt>
             </div>
-          </Tilt>
-        </motion.div>
-      ))}
-    </motion.div>
+          ))}
+        </div>
 
-    {/* Loading Spinner */}
-    {isLoading && (
-      <motion.div
-        className="absolute inset-0 flex items-center justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="w-12 h-12 border-t-4 border-[#F5F8CC] border-solid rounded-full animate-spin"></div>
-      </motion.div>
-    )}
+        {/* Pagination */}
+        <div className="flex justify-center mt-16">
+          <div className="flex items-center gap-6">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => paginate(index + 1)}
+                className={`text-lg font-medium px-4 py-2 rounded-full transition-all duration-300 ease-in-out hover:bg-[#F5F8CC] hover:text-[#2A1B3D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${
+                  currentPage === index + 1 ? "bg-[#F5F8CC] text-[#2A1B3D]" : "bg-transparent text-[#F5F8CC]"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        </div>
 
-    {/* Modal for Artwork Details */}
-    {selectedArtwork && (
-      <motion.div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 1.5, ease: "easeInOut" }}
-      >
-        {/* Glassmorphism Backdrop */}
-        <motion.div
-          className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#2A1B3D] to-[#F5F8CC] backdrop-blur-3xl opacity-70"
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
-        />
-
-        {/* Modal Content with Border */}
-        <motion.div
-          className="relative bg-gradient-to-br from-[#2A1B3D] to-[#F5F8CC] backdrop-blur-lg bg-opacity-80 p-6 sm:p-10 lg:p-20 rounded-3xl shadow-2xl w-[90%] sm:w-3/4 lg:w-2/4 max-w-3xl min-h-screen sm:h-[90vh] border-8 border-[#F5F8CC]"
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 250, damping: 40 }}
-        >
-          {/* Close Button */}
-          <button
-            onClick={closeDetails}
-            className="absolute top-6 right-6 bg-[#FDE4CF] text-deep_indigo p-4 rounded-full shadow-2xl hover:scale-125 transition-all transform hover:rotate-45"
+        {/* Modal (Artwork Details) */}
+        {selectedArtwork && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
+            onClick={closeModal} 
           >
-            ✕
-          </button>
+            <div
+              className="modal-content bg-gradient-to-r from-lemon_chiffon to-tea_rose p-6 md:p-12 rounded-3xl relative w-full md:w-10/12 lg:w-8/12 xl:w-7/12 max-h-[90vh] overflow-auto shadow-3xl transform transition-all duration-500 ease-in-out animate-fade-in opacity-90"
+              onClick={(e) => e.stopPropagation()} 
+            >
+              {/* Close Button */}
+              <button
+                className="absolute font-serif text-4xl font-semibold transition-all duration-300 ease-in-out transform top-6 right-6 text-deep_indigo hover:text-electric_blue"
+                onClick={closeModal} 
+              >
+                &times;
+              </button>
 
-          {/* Artwork Title */}
-          <motion.h2
-            className="text-5xl sm:text-6xl font-serif text-[#F5F8CC] font-extrabold text-center mb-12 sm:mb-14"
-            initial={{ opacity: 0, y: -40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-          >
-            {selectedArtwork.title}
-          </motion.h2>
+              {/* Artwork Image */}
+              <LazyLoadImage
+                src={selectedArtwork.src}
+                alt={selectedArtwork.description}
+                className="object-contain w-full h-full max-h-[80vh] mb-8 rounded-xl border-4 border-transparent transition-all duration-500 hover:scale-105 hover:rotate-3 hover:shadow-2xl hover:border-[#F5F8CC] hover:border-8 hover:ring-4 hover:ring-[#FFC857] hover:ring-opacity-30 animate-slide-up"
+                loading="lazy"
+                placeholderSrc={selectedArtwork.placeholderSrc}
+              />
 
-          {/* Artwork Image */}
-          <motion.div
-            className="relative overflow-hidden group"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          >
-            <LazyLoadImage
-              src={selectedArtwork.src}
-              alt={selectedArtwork.description}
-              className="object-cover w-full h-full transition-transform duration-500 rounded-xl group-hover:scale-110 group-hover:rotate-3"
-            />
-          </motion.div>
 
-          {/* Artwork Description */}
-          <motion.div
-            className="mt-8 space-y-6 text-center sm:mt-12"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.6 }}
-          >
-            <p className="text-lg sm:text-xl text-[#F1C0E8] font-sans leading-relaxed">
-              {selectedArtwork.description}
-            </p>
-            <p className="text-md text-[#F5F8CC]">
-              Created: {selectedArtwork.date}
-            </p>
-          </motion.div>
-        </motion.div>
-      </motion.div>
-    )}
-  </div>
-</section>
 
+              {/* Artwork Title and Description */}
+              <div className="mt-6 text-center">
+                {/* Title */}
+                <h2 className="font-serif text-4xl font-extrabold text-[#2A1B3D] mb-3 tracking-wide hover:text-non_photo_blue transition-all duration-300 ease-in-out">
+                  {selectedArtwork.title}
+                </h2>
+                      
+                {/* Description */}
+                <p className="max-w-4xl px-4 mx-auto mb-6 text-xl font-medium leading-relaxed text-non_photo_blue opacity-90">
+                  {selectedArtwork.description}
+                </p>
+                      
+                {/* Date */}
+                <p className="text-lg text-[#A7A6B0] font-semibold uppercase tracking-widest">
+                  {selectedArtwork.date}
+                </p>
+              </div>
+
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
   );
 };
 
