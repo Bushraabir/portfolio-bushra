@@ -163,7 +163,7 @@ const observer = useRef();
   
 
   return (
-    <div className="bg-dark text-light scroll-smooth" >
+    <div className="bg-lemon_chiffon text-light scroll-smooth" >
           <NavbarComponent />
           <div className="absolute top-0 left-0 w-full h-full">
           <Suspense fallback={isLoaded ? null : <Loader />}>
