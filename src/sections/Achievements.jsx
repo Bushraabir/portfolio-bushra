@@ -37,6 +37,14 @@ const achievements = [
       "1st place at the regional level of Bangladesh Physics Olympiad (BDPHO) in 2022",
       "Regional level winner in Bangladesh Junior Science Olympiad (2019)",
       "Best Cadet Award for 2017",
+      "1st place in essay writing competition on Bissho Shishu o Jubo Theater Dibosh in 2023",
+      "1st place in painting competition on Bissho Shishu o Jubo Theater Dibosh in 2022",
+      "3rd place in painting competition based on 7th March historical speech in 2022",
+      "1st place in essay writing competition on Independence Day of Bangladesh in 2022",
+      "3rd place in painting competition based on National Mourning Day in 2022",
+      "1st place in International Mother Language Day Essay Writing Competition in 2019",
+      "1st place in painting competition on National Mourning Day in 2019",
+      "2nd place in painting competition on Bissho Shishu o Jubo Theater Dibosh in 2019",
     ]
   },
   {
@@ -46,6 +54,8 @@ const achievements = [
       "Skilled in Acrylic and watercolor painting, pencil sketching, clay sculpture, and crafting",
       "Proficient in 3D modeling and rendering in Blender",
       "Expert in Graphic design and digital art using Adobe Illustrator, Photoshop, and Krita",
+      "Best artist in Inter House Painting Competition in 2018, drawing freedom with charcoal",
+      "Best writer in Inter House Wall Magazine Competition in 2017",
     ]
   },
   {
@@ -77,6 +87,9 @@ const achievements = [
       "Served as house prefect, leading the champion house with organizational skills and vision",
       "Best Cadet Award in 2017 for exemplary discipline and performance",
       "Proven leadership in fostering collaboration and team growth",
+      "Team leader in InterHouse Science Fair Competition in 2022, where the project 'Gusto' with face recognition technology was awarded as the best project",
+      "Team leader in Inter House Science Fair Competition in 2019, where the project on easy water purification and supply was awarded as the best project",
+      "House Prefect of Bir Protik Dr. Captain Sitara Begum House, leading 92 cadets to overall championship in the 2023 Annual Athletics based on discipline, academics, cleanliness, and integrity",
     ]
   },
   {
@@ -200,7 +213,7 @@ const Achievements = () => {
   }, []);
 
   return (
-    <section className="p-6 mt-20 space-y-10 shadow-xl md:p-12 lg:p-16 bg-gradient-to-b from-deep_indigo via-mauve to-pink_lavender bg-opacity-90 backdrop-blur-sm ">
+    <section id="achievements"  className="p-6 mt-20 space-y-10 shadow-xl md:p-12 lg:p-16 bg-gradient-to-b from-deep_indigo via-mauve to-pink_lavender bg-opacity-90 backdrop-blur-sm ">
       <div className="absolute inset-0 opacity-50 bg-gradient-to-r from-aquamarine to-jordy_blue mix-blend-multiply"></div>
       <div className="absolute inset-0 bg-radial-gradient(closest-corner, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.2)) opacity-20"></div>
       <motion.div

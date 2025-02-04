@@ -176,7 +176,7 @@ const TestimonialPolygon = () => {
   };
 
   return (
-    <motion.div
+    <motion.div  id="testimonials"
       className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-b from-deep_indigo to-dark_teal lg:flex-row"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

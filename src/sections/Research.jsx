@@ -168,7 +168,7 @@ const Research = () => {
   AOS.init({ duration: 1000, once: true });
 
   return (
-    <div className="w-full px-8 py-16 mx-auto bg-lemon_chiffon text-deep_indigo">
+    <div id="research" className="w-full px-8 py-16 mx-auto bg-lemon_chiffon text-deep_indigo">
       {/* Hero Section */}
       <div className="mb-16 text-center" data-aos="fade-up">
         <h1 className="mb-6 font-serif text-5xl leading-tight text-gradient gradient">
