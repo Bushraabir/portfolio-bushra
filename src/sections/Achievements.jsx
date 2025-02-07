@@ -14,103 +14,116 @@ gsap.registerPlugin(ScrollTrigger);
 
 const achievements = [
   {
-    title: "Pillars of Excellence",
-    description: "Driven by dedication, perseverance, and a thirst for knowledge, I have consistently excelled across multiple academic levels, earning recognition and scholarships.",
+    title: "Academic Excellence & Scholarships",
+    description: "Demonstrating consistent academic excellence, I have secured prestigious ranks, scholarships, and accolades throughout my educational journey.",
     points: [
-      "Ranked 31st in Bangladesh University of Engineering Technology (BUET), the top Engineering University of Bangladesh in 2024",
-      "Nominated as Upazilla Bitthik Sresto Shikkharti in 2024",
-      "Top performer in high school and college",
-      "GPA 5.00 in Higher Secondary School Certificate (HSC) in 2023",
-      "General Grade Scholarship in Higher Secondary School Certificate (HSC) in 2023",
-      "GPA 5.00 in Secondary School Certificate (SSC) in 2021",
-      "Talentpool Scholarship in Secondary School Certificate (SSC) in 2021",
-      "GPA 5.00 in Junior School Certificate (JSC) in 2018",
-      "Talentpool Scholarship in Junior School Certificate (JSC) in 2018",
-      "GPA 5.00 in Primary Education Completion Examination (PECE) in 2015",
+      "Ranked 31st in the Bangladesh University of Engineering and Technology (BUET) Architecture admission test (2023)",
+      "Awarded Upazilla Bitthik Sresto Shikkharti recognition (2024)",
+      "Achieved a perfect GPA 5.00 in Higher Secondary Certificate (HSC) (2023)",
+      "Recipient of the General Grade Scholarship in HSC (2023)",
+      "Earned GPA 5.00 in Secondary School Certificate (SSC) (2021)",
+      "Awarded Talent Pool Scholarship in SSC (2021)",
+      "Attained GPA 5.00 in Junior School Certificate (JSC) (2018)",
+      "Received Talent Pool Scholarship in JSC (2018)",
+      "Achieved GPA 5.00 in Primary Education Completion Examination (PECE) (2015)",
     ],
   },
   {
-    title: "Rising through Challenges",
-    description: "I thrive in competitive environments, using every challenge as a stepping stone to growth and excellence.",
+    title: "Leadership & Team Management",
+    description: "I have taken on leadership roles, guiding teams with discipline, integrity, and vision, fostering excellence in academics and extracurriculars.",
     points: [
-      "Participated and selected in the International Youth Math Challenge (IYMC) in 2024",
-      "1st place at the regional level of Bangladesh Physics Olympiad (BDPHO) in 2022",
-      "Regional level winner in Bangladesh Junior Science Olympiad (2019)",
-      "Best Cadet Award for 2017",
-      "1st place in essay writing competition on Bissho Shishu o Jubo Theater Dibosh in 2023",
-      "1st place in painting competition on Bissho Shishu o Jubo Theater Dibosh in 2022",
-      "3rd place in painting competition based on 7th March historical speech in 2022",
-      "1st place in essay writing competition on Independence Day of Bangladesh in 2022",
-      "3rd place in painting competition based on National Mourning Day in 2022",
-      "1st place in International Mother Language Day Essay Writing Competition in 2019",
-      "1st place in painting competition on National Mourning Day in 2019",
-      "2nd place in painting competition on Bissho Shishu o Jubo Theater Dibosh in 2019",
-    ]
+      "Junior Prefect – Appointed as the Junior Prefect of Bir Protik Dr. Captain Sitara Begum House (2021)",
+      "House Prefect – Led 92 cadets as the House Prefect of Bir Protik Dr. Captain Sitara Begum House (2022-2023)",
+      "Under my leadership, the house won the Overall Championship in the 2023 Annual Athletics based on discipline, academics, and teamwork",
+      "Best Cadet Award (2017) – Recognized for outstanding discipline, academics, and co-curricular excellence",
+    ],
   },
   {
-    title: "Crafting Creativity",
-    description: "Creativity is the heartbeat of my work, whether in traditional art or innovative digital designs.",
+    title: "STEM Competitions & Olympiads",
+    description: "Excelling in national-level Olympiads and science fairs, I have continuously pushed my intellectual boundaries.",
     points: [
-      "Skilled in Acrylic and watercolor painting, pencil sketching, clay sculpture, and crafting",
-      "Proficient in 3D modeling and rendering in Blender",
-      "Expert in Graphic design and digital art using Adobe Illustrator, Photoshop, and Krita",
-      "Best artist in Inter House Painting Competition in 2018, drawing freedom with charcoal",
-      "Best writer in Inter House Wall Magazine Competition in 2017",
-    ]
+      "Bangladesh Math Olympiad – Regional Winner, National Round Participant (2020)",
+      "Bangladesh Physics Olympiad (BdPhO) – 1st place in the regional round (Jessore), National Round Participant (2023)",
+      "Interhouse Astro Olympiad – 3rd place (2022)",
+      "Interhouse Astrophysics Olympiad – 1st place in the junior group (2019)",
+      "Biggan Uthsob (National) – Regional Winner, National Round Participant with a project on Biodegradable Polythene (2019)",
+    ],
   },
   {
-    title: "Bridging Art and Technology",
-    description: "I merge creativity with technology to build solutions that stand out.",
+    title: "Writing & Communication Excellence",
+    description: "With a passion for writing, I have earned multiple awards in essay competitions, demonstrating strong analytical and expressive skills.",
     points: [
-      "Proficient in programming languages like C, C++, Python",
-      "Passionate about Machine Learning and Artificial Intelligence with Python",
-      "Skilled in frontend web development (HTML, CSS, JavaScript, React, Vite, Three.js, Tailwind CSS)",
-      "Worked on backend solutions with Firebase",
-      "Experienced in web animation using GSAP and Framer Motion",
-    ]
+      "1st place – MCSK Essay Writing Competition (2017)",
+      "2nd place – Interhouse Essay Writing Competition (2020)",
+      "1st place – International Mother Language Day Essay Competition (2019)",
+      "1st place – Essay Writing Competition on Independence Day of Bangladesh (2022)",
+      "Best Writing Award – InterHouse Wall Magazine Competition (2017)",
+    ],
   },
   {
-    title: "Driven by Curiosity",
-    description: "I explore the vastness of knowledge and the endless possibilities to innovate and push boundaries.",
+    title: "Creative & Artistic Achievements",
+    description: "My artistic skills, spanning traditional and digital media, have been recognized in national and institutional competitions.",
     points: [
-      "Deep interest in astronomy and the mysteries of the Universe",
-      "Authored research papers and articles",
-      "Exploring data structures and algorithms",
-      "Creating innovative projects that solve real-world problems",
-      "Passionate about creating 3D physics simulations",
-    ]
+      "3rd place – Bangla Vision Painting Competition (2013)",
+      "1st place – Bissho Shishu o Jubo Theater Dibosh Painting Competition (2019, 2022)",
+      "1st place – National Mourning Day Painting Competition (2019)",
+      "3rd place – 7th March Historical Speech Painting Competition (2022)",
+      "Recognized as Best Artist – Interhouse Painting Competition (2018)",
+    ],
   },
   {
-    title: "Leadership with Purpose",
-    description: "Guided by a sense of responsibility, I’ve led teams and inspired others to excel both academically and beyond.",
+    title: "Innovation & Scientific Research",
+    description: "Merging science with technology, I have led innovative projects that provide real-world solutions.",
     points: [
-      "Served as house prefect, leading the champion house with organizational skills and vision",
-      "Best Cadet Award in 2017 for exemplary discipline and performance",
-      "Proven leadership in fostering collaboration and team growth",
-      "Team leader in InterHouse Science Fair Competition in 2022, where the project 'Gusto' with face recognition technology was awarded as the best project",
-      "Team leader in Inter House Science Fair Competition in 2019, where the project on easy water purification and supply was awarded as the best project",
-      "House Prefect of Bir Protik Dr. Captain Sitara Begum House, leading 92 cadets to overall championship in the 2023 Annual Athletics based on discipline, academics, cleanliness, and integrity",
-    ]
+      "Team Leader – InterHouse Science Fair (Senior Group), Developed 'Gusto,' a virtual assistant with Face Recognition, awarded Best Project (2022)",
+      "Led a project on Easy Water Purification and Supply, awarded Best Project (2019)",
+      "Biggan Uthsob (National) – Regional Winner, National Round Participant (2019)",
+    ],
+  },
+  {
+    title: "Public Speaking & Debate",
+    description: "Effective communication is key to leadership, and I have honed this skill through competitive speaking events.",
+    points: [
+      "Awarded Soujonno Pouroshkar – 7th March Extempore Speech Competition (2022)",
+      "Runners-up – Debate Competition (2016)",
+    ],
   },
   {
     title: "Empowering Through Education",
-    description: "As the founder of EmpowerEd, I strive to inspire and empower others through education, mentorship, and innovation.",
+    description: "As the founder of EmpowerEd, I strive to inspire and uplift through education and innovation.",
     points: [
-      "Founded and led an organization focused on empowering individuals through education and innovation",
-      "Organized events and programs focused on skill development and personal growth",
-      "Exhibited leadership, teamwork, and entrepreneurial spirit in managing the organization",
-    ]
+      "Founded EmpowerEd – An initiative focused on skill development and mentorship",
+      "Organized educational programs to enhance knowledge and career readiness",
+      "Exhibited leadership, teamwork, and entrepreneurial vision in managing the organization",
+    ],
   },
   {
-    title: "Mentorship in Action",
-    description: "I believe in the power of mentorship to unlock potential and guide others to success.",
+    title: "Mentorship & Teaching Experience",
+    description: "Passionate about teaching, I have mentored students, helping them excel academically.",
     points: [
-      "Provided tuition for 2 months to 3 students, enhancing their understanding of Physics and Mathematics",
-      "Fostered problem-solving skills and conceptual clarity",
-      "Exhibited patience, adaptability, and effective teaching methods to inspire growth",
-    ]
+      "Provided tuition to 3 students for 2 months, improving their Physics and Mathematics comprehension",
+      "Focused on problem-solving skills and conceptual clarity",
+      "Implemented adaptive teaching techniques to enhance student learning",
+    ],
+  },
+  {
+    title: "Technical Expertise & Digital Skills",
+    description: "With a strong technical foundation, I integrate programming, design, and 3D visualization to create impactful solutions.",
+    points: [
+      "Proficient in programming languages: C, C++, Python",
+      "Passionate about Machine Learning and Artificial Intelligence with Python",
+      "Experienced in frontend web development (HTML, CSS, JavaScript, React, Vite, Three.js, Tailwind CSS)",
+      "Backend experience with Firebase",
+      "Skilled in web animation using GSAP and Framer Motion",
+      "Passionate about 3D physics simulations",
+      "Proficient in 3D modeling and rendering using Blender",
+      "Expert in Graphic Design and Digital Art (Adobe Illustrator, Photoshop, Krita)",
+    ],
   },
 ];
+
+
+
 
 const LoadingFallback = () => (
   <mesh>
@@ -233,13 +246,13 @@ const Achievements = () => {
           before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent 
           before:border-[#fbf8cc] before:-webkit-text-stroke-[2px] text-stroke transition-all duration-1500 ease-out 
           transform hover:scale-105 hover:text-white"
-        data-content="Achievements &amp; Recognitions"
+        data-content="Accomplishments"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 0.8, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1, ease: "easeOut" }}
       >
-        Achievements &amp; Recognitions
+        Accomplishments
       </motion.h2>
 
       <motion.p 
@@ -249,7 +262,19 @@ const Achievements = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
-        A journey of excellence, growth, and success, recognized globally, with an unwavering commitment to progress and innovation.
+        From my first day of school to now, I’ve committed myself to not only understanding the world around me but also to making an impact through innovative projects and academic pursuits. This section highlights my journey of continuous learning, where I've combined my passion for technology, science, and creativity to create solutions that are both meaningful and transformative.
+      </motion.p>
+
+      <motion.p 
+        className="mt-6 sm:mt-8 text-xl sm:text-2xl font-mono text-champagne_pink-500 opacity-85 tracking-wide leading-relaxed max-w-4xl mx-auto transition-all duration-500 ease-in-out transform hover:text-white"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+      >
+        Whether through my academic achievements, collaborative projects, or hands-on experience in programming, 3D modeling, and scientific exploration, I have strived to push the boundaries of what I know and share that knowledge with others. I believe in the power of learning to drive change, and I am excited to bring this mindset into my future endeavors.
+
+
       </motion.p>
       </motion.div>
       <Star cursorPosition={cursorPosition} />

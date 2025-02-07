@@ -122,19 +122,19 @@ const Artworks = () => {
           before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent 
           before:border-[#fbf8cc] before:-webkit-text-stroke-[2px] text-stroke 
           hover:text-[#90DBF4] hover:scale-105"
-        data-content="My Digital Artworks"
+        data-content="Art in Pixels"
         initial={{ opacity: 0, x: 100 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
-        My Digital Artworks
+        Art in Pixels
       </motion.h2>
 
 
 
         <p className="mt-8 text-xl opacity-80 text-deep_indigo tracking-wide leading-relaxed animate-slide-up">
-          Discover timeless creations that evoke emotion and elevate spaces.
+        Step into the world of digital artistry, where technology and creativity blend to form innovative works that push boundaries. Each piece is crafted using advanced tools to evoke emotions and bring new perspectives to life.
         </p>
 
         <div className="flex justify-center mt-10 mb-12 space-x-8">

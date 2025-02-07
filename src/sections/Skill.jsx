@@ -2,58 +2,79 @@ import React, { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import Splitting from "splitting";
 import "splitting/dist/splitting.css";
-import { FaPython, FaReact, FaBlender, FaGuitar, FaSwimmer } from "react-icons/fa";
-import { SiCplusplus, SiTensorflow, SiFirebase, SiAdobeillustrator, SiThreedotjs } from "react-icons/si";
+import { FaPython, FaReact, FaBlender, FaGuitar, FaSwimmer, FaCalculator , FaLightbulb, FaUsers, FaRocket, FaCog, FaCube, FaLaptopCode, FaBrain ,FaStar , FaComments} from "react-icons/fa";
+import { SiCplusplus, SiTensorflow, SiFirebase, SiAdobeillustrator, SiThreedotjs,  SiHtml5, SiCss3, SiVite } from "react-icons/si";
 import { DiPhotoshop } from "react-icons/di";
 import { GiSkateboard, GiArtificialIntelligence, GiPaintBrush } from "react-icons/gi";
 import skill from "../assets/skill.jpg";
+import { SiGreensock ,SiFramer  } from "react-icons/si";
+import { GiCrafting , GiAtomicSlashes } from "react-icons/gi";
+
 
 const skillsData = [
-  {
-    category: "Programming",
-    items: [
-      { name: "C", icon: <SiCplusplus /> },
-      { name: "C++", icon: <SiCplusplus /> },
-      { name: "Python", icon: <FaPython /> },
-      { name: "Machine Learning", icon: <SiTensorflow /> },
-      { name: "NLP", icon: <GiArtificialIntelligence /> }
-    ]
-  },
-  {
-    category: "Web Development",
-    items: [
-      { name: "React.js", icon: <FaReact /> },
-      { name: "Three.js", icon: <SiThreedotjs /> },
-      { name: "Firebase", icon: <SiFirebase /> }
-    ]
-  },
-  {
-    category: "3D & Design",
-    items: [
-      { name: "Blender", icon: <FaBlender /> },
-      { name: "Illustrator", icon: <SiAdobeillustrator /> },
-      { name: "Photoshop", icon: <DiPhotoshop /> }
-    ]
-  },
-  {
-    category: "Art & Craft",
-    items: [
-      { name: "Acrylic Painting", icon: <GiPaintBrush /> },
-      { name: "Sketching", icon: <GiPaintBrush /> },
-      { name: "Sculpting", icon: <GiPaintBrush /> }
-    ]
-  },
-  {
-    category: "Other Interests",
-    items: [
-      { name: "Guitar", icon: <FaGuitar /> },
-      { name: "Skating", icon: <GiSkateboard /> },
-      { name: "Swimming", icon: <FaSwimmer /> }
-    ]
-  }
-];
+    {
+        category: "Physics & Mathematics",
+        items: [
+          { name: "Physics", icon: <GiAtomicSlashes /> },
+          { name: "Mathematics", icon: <FaCalculator /> }
+        ]
+      },
+    {
 
-const categories = ["All", ...skillsData.map((s) => s.category)];
+      category: "Programming",
+      items: [
+        { name: "C", icon: <SiCplusplus /> },
+        { name: "C++", icon: <SiCplusplus /> },
+        { name: "Python", icon: <FaPython /> },
+        { name: "Machine Learning", icon: <SiTensorflow /> },
+        { name: "Natural Language Processing (NLP)", icon: <GiArtificialIntelligence /> },
+        { name: "React.js", icon: <FaReact /> },
+        { name: "Three.js", icon: <SiThreedotjs /> },
+        { name: "GSAP", icon: <SiGreensock  /> },
+        { name: "Framer Motion", icon: <SiFramer /> },
+        { name: "Firebase", icon: <SiFirebase /> },
+        { name: "Vite", icon: <SiVite /> },
+        { name: "HTML", icon: <SiHtml5 /> },
+        { name: "CSS", icon: <SiCss3 /> }
+      ]
+    },
+    {
+      category: "3D Modeling & Design",
+      items: [
+        { name: "Blender", icon: <FaBlender /> },
+        { name: "Illustrator", icon: <SiAdobeillustrator /> },
+        { name: "Photoshop", icon: <DiPhotoshop /> }
+      ]
+    },
+    {
+      category: "Art & Craft",
+      items: [
+        { name: "Acrylic Painting", icon: <GiPaintBrush /> },
+        { name: "Sketching", icon: <GiPaintBrush /> },
+        { name: "Sculpting", icon: <GiPaintBrush /> },
+        { name: "Crafting", icon: <GiCrafting /> }
+      ]
+    },
+    {
+      category: "Other Interests",
+      items: [
+        { name: "Guitar", icon: <FaGuitar /> },
+        { name: "Skating", icon: <GiSkateboard /> },
+        { name: "Swimming", icon: <FaSwimmer /> }
+      ]
+    },
+    {
+        category: "Soft Skills",
+        items: [
+          { name: "Problem Solving", icon: <FaLightbulb /> },
+          { name: "Teamwork", icon: <FaUsers /> },
+          { name: "Leadership", icon: <FaStar /> },
+          { name: "Communication", icon: <FaComments /> }
+        ]
+      },
+  ];
+  
+const categories = [, ...skillsData.map((s) => s.category)];
 
 const AnimatedCard = () => {
   const cardRef = useRef(null);
@@ -61,16 +82,16 @@ const AnimatedCard = () => {
     Splitting({ whitespace: true });
   }, []);
   return (
-    <div ref={cardRef} className="animated-card relative">
-      <div className="text relative z-10" style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}>
-        <h1 className="split-text text-4xl font-serif text-lemon_chiffon" data-splitting>
+    <div ref={cardRef} className="relative animated-card">
+      <div className="relative z-10 text" style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}>
+        <h1 className="font-serif text-4xl split-text text-lemon_chiffon" data-splitting>
           You can't go wrong
           <br />
           with the right shoes
         </h1>
       </div>
-      <div className="try-it text-2xl">🔎</div>
-      <div className="magnifying-glass absolute" style={{ opacity: 1, transition: "none" }}></div>
+      <div className="text-2xl try-it">🔎</div>
+      <div className="absolute magnifying-glass" style={{ opacity: 1, transition: "none" }}></div>
     </div>
   );
 };
@@ -289,9 +310,9 @@ const Skill = () => {
       <div ref={sectionRef} className="skill-section">
         <div className="section-magnifying-glass"></div>
         <div className="content">
-          <h2 className="split-text" data-splitting>
+          <h1 className="split-text" data-splitting>
             My Skill Set
-          </h2>
+          </h1>
           <div className="btn-group">
             {categories.map((cat) => (
               <button key={cat} onClick={() => setActiveCategory(cat)} className={activeCategory === cat ? "active" : ""}>

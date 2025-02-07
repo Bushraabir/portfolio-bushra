@@ -12,13 +12,13 @@ gsap.registerPlugin(ScrollTrigger);
 const testimonials = [
   {
     quote:
-      "Bushra is a hardworking and disciplined student. Her dedication to her work is remarkable, and she has shown impressive growth throughout her academic journey. She tackles challenges with perseverance and a positive attitude. She is always ready to go the extra mile to ensure success in her projects and assignments. Bushra’s determination and focus on her goals make her stand out as an exceptional student.",
+      "During breaks at noon, I often see her studying in the library. If it's closed—even forcefully—she finds a spot on the stairs or anywhere else. She even skips meals to save time for studying.",
     name: "Dr. A. Rahman",
     designation: "Professor of Mechanical Engineering",
   },
   {
     quote:
-      "His creativity and dedication are evident in his projects. He has consistently demonstrated an ability to approach problems from innovative perspectives and develop practical solutions. Bushra is a quick learner and adapts well to new challenges. Her leadership skills shine through in collaborative settings, and she is always supportive of her peers. Her contributions have significantly impacted our lab’s success.",
+      "She was one of the first students to be so active in Olympiads, securing 1st place in Jessore in the Physics Olympiad. Her academic scores in STEM are nearly 100%, and she constantly asks thought-provoking questions.",
     name: "Ms. S. Hasan",
     designation: "Head of Innovation Lab",
   },
@@ -296,12 +296,11 @@ const TestimonialPolygon = () => {
             transition={{ duration: 1.5, ease: "easeOut" }}
           >
             <br />
-            What they say
+            Teacher's Reflections
             <br />
           </motion.h1>
           <p className="text-lg leading-relaxed tracking-wide text-neutral">
-            See what others have to say about Bushra's hard work, creativity,
-            and leadership abilities.
+            Insights from my closest mentors, highlighting my journey, character, and achievements.
           </p>
         </motion.div>
       )}

@@ -246,7 +246,7 @@ const Research = () => {
           My Research & Publications
         </h1>
         <p className="max-w-4xl mx-auto text-lg sm:text-xl">
-          Explore my books, articles, and research on innovation, design, and technology, each meticulously crafted to provide insights into transformative concepts.
+        Delve into my research, where I challenge conventional boundaries in technology, design, and innovation. My work aims to unlock transformative insights in fields like Computer Science, Engineering Physics, and Astrophysics, driving forward-thinking solutions for real-world problems
         </p>
       </div>
 
