@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
     assetsInclude: ['**/*.hdr'],
     plugins: [react()],
-    base: '/portfolio-bushra/',
+    base: '/portfolio-abir/',
     sourcemap: true,
 
 });
