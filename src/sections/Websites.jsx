@@ -284,7 +284,7 @@ const Websites = () => {
   };
 
   return (
-<section id="websites"  className="relative py-16 overflow-hidden lg:py-24 bg-dark_teal text-lemon_chiffon">
+<section id="websites"  className=" relative py-16 overflow-hidden lg:py-24 bg-dark_teal text-lemon_chiffon">
   {/* Background Gradient */}
   <div className="absolute inset-0 bg-gradient-to-b from-deep_indigo to-tea_rose opacity-60"></div>
 

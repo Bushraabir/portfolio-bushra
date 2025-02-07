@@ -6,7 +6,7 @@ import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeli
 import "react-vertical-timeline-component/style.min.css";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { FaCheck,  } from "react-icons/fa";
+import { FaCheck, FaChevronDown } from "react-icons/fa";
 import Ball from '../assets/3d_model/Ball';
 import Star from "../components/Stars";
 
@@ -120,85 +120,92 @@ const LoadingFallback = () => (
 );
 
 const AnimatedModel = memo(() => (
-  <Canvas style={{ width: 150, height: 150, position: "absolute", top: "-20px", left: "-40px", zIndex: 10 }}>
-    {/* Ambient light with a soft blue from your Tailwind palette */}
-    <ambientLight intensity={5} color="#a3c4f3" /> {/* Jordy Blue */}
-    
-    {/* Spot light with a soft purple tint, matching with Pink Lavender */}
-    <spotLight position={[20, 30, 10]} angle={0.7} penumbra={0.9} intensity={50} color="#f1c0e8" castShadow /> {/* Pink Lavender */}
-    
-    {/* Directional light with a pink glow, adjusted to Tea Rose */}
-    <directionalLight position={[-10, 20, -10]} intensity={8} color="#ffcfd2" /> {/* Tea Rose */}
-    
-    {/* Point light with a warm golden highlight, aligned with Champagne Pink */}
-    <pointLight position={[0, 5, 10]} intensity={50} color="#fde4cf" decay={2} /> {/* Champagne Pink */}
-    
+  <Canvas style={{ width: 250, height: 250, position: "absolute", top: "-60px", left: "-90px", zIndex: 10 }}>
+    <ambientLight intensity={3} color="#a3c4f3" />
+    <spotLight position={[15, 25, 10]} angle={0.7} penumbra={0.9} intensity={40} color="#f1c0e8" castShadow />
+    <directionalLight position={[-10, 20, -10]} intensity={6} color="#ffcfd2" />
+    <pointLight position={[0, 5, 10]} intensity={30} color="#fde4cf" decay={2} />
     <Suspense fallback={<LoadingFallback />}>
       <Ball />
     </Suspense>
-    
-    <OrbitControls enableZoom={false} enablePan autoRotate autoRotateSpeed={1.5} />
+    <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={1.2} />
   </Canvas>
 ));
-
-
 
 
 const AchievementCard = ({ achievement }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleCard = () => setIsExpanded((prev) => !prev);
 
+  useEffect(() => {
+    gsap.fromTo(".achievement-heading", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, delay: 0.2 });
+  }, []);
+
   return (
     <VerticalTimelineElement
       contentStyle={{
-        background: "rgba(30, 30, 60, 0.5)",
-        backdropFilter: "blur(12px)",
-        borderRadius: "20px",
-        padding: "1.5rem",
-        border: "1px solid rgba(255, 255, 255, 0.2)"
+        background: "rgba(30, 30, 60, 0.6)",
+        backdropFilter: "blur(1px)",
+        borderRadius: "1.5rem",
+        padding: "2.5rem",
+        border: "3px solid rgba(255, 255, 255, 0.5)",
       }}
-      contentArrowStyle={{ borderRight: "8px solid rgba(30, 30, 60, 0.5)" }}
+      contentArrowStyle={{ borderRight: "10px solid rgba(30, 30, 60, 0.6)" }}
       iconStyle={{
-        background: "linear-gradient(135deg, #7B61FF, #FF6F3C)",
-        color: "#fff",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-        border: "2px solid #FFC857"
+        background: "linear-gradient(135deg, #6A5ACD, #FF6347)",
+        color: "#fefef5",
+        boxShadow: "0 6px 15px rgba(0, 0, 0, 0.2)",
+        border: "2px solid #FFC857",
       }}
       icon={<AnimatedModel />}
     >
       <motion.div onClick={toggleCard} role="button" aria-expanded={isExpanded}>
-        <h3 className="font-serif text-2xl font-bold text-transparent sm:text-3xl bg-gradient-to-r from-jordy_blue to-mauve bg-clip-text">
+        <h3 className="text-3xl sm:text-4xl font-serif font-extrabold text-transparent bg-gradient-to-r from-lemon_chiffon to-purple-700 bg-clip-text transition-transform transform hover:scale-105 hover:text-accent">
           {achievement.title}
         </h3>
-        <p className="mt-2 text-base leading-relaxed text-neutral-200">{achievement.description}</p>
+        <p className="mt-6 text-lg sm:text-xl leading-relaxed text-champagne_pink opacity-85 font-light">
+          {achievement.description}
+        </p>
+        <motion.div
+          animate={{ rotate: isExpanded ? 0 : 180 }}
+          transition={{ duration: 0.3 }}
+          className="mt-3 inline-block transform transition-transform duration-300 ease-in-out"
+        >
+          <FaChevronDown className="text-3xl text-tea_rose hover:text-non_photo_blue" />
+        </motion.div>
       </motion.div>
       <motion.div
         initial={{ height: 0, opacity: 0 }}
         animate={isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        style={{ overflow: "hidden", marginTop: "1rem" }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+        style={{ overflow: "hidden", marginTop: "1.5rem" }}
       >
-        <ul className="space-y-3">
+        <ul className="space-y-4">
           {achievement.points.map((point, index) => (
-            <motion.li key={index} className="flex items-start space-x-3 text-sm text-accent">
-              <div className="flex items-center justify-center w-6 h-6 text-white border-2 border-purple-300 rounded-full shadow-lg bg-gradient-to-r from-indigo-500 to-purple-500">
+            <motion.li
+              key={index}
+              className="flex items-start space-x-3 text-sm sm:text-md text-non_photo_blue opacity-90"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+            >
+              <div className="flex items-center justify-center w-7 h-7 text-white border-2 border-gradient-to-r from-lemon_chiffon-500 to-tea_rose-600 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md">
                 <FaCheck className="text-xs" />
               </div>
-              <span>{point}</span>
+              <span className="font-medium">{point}</span>
             </motion.li>
           ))}
         </ul>
       </motion.div>
     </VerticalTimelineElement>
   );
+  
 };
+
+
 
 const Achievements = () => {
   const [cursorPosition, setCursorPosition] = useState(null);
-
-  useEffect(() => {
-    gsap.fromTo(".achievement-heading", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, delay: 0.2 });
-  }, []);
 
   const handleMouseMove = (event) => {
     setCursorPosition({ x: event.clientX, y: event.clientY });
@@ -212,19 +219,38 @@ const Achievements = () => {
     };
   }, []);
 
+  useEffect(() => {
+    gsap.fromTo(".achievement-heading", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, scrollTrigger: { trigger: ".achievement-heading", start: "top 90%" } });
+    gsap.fromTo(".achievement-card", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.5, scrollTrigger: { trigger: ".achievement-card", start: "top 80%" } });
+  }, []);
+
   return (
-    <section id="achievements"  className="p-6 mt-20 space-y-10 shadow-xl md:p-12 lg:p-16 bg-gradient-to-b from-deep_indigo via-mauve to-pink_lavender bg-opacity-90 backdrop-blur-sm ">
-      <div className="absolute inset-0 opacity-50 bg-gradient-to-r from-aquamarine to-jordy_blue mix-blend-multiply"></div>
-      <div className="absolute inset-0 bg-radial-gradient(closest-corner, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.2)) opacity-20"></div>
-      <motion.div
-        className="mb-10 text-center achievement-heading"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
+    <section id="achievements" className="p-6 mt-16 space-y-12 shadow-xl md:p-12 lg:p-16 bg-gradient-to-b from-deep_indigo via-mauve to-pink_lavender bg-opacity-90 backdrop-blur-sm rounded-t-4xl">
+
+      <motion.div className="mb-32 text-center relative overflow-hidden">
+      <motion.h2 
+        className="mt-5 achievement-heading text-5xl sm:text-6xl md:text-7xl font-serif font-extrabold text-transparent relative z-20 
+          before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent 
+          before:border-[#fbf8cc] before:-webkit-text-stroke-[2px] text-stroke transition-all duration-1500 ease-out 
+          transform hover:scale-105 hover:text-white"
+        data-content="Achievements &amp; Recognitions"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 0.8, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, ease: "easeOut" }}
       >
-        <h2 className="text-4xl font-bold text-transparent sm:text-5xl md:text-6xl bg-gradient-to-r from-mauve to-pink_lavender bg-clip-text">
-          Achievements and Recognitions
-        </h2>
+        Achievements &amp; Recognitions
+      </motion.h2>
+
+      <motion.p 
+        className="mt-6 sm:mt-8 text-xl sm:text-2xl font-mono text-champagne_pink-500 opacity-85 tracking-wide leading-relaxed max-w-4xl mx-auto transition-all duration-500 ease-in-out transform hover:text-white"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+      >
+        A journey of excellence, growth, and success, recognized globally, with an unwavering commitment to progress and innovation.
+      </motion.p>
       </motion.div>
       <Star cursorPosition={cursorPosition} />
       <VerticalTimeline lineColor="rgba(255, 255, 255, 0.2)">

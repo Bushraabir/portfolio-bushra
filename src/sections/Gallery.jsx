@@ -76,7 +76,7 @@ const Gallery = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Increased the interval for slower box translation
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -88,31 +88,26 @@ const Gallery = () => {
       gsap.to(descriptionElement, {
         opacity: show ? 1 : 0,
         y: show ? 0 : 20,
-        duration: 0.7, // Slowed down transition for better effect
+        duration: 0.7,
         ease: "power3.out",
       });
     }
 
-    // Apply blur effect on the image when hovered
     if (imgElement) {
       gsap.to(imgElement, {
-        scale: show ? 1.1 : 1, // Enlarge on hover
-        filter: show ? "blur(5px)" : "blur(0)", // Blur effect on hover
+        scale: show ? 1.1 : 1,
+        filter: show ? "blur(5px)" : "blur(0)",
         duration: 0.5,
       });
     }
   };
 
   return (
-<div className="relative py-16 overflow-hidden banner bg-lemon_chiffon h-[100vh]">
+    <div className="relative py-16 overflow-hidden banner bg-lemon_chiffon h-[100vh]">
+      <div className="absolute inset-0 shadow-lg bg-gradient-to-b from-lemon_chiffon via-light_gold to-soft_peach opacity-90 backdrop-blur-md z-5"></div>
+      <div className="absolute inset-0 bg-radial-gradient(closest-corner, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.25)) opacity-20 mix-blend-overlay z-5"></div>
 
-
-  {/* Other content */}
-  <div className="absolute inset-0 shadow-lg bg-gradient-to-b from-lemon_chiffon via-light_gold to-soft_peach opacity-90 backdrop-blur-md z-5"></div>
-  <div className="absolute inset-0 bg-radial-gradient(closest-corner, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.25)) opacity-20 mix-blend-overlay z-5"></div>
-
-        
-      <div className=" slider rounded-3xl" style={{ "--quantity": images.length }}>
+      <div className="slider rounded-3xl" style={{ "--quantity": images.length }}>
         {images.map((image, index) => (
           <div
             className="border-2 shadow-lg item border-lemon_chiffon rounded-xl"
@@ -143,7 +138,6 @@ const Gallery = () => {
           <p className="mt-2 text-lg">Explore moments that define my journey and shape my dreams!</p>
         </div>
 
-
         <div className="model">
           <Lottie
             options={{
@@ -155,11 +149,9 @@ const Gallery = () => {
             width="80%"
           />
         </div>
-
       </div>
     </div>
   );
 };
 
 export default Gallery;
-
