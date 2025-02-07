@@ -79,7 +79,7 @@ export default function OrganizationGallery() {
           </motion.h2>
           
           <p className="max-w-3xl mx-auto mt-4 font-sans text-lg leading-relaxed sm:text-xl lg:text-2xl text-dark_teal">
-            EmpowerEd is a non-profit organization with a mission to make education accessible to everyone, everywhere. We believe that every student deserves the same starting line, and we’re here to make that happen—at no cost to you!
+          EmpowerEd is a non-profit organization founded by Muzahidul Islam Abir, Bushra Khandoker, and others. It focuses on providing education, scholarships, and skill-building opportunities to empower individuals. The organization aims to create accessible learning platforms, support academic growth, and foster research initiatives, helping people achieve their educational and professional goals.
           </p>
         
           <div className="mt-6">

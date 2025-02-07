@@ -259,15 +259,15 @@ const Art = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] opacity-70 backdrop-blur-[10px] shadow-2xl"></div>
 
       <div className="container relative z-10 px-6 mx-auto lg:px-20" ref={containerRef}>
-        {/* Title */}
-        <div className="mb-20 text-center">
-          <h1 className="text-7xl font-serif font-extrabold text-[#F5F8CC] tracking-widest drop-shadow-xl">
-            Exquisite Artworks
-          </h1>
-          <p className="mt-6 text-2xl text-[#F1C0E8] font-sans opacity-90">
-            A collection of masterful pieces—designed to evoke emotion and captivate the senses.
-          </p>
-        </div>
+      {/* Title */}
+      <div className="mb-20 text-center">
+        <h1 className="text-7xl font-serif font-extrabold text-[#F5F8CC] tracking-widest drop-shadow-xl">
+          Exquisite Artistry
+        </h1>
+        <p className="mt-6 text-2xl text-[#F1C0E8] font-sans opacity-90">
+          A curated collection of artworks, meticulously crafted to inspire and engage through emotion and creativity.
+        </p>
+      </div>
 
         {/* Tabs */}
         <div className="flex flex-wrap justify-center gap-8 mb-16">

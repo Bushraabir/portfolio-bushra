@@ -302,15 +302,17 @@ const Websites = () => {
           Code Canvas
         </h1>
         <p className="mb-4 text-lg text-lemon_chiffon">
-          Partnering with Muzahidul Islam Abir, we're creating impactful projects that solve real-world problems through innovative solutions.
+          Partnering with Muzahidul Islam Abir, we create innovative solutions in Computer Science, Engineering Physics, and Astrophysics to tackle real-world challenges and empower communities.
         </p>
         <p className="mb-4 text-lg text-lemon_chiffon">
-          Our expertise spans C, C++, Python, HTML, CSS, JavaScript, React, Vite, Three.js, GSAP, Framer Motion, Plotly, and Firebase.
+          With expertise in C, C++, Python, HTML, CSS, JavaScript, and more, we build interactive apps, machine learning models, and simulations that drive progress and innovation.
         </p>
         <p className="text-lg text-lemon_chiffon">
-          We're driven by a passion for creativity and a dedication to overcoming challenges.
+          Fueled by creativity and problem-solving, we strive to contribute to technological and scientific advancements that shape the future.
         </p>
       </div>
+
+
 
       {/* Right Side - Lottie Animation */}
       <div className="mt-12 lg:w-1/2 lg:mt-0">
