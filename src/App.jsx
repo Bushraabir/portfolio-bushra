@@ -17,6 +17,7 @@ const AboutMe = React.lazy(() => import("./sections/Aboutme"));
 const ParticleScene = React.lazy(() => import("./components/Particle"));
 const Gallery = React.lazy(() => import("./sections/Gallery"));
 const Art = React.lazy(() => import("./sections/Art"));
+const Skill = React.lazy(() => import("./sections/Skill"));
 
 const sidebarVariants = {
   open: { width: "250px", opacity: 1, transition: { type: "tween", ease: "easeOut", duration: 1 } },
@@ -135,6 +136,7 @@ const App = () => {
           <Hero id="hero" />
           <AboutMe id="about" />
           <Achievements />
+          <Skill />
           <Gallery id="gallery" className="h-[120vh]" />
           <Websites id="websites" />
           <Artworks id="artworks" />
