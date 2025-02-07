@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import Splitting from "splitting";
 import "splitting/dist/splitting.css";
-// Removed AOS and Framer Motion imports because they were used solely for animations
 import { FaPython, FaReact, FaBlender, FaGuitar, FaSwimmer } from "react-icons/fa";
 import { SiCplusplus, SiTensorflow, SiFirebase, SiAdobeillustrator, SiThreedotjs } from "react-icons/si";
 import { DiPhotoshop } from "react-icons/di";
@@ -58,14 +57,9 @@ const categories = ["All", ...skillsData.map((s) => s.category)];
 
 const AnimatedCard = () => {
   const cardRef = useRef(null);
-
-  // Initialize Splitting for static text (this no longer triggers an animation)
   useEffect(() => {
     Splitting({ whitespace: true });
   }, []);
-
-  // Removed all GSAP timeline and mousemove-based magnifier animations.
-  // The card now renders static content.
   return (
     <div ref={cardRef} className="animated-card relative">
       <div className="text relative z-10" style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}>
@@ -100,15 +94,11 @@ const Skill = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const filteredSkills = activeCategory === "All" ? skillsData : skillsData.filter((s) => s.category === activeCategory);
   const bgImageUrl = skill;
-
-  // Removed GSAP/AOS entrance animations for the card items.
-  // The following effect is retained only for the background magnifier on the container.
   useEffect(() => {
     const container = sectionRef.current;
     const magnifier = container.querySelector(".section-magnifying-glass");
     magnifier.style.background = `url(${bgImageUrl}) no-repeat`;
-    let naturalWidth = 0,
-      naturalHeight = 0;
+    let naturalWidth = 0, naturalHeight = 0;
     const img = new Image();
     img.src = bgImageUrl;
     img.onload = () => {
@@ -116,40 +106,56 @@ const Skill = () => {
       naturalHeight = img.naturalHeight;
     };
     const zoom = 2;
-    const handleMouseMove = (e) => {
+    const updateMagnifier = (x, y, rect) => {
+      const mgWidth = magnifier.offsetWidth;
+      const mgHeight = magnifier.offsetHeight;
+      const bgWidth = naturalWidth ? naturalWidth * zoom : rect.width * zoom;
+      const bgHeight = naturalHeight ? naturalHeight * zoom : rect.height * zoom;
+      magnifier.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
+      const ratioX = x / rect.width;
+      const ratioY = y / rect.height;
+      const bgPosX = -(ratioX * bgWidth) + mgWidth / 2;
+      const bgPosY = -(ratioY * bgHeight) + mgHeight / 2;
+      magnifier.style.left = `${x - mgWidth / 2}px`;
+      magnifier.style.top = `${y - mgHeight / 2}px`;
+      magnifier.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
+    };
+    const handleMove = (e) => {
+      let x, y;
       const rect = container.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
-      if (mx >= 0 && my >= 0 && mx <= rect.width && my <= rect.height) {
+      if (e.type === "touchmove") {
+        x = e.touches[0].clientX - rect.left;
+        y = e.touches[0].clientY - rect.top;
+      } else {
+        x = e.clientX - rect.left;
+        y = e.clientY - rect.top;
+      }
+      if (x >= 0 && y >= 0 && x <= rect.width && y <= rect.height) {
         magnifier.style.opacity = 1;
+        updateMagnifier(x, y, rect);
       } else {
         magnifier.style.opacity = 0;
       }
-      if (parseFloat(window.getComputedStyle(magnifier).opacity) > 0) {
-        const mgWidth = magnifier.offsetWidth;
-        const mgHeight = magnifier.offsetHeight;
-        const bgWidth = naturalWidth ? naturalWidth * zoom : rect.width * zoom;
-        const bgHeight = naturalHeight ? naturalHeight * zoom : rect.height * zoom;
-        magnifier.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
-        const ratioX = mx / rect.width;
-        const ratioY = my / rect.height;
-        const bgPosX = -(ratioX * bgWidth) + mgWidth / 2;
-        const bgPosY = -(ratioY * bgHeight) + mgHeight / 2;
-        magnifier.style.left = `${mx - mgWidth / 2}px`;
-        magnifier.style.top = `${my - mgHeight / 2}px`;
-        magnifier.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
-      }
     };
-    container.addEventListener("mousemove", handleMouseMove);
-    container.addEventListener("mouseleave", () => {
+    const handleLeave = () => {
       magnifier.style.opacity = 0;
-    });
-    return () => container.removeEventListener("mousemove", handleMouseMove);
+    };
+    container.addEventListener("mousemove", handleMove);
+    container.addEventListener("mouseleave", handleLeave);
+    container.addEventListener("touchmove", handleMove);
+    container.addEventListener("touchend", handleLeave);
+    return () => {
+      container.removeEventListener("mousemove", handleMove);
+      container.removeEventListener("mouseleave", handleLeave);
+      container.removeEventListener("touchmove", handleMove);
+      container.removeEventListener("touchend", handleLeave);
+    };
   }, [bgImageUrl]);
-
   return (
     <>
       <style>{`
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
         .skill-section {
           position: relative;
           min-height: 100vh;
@@ -162,7 +168,7 @@ const Skill = () => {
           overflow: hidden;
           color: #fbf8cc;
         }
-        .skill-section .section-magnifying-glass {
+        .section-magnifying-glass {
           position: absolute;
           height: 220px;
           width: 220px;
@@ -170,18 +176,20 @@ const Skill = () => {
           opacity: 0;
           pointer-events: none;
           transition: none;
+          box-shadow: 0 0 15px rgba(0,0,0,0.5);
         }
-        .skill-section .content {
+        .content {
           position: relative;
           z-index: 1;
           text-align: center;
+          width: 100%;
         }
-        .skill-section h2 {
+        h2 {
           font-size: 3rem;
           margin-bottom: 2rem;
-          text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
         }
-        .skill-section .split-text .char {
+        .split-text .char {
           font-size: calc(1.2rem + 1vw);
           font-weight: 400;
           line-height: 1.5;
@@ -189,79 +197,93 @@ const Skill = () => {
           transform: none;
           opacity: 1;
         }
-        .skill-section .btn-group button {
+        .btn-group {
+          margin-bottom: 2rem;
+        }
+        .btn-group button {
           padding: 0.5rem 1rem;
           border-radius: 9999px;
           font-size: 0.875rem;
           font-weight: 500;
           border: 1px solid #fbf8cc;
-          transition: none;
           margin: 0.5rem;
           background: transparent;
           color: #fbf8cc;
           cursor: pointer;
+          transition: background 0.3s, color 0.3s;
         }
-        .skill-section .btn-group button.active,
-        .skill-section .btn-group button:hover {
+        .btn-group button.active,
+        .btn-group button:hover {
           background: #fbf8cc;
           color: #2a1b3d;
-          box-shadow: none;
         }
-        .skill-section .grid {
+        .grid {
           display: grid;
           gap: 1.5rem;
           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
           width: 100%;
           max-width: 1200px;
-          margin-top: 2rem;
+          margin: 2rem auto 0 auto;
         }
-        .skill-section .card-item {
-          background: rgba(251,248,204,0.2);
-          backdrop-filter: blur(1px);
+        .card-item {
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(2px);
+          -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.3);
           border-radius: 1rem;
           padding: 1.5rem;
-          border: 1px solid #2a1b3d;
-          transition: none;
           cursor: pointer;
           color: #2a1b3d;
+          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease;
         }
-        .skill-section .card-item:hover {
-          transform: none;
+        .card-item:hover {
+          transform: scale(1.05);
         }
-        .skill-section .card-item h3 {
+        .card-item h3 {
           font-size: 1.25rem;
           font-weight: 600;
           text-align: center;
           margin-bottom: 1rem;
-          border-bottom: 1px solid #2a1b3d;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.3);
           padding-bottom: 0.5rem;
           color: #2a1b3d;
         }
-        .skill-section .card-item .items {
+        .items {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           gap: 1rem;
         }
-        .skill-section .card-item .item {
-          background: rgba(251,248,204,0.5);
+        .item {
+          background: rgba(255, 255, 255, 0.25);
+          backdrop-filter: blur(5px);
+          -webkit-backdrop-filter: blur(5px);
           border-radius: 0.5rem;
           padding: 0.75rem;
           text-align: center;
-          transition: none;
           color: #2a1b3d;
         }
-        .skill-section .card-item .item:hover {
-          transform: none;
-        }
-        .skill-section .card-item .item span {
+        .item span {
           display: block;
           font-size: 2rem;
           margin-bottom: 0.5rem;
           color: #2a1b3d;
         }
-        .skill-section .card-item .item p {
+        .item p {
           font-size: 0.875rem;
           color: #2a1b3d;
+        }
+        @media (max-width: 768px) {
+          h2 { font-size: 2.5rem; }
+          .btn-group button { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+          .card-item { padding: 1rem; }
+          .card-item h3 { font-size: 1.1rem; }
+          .item span { font-size: 1.75rem; }
+        }
+        @media (max-width: 480px) {
+          h2 { font-size: 2rem; }
+          .btn-group button { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
+          .grid { gap: 1rem; }
         }
       `}</style>
       <div ref={sectionRef} className="skill-section">
@@ -272,11 +294,7 @@ const Skill = () => {
           </h2>
           <div className="btn-group">
             {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={activeCategory === cat ? "active" : ""}
-              >
+              <button key={cat} onClick={() => setActiveCategory(cat)} className={activeCategory === cat ? "active" : ""}>
                 {cat}
               </button>
             ))}
