@@ -6,82 +6,124 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import hdr from "../assets/industrial_sunset_puresky_1k.hdr";
-const hdrImagePath = hdr;
+
+gsap.registerPlugin(ScrollTrigger);
 
 const testimonials = [
   {
-    quote: "Bushra is a hardworking and disciplined student.",
+    quote:
+      "Bushra is a hardworking and disciplined student. Her dedication to her work is remarkable, and she has shown impressive growth throughout her academic journey. She tackles challenges with perseverance and a positive attitude. She is always ready to go the extra mile to ensure success in her projects and assignments. Bushra’s determination and focus on her goals make her stand out as an exceptional student.",
     name: "Dr. A. Rahman",
     designation: "Professor of Mechanical Engineering",
   },
   {
-    quote: "His creativity and dedication are evident in his projects.",
+    quote:
+      "His creativity and dedication are evident in his projects. He has consistently demonstrated an ability to approach problems from innovative perspectives and develop practical solutions. Bushra is a quick learner and adapts well to new challenges. Her leadership skills shine through in collaborative settings, and she is always supportive of her peers. Her contributions have significantly impacted our lab’s success.",
     name: "Ms. S. Hasan",
     designation: "Head of Innovation Lab",
   },
   {
-    quote: "A reliable and motivated individual, Bushra exceeds expectations.",
+    quote:
+      "A reliable and motivated individual, Bushra exceeds expectations. Her work ethic is second to none, and she consistently meets deadlines with high-quality results. She handles high-pressure situations with grace and maintains a positive attitude even when faced with challenges. Bushra has the ability to lead and motivate those around her, always keeping the team on track and focused on success.",
     name: "Mr. K. Islam",
     designation: "Senior Lecturer, CUET",
   },
   {
-    quote: "Bushra has a unique ability to solve complex problems.",
+    quote:
+      "Bushra has a unique ability to solve complex problems. Her analytical skills are exceptional, and she can break down challenging issues into manageable parts. She is also able to communicate her findings in a clear and concise manner, which makes her a valuable asset to any team. Her critical thinking and ability to find solutions quickly make her an outstanding problem solver.",
     name: "Prof. J. Dutta",
     designation: "Dean of Students",
   },
   {
-    quote: "She is an excellent team player with great leadership qualities.",
+    quote:
+      "She is an excellent team player with great leadership qualities. Bushra’s ability to work with others and motivate a group is truly impressive. She’s able to listen to different perspectives and bring the best ideas to the table. Her interpersonal skills are strong, and she is always willing to help her colleagues. Bushra has a natural ability to lead and inspire others to achieve their best work.",
     name: "Mr. T. Karim",
     designation: "Project Manager",
   },
   {
-    quote: "Her analytical skills make him stand out in every task.",
+    quote:
+      "Her analytical skills make him stand out in every task. Bushra has a sharp mind for analyzing data and finding insights that others might miss. She approaches problems methodically and ensures she has a full understanding before proceeding. Her attention to detail and thoroughness are remarkable, and she brings this mindset into every project she works on. Bushra’s analytical abilities are a valuable asset in any environment.",
     name: "Ms. R. Akhtar",
     designation: "Senior Researcher",
   },
 ];
 
-gsap.registerPlugin(ScrollTrigger);
-
 const TestimonialPolygon = () => {
   const containerRef = useRef(null);
-  const cubeRef = useRef(null);
-  const controlsRef = useRef(null);
-  const hdrTextureRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isLowEnd, setIsLowEnd] = useState(false);
+
+  // Check for low-end network/device conditions on mount.
+  useEffect(() => {
+    if (
+      window.navigator.connection &&
+      window.navigator.connection.downlink < 2.5
+    ) {
+      setIsLowEnd(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current) return;
+    let animationFrameId;
 
+    // Create the Three.js scene and camera.
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      containerRef.current.offsetWidth / containerRef.current.offsetHeight,
-      0.1,
-      1000
-    );
+    const aspectRatio =
+      containerRef.current.offsetWidth / containerRef.current.offsetHeight;
+    const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 1000);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(containerRef.current.offsetWidth, containerRef.current.offsetHeight);
+    // Create the renderer – disable antialias if low-end.
+    const renderer = new THREE.WebGLRenderer({
+      antialias: !isLowEnd,
+      alpha: true,
+    });
+    renderer.setSize(
+      containerRef.current.offsetWidth,
+      containerRef.current.offsetHeight
+    );
+    renderer.setPixelRatio(isLowEnd ? 1 : window.devicePixelRatio);
     renderer.outputEncoding = THREE.sRGBEncoding;
     containerRef.current.appendChild(renderer.domElement);
 
-    if (!hdrTextureRef.current) {
+    // Load the HDR environment if available and device is not low-end.
+    if (!isLowEnd) {
       const rgbeLoader = new RGBELoader();
-      rgbeLoader.load(hdr, (hdrTexture) => {
-        hdrTexture.mapping = THREE.EquirectangularReflectionMapping;
-        scene.environment = hdrTexture;
-        scene.background = hdrTexture;
-        hdrTextureRef.current = hdrTexture;
-        setIsLoaded(true);
-      });
+      rgbeLoader.load(
+        hdr,
+        (hdrTexture) => {
+          hdrTexture.mapping = THREE.EquirectangularReflectionMapping;
+          scene.environment = hdrTexture;
+          scene.background = hdrTexture;
+          setIsLoaded(true);
+        },
+        undefined,
+        () => {
+          // On error, fallback to a simple background.
+          scene.environment = new THREE.Color(0x1e1e1e);
+          scene.background = new THREE.Color(0x1e1e1e);
+          setIsLoaded(true);
+        }
+      );
+    } else {
+      // Fallback environment for low-end devices.
+      scene.environment = new THREE.Color(0x1e1e1e);
+      scene.background = new THREE.Color(0x1e1e1e);
+      setIsLoaded(true);
     }
 
-    const cubeSize = Math.min(containerRef.current.offsetWidth, containerRef.current.offsetHeight) / 10;
+    // Determine cube size relative to the container.
+    const cubeSize =
+      Math.min(
+        containerRef.current.offsetWidth,
+        containerRef.current.offsetHeight
+      ) / 10;
     const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
 
+    // Generate a material for each cube face using our testimonials.
     const cubeMaterials = testimonials.map((testimonial) => {
-      const texture = generateCanvasTexture(testimonial);
+      const texture = generateCanvasTexture(testimonial, isLowEnd);
+      texture.needsUpdate = true;
       return new THREE.MeshPhysicalMaterial({
         map: texture,
         color: 0xffffff,
@@ -94,78 +136,133 @@ const TestimonialPolygon = () => {
       });
     });
 
+    // Create the cube and add it to the scene.
     const cube = new THREE.Mesh(geometry, cubeMaterials);
-    cubeRef.current = cube;
     scene.add(cube);
 
-    camera.position.z = 120;
-    camera.position.y = 20;
+    // Position the camera.
+    camera.position.set(0, 20, 120);
     camera.lookAt(0, 0, 0);
 
+    // Add basic lighting.
     setupLighting(scene);
 
+    // Setup OrbitControls.
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
-    controls.enableZoom = false; // Disable zoom
-    controlsRef.current = controls;
+    // Optionally disable zoom on low-end devices.
+    controls.enableZoom = !isLowEnd;
 
+    // Animation loop.
     const animate = () => {
-      requestAnimationFrame(animate);
       controls.update();
       renderer.render(scene, camera);
+      animationFrameId = requestAnimationFrame(animate);
     };
-
     animate();
 
+    // Handle resizing.
     const onWindowResize = () => {
-      const cubeSize = Math.min(containerRef.current.offsetWidth, containerRef.current.offsetHeight) / 10;
+      if (!containerRef.current) return;
+      const newCubeSize =
+        Math.min(
+          containerRef.current.offsetWidth,
+          containerRef.current.offsetHeight
+        ) / 10;
       cube.geometry.dispose();
-      cube.geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-      camera.aspect = containerRef.current.offsetWidth / containerRef.current.offsetHeight;
+      cube.geometry = new THREE.BoxGeometry(newCubeSize, newCubeSize, newCubeSize);
+      camera.aspect =
+        containerRef.current.offsetWidth /
+        containerRef.current.offsetHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(containerRef.current.offsetWidth, containerRef.current.offsetHeight);
+      renderer.setSize(
+        containerRef.current.offsetWidth,
+        containerRef.current.offsetHeight
+      );
     };
-
     window.addEventListener("resize", onWindowResize);
 
+    // Cleanup on component unmount.
     return () => {
       window.removeEventListener("resize", onWindowResize);
-      if (containerRef.current) {
+      cancelAnimationFrame(animationFrameId);
+      if (containerRef.current && renderer.domElement) {
         containerRef.current.removeChild(renderer.domElement);
       }
-      cube.geometry.dispose();
-      cube.material.forEach((material) => material.dispose());
-      if (hdrTextureRef.current) {
-        hdrTextureRef.current.dispose();
-      }
+      geometry.dispose();
+      cubeMaterials.forEach((material) => material.dispose());
+      renderer.dispose();
     };
-  }, []);
+  }, [isLowEnd]);
 
-  const generateCanvasTexture = (testimonial) => {
+  const generateCanvasTexture = (testimonial, isLowQuality) => {
+    const canvasSize = isLowQuality ? 256 : 512;
     const canvas = document.createElement("canvas");
-    canvas.width = 1024;
-    canvas.height = 1024;
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
     const context = canvas.getContext("2d");
-    context.fillStyle = "rgba(26, 26, 26, 0.85)";
+  
+    context.fillStyle = "rgba(26, 26, 26, 1)";
     context.fillRect(0, 0, canvas.width, canvas.height);
+  
     context.fillStyle = "#FFC857";
-    context.font = "bold 40px 'Playfair Display', serif";
+    context.font = isLowQuality
+      ? "bold 14px 'Playfair Display', serif"
+      : "bold 18px 'Playfair Display', serif";
     context.textAlign = "center";
-    context.fillText(testimonial.quote, canvas.width / 2, canvas.height / 3, 800);
-    context.font = "italic 30px 'Roboto', sans-serif";
-    context.fillText(testimonial.name, canvas.width / 2, canvas.height / 2 + 50);
-    context.fillText(testimonial.designation, canvas.width / 2, canvas.height / 2 + 100);
+  
+    const paddingTop = isLowQuality ? 30 : 40;
+    const quoteX = canvas.width / 2;
+    const quoteY = paddingTop;
+    const maxWidth = canvas.width * 0.8;
+    const lineHeight = isLowQuality ? 18 : 22;
+    
+    wrapText(context, testimonial.quote, quoteX, quoteY, maxWidth, lineHeight);
+  
+    context.fillStyle = "#FFC857";
+    context.font = isLowQuality
+      ? "italic 12px 'Roboto', sans-serif"
+      : "italic 14px 'Roboto', sans-serif";
+  
+    const nameY = quoteY + maxWidth * 0.6;
+    context.fillText(testimonial.name, canvas.width / 2, nameY);
+  
+    const designationSpacing = isLowQuality ? 25 : 35;
+    const designationY = nameY + designationSpacing;
+    context.fillText(testimonial.designation, canvas.width / 2, designationY);
+  
     return new THREE.CanvasTexture(canvas);
   };
+  
+  const wrapText = (context, text, x, y, maxWidth, lineHeight) => {
+    const words = text.split(" ");
+    let line = "";
+    for (let i = 0; i < words.length; i++) {
+      const testLine = line + words[i] + " ";
+      const metrics = context.measureText(testLine);
+      if (metrics.width > maxWidth && i > 0) {
+        context.fillText(line, x, y);
+        line = words[i] + " ";
+        y += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    context.fillText(line, x, y);
+  };
+    
 
+  // Set up basic lighting for the scene.
   const setupLighting = (scene) => {
-    const ambientLight = new THREE.AmbientLight(0xF2D966, 2);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
-    const directionalLight = new THREE.DirectionalLight(0xF79D7D, 5);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
     directionalLight.position.set(10, 20, 10);
     scene.add(directionalLight);
-    const spotLight = new THREE.SpotLight(0x00A7D0, 500, 50, Math.PI / 4, 0.5, 10000);
+
+    const spotLight = new THREE.SpotLight(0xffffff, 1);
     spotLight.position.set(5, 10, 0);
     scene.add(spotLight);
   };
@@ -180,7 +277,7 @@ const TestimonialPolygon = () => {
     >
       <motion.div
         ref={containerRef}
-        className="w-full lg:w-8/12 h-[900px]"
+        className="w-full lg:w-8/12 h-[50vh] lg:h-[900px]"
         animate={{ scale: [0.8, 1] }}
         transition={{ duration: 1, ease: "easeOut" }}
       />
@@ -198,10 +295,13 @@ const TestimonialPolygon = () => {
             viewport={{ once: true }}
             transition={{ duration: 1.5, ease: "easeOut" }}
           >
-            <br />What they say<br />
+            <br />
+            What they say
+            <br />
           </motion.h1>
           <p className="text-lg leading-relaxed tracking-wide text-neutral">
-            See what others have to say about Bushra's hard work, creativity, and leadership abilities.
+            See what others have to say about Bushra's hard work, creativity,
+            and leadership abilities.
           </p>
         </motion.div>
       )}
@@ -210,3 +310,4 @@ const TestimonialPolygon = () => {
 };
 
 export default TestimonialPolygon;
+ 
