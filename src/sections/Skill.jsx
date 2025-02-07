@@ -1,17 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
 import gsap from "gsap";
 import Splitting from "splitting";
 import "splitting/dist/splitting.css";
+// Removed AOS and Framer Motion imports because they were used solely for animations
 import { FaPython, FaReact, FaBlender, FaGuitar, FaSwimmer } from "react-icons/fa";
 import { SiCplusplus, SiTensorflow, SiFirebase, SiAdobeillustrator, SiThreedotjs } from "react-icons/si";
 import { DiPhotoshop } from "react-icons/di";
 import { GiSkateboard, GiArtificialIntelligence, GiPaintBrush } from "react-icons/gi";
 import skill from "../assets/skill.jpg";
 
-// -----------------------------------------------------------------------------
-// Data for skills and category list
-// -----------------------------------------------------------------------------
 const skillsData = [
   {
     category: "Programming",
@@ -57,125 +54,21 @@ const skillsData = [
   }
 ];
 
-const categories = ["All", ...skillsData.map((skill) => skill.category)];
+const categories = ["All", ...skillsData.map((s) => s.category)];
 
-// -----------------------------------------------------------------------------
-// AnimatedCard Component
-// -----------------------------------------------------------------------------
 const AnimatedCard = () => {
   const cardRef = useRef(null);
 
-  // Animate text and card using Splitting and GSAP
+  // Initialize Splitting for static text (this no longer triggers an animation)
   useEffect(() => {
     Splitting({ whitespace: true });
-    const tl = gsap.timeline({});
-    tl.to(".skill-section .animated-card .split-text .char", {
-      x: 0,
-      opacity: 1,
-      duration: 1,
-      delay: 0.5,
-      stagger: { amount: 1.5, from: "start" }
-    })
-      .to(
-        ".skill-section .animated-card",
-        {
-          clipPath: "circle(25rem at 82% 82%)",
-          scale: 1,
-          duration: 4,
-          ease: "expo.inOut"
-        },
-        "-=1"
-      )
-      .to(".skill-section .animated-card .try-it", {
-        scale: 1,
-        duration: 0.5,
-        ease: "back.out(4)"
-      })
-      .to(
-        ".skill-section .animated-card .try-it",
-        {
-          rotate: 15,
-          transformOrigin: "bottom left",
-          duration: 0.5,
-          repeat: 5,
-          yoyo: true,
-          ease: "none"
-        },
-        "+=1"
-      );
   }, []);
 
-  // Set up the magnifier effect on the card using the image’s natural dimensions
-  useEffect(() => {
-    const card = cardRef.current;
-    const magnifier = card.querySelector(".magnifying-glass");
-    const bgImageUrl = skill;
-    magnifier.style.background = `url(${bgImageUrl}) no-repeat`;
-
-    // Preload image to obtain natural dimensions
-    let naturalWidth = 0,
-      naturalHeight = 0;
-    const img = new Image();
-    img.src = bgImageUrl;
-    img.onload = () => {
-      naturalWidth = img.naturalWidth;
-      naturalHeight = img.naturalHeight;
-    };
-
-    const zoom = 2; // Adjust zoom factor as desired
-
-    const handleMouseMove = (e) => {
-      const rect = card.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
-
-      // Show the magnifier when inside the card area
-      if (mx >= 0 && my >= 0 && mx <= rect.width && my <= rect.height) {
-        gsap.to(magnifier, { opacity: 1, duration: 0.1 });
-      } else {
-        gsap.to(magnifier, { opacity: 0, duration: 0.1 });
-      }
-
-      if (parseFloat(window.getComputedStyle(magnifier).opacity) > 0) {
-        const mgWidth = magnifier.offsetWidth;
-        const mgHeight = magnifier.offsetHeight;
-        const bgWidth = naturalWidth ? naturalWidth * zoom : rect.width * zoom;
-        const bgHeight = naturalHeight ? naturalHeight * zoom : rect.height * zoom;
-        magnifier.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
-
-        // Calculate background position so the magnified portion centers at the cursor
-        const ratioX = mx / rect.width;
-        const ratioY = my / rect.height;
-        const bgPosX = -(ratioX * bgWidth) + mgWidth / 2;
-        const bgPosY = -(ratioY * bgHeight) + mgHeight / 2;
-
-        gsap.to(magnifier, {
-          left: mx - mgWidth / 2,
-          top: my - mgHeight / 2,
-          backgroundPosition: `${bgPosX}px ${bgPosY}px`,
-          duration: 0.1,
-          ease: "power1.out"
-        });
-      }
-    };
-
-    card.addEventListener("mousemove", handleMouseMove);
-    card.addEventListener("mouseleave", () => {
-      gsap.to(magnifier, { opacity: 0, duration: 0.1 });
-    });
-    return () => {
-      card.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
-
+  // Removed all GSAP timeline and mousemove-based magnifier animations.
+  // The card now renders static content.
   return (
     <div ref={cardRef} className="animated-card relative">
-      <div
-        className="text relative z-10"
-        style={{
-          textShadow: "2px 2px 4px rgba(0,0,0,0.8)"
-        }}
-      >
+      <div className="text relative z-10" style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}>
         <h1 className="split-text text-4xl font-serif text-lemon_chiffon" data-splitting>
           You can't go wrong
           <br />
@@ -183,49 +76,37 @@ const AnimatedCard = () => {
         </h1>
       </div>
       <div className="try-it text-2xl">🔎</div>
-      <div
-        className="magnifying-glass absolute"
-        style={{ opacity: 0, transition: "opacity 0.1s" }}
-      ></div>
+      <div className="magnifying-glass absolute" style={{ opacity: 1, transition: "none" }}></div>
     </div>
   );
 };
 
-// -----------------------------------------------------------------------------
-// SkillCard Component
-// -----------------------------------------------------------------------------
 const SkillCard = ({ skillCategory }) => (
-  <motion.div whileHover={{ scale: 1.05 }} className="card-item">
+  <div className="card-item">
     <h3>{skillCategory.category}</h3>
     <div className="items">
       {skillCategory.items.map((item, idx) => (
-        <motion.div whileHover={{ scale: 1.1 }} key={idx} className="item">
+        <div key={idx} className="item">
           <span>{item.icon}</span>
           <p>{item.name}</p>
-        </motion.div>
+        </div>
       ))}
     </div>
-  </motion.div>
+  </div>
 );
 
-// -----------------------------------------------------------------------------
-// Main Skill Component
-// -----------------------------------------------------------------------------
 const Skill = () => {
   const sectionRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState("All");
-  const filteredSkills =
-    activeCategory === "All"
-      ? skillsData
-      : skillsData.filter((skill) => skill.category === activeCategory);
+  const filteredSkills = activeCategory === "All" ? skillsData : skillsData.filter((s) => s.category === activeCategory);
   const bgImageUrl = skill;
 
-  // Set up the section-level magnifier effect using natural image dimensions
+  // Removed GSAP/AOS entrance animations for the card items.
+  // The following effect is retained only for the background magnifier on the container.
   useEffect(() => {
     const container = sectionRef.current;
     const magnifier = container.querySelector(".section-magnifying-glass");
     magnifier.style.background = `url(${bgImageUrl}) no-repeat`;
-
     let naturalWidth = 0,
       naturalHeight = 0;
     const img = new Image();
@@ -234,66 +115,41 @@ const Skill = () => {
       naturalWidth = img.naturalWidth;
       naturalHeight = img.naturalHeight;
     };
-
-    const zoom = 2; // Adjust zoom factor as desired
-
+    const zoom = 2;
     const handleMouseMove = (e) => {
       const rect = container.getBoundingClientRect();
       const mx = e.clientX - rect.left;
       const my = e.clientY - rect.top;
-
       if (mx >= 0 && my >= 0 && mx <= rect.width && my <= rect.height) {
-        gsap.to(magnifier, { opacity: 1, duration: 0.1 });
+        magnifier.style.opacity = 1;
       } else {
-        gsap.to(magnifier, { opacity: 0, duration: 0.1 });
+        magnifier.style.opacity = 0;
       }
-
       if (parseFloat(window.getComputedStyle(magnifier).opacity) > 0) {
         const mgWidth = magnifier.offsetWidth;
         const mgHeight = magnifier.offsetHeight;
         const bgWidth = naturalWidth ? naturalWidth * zoom : rect.width * zoom;
         const bgHeight = naturalHeight ? naturalHeight * zoom : rect.height * zoom;
         magnifier.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
-
         const ratioX = mx / rect.width;
         const ratioY = my / rect.height;
         const bgPosX = -(ratioX * bgWidth) + mgWidth / 2;
         const bgPosY = -(ratioY * bgHeight) + mgHeight / 2;
-
-        gsap.to(magnifier, {
-          left: mx - mgWidth / 2,
-          top: my - mgHeight / 2,
-          backgroundPosition: `${bgPosX}px ${bgPosY}px`,
-          duration: 0.1,
-          ease: "power1.out"
-        });
+        magnifier.style.left = `${mx - mgWidth / 2}px`;
+        magnifier.style.top = `${my - mgHeight / 2}px`;
+        magnifier.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
       }
     };
-
     container.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("mouseleave", () => {
-      gsap.to(magnifier, { opacity: 0, duration: 0.1 });
+      magnifier.style.opacity = 0;
     });
     return () => container.removeEventListener("mousemove", handleMouseMove);
   }, [bgImageUrl]);
 
-  // Animate split text for the section heading
-  useEffect(() => {
-    Splitting({ whitespace: true });
-    const tl = gsap.timeline({});
-    tl.to(".skill-section .split-text .char", {
-      x: 0,
-      opacity: 1,
-      duration: 1,
-      delay: 0.5,
-      stagger: { amount: 1.5, from: "start" }
-    });
-  }, []);
-
   return (
     <>
       <style>{`
-        /* Using the custom Tailwind theme colors and fonts */
         .skill-section {
           position: relative;
           min-height: 100vh;
@@ -304,7 +160,7 @@ const Skill = () => {
           align-items: center;
           padding: 3rem;
           overflow: hidden;
-          color: #fbf8cc; /* lemon_chiffon */
+          color: #fbf8cc;
         }
         .skill-section .section-magnifying-glass {
           position: absolute;
@@ -313,7 +169,7 @@ const Skill = () => {
           border-radius: 50%;
           opacity: 0;
           pointer-events: none;
-          transition: opacity 0.1s;
+          transition: none;
         }
         .skill-section .content {
           position: relative;
@@ -330,8 +186,8 @@ const Skill = () => {
           font-weight: 400;
           line-height: 1.5;
           color: #fbf8cc;
-          transform: translate(4rem, 0);
-          opacity: 0;
+          transform: none;
+          opacity: 1;
         }
         .skill-section .btn-group button {
           padding: 0.5rem 1rem;
@@ -339,7 +195,7 @@ const Skill = () => {
           font-size: 0.875rem;
           font-weight: 500;
           border: 1px solid #fbf8cc;
-          transition: all 0.3s;
+          transition: none;
           margin: 0.5rem;
           background: transparent;
           color: #fbf8cc;
@@ -348,8 +204,8 @@ const Skill = () => {
         .skill-section .btn-group button.active,
         .skill-section .btn-group button:hover {
           background: #fbf8cc;
-          color: #2a1b3d; /* deep_indigo */
-          box-shadow: 0 0 10px rgba(0,0,0,0.3);
+          color: #2a1b3d;
+          box-shadow: none;
         }
         .skill-section .grid {
           display: grid;
@@ -360,24 +216,26 @@ const Skill = () => {
           margin-top: 2rem;
         }
         .skill-section .card-item {
-          background: rgba(251,248,204,0.1); /* lemon_chiffon at 10% opacity */
-          backdrop-filter: blur(10px);
+          background: rgba(251,248,204,0.2);
+          backdrop-filter: blur(1px);
           border-radius: 1rem;
           padding: 1.5rem;
           border: 1px solid #2a1b3d;
-          transition: transform 0.3s;
+          transition: none;
           cursor: pointer;
+          color: #2a1b3d;
         }
         .skill-section .card-item:hover {
-          transform: scale(1.05);
+          transform: none;
         }
         .skill-section .card-item h3 {
           font-size: 1.25rem;
           font-weight: 600;
           text-align: center;
           margin-bottom: 1rem;
-          border-bottom: 1px solid #fbf8cc;
+          border-bottom: 1px solid #2a1b3d;
           padding-bottom: 0.5rem;
+          color: #2a1b3d;
         }
         .skill-section .card-item .items {
           display: grid;
@@ -385,24 +243,25 @@ const Skill = () => {
           gap: 1rem;
         }
         .skill-section .card-item .item {
-          background: rgba(251,248,204,0.2);
+          background: rgba(251,248,204,0.5);
           border-radius: 0.5rem;
           padding: 0.75rem;
           text-align: center;
-          transition: transform 0.3s;
+          transition: none;
+          color: #2a1b3d;
         }
         .skill-section .card-item .item:hover {
-          transform: scale(1.1);
+          transform: none;
         }
         .skill-section .card-item .item span {
           display: block;
           font-size: 2rem;
           margin-bottom: 0.5rem;
-          color: #fbf8cc;
+          color: #2a1b3d;
         }
         .skill-section .card-item .item p {
           font-size: 0.875rem;
-          color: #fbf8cc;
+          color: #2a1b3d;
         }
       `}</style>
       <div ref={sectionRef} className="skill-section">
