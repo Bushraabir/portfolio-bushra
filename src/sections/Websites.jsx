@@ -5,7 +5,7 @@ import Lottie from "react-lottie";
 import animationData from "../assets/animation/coding.json";
 import atheletics from "../assets/gallery/2022_atheletics.jpg";
 const Websites = () => {
-  const [activeTab, setActiveTab] = useState("projects");
+  const [activeTab, setActiveTab] = useState("websites");
   const [selectedProject, setSelectedProject] = useState(null);
 
   const projects = [
