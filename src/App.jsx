@@ -3,9 +3,6 @@ import { motion } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Loader from "./components/Loader";
 
-
-
-
 // Lazy-loaded components with dynamic imports
 const Hero = React.lazy(() => import("./sections/Hero"));
 const Websites = React.lazy(() => import("./sections/Websites"));
@@ -107,26 +104,35 @@ const NavbarComponent = () => {
 
 const App = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const observer = useRef();
+
+  const handleLoad = () => {
+    setIsLoaded(true);
+  };
 
   useEffect(() => {
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) setIsLoaded(true);
-    }, { threshold: 0.1 });
-    return () => observer.current?.disconnect();
+    if (document.readyState === "complete") {
+      handleLoad();
+    } else {
+      window.addEventListener("load", handleLoad);
+    }
+    return () => {
+      window.removeEventListener("load", handleLoad);
+    };
   }, []);
+
+  if (!isLoaded) return <Loader />;
 
   return (
     <div className="bg-deep_indigo text-light min-h-screen">
       <NavbarComponent />
       <div className="absolute top-0 left-0 w-full h-full">
-        <Suspense fallback={isLoaded ? null : <Loader />}>
+        <Suspense fallback={<Loader />}>
           <ParticleScene />
         </Suspense>
       </div>
       <main className="min-h-screen">
-        <Suspense fallback={isLoaded ? null : <Loader />}>
-          <Hero id="hero"  />
+        <Suspense fallback={<Loader />}>
+          <Hero id="hero" />
           <AboutMe id="about" />
           <Achievements />
           <Gallery id="gallery" className="h-[120vh]" />
