@@ -57,7 +57,7 @@ export default function OrganizationGallery() {
   }, [items.length]);
 
   return (
-    <article id="organization" className="w-full">
+    <article id="organization" className="w-full bg-lemon_chiffon">
       {/* Hero Section */}
       <header className="relative h-[90vh] flex justify-center items-center bg-gradient-to-r from-electric_blue to-aquamarine overflow-hidden px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 opacity-50 bg-gradient-to-r from-electric_blue to-deep_indigo animate-gradient-move"></div>

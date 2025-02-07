@@ -1,10 +1,12 @@
-import React, { useState, useEffect, Suspense , useRef} from "react";
+import React, { useState, useEffect, Suspense, useRef } from "react";
 import { motion } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Loader from "./components/Loader";
 
 
-// Lazy-loaded components
+
+
+// Lazy-loaded components with dynamic imports
 const Hero = React.lazy(() => import("./sections/Hero"));
 const Websites = React.lazy(() => import("./sections/Websites"));
 const Artworks = React.lazy(() => import("./sections/Artworks"));
@@ -19,64 +21,28 @@ const ParticleScene = React.lazy(() => import("./components/Particle"));
 const Gallery = React.lazy(() => import("./sections/Gallery"));
 const Art = React.lazy(() => import("./sections/Art"));
 
-
 const sidebarVariants = {
-  open: {
-    width: "250px",
-    opacity: 1,
-    transition: {
-      type: "tween",
-      ease: "easeOut", 
-      duration: 1, 
-    },
-  },
-  closed: {
-    width: "0",
-    opacity: 0,
-    transition: {
-      type: "tween",
-      ease: "easeIn", 
-      duration: 1, 
-    },
-  },
+  open: { width: "250px", opacity: 1, transition: { type: "tween", ease: "easeOut", duration: 1 } },
+  closed: { width: "0", opacity: 0, transition: { type: "tween", ease: "easeIn", duration: 1 } },
 };
 
 const navItemVariants = {
-  open: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      type: "tween",
-      ease: "easeOut",
-      delay: .9,
-      duration: 0.7, 
-    },
-  },
-  closed: {
-    x: -20,
-    opacity: 0,
-    scale: 0.95,
-    transition: {
-      type: "tween",
-      ease: "easeInOut",
-      duration: 0.7, 
-    },
-  },
+  open: { x: 0, opacity: 1, scale: 1, transition: { type: "tween", ease: "easeOut", delay: 0.9, duration: 0.7 } },
+  closed: { x: -20, opacity: 0, scale: 0.95, transition: { type: "tween", ease: "easeInOut", duration: 0.7 } },
 };
 
 const ToggleButton = ({ isOpen, setIsOpen }) => (
-  <motion.div className="flex items-center justify-center w-16 h-16 m-5">
+  <motion.div className="flex items-center justify-center w-12 h-12 m-3">
     <motion.button
       onClick={() => setIsOpen(!isOpen)}
-      className="w-16 h-16 transition-all duration-200 ease-in-out transform border-2 rounded-full shadow-xl cursor-pointer bg-gradient-to-r from-dark_teal to-deep_indigo border-lemon_chiffon"
+      className="w-12 h-12 border-2 rounded-full shadow-lg cursor-pointer bg-gradient-to-r from-dark_teal to-deep_indigo border-lemon_chiffon"
       whileHover={{ scale: 1.15, rotateZ: isOpen ? -10 : 10 }}
       whileTap={{ scale: 0.95 }}
       animate={{ rotate: isOpen ? 360 : 0, rotateY: isOpen ? 180 : 0 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }} // smoother rotation transition
+      transition={{ duration: 0.5, ease: "easeInOut" }}
     >
       <motion.span
-        className="text-xl font-bold text-light"
+        className="text-lg font-bold text-light"
         animate={{ rotateY: isOpen ? 180 : 0 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
@@ -90,8 +56,7 @@ const NavbarComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const scrollToSection = (id) => {
-    const section = document.getElementById(id);
-    if (section) section.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   const navLinks = [
@@ -111,29 +76,24 @@ const NavbarComponent = () => {
         initial="closed"
         animate={isOpen ? "open" : "closed"}
         variants={sidebarVariants}
-        className="absolute left-0 flex flex-col items-start justify-start w-40 p-6 transition-all duration-300 border-4 shadow-2xl bg-deep_indigo bg-opacity-70 backdrop-blur-lg rounded-xl md:w-80 border-gradient-to-r from-lemon_chiffon to-electric_blue transform-gpu"
+        className="absolute left-0 flex flex-col p-5 border-2 shadow-xl bg-deep_indigo bg-opacity-80 backdrop-blur-lg rounded-lg w-40 sm:w-60"
       >
         <motion.ul className="p-0 m-0 list-none">
           {navLinks.map((link) => (
             <motion.li
               key={link.id}
-              className="my-6"
+              className="my-4"
               onClick={() => {
                 scrollToSection(link.id);
                 setIsOpen(false);
               }}
               variants={navItemVariants}
-              whileHover={{
-                scale: 1.05,
-                x: 5,
-                y: -2,
-                transition: { duration: 0.3, ease: "easeOut" }, 
-              }}
+              whileHover={{ scale: 1.05, x: 5, transition: { duration: 0.3, ease: "easeOut" } }}
               whileTap={{ scale: 0.95 }}
             >
               <motion.a
                 href={`#${link.id}`}
-                className="text-lg font-semibold tracking-wider uppercase transition-all duration-200 ease-in-out transform text-mauve-500 hover:text-lemon_chiffon hover:bg-opacity-25 hover:pl-2"
+                className="text-base font-semibold tracking-wide uppercase text-mauve-500 hover:text-lemon_chiffon"
               >
                 {link.name}
               </motion.a>
@@ -145,14 +105,9 @@ const NavbarComponent = () => {
   );
 };
 
-
-
-
 const App = () => {
-
-
-const [isLoaded, setIsLoaded] = useState(false);
-const observer = useRef();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const observer = useRef();
 
   useEffect(() => {
     observer.current = new IntersectionObserver((entries) => {
@@ -160,36 +115,32 @@ const observer = useRef();
     }, { threshold: 0.1 });
     return () => observer.current?.disconnect();
   }, []);
-  
 
   return (
-    <div className="bg-lemon_chiffon text-light scroll-smooth" >
-          <NavbarComponent />
-          <div className="absolute top-0 left-0 w-full h-full">
-          <Suspense fallback={isLoaded ? null : <Loader />}>
-              <ParticleScene />
-            </Suspense>
-          </div>
-          <main className="min-h-screen">
-
-          <Suspense fallback={isLoaded ? null : <Loader />}>
-          <Hero  id="hero"/>
-          <AboutMe id="about"/>
+    <div className="bg-deep_indigo text-light min-h-screen">
+      <NavbarComponent />
+      <div className="absolute top-0 left-0 w-full h-full">
+        <Suspense fallback={isLoaded ? null : <Loader />}>
+          <ParticleScene />
+        </Suspense>
+      </div>
+      <main className="min-h-screen">
+        <Suspense fallback={isLoaded ? null : <Loader />}>
+          <Hero id="hero"  />
+          <AboutMe id="about" />
           <Achievements />
-          <Gallery  id="gallery"  className="h-[120vh]"/>
-          <Websites id="websites"/>
+          <Gallery id="gallery" className="h-[120vh]" />
+          <Websites id="websites" />
           <Artworks id="artworks" />
           <Art id="digital" />
-          <Research id="research"/>
-          <Organization  id="organization"/>
-          <Testimonials  id="testimonials"/>
+          <Research id="research" />
+          <Organization id="organization" className="bg-lemon_chiffon" />
+          <Testimonials id="testimonials" />
           <Footer />
         </Suspense>
-            </main>
-
+      </main>
     </div>
   );
 };
 
 export default App;
-

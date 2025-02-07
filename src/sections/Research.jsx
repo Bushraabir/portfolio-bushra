@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect , useRef} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Bushra from "../assets/Bushra.png";
 import { debounce } from "lodash";
 import AOS from 'aos';
-import 'aos/dist/aos.css';  // Import AOS styles
+import 'aos/dist/aos.css';  
 import gsap from "gsap";
 
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 
 import schrodinger_cat from "../assets/articles/schrodinger_cat.webp";
@@ -25,7 +26,10 @@ const Research = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [currentPage, setCurrentPage] = useState(1);
+  const [articlePage, setArticlePage] = useState(1); 
   const itemsPerPage = 3;
+  const isMobile = useRef(window.innerWidth <= 768);
+
 
   const books = [
     {
@@ -146,9 +150,12 @@ const Research = () => {
   ];
 
   
+ 
+
   const handleSearch = debounce((value) => {
     setDebouncedSearch(value);
     setCurrentPage(1);
+    setArticlePage(1);
   }, 500);
 
   const filteredData = (filter === "books" ? books : articles).filter((item) =>
@@ -156,177 +163,180 @@ const Research = () => {
   );
 
   const paginatedData = filteredData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    (filter === "books" ? currentPage - 1 : articlePage - 1) * itemsPerPage,
+    (filter === "books" ? currentPage : articlePage) * itemsPerPage
   );
 
-  const changePage = (direction) => {
-    setCurrentPage((prevPage) => prevPage + direction);
+  const changePage = (direction, type) => {
+    if (type === "books") {
+      setCurrentPage((prevPage) => prevPage + direction);
+    } else if (type === "articles") {
+      setArticlePage((prevPage) => prevPage + direction);
+    }
   };
 
-  // Trigger animations on page load
-  AOS.init({ duration: 1000, once: true });
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+    setCurrentPage(1);
+    setArticlePage(1);
+  };
+
+  useEffect(() => {
+    AOS.init({ duration: 1000, once: true });
+  }, []);
 
   return (
-    <div id="research" className="w-full px-8 py-16 mx-auto bg-lemon_chiffon text-deep_indigo">
-      {/* Hero Section */}
+    <div id="research" className="w-full px-16 py-24 mx-auto bg-lemon_chiffon text-deep_indigo">
       <div className="mb-16 text-center" data-aos="fade-up">
-        <h1 className="mb-6 font-serif text-5xl leading-tight text-gradient gradient">
+        <h1 className="text-5xl font-serif text-gradient mb-6 leading-tight tracking-wide">
           My Research & Publications
         </h1>
-        <p className="max-w-2xl mx-auto text-lg text-deep_indigo">
-          Explore my books, articles, and research in technology, design, and innovation.
+        <p className="max-w-4xl mx-auto text-xl text-deep_indigo">
+          Explore my books, articles, and research on innovation, design, and technology, each meticulously crafted to provide insights into transformative concepts.
         </p>
       </div>
-      
-      {/* Search and Filter Section */}
-      <div className="flex flex-col items-center justify-center gap-8 mb-12 lg:flex-row">
-        {/* Filter Buttons */}
-        <div className="flex items-center p-2 space-x-6 shadow-xl bg-champagne_pink rounded-2xl">
+
+      <div className="flex flex-col items-center justify-center gap-12 mb-16 lg:flex-row">
+        <div className="flex items-center p-4 space-x-10 shadow-xl bg-champagne_pink rounded-2xl">
           <motion.button
-            className={`px-8 py-4 font-medium rounded-lg transition-all duration-300 text-lg ${
-              filter === "books"
-                ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white shadow-lg"
-                : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
-            }`}
-            onClick={() => setFilter("books")}
-            whileHover={{ scale: 1.05 }}
+            className={`px-12 py-5 font-medium rounded-lg text-xl ${
+              filter === "books" ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white shadow-xl" : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
+            } transition-all duration-300`}
+            onClick={() => handleFilterChange("books")}
+            whileHover={{ scale: 1.08 }}
           >
             Books
           </motion.button>
           <motion.button
-            className={`px-8 py-4 font-medium rounded-lg transition-all duration-300 text-lg ${
-              filter === "articles"
-                ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white shadow-lg"
-                : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
-            }`}
-            onClick={() => setFilter("articles")}
-            whileHover={{ scale: 1.05 }}
+            className={`px-12 py-5 font-medium rounded-lg text-xl ${
+              filter === "articles" ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white shadow-xl" : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
+            } transition-all duration-300`}
+            onClick={() => handleFilterChange("articles")}
+            whileHover={{ scale: 1.08 }}
           >
             Articles
           </motion.button>
         </div>
-          
-        {/* Search Input */}
+
         <motion.input
           type="text"
           placeholder="Search..."
-          className="w-full max-w-lg px-6 py-3 border-2 shadow-lg bg-champagne_pink border-deep_indigo rounded-xl focus:outline-none focus:ring-2 focus:ring-accent1 focus:ring-opacity-50 text-deep_indigo placeholder:text-deep_indigo"
+          className="w-full max-w-xl px-8 py-4 border-2 border-deep_indigo bg-champagne_pink rounded-2xl focus:outline-none focus:ring-2 focus:ring-accent1 focus:ring-opacity-50 placeholder:text-deep_indigo"
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
             handleSearch(e.target.value);
           }}
-          whileFocus={{ scale: 1.03 }}
+          whileFocus={{ scale: 1.05 }}
         />
       </div>
-        
-      {/* Content Display */}
+
       <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
         <AnimatePresence>
           {paginatedData.map((item, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.5 }}
-              className="overflow-hidden transition-all transform shadow-2xl bg-champagne_pink rounded-3xl group hover:shadow-3xl hover:scale-105"
+              exit={{ opacity: 0, y: -40 }}
+              transition={{ duration: 0.8 }}
+              className="overflow-hidden shadow-2xl bg-champagne_pink rounded-3xl group hover:shadow-3xl hover:scale-105 transition-all"
               data-aos="fade-up"
             >
               {filter === "books" ? (
                 <>
-                  <div className="relative h-56">
+                  <div className="relative h-72">
                     <img
                       src={item.img}
                       alt={item.title}
-                      className="object-cover w-full h-full transition-all duration-300 rounded-t-xl group-hover:scale-110"
+                      className="object-cover w-full h-full rounded-t-xl transition-transform duration-300 group-hover:scale-110"
+                      loading="lazy" 
                     />
                   </div>
-                  <div className="p-6">
-                    <h3 className="mb-4 font-serif text-2xl text-accent1">{item.title}</h3>
-                    <p className="mb-4 text-sm text-deep_indigo">Published: {item.year}</p>
-                    <p className="text-deep_indigo">{item.description}</p>
-                    <div className="flex flex-wrap gap-2 mt-4">
-                      {item.tags.map((tag, i) => (
-                        <span
-                          key={i}
-                          className="px-4 py-1 text-sm font-semibold transition-transform transform rounded-full shadow-md opacity-75 bg-secondaryLight text-dark hover:scale-110 hover:bg-secondaryDark hover:text-light"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="p-8">
+                    <h3 className="text-3xl font-serif text-accent1 mb-4">{item.title}</h3>
+                    <p className="text-lg text-deep_indigo mb-4">Published: {item.year}</p>
+                    <p className="text-deep_indigo text-lg">{item.description}</p>
                   </div>
                 </>
               ) : (
-                <div className="p-6">
-                  <div className="flex items-center mb-4">
-                    <img
-                      src={item.img}
-                      alt={item.title}
-                      className="w-16 h-16 rounded-full"
-                    />
-                    <h3 className="ml-4 font-serif text-2xl text-accent1">{item.title}</h3>
+                <div className="relative p-8  rounded-xl  overflow-hidden ">
+                  <div className="absolute inset-0  opacity-25 group-hover:opacity-40 transition-all duration-300"></div>
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    className="w-36 h-36 object-cover shadow-2xl rounded-full border-8 border-deep_indigo group-hover:scale-110 transition-all duration-300 z-20"
+                    style={{
+                      clipPath: 'polygon(10% 0%, 80% 5%, 95% 40%, 70% 75%, 30% 90%, 5% 60%, 10% 20%)',
+                    }}
+                    loading="lazy"  
+                  />
+                  <div className="relative z-20 mt-6">
+                    <h3 className="text-2xl font-serif text-accent1 mb-3">{item.title}</h3>
+                    <p className="text-xl text-deep_indigo">Platform: <span className="font-semibold text-accent2">{item.platform}</span></p>
+                    <p className="text-lg text-deep_indigo">{item.description}</p>
                   </div>
-                  <p className="mb-4 text-sm text-deep_indigo">Platform: {item.platform}</p>
-                  <p className="text-deep_indigo">{item.description}</p>
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block mt-4 text-accent1 hover:underline"
-                  >
-                    Read Article →
-                  </a>
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {item.tags.map((tag, i) => (
-                      <span
-                        key={i}
-                        className="px-4 py-1 text-sm font-semibold transition-transform transform rounded-full shadow-md opacity-75 bg-secondaryLight text-dark hover:scale-110 hover:bg-secondaryDark hover:text-light"
-                      >
-                        #{tag}
+                  <div className="flex gap-2 flex-wrap mt-6 z-20">
+                    {item.tags.map((tag, idx) => (
+                      <span key={idx} className="px-6 py-2 text-sm text-deep_indigo bg-white bg-opacity-80 rounded-full shadow-lg transition-all duration-300">
+                        {tag}
                       </span>
                     ))}
                   </div>
+                  <a
+                   href={item.link}
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="flex items-center mt-6 text-lg text-accent1 font-semibold group hover:text-deep_indigo transition-all duration-300"
+                  >
+                   <span className="mr-2">Read More</span>
+                   <svg
+                     className="w-6 h-6 transform group-hover:translate-x-2 transition-all duration-300"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     strokeWidth="2"
+                     strokeLinecap="round"
+                     strokeLinejoin="round"
+                   >
+                     <path d="M5 12h14M12 5l7 7-7 7" />
+                   </svg>
+                  </a>
+
                 </div>
               )}
             </motion.div>
           ))}
         </AnimatePresence>
       </div>
-        
-      {/* Pagination */}
-      <div className="flex items-center justify-center gap-8 mt-16">
-        <p className="text-lg font-semibold text-deep_indigo">
-          Page {currentPage} of {Math.ceil(filteredData.length / itemsPerPage)}
+
+      <div className="flex justify-center items-center gap-10 mt-16">
+        <p className="text-xl font-semibold text-deep_indigo">
+          Page {filter === "books" ? currentPage : articlePage} of {Math.ceil(filteredData.length / itemsPerPage)}
         </p>
-        <div className="flex gap-8">
-          {currentPage > 1 && (
+        <div className="flex gap-10">
+          {(filter === "books" && currentPage > 1) || (filter === "articles" && articlePage > 1) ? (
             <motion.button
-              onClick={() => changePage(-1)}
-              className="px-8 py-4 text-white transition-all duration-300 transform rounded-lg shadow-2xl bg-gradient-to-r from-electric_blue to-aquamarine hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-electric_blue"
+              onClick={() => changePage(-1, filter)}
+              className="px-10 py-5 text-white bg-gradient-to-r from-electric_blue to-aquamarine rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300"
               whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
             >
               Previous
             </motion.button>
-          )}
-          {currentPage * itemsPerPage < filteredData.length && (
+          ) : null}
+          {(filter === "books" && currentPage * itemsPerPage < filteredData.length) || (filter === "articles" && articlePage * itemsPerPage < filteredData.length) ? (
             <motion.button
-              onClick={() => changePage(1)}
-              className="px-8 py-4 text-white transition-all duration-300 transform rounded-lg shadow-2xl bg-gradient-to-r from-electric_blue to-aquamarine hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-electric_blue"
+              onClick={() => changePage(1, filter)}
+              className="px-10 py-5 text-white bg-gradient-to-r from-electric_blue to-aquamarine rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300"
               whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
             >
               Next
             </motion.button>
-          )}
+          ) : null}
         </div>
       </div>
     </div>
-
-  
   );
 };
 

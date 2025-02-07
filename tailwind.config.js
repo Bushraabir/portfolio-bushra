@@ -5,10 +5,13 @@ import forms from '@tailwindcss/forms';
 
 export default {
   content: [
-    "./src/**/*.{html,js,jsx,ts,tsx}", 
+    "./src/**/*.{html,js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {
+      strokeWidth: {
+        2: '2px',
+      },
       transformOrigin: {
         left: "left",
       },
@@ -34,15 +37,15 @@ export default {
         "3xl": "0 35px 60px rgba(0, 0, 0, 0.2)",
       },
       fontFamily: {
-        sans: ["Montserrat", "sans-serif"], 
-        serif: ["Playfair Display", "serif"], 
+        sans: ["Montserrat", "sans-serif"],
+        serif: ["Playfair Display", "serif"],
         mono: ["Source Code Pro", "monospace"],
       },
       fontSize: {
-        xxs: "0.65rem", 
-        "4xl": "2.5rem", 
-        "5xl": "3rem", 
-        "6xl": "4rem", 
+        xxs: "0.65rem",
+        "4xl": "2.5rem",
+        "5xl": "3rem",
+        "6xl": "4rem",
       },
       spacing: {
         72: "18rem",
@@ -55,6 +58,7 @@ export default {
         xl: "1rem",
         "2xl": "1.5rem",
         "3xl": "2rem",
+        "4xl": "5rem",
         full: "9999px",
       },
       animation: {
@@ -90,5 +94,16 @@ export default {
       },
     },
   },
-  plugins: [typography, aspectRatio, forms],
+  plugins: [
+    typography,
+    aspectRatio,
+    forms,
+    function ({ addUtilities }) {
+      addUtilities({
+        '.text-stroke': {
+          '-webkit-text-stroke': '2px #E6B800',
+        },
+      });
+    },
+  ],
 };

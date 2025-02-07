@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Lottie from 'react-lottie';
-import loaderAnimation from '../assets/animation/loader1.json'; // Path to your loader JSON file
+import loaderAnimation from '../assets/animation/loader1.json'; 
 
 const Loader1 = ({ isLoading }) => {
   const [isAnimationCompleted, setIsAnimationCompleted] = useState(false);

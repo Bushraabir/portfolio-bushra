@@ -1,12 +1,11 @@
-import React, { useEffect, useRef ,useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import hdr from "../assets/industrial_sunset_puresky_1k.hdr"
-// Paths to your assets
+import hdr from "../assets/industrial_sunset_puresky_1k.hdr";
 const hdrImagePath = hdr;
 
 const testimonials = [
@@ -63,14 +62,10 @@ const TestimonialPolygon = () => {
     );
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(
-      containerRef.current.offsetWidth,
-      containerRef.current.offsetHeight
-    );
+    renderer.setSize(containerRef.current.offsetWidth, containerRef.current.offsetHeight);
     renderer.outputEncoding = THREE.sRGBEncoding;
     containerRef.current.appendChild(renderer.domElement);
 
-    // Load HDR image only once
     if (!hdrTextureRef.current) {
       const rgbeLoader = new RGBELoader();
       rgbeLoader.load(hdr, (hdrTexture) => {
@@ -78,7 +73,7 @@ const TestimonialPolygon = () => {
         scene.environment = hdrTexture;
         scene.background = hdrTexture;
         hdrTextureRef.current = hdrTexture;
-        setIsLoaded(true); // Set isLoaded to true once the texture is loaded
+        setIsLoaded(true);
       });
     }
 
@@ -107,12 +102,12 @@ const TestimonialPolygon = () => {
     camera.position.y = 20;
     camera.lookAt(0, 0, 0);
 
-    // Set up lighting
     setupLighting(scene);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
+    controls.enableZoom = false; // Disable zoom
     controlsRef.current = controls;
 
     const animate = () => {
@@ -176,7 +171,8 @@ const TestimonialPolygon = () => {
   };
 
   return (
-    <motion.div  id="testimonials"
+    <motion.div
+      id="testimonials"
       className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-b from-deep_indigo to-dark_teal lg:flex-row"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
