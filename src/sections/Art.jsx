@@ -3,38 +3,26 @@ import { motion } from "framer-motion";
 import { Tilt } from "react-tilt";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
-
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css'; // Optional, adds a blur effect while loading
-
-
-
-
-//acrylic
-
-import BlueMosque from "../assets/acrylic/1.jpg"; 
-import Nature from "../assets/acrylic/2.jpg"; 
-import Bloody from "../assets/acrylic/3.jpg"; 
+import BlueMosque from "../assets/acrylic/1.jpg";
+import Nature from "../assets/acrylic/2.jpg";
+import Bloody from "../assets/acrylic/3.jpg";
 import Boston from "../assets/acrylic/4.jpg";
-import Fight from "../assets/acrylic/5.jpg"; 
-import Imagination from "../assets/acrylic/6.jpg"; 
-import Vase from "../assets/acrylic/7.jpg"; 
+import Fight from "../assets/acrylic/5.jpg";
+import Imagination from "../assets/acrylic/6.jpg";
+import Vase from "../assets/acrylic/7.jpg";
 import Bridge from "../assets/acrylic/8.jpg";
 import Sunset from "../assets/acrylic/9.jpg";
 
-
-
-
-//water color
 import China from "../assets/WaterColor/1.jpg";
 import flower1 from "../assets/WaterColor/2.jpg";
 import lamp from "../assets/WaterColor/4.jpg";
 import flower3 from "../assets/WaterColor/5.jpg";
-import sunset from "../assets/WaterColor/6.jpg";
+import sunsetWater from "../assets/WaterColor/6.jpg";
 import magic from "../assets/WaterColor/9.jpg";
 
-//pencil sketch
 import nature from "../assets/PencilSketch/1.jpg";
 import rope from "../assets/PencilSketch/2.jpg";
 import flower from "../assets/PencilSketch/3.jpg";
@@ -54,8 +42,6 @@ import tulip from "../assets/PencilSketch/17.jpg";
 import composition from "../assets/PencilSketch/18.jpg";
 import lyrics from "../assets/PencilSketch/19.jpg";
 
-
-//crafts
 import line from "../assets/crafts/1.jpg";
 import line_1 from "../assets/crafts/3.jpg";
 import dot from "../assets/crafts/4.jpg";
@@ -66,17 +52,7 @@ import penholder from "../assets/crafts/8.jpg";
 import penholder_1 from "../assets/crafts/9.jpg";
 import chess_1 from "../assets/crafts/10.jpg";
 
-
-
-
-
-
 gsap.registerPlugin(ScrollTrigger);
-
-
-
-
-
 
 const Art = () => {
   const [activeTab, setActiveTab] = useState("acrylic");
@@ -86,13 +62,27 @@ const Art = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 
-
-
   const tabs = [
-    { id: "acrylic", title: "Acrylic", description: "Explore vibrant and textured acrylic art pieces." },
-    { id: "watercolor", title: "Watercolor", description: "Soft, flowing, and colorful watercolor creations." },
-    { id: "pencil sketch", title: "Pencil Sketch", description: "Detailed and intricate pencil sketches." },
-    { id: "crafts and models", title: "Crafts & Models", description: "Handmade crafts and intricate models." },
+    {
+      id: "acrylic",
+      title: "Acrylic",
+      description: "Explore vibrant and textured acrylic art pieces.",
+    },
+    {
+      id: "watercolor",
+      title: "Watercolor",
+      description: "Soft, flowing, and colorful watercolor creations.",
+    },
+    {
+      id: "pencil sketch",
+      title: "Pencil Sketch",
+      description: "Detailed and intricate pencil sketches.",
+    },
+    {
+      id: "crafts and models",
+      title: "Crafts & Models",
+      description: "Handmade crafts and intricate models.",
+    },
   ];
 
   const artworks = {
@@ -101,21 +91,19 @@ const Art = () => {
       { src: Fight, description: "Acrylic painting 2", title: "Survival", date: "2019" },
       { src: Nature, description: "Acrylic painting 1", title: "The Mist", date: "2023" },
       { src: Boston, description: "Acrylic painting 1", title: "Boston City", date: "2021" },
-      { src: Bridge, description: "Acrylic painting 2", title: " The  bridge", date: "2024" },
+      { src: Bridge, description: "Acrylic painting 2", title: "The Bridge", date: "2024" },
       { src: BlueMosque, description: "Acrylic painting 2", title: "Blue Mosue", date: "2020" },
       { src: Bloody, description: "Acrylic painting 3", title: "Bloody", date: "2018" },
-      { src: Vase, description: "Acrylic painting 3", title: "Splash of flowers", date: "2017" },     
+      { src: Vase, description: "Acrylic painting 3", title: "Splash of Flowers", date: "2017" },
       { src: Sunset, description: "Acrylic painting 3", title: "The Beginning", date: "2024" },
     ],
     watercolor: [
-      { src: China, description: "Acrylic painting 1", title: "The Chinese Architecture", date: "2024" },
-      { src: flower1, description: "Acrylic painting 2", title: "frangipani", date: "2022" },
-      { src: flower3, description: "Acrylic painting 1", title: "Roses", date: "2020" },
-      { src: lamp, description: "Acrylic painting 2", title: "Enlighten", date: "2024" },
-      { src: magic, description: "Acrylic painting 3", title: "The Magic of Life", date: "2020" },
-      { src: sunset, description: "Acrylic painting 2", title: "Ocean Breeze", date: "2020" },
-      
- 
+      { src: China, description: "Watercolor painting 1", title: "The Chinese Architecture", date: "2024" },
+      { src: flower1, description: "Watercolor painting 2", title: "Frangipani", date: "2022" },
+      { src: flower3, description: "Watercolor painting 1", title: "Roses", date: "2020" },
+      { src: lamp, description: "Watercolor painting 2", title: "Enlighten", date: "2024" },
+      { src: magic, description: "Watercolor painting 3", title: "The Magic of Life", date: "2020" },
+      { src: sunsetWater, description: "Watercolor painting 2", title: "Ocean Breeze", date: "2020" },
     ],
     "pencil sketch": [
       { src: nature, description: "Pencil sketch 1", title: "The Thinker", date: "2019" },
@@ -148,7 +136,6 @@ const Art = () => {
       { src: chess_1, description: "Craft model 2", title: "Handcrafted Vase", date: "2022" },
     ],
   };
-
 
   useEffect(() => {
     gsap.fromTo(
@@ -191,7 +178,7 @@ const Art = () => {
   const preloadImages = (artworkList) => {
     artworkList.forEach((artwork) => {
       const img = new Image();
-      img.src = artwork.src; // Preload image
+      img.src = artwork.src;
     });
   };
 
@@ -257,24 +244,20 @@ const Art = () => {
   return (
     <section className="relative bg-gradient-to-b from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] p-16 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] opacity-70 backdrop-blur-[10px] shadow-2xl"></div>
-
       <div className="container relative z-10 px-6 mx-auto lg:px-20" ref={containerRef}>
-      {/* Title */}
-      <div className="mb-20 text-center">
-        <h1 className="text-7xl font-serif font-extrabold text-[#F5F8CC] tracking-widest drop-shadow-xl">
-          Exquisite Artistry
-        </h1>
-        <p className="mt-6 text-2xl text-[#F1C0E8] font-sans opacity-90">
-          A curated collection of artworks, meticulously crafted to inspire and engage through emotion and creativity.
-        </p>
-      </div>
-
-        {/* Tabs */}
+        <div className="mb-20 text-center">
+          <h1 className="text-7xl font-heading font-extrabold text-[#F5F8CC] tracking-widest drop-shadow-xl">
+            Exquisite Artistry
+          </h1>
+          <p className="mt-6 text-2xl text-[#F1C0E8] font-description opacity-90">
+            A curated collection of artworks, meticulously crafted to inspire and engage through emotion and creativity.
+          </p>
+        </div>
         <div className="flex flex-wrap justify-center gap-8 mb-16">
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              className={`py-3 px-10 text-xl font-semibold rounded-full border-4 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-md hover:border-[#F5F8CC] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${
+              className={`py-3 px-10 text-xl font-heading rounded-full border-4 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-md hover:border-[#F5F8CC] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${
                 activeTab === tab.id
                   ? "bg-gradient-to-r from-[#F5F8CC] to-[#FDE4CF] text-[#2A1B3D] border-[#F5F8CC]"
                   : "bg-transparent text-[#F5F8CC] border-[#F5F8CC]"
@@ -285,13 +268,9 @@ const Art = () => {
             </button>
           ))}
         </div>
-
-        {/* Description for Active Tab */}
-        <div className="text-center text-[#F5F8CC] mb-16 text-xl font-serif">
+        <div className="text-center text-[#F5F8CC] mb-16 text-xl font-description">
           {tabs.find((tab) => tab.id === activeTab)?.description}
         </div>
-
-        {/* Artwork Grid */}
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
           {currentArtworks.map((artwork, index) => (
             <div
@@ -310,25 +289,23 @@ const Art = () => {
                   alt={artwork.description}
                   className="object-cover w-full h-full transition-all duration-500 transform rounded-xl group-hover:scale-110 group-hover:rotate-3"
                   loading="lazy"
-                  placeholderSrc={artwork.placeholderSrc} // LQIP (Low Quality Image Placeholder)
+                  placeholderSrc={artwork.placeholderSrc}
                 />
                 <div className="absolute text-white bottom-5 left-5">
-                  <h3 className="text-3xl font-semibold">{artwork.title}</h3>
-                  <p className="text-lg">{artwork.date}</p>
+                  <h3 className="text-3xl font-heading font-semibold">{artwork.title}</h3>
+                  <p className="text-lg font-description">{artwork.date}</p>
                 </div>
               </Tilt>
             </div>
           ))}
         </div>
-
-        {/* Pagination */}
         <div className="flex justify-center mt-16">
           <div className="flex items-center gap-6">
             {Array.from({ length: totalPages }).map((_, index) => (
               <button
                 key={index}
                 onClick={() => paginate(index + 1)}
-                className={`text-lg font-medium px-4 py-2 rounded-full transition-all duration-300 ease-in-out hover:bg-[#F5F8CC] hover:text-[#2A1B3D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${
+                className={`text-lg font-medium font-description px-4 py-2 rounded-full transition-all duration-300 ease-in-out hover:bg-[#F5F8CC] hover:text-[#2A1B3D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${
                   currentPage === index + 1 ? "bg-[#F5F8CC] text-[#2A1B3D]" : "bg-transparent text-[#F5F8CC]"
                 }`}
               >
@@ -337,26 +314,21 @@ const Art = () => {
             ))}
           </div>
         </div>
-
-        {/* Modal (Artwork Details) */}
         {selectedArtwork && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
-            onClick={closeModal} 
+            onClick={closeModal}
           >
             <div
               className="modal-content bg-gradient-to-r from-lemon_chiffon to-tea_rose p-6 md:p-12 rounded-3xl relative w-full md:w-10/12 lg:w-8/12 xl:w-7/12 max-h-[90vh] overflow-auto shadow-3xl transform transition-all duration-500 ease-in-out animate-fade-in opacity-90"
-              onClick={(e) => e.stopPropagation()} 
+              onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button */}
               <button
-                className="absolute font-serif text-4xl font-semibold transition-all duration-300 ease-in-out transform top-6 right-6 text-deep_indigo hover:text-electric_blue"
-                onClick={closeModal} 
+                className="absolute font-heading text-4xl font-extrabold transition-all duration-300 ease-in-out transform top-6 right-6 text-deep_indigo hover:text-electric_blue"
+                onClick={closeModal}
               >
                 &times;
               </button>
-
-              {/* Artwork Image */}
               <LazyLoadImage
                 src={selectedArtwork.src}
                 alt={selectedArtwork.description}
@@ -364,27 +336,17 @@ const Art = () => {
                 loading="lazy"
                 placeholderSrc={selectedArtwork.placeholderSrc}
               />
-
-
-
-              {/* Artwork Title and Description */}
               <div className="mt-6 text-center">
-                {/* Title */}
-                <h2 className="font-serif text-4xl font-extrabold text-[#2A1B3D] mb-3 tracking-wide hover:text-non_photo_blue transition-all duration-300 ease-in-out">
+                <h2 className="font-heading text-4xl font-extrabold text-[#2A1B3D] mb-3 tracking-wide hover:text-non_photo_blue transition-all duration-300 ease-in-out">
                   {selectedArtwork.title}
                 </h2>
-                      
-                {/* Description */}
-                <p className="max-w-4xl px-4 mx-auto mb-6 text-xl font-medium leading-relaxed text-non_photo_blue opacity-90">
+                <p className="max-w-4xl px-4 mx-auto mb-6 text-xl font-medium font-description leading-relaxed text-non_photo_blue opacity-90">
                   {selectedArtwork.description}
                 </p>
-                      
-                {/* Date */}
-                <p className="text-lg text-[#A7A6B0] font-semibold uppercase tracking-widest">
+                <p className="text-lg font-medium font-description text-[#A7A6B0] uppercase tracking-widest">
                   {selectedArtwork.date}
                 </p>
               </div>
-
             </div>
           </div>
         )}

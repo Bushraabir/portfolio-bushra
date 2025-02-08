@@ -37,12 +37,14 @@ export default {
         "3xl": "0 35px 60px rgba(0, 0, 0, 0.2)",
       },
       fontFamily: {
-        sans: ["Montserrat", "sans-serif"],
-        serif: ["Playfair Display", "serif"],
-        mono: ["Source Code Pro", "monospace"],
+        heading: ['Playfair Display '],
+        subheading: ['Cormorant Garamond'],
+        description: ['Jura'],
+        cta: ['Jura Bold'],
       },
       fontSize: {
         xxs: "0.65rem",
+        "xl": "1rem",
         "4xl": "2.5rem",
         "5xl": "3rem",
         "6xl": "4rem",

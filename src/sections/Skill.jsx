@@ -2,79 +2,103 @@ import React, { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import Splitting from "splitting";
 import "splitting/dist/splitting.css";
-import { FaPython, FaReact, FaBlender, FaGuitar, FaSwimmer, FaCalculator , FaLightbulb, FaUsers, FaRocket, FaCog, FaCube, FaLaptopCode, FaBrain ,FaStar , FaComments} from "react-icons/fa";
-import { SiCplusplus, SiTensorflow, SiFirebase, SiAdobeillustrator, SiThreedotjs,  SiHtml5, SiCss3, SiVite } from "react-icons/si";
+import {
+  FaPython,
+  FaReact,
+  FaBlender,
+  FaGuitar,
+  FaSwimmer,
+  FaCalculator,
+  FaLightbulb,
+  FaUsers,
+  FaStar,
+  FaComments,
+} from "react-icons/fa";
+import {
+  SiCplusplus,
+  SiTensorflow,
+  SiFirebase,
+  SiAdobeillustrator,
+  SiThreedotjs,
+  SiHtml5,
+  SiCss3,
+  SiVite,
+  SiGreensock,
+  SiFramer,
+} from "react-icons/si";
 import { DiPhotoshop } from "react-icons/di";
-import { GiSkateboard, GiArtificialIntelligence, GiPaintBrush } from "react-icons/gi";
+import {
+  GiSkateboard,
+  GiArtificialIntelligence,
+  GiPaintBrush,
+  GiCrafting,
+  GiAtomicSlashes,
+} from "react-icons/gi";
 import skill from "../assets/skill.jpg";
-import { SiGreensock ,SiFramer  } from "react-icons/si";
-import { GiCrafting , GiAtomicSlashes } from "react-icons/gi";
-
 
 const skillsData = [
-    {
-        category: "Physics & Mathematics",
-        items: [
-          { name: "Physics", icon: <GiAtomicSlashes /> },
-          { name: "Mathematics", icon: <FaCalculator /> }
-        ]
-      },
-    {
+  {
+    category: "Physics & Mathematics",
+    items: [
+      { name: "Physics", icon: <GiAtomicSlashes /> },
+      { name: "Mathematics", icon: <FaCalculator /> },
+    ],
+  },
+  {
+    category: "Programming",
+    items: [
+      { name: "C", icon: <SiCplusplus /> },
+      { name: "C++", icon: <SiCplusplus /> },
+      { name: "Python", icon: <FaPython /> },
+      { name: "Machine Learning", icon: <SiTensorflow /> },
+      { name: "Natural Language Processing (NLP)", icon: <GiArtificialIntelligence /> },
+      { name: "React.js", icon: <FaReact /> },
+      { name: "Three.js", icon: <SiThreedotjs /> },
+      { name: "GSAP", icon: <SiGreensock /> },
+      { name: "Framer Motion", icon: <SiFramer /> },
+      { name: "Firebase", icon: <SiFirebase /> },
+      { name: "Vite", icon: <SiVite /> },
+      { name: "HTML", icon: <SiHtml5 /> },
+      { name: "CSS", icon: <SiCss3 /> },
+    ],
+  },
+  {
+    category: "3D Modeling & Design",
+    items: [
+      { name: "Blender", icon: <FaBlender /> },
+      { name: "Illustrator", icon: <SiAdobeillustrator /> },
+      { name: "Photoshop", icon: <DiPhotoshop /> },
+    ],
+  },
+  {
+    category: "Art & Craft",
+    items: [
+      { name: "Acrylic Painting", icon: <GiPaintBrush /> },
+      { name: "Sketching", icon: <GiPaintBrush /> },
+      { name: "Sculpting", icon: <GiPaintBrush /> },
+      { name: "Crafting", icon: <GiCrafting /> },
+    ],
+  },
+  {
+    category: "Other Interests",
+    items: [
+      { name: "Guitar", icon: <FaGuitar /> },
+      { name: "Skating", icon: <GiSkateboard /> },
+      { name: "Swimming", icon: <FaSwimmer /> },
+    ],
+  },
+  {
+    category: "Soft Skills",
+    items: [
+      { name: "Problem Solving", icon: <FaLightbulb /> },
+      { name: "Teamwork", icon: <FaUsers /> },
+      { name: "Leadership", icon: <FaStar /> },
+      { name: "Communication", icon: <FaComments /> },
+    ],
+  },
+];
 
-      category: "Programming",
-      items: [
-        { name: "C", icon: <SiCplusplus /> },
-        { name: "C++", icon: <SiCplusplus /> },
-        { name: "Python", icon: <FaPython /> },
-        { name: "Machine Learning", icon: <SiTensorflow /> },
-        { name: "Natural Language Processing (NLP)", icon: <GiArtificialIntelligence /> },
-        { name: "React.js", icon: <FaReact /> },
-        { name: "Three.js", icon: <SiThreedotjs /> },
-        { name: "GSAP", icon: <SiGreensock  /> },
-        { name: "Framer Motion", icon: <SiFramer /> },
-        { name: "Firebase", icon: <SiFirebase /> },
-        { name: "Vite", icon: <SiVite /> },
-        { name: "HTML", icon: <SiHtml5 /> },
-        { name: "CSS", icon: <SiCss3 /> }
-      ]
-    },
-    {
-      category: "3D Modeling & Design",
-      items: [
-        { name: "Blender", icon: <FaBlender /> },
-        { name: "Illustrator", icon: <SiAdobeillustrator /> },
-        { name: "Photoshop", icon: <DiPhotoshop /> }
-      ]
-    },
-    {
-      category: "Art & Craft",
-      items: [
-        { name: "Acrylic Painting", icon: <GiPaintBrush /> },
-        { name: "Sketching", icon: <GiPaintBrush /> },
-        { name: "Sculpting", icon: <GiPaintBrush /> },
-        { name: "Crafting", icon: <GiCrafting /> }
-      ]
-    },
-    {
-      category: "Other Interests",
-      items: [
-        { name: "Guitar", icon: <FaGuitar /> },
-        { name: "Skating", icon: <GiSkateboard /> },
-        { name: "Swimming", icon: <FaSwimmer /> }
-      ]
-    },
-    {
-        category: "Soft Skills",
-        items: [
-          { name: "Problem Solving", icon: <FaLightbulb /> },
-          { name: "Teamwork", icon: <FaUsers /> },
-          { name: "Leadership", icon: <FaStar /> },
-          { name: "Communication", icon: <FaComments /> }
-        ]
-      },
-  ];
-  
-const categories = [, ...skillsData.map((s) => s.category)];
+const categories = ["All", ...skillsData.map((s) => s.category)];
 
 const AnimatedCard = () => {
   const cardRef = useRef(null);
@@ -82,15 +106,18 @@ const AnimatedCard = () => {
     Splitting({ whitespace: true });
   }, []);
   return (
-    <div ref={cardRef} className="relative animated-card">
-      <div className="relative z-10 text" style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}>
-        <h1 className="font-serif text-4xl split-text text-lemon_chiffon" data-splitting>
+    <div ref={cardRef} className="relative animated-card p-6">
+      <div className="relative z-10" style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}>
+        <h1
+          className="font-heading text-4xl sm:text-5xl md:text-6xl split-text text-lemon_chiffon tracking-tight leading-snug"
+          data-splitting
+        >
           You can't go wrong
           <br />
           with the right shoes
         </h1>
       </div>
-      <div className="text-2xl try-it">🔎</div>
+      <div className="mt-4 text-xl try-it">🔎</div>
       <div className="absolute magnifying-glass" style={{ opacity: 1, transition: "none" }}></div>
     </div>
   );
@@ -98,12 +125,14 @@ const AnimatedCard = () => {
 
 const SkillCard = ({ skillCategory }) => (
   <div className="card-item">
-    <h3>{skillCategory.category}</h3>
+    <h3 className="font-heading text-2xl font-extrabold text-center mb-4">
+      {skillCategory.category}
+    </h3>
     <div className="items">
       {skillCategory.items.map((item, idx) => (
         <div key={idx} className="item">
           <span>{item.icon}</span>
-          <p>{item.name}</p>
+          <p className="font-description text-sm">{item.name}</p>
         </div>
       ))}
     </div>
@@ -113,13 +142,17 @@ const SkillCard = ({ skillCategory }) => (
 const Skill = () => {
   const sectionRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState("All");
-  const filteredSkills = activeCategory === "All" ? skillsData : skillsData.filter((s) => s.category === activeCategory);
+  const filteredSkills =
+    activeCategory === "All"
+      ? skillsData
+      : skillsData.filter((s) => s.category === activeCategory);
   const bgImageUrl = skill;
   useEffect(() => {
     const container = sectionRef.current;
     const magnifier = container.querySelector(".section-magnifying-glass");
     magnifier.style.background = `url(${bgImageUrl}) no-repeat`;
-    let naturalWidth = 0, naturalHeight = 0;
+    let naturalWidth = 0,
+      naturalHeight = 0;
     const img = new Image();
     img.src = bgImageUrl;
     img.onload = () => {
@@ -205,18 +238,11 @@ const Skill = () => {
           text-align: center;
           width: 100%;
         }
-        h2 {
+        .content h1 {
           font-size: 3rem;
           margin-bottom: 2rem;
           text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
-        }
-        .split-text .char {
-          font-size: calc(1.2rem + 1vw);
-          font-weight: 400;
-          line-height: 1.5;
-          color: #fbf8cc;
-          transform: none;
-          opacity: 1;
+          font-family: 'Playfair Display', serif;
         }
         .btn-group {
           margin-bottom: 2rem;
@@ -262,13 +288,14 @@ const Skill = () => {
           transform: scale(1.05);
         }
         .card-item h3 {
-          font-size: 1.25rem;
+          font-size: 1.5rem;
           font-weight: 600;
           text-align: center;
           margin-bottom: 1rem;
           border-bottom: 1px solid rgba(255, 255, 255, 0.3);
           padding-bottom: 0.5rem;
           color: #2a1b3d;
+          font-family: 'Playfair Display', serif;
         }
         .items {
           display: grid;
@@ -283,6 +310,7 @@ const Skill = () => {
           padding: 0.75rem;
           text-align: center;
           color: #2a1b3d;
+          font-family: 'Source Code Pro', monospace;
         }
         .item span {
           display: block;
@@ -295,14 +323,14 @@ const Skill = () => {
           color: #2a1b3d;
         }
         @media (max-width: 768px) {
-          h2 { font-size: 2.5rem; }
+          .content h1 { font-size: 2.5rem; }
           .btn-group button { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
           .card-item { padding: 1rem; }
-          .card-item h3 { font-size: 1.1rem; }
+          .card-item h3 { font-size: 1.25rem; }
           .item span { font-size: 1.75rem; }
         }
         @media (max-width: 480px) {
-          h2 { font-size: 2rem; }
+          .content h1 { font-size: 2rem; }
           .btn-group button { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
           .grid { gap: 1rem; }
         }
@@ -310,12 +338,16 @@ const Skill = () => {
       <div ref={sectionRef} className="skill-section">
         <div className="section-magnifying-glass"></div>
         <div className="content">
-          <h1 className="split-text" data-splitting>
+          <h1 className="split-text font-heading text-5xl sm:text-6xl md:text-7xl mb-8" data-splitting>
             My Skill Set
           </h1>
           <div className="btn-group">
             {categories.map((cat) => (
-              <button key={cat} onClick={() => setActiveCategory(cat)} className={activeCategory === cat ? "active" : ""}>
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={activeCategory === cat ? "active" : ""}
+              >
                 {cat}
               </button>
             ))}
