@@ -43,16 +43,30 @@ const InteractiveParticle = ({ position, color, radius, isLowQuality }) => {
     const size = 256;
     const data = new Uint8Array(size * size);
     for (let i = 0; i < size * size; i++) {
-      data[i] = Math.random() * 255;
+      data[i] = Math.floor(Math.random() * 255);
     }
     const texture = new THREE.DataTexture(data, size, size, THREE.LuminanceFormat);
     texture.needsUpdate = true;
     return texture;
   };
 
+  const displacementTexture = useMemo(() => {
+    return !isLowQuality ? generateNoiseTexture() : null;
+  }, [isLowQuality]);
+
+  const roughnessTexture = useMemo(() => {
+    return !isLowQuality ? generateNoiseTexture() : null;
+  }, [isLowQuality]);
+
   return (
     <mesh ref={ref} castShadow onClick={handleClick}>
-      <sphereGeometry args={[particleRadius, isLowQuality ? 32 : 128, isLowQuality ? 16 : 128]} />
+      <sphereGeometry
+        args={[
+          particleRadius,
+          isLowQuality ? 32 : 128,
+          isLowQuality ? 16 : 128,
+        ]}
+      />
       <meshPhysicalMaterial
         color={particleColor}
         metalness={0.9}
@@ -67,10 +81,10 @@ const InteractiveParticle = ({ position, color, radius, isLowQuality }) => {
         sheen={1}
         sheenColor={new THREE.Color(0xffffff)}
       >
-        {!isLowQuality && (
+        {!isLowQuality && displacementTexture && roughnessTexture && (
           <>
-            <primitive attach="displacementMap" object={generateNoiseTexture()} />
-            <primitive attach="roughnessMap" object={generateNoiseTexture()} />
+            <primitive attach="displacementMap" object={displacementTexture} />
+            <primitive attach="roughnessMap" object={roughnessTexture} />
           </>
         )}
       </meshPhysicalMaterial>
@@ -84,6 +98,7 @@ const GroundPlane = () => {
     rotation: [-Math.PI / 2, 0, 0],
     material: { friction: 0.2, restitution: 0.9 },
   }));
+
   return (
     <mesh ref={ref} receiveShadow>
       <planeGeometry args={[200, 200]} />
@@ -93,65 +108,86 @@ const GroundPlane = () => {
 };
 
 const BackgroundScene = () => {
-  const gradientMaterial = new THREE.ShaderMaterial({
-    uniforms: {
-      topColor: { value: new THREE.Color("#1d3557") },
-      bottomColor: { value: new THREE.Color("#fbf8cc") },
-    },
-    vertexShader: `
-      varying vec3 vPosition;
-      void main() {
-        vPosition = position;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `,
-    fragmentShader: `
-      varying vec3 vPosition;
-      uniform vec3 topColor;
-      uniform vec3 bottomColor;
-      void main() {
-        gl_FragColor = vec4(mix(bottomColor, topColor, vPosition.y / 50.0), 1.0);
-      }
-    `,
-    side: THREE.BackSide,
-    depthWrite: false,
-    transparent: true,
-  });
+  const gradientMaterial = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        uniforms: {
+          topColor: { value: new THREE.Color('#1d3557') },
+          bottomColor: { value: new THREE.Color('#fbf8cc') },
+        },
+        vertexShader: `
+          varying vec3 vPosition;
+          void main() {
+            vPosition = position;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vPosition;
+          uniform vec3 topColor;
+          uniform vec3 bottomColor;
+          void main() {
+            float mixValue = (vPosition.y + 50.0) / 100.0;
+            gl_FragColor = vec4(mix(bottomColor, topColor, mixValue), 1.0);
+          }
+        `,
+        side: THREE.BackSide,
+        depthWrite: false,
+        transparent: true,
+      }),
+    []
+  );
 
   return (
     <group>
       <mesh position={[0, -50, -50]}>
         <sphereGeometry args={[100, 64, 64]} />
         <meshBasicMaterial attach="material" color="#8eecf5" />
-        <primitive object={new THREE.Mesh(new THREE.SphereGeometry(100, 64, 64), gradientMaterial)} />
+        <primitive
+          object={new THREE.Mesh(
+            new THREE.SphereGeometry(100, 64, 64),
+            gradientMaterial
+          )}
+        />
       </mesh>
     </group>
   );
 };
 
-const ParticleSystem = ({ addParticleAt, setAddParticleAt, initialParticles, isLowQuality }) => {
+const ParticleSystem = ({
+  addParticleAt,
+  setAddParticleAt,
+  initialParticles,
+  isLowQuality,
+}) => {
   const [particles, setParticles] = useState(initialParticles);
+
   useEffect(() => {
     if (addParticleAt) {
       const colors = ['#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672'];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
       const randomRadius = Math.random() * 0.5 + 0.5;
-      setParticles((prev) => [
-        ...prev,
+      setParticles((prevParticles) => [
+        ...prevParticles,
         { position: addParticleAt, color: randomColor, radius: randomRadius },
       ]);
       setAddParticleAt(null);
     }
   }, [addParticleAt, setAddParticleAt]);
-  return particles.map((particle, index) => (
-    <InteractiveParticle
-      key={index}
-      position={particle.position}
-      color={particle.color}
-      radius={particle.radius}
-      isLowQuality={isLowQuality}
-    />
-  ));
+
+  return (
+    <>
+      {particles.map((particle, index) => (
+        <InteractiveParticle
+          key={index}
+          position={particle.position}
+          color={particle.color}
+          radius={particle.radius}
+          isLowQuality={isLowQuality}
+        />
+      ))}
+    </>
+  );
 };
 
 const ParticleScene = () => {
@@ -160,9 +196,31 @@ const ParticleScene = () => {
   const [isLowQuality, setIsLowQuality] = useState(false);
 
   useEffect(() => {
-    if (window.navigator.connection && window.navigator.connection.downlink < 2.5) {
-      setIsLowQuality(true);
+    const checkConnectionQuality = () => {
+      if (window.navigator.connection) {
+        const connection = window.navigator.connection;
+        if (
+          connection.downlink < 2.5 ||
+          (connection.effectiveType && connection.effectiveType.includes('2g'))
+        ) {
+          setIsLowQuality(true);
+        } else {
+          setIsLowQuality(false);
+        }
+      }
+    };
+
+    checkConnectionQuality();
+
+    if (window.navigator.connection && typeof window.navigator.connection.addEventListener === 'function') {
+      window.navigator.connection.addEventListener('change', checkConnectionQuality);
     }
+
+    return () => {
+      if (window.navigator.connection && typeof window.navigator.connection.removeEventListener === 'function') {
+        window.navigator.connection.removeEventListener('change', checkConnectionQuality);
+      }
+    };
   }, []);
 
   const initialParticles = useMemo(() => {
@@ -201,7 +259,7 @@ const ParticleScene = () => {
       return;
     }
     raycaster.setFromCamera(mouse, camera);
-    const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -2);
+    const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 2.5);
     const intersectPoint = new THREE.Vector3();
     if (raycaster.ray.intersectPlane(plane, intersectPoint)) {
       setAddParticleAt(intersectPoint.toArray());
@@ -251,7 +309,12 @@ const ParticleScene = () => {
           isLowQuality={isLowQuality}
         />
       </Physics>
-      <OrbitControls enableZoom={false} enableRotate maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} />
+      <OrbitControls
+        enableZoom={false}
+        enableRotate
+        maxPolarAngle={Math.PI / 2}
+        minPolarAngle={Math.PI / 2}
+      />
       {!isLowQuality && (
         <EffectComposer>
           <Bloom intensity={1.0} radius={0.2} />

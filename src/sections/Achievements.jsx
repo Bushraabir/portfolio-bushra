@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense ,memo ,useRef } from "react";
+import React, { useState, useEffect, Suspense, memo } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -7,7 +7,7 @@ import "react-vertical-timeline-component/style.min.css";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { FaCheck, FaChevronDown } from "react-icons/fa";
-import Ball from '../assets/3d_model/Ball';
+import Ball from "../assets/3d_model/Ball";
 import Star from "../components/Stars";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -122,61 +122,140 @@ const achievements = [
   },
 ];
 
+class WebGLErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error("WebGL error caught:", error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div
+          style={{
+            width: 350,
+            height: 350,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#000",
+            color: "#fff",
+          }}
+        >
+          WebGL Error
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
-
-
+// -------------------------------------------------------------------
+// (3) Define a fallback component for Suspense (while loading Ball)
+// -------------------------------------------------------------------
 const LoadingFallback = () => (
   <mesh>
     <boxGeometry args={[1, 1, 1]} />
-    <meshStandardMaterial color="gray" />
+    <meshStandardMaterial color="#444" />
   </mesh>
 );
 
+// -------------------------------------------------------------------
+// (4) Create the AnimatedModel component that renders the 3D model
+//      wrapped by our WebGL error boundary.
+// -------------------------------------------------------------------
 const AnimatedModel = memo(() => (
-  <Canvas style={{ width: 250, height: 250, position: "absolute", top: "-60px", left: "-90px", zIndex: 10 }}>
-    <ambientLight intensity={3} color="#a3c4f3" />
-    <spotLight position={[15, 25, 10]} angle={0.7} penumbra={0.9} intensity={40} color="#f1c0e8" castShadow />
-    <directionalLight position={[-10, 20, -10]} intensity={6} color="#ffcfd2" />
-    <pointLight position={[0, 5, 10]} intensity={30} color="#fde4cf" decay={2} />
-    <Suspense fallback={<LoadingFallback />}>
-      <Ball />
-    </Suspense>
-    <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={1.2} />
-  </Canvas>
+  <WebGLErrorBoundary>
+    <Canvas
+      style={{
+        width: 350,
+        height: 350,
+        position: "absolute",
+        top: "-149px",
+        left: "-145px",
+        zIndex: 10,
+      }}
+    >
+      <ambientLight intensity={3} color="#a3c4f3" />
+      <spotLight
+        position={[15, 25, 10]}
+        angle={0.7}
+        penumbra={0.9}
+        intensity={40}
+        color="#f1c0e8"
+        castShadow
+      />
+      <directionalLight position={[-10, 20, -10]} intensity={6} color="#ffcfd2" />
+      <pointLight position={[0, 5, 10]} intensity={30} color="#fde4cf" decay={2} />
+      <Suspense fallback={<LoadingFallback />}>
+        <Ball />
+      </Suspense>
+      <OrbitControls
+        enableZoom={false}
+        enablePan={false}
+        autoRotate
+        autoRotateSpeed={1.2}
+      />
+    </Canvas>
+  </WebGLErrorBoundary>
 ));
 
-
+// -------------------------------------------------------------------
+// (5) Define the AchievementCard component that uses AnimatedModel
+//     as its icon and provides expandable details.
+// -------------------------------------------------------------------
 const AchievementCard = ({ achievement }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleCard = () => setIsExpanded((prev) => !prev);
 
   useEffect(() => {
-    gsap.fromTo(".achievement-heading", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, delay: 0.2 });
+    gsap.fromTo(
+      ".achievement-heading",
+      { y: 50, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        delay: 0.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".achievement-heading",
+          start: "top 90%",
+        },
+      }
+    );
   }, []);
 
   return (
     <VerticalTimelineElement
+      className="achievement-card"
       contentStyle={{
-        background: "rgba(30, 30, 60, 0.6)",
+        background: "rgba(20,20,40,0.7)",
         backdropFilter: "blur(1px)",
         borderRadius: "1.5rem",
-        padding: "2.5rem",
-        border: "3px solid rgba(255, 255, 255, 0.5)"
+        padding: "2rem",
+        border: "2px solid rgba(255,255,255,0.3)",
       }}
-      contentArrowStyle={{ borderRight: "10px solid rgba(30, 30, 60, 0.6)" }}
-      iconStyle={{
-        background: "linear-gradient(135deg, #6A5ACD, #FF6347)",
-        color: "#fefef5",
-        boxShadow: "0 6px 15px rgba(0, 0, 0, 0.2)",
-        border: "2px solid #FFC857"
+      contentArrowStyle={{
+        borderRight: "8px solid rgba(20,20,40,0.1)",
       }}
       icon={<AnimatedModel />}
     >
-      <motion.div onClick={toggleCard} role="button" aria-expanded={isExpanded}>
-        <h3 className="text-4xl sm:text-5xl font-heading font-bold text-transparent bg-gradient-to-r from-lemon_chiffon to-pink_lavender bg-clip-text tracking-tight transition-transform transform hover:scale-105 hover:text-white">
+      <motion.div
+        onClick={toggleCard}
+        role="button"
+        aria-expanded={isExpanded}
+        className="cursor-pointer"
+      >
+        <h3 className="achievement-heading text-3xl sm:text-4xl font-heading font-bold text-transparent bg-gradient-to-r from-lemon_chiffon to-pink_lavender bg-clip-text tracking-tight transition-transform transform hover:scale-105 hover:text-white">
           {achievement.title}
         </h3>
-        <p className="mt-6 text-lg sm:text-2xl leading-relaxed tracking-wide text-champagne_pink opacity-85 font-description transition-colors duration-300 hover:text-white">
+        <p className="mt-4 text-base sm:text-lg leading-relaxed tracking-wide text-champagne_pink opacity-90 font-serif transition-colors duration-300 hover:text-white">
           {achievement.description}
         </p>
         <motion.div
@@ -184,69 +263,76 @@ const AchievementCard = ({ achievement }) => {
           transition={{ duration: 0.3 }}
           className="mt-3 inline-block transform transition-transform duration-300 ease-in-out"
         >
-          <FaChevronDown className="text-3xl text-tea_rose hover:text-dark_teal" />
+          <FaChevronDown className="text-2xl text-pink_lavender hover:text-white" />
         </motion.div>
       </motion.div>
       <motion.div
         initial={{ height: 0, opacity: 0 }}
-        animate={isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+        animate={
+          isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }
+        }
         transition={{ duration: 0.6, ease: "easeInOut" }}
-        className="overflow-hidden mt-6"
+        className="overflow-hidden mt-4"
       >
-        <ul className="space-y-4">
+        <ul className="space-y-3">
           {achievement.points.map((point, index) => (
             <motion.li
               key={index}
-              className="flex items-start space-x-3 text-sm sm:text-md text-lemon_chiffon opacity-90 font-description"
+              className="flex items-start space-x-3 text-base sm:text-lg text-champagne_pink opacity-90 font-serif"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
             >
-              <div className="flex items-center justify-center w-7 h-7 text-white border-2 border-gradient-to-r from-lemon_chiffon-500 to-tea_rose-600 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md">
-                <FaCheck className="text-xl" />
+              <div className="flex items-center justify-center w-6 h-6 text-white border-2 border-transparent rounded-full bg-gradient-to-r from-tea_rose to-pink_lavender shadow-md">
+                <FaCheck className="text-lg" />
               </div>
-              <span className="font-xxs tracking-wide">{point}</span>
+              <span className="tracking-wide">{point}</span>
             </motion.li>
           ))}
         </ul>
       </motion.div>
     </VerticalTimelineElement>
-
-
   );
-  
 };
-
 
 
 const Achievements = () => {
   const [cursorPosition, setCursorPosition] = useState(null);
 
-  const handleMouseMove = (event) => {
+  // Track mouse position (for the Stars component, if needed)
+  const handleMouseMove = (event) =>
     setCursorPosition({ x: event.clientX, y: event.clientY });
-  };
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   useEffect(() => {
-    gsap.fromTo(".achievement-heading", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, scrollTrigger: { trigger: ".achievement-heading", start: "top 90%" } });
-    gsap.fromTo(".achievement-card", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.5, scrollTrigger: { trigger: ".achievement-card", start: "top 80%" } });
+    gsap.fromTo(
+      ".achievement-card",
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.5,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".achievement-card",
+          start: "top 80%",
+        },
+      }
+    );
   }, []);
 
   return (
     <section
       id="achievements"
-      className="p-8 mt-16 space-y-12 shadow-2xl md:p-12 lg:p-16 bg-gradient-to-b from-deep_indigo via-mauve to-pink_lavender bg-opacity-80 backdrop-blur-sm rounded-t-4xl"
+      className="p-8 mt-16 space-y-12 shadow-2xl md:p-12 lg:p-16 bg-gradient-to-b from-deep_indigo via-mauve to-pink_lavender bg-opacity-90 backdrop-blur-lg rounded-t-3xl"
     >
-      <motion.div className="mb-32 text-center relative overflow-hidden">
+      <motion.div className="mb-16 text-center relative overflow-hidden">
         <motion.h2
-          className="mt-5 text-6xl sm:text-7xl md:text-8xl font-heading font-extrabold text-transparent relative z-20 before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent before:text-stroke transition-all duration-1000 ease-out transform hover:scale-105 hover:text-white"
+          className="mt-5 text-5xl sm:text-6xl md:text-7xl font-heading font-extrabold text-transparent relative z-20 before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent before:text-stroke transition-all duration-1000 ease-out transform hover:scale-105 hover:text-white"
           data-content="Accomplishments"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 0.9, y: 0 }}
@@ -256,32 +342,31 @@ const Achievements = () => {
           Accomplishments
         </motion.h2>
         <motion.p
-          className="mt-8 sm:mt-10 text-xl sm:text-2xl font-description text-champagne_pink-500 opacity-90 tracking-wide leading-relaxed max-w-4xl mx-auto transition-all duration-500 ease-in-out transform hover:text-white"
+          className="mt-8 sm:mt-10 text-base sm:text-lg md:text-xl font-serif text-champagne_pink opacity-90 tracking-wide leading-relaxed max-w-3xl mx-auto transition-all duration-500 ease-in-out transform hover:text-white"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          From my first day of school to now, I’ve committed myself to not only understanding the world around me but also to making an impact through innovative projects and academic pursuits. This section highlights my journey of continuous learning, where I've combined my passion for technology, science, and creativity to create solutions that are both meaningful and transformative.
+          From my first day of school to now, I've committed to understanding the world and making an impact through innovative projects and academic pursuits. My journey merges a passion for technology, science, and creativity into meaningful solutions.
         </motion.p>
         <motion.p
-          className="mt-6 sm:mt-8 text-xl sm:text-2xl font-description text-champagne_pink-500 opacity-85 tracking-wide leading-relaxed max-w-4xl mx-auto transition-all duration-500 ease-in-out transform hover:text-white"
+          className="mt-6 sm:mt-8 text-base sm:text-lg md:text-xl font-serif text-champagne_pink opacity-85 tracking-wide leading-relaxed max-w-3xl mx-auto transition-all duration-500 ease-in-out transform hover:text-white"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          Whether through my academic achievements, collaborative projects, or hands-on experience in programming, 3D modeling, and scientific exploration, I have strived to push the boundaries of what I know and share that knowledge with others. I believe in the power of learning to drive change, and I am excited to bring this mindset into my future endeavors.
+          Whether through academic achievements, collaborative projects, or hands-on experience, I push the boundaries of knowledge and share that expertise with others.
         </motion.p>
       </motion.div>
       <Star cursorPosition={cursorPosition} />
-      <VerticalTimeline lineColor="rgba(255, 255, 255, 0.2)">
+      <VerticalTimeline lineColor="rgba(255,255,255,0.2)">
         {achievements.map((achievement, index) => (
           <AchievementCard key={index} achievement={achievement} />
         ))}
       </VerticalTimeline>
     </section>
-  
   );
 };
 

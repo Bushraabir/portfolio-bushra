@@ -5,7 +5,7 @@ import { useGLTF } from '@react-three/drei'
 export default function Model(props) {
   const { nodes, materials } = useGLTF('assets/3d_model/ball.gltf');
   return (
-    <group {...props} dispose={null} scale={1.5}>
+    <group {...props} dispose={null} scale={1}>
       <group rotation={[-Math.PI / 2, 0, 0]}>
         <mesh geometry={nodes.Icosphere002_0.geometry} material={materials['ballz2.002']} rotation={[0.081, 1.315, 0.904]} scale={1.251} />
         <mesh geometry={nodes.Icosphere003_0.geometry} material={materials['Lightballz.002']} rotation={[0.081, 1.315, 0.904]} scale={1.251} />
