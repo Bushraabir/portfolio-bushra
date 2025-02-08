@@ -136,6 +136,7 @@ const App = () => {
           <Hero id="hero" />
           <AboutMe id="about" />
           <Achievements />
+          
           <Skill />
           <Gallery id="gallery" className="h-[120vh]" />
           <Websites id="websites" />

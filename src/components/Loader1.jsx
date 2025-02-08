@@ -1,48 +1,47 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Lottie from "react-lottie";
 import loaderAnimation from "../assets/animation/loader1.json";
 
-const Loader1 = () => {
-  const lottieOptions = {
-    animationData: loaderAnimation,
-    loop: true,
-    autoplay: true,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
+const fullText = "wait a sec let me create the world for You! 😊";
 
+const Loader1 = () => {
   const [displayedText, setDisplayedText] = useState("");
-  const fullText = "wait a sec let me create the world for You! 😊";
+
+  const lottieOptions = useMemo(
+    () => ({
+      animationData: loaderAnimation,
+      loop: true,
+      autoplay: true,
+      rendererSettings: {
+        preserveAspectRatio: "xMidYMid slice",
+      },
+    }),
+    []
+  );
 
   useEffect(() => {
     let currentIndex = 0;
     const interval = setInterval(() => {
-      setDisplayedText(fullText.slice(0, currentIndex + 1));
       currentIndex++;
-      if (currentIndex === fullText.length) {
+      setDisplayedText(fullText.slice(0, currentIndex));
+      if (currentIndex >= fullText.length) {
         clearInterval(interval);
       }
-    }, 100); 
+    }, 100);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-deep_indigo to-dark_teal">
-      
+    <div className="relative min-h-screen bg-gradient-to-br from-deep_indigo to-dark_teal flex items-center justify-center">
       <div className="absolute inset-0 z-10">
         <Lottie options={lottieOptions} height="200%" width="100%" />
       </div>
-
-
-      <div className="absolute inset-0 flex items-end justify-center z-20 p-10">
-        <h2 className="text-white text-2xl font-bold">
+      <div className="absolute inset-0 flex items-end justify-center z-20 p-4 sm:p-10">
+        <h2 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold">
           {displayedText}
           <span className="inline-block blinking-cursor">|</span>
         </h2>
       </div>
-
-  
       <style jsx>{`
         @keyframes blink {
           0% { opacity: 1; }
