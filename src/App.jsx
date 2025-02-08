@@ -1,9 +1,9 @@
-import React, { useState, useEffect, Suspense, useRef } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Loader from "./components/Loader";
+import Loader1 from "./components/Loader1";
 
-// Lazy-loaded components with dynamic imports
 const Hero = React.lazy(() => import("./sections/Hero"));
 const Websites = React.lazy(() => import("./sections/Websites"));
 const Artworks = React.lazy(() => import("./sections/Artworks"));
@@ -40,7 +40,7 @@ const ToggleButton = ({ isOpen, setIsOpen }) => (
       transition={{ duration: 0.5, ease: "easeInOut" }}
     >
       <motion.span
-        className="text-lg font-bold text-light"
+        className="text-lg font-cta text-light"
         animate={{ rotateY: isOpen ? 180 : 0 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
@@ -91,7 +91,7 @@ const NavbarComponent = () => {
             >
               <motion.a
                 href={`#${link.id}`}
-                className="text-base font-semibold tracking-wide uppercase text-mauve-500 hover:text-lemon_chiffon"
+                className="text-base font-heading tracking-wide uppercase text-mauve-500 hover:text-lemon_chiffon"
               >
                 {link.name}
               </motion.a>
@@ -121,18 +121,18 @@ const App = () => {
     };
   }, []);
 
-  if (!isLoaded) return <Loader />;
+  if (!isLoaded) return <Loader1 />;
 
   return (
-    <div className="bg-deep_indigo text-light min-h-screen">
+    <div className="bg-deep_indigo text-light min-h-screen font-description">
       <NavbarComponent />
       <div className="absolute top-0 left-0 w-full h-full">
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<Loader1 />}>
           <ParticleScene />
         </Suspense>
       </div>
       <main className="min-h-screen">
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<Loader1 />}>
           <Hero id="hero" />
           <AboutMe id="about" />
           <Achievements />

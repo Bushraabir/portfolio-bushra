@@ -7,7 +7,7 @@ import loaderAnimation from "../assets/animation/loader.json";
 const Loader = () => {
   const shapeRefs = useRef([]);
 
-  // GSAP's advanced particle animation with random movement, scaling, and rotation
+  
   const glideMotion = (element) => {
     if (!element) return;
   
@@ -36,7 +36,6 @@ const Loader = () => {
     shapeRefs.current.forEach((el) => glideMotion(el));
   }, []);
 
-  // Lottie animation options
   const lottieOptions = {
     animationData: loaderAnimation,
     loop: true,
@@ -47,19 +46,19 @@ const Loader = () => {
   };
 
   const particleColors = [
-    "linear-gradient(145deg, #fbf8cc, #fefef5)", // Lemon Chiffon to Champagne Pink
-    "linear-gradient(145deg, #fde4cf, #fff9f5)", // Champagne Pink to Tea Rose
-    "linear-gradient(145deg, #ffcfd2, #fff6f6)", // Tea Rose to Pink Lavender
-    "linear-gradient(145deg, #f1c0e8, #fcf2fa)", // Pink Lavender to Mauve
-    "linear-gradient(145deg, #a3c4f3, #edf3fd)", // Jordy Blue to Non Photo Blue
-    "linear-gradient(145deg, #90dbf4, #e9f8fd)", // Non Photo Blue to Electric Blue
-    "linear-gradient(145deg, #98f5e1, #ebfdf9)", // Aquamarine to Deep Indigo
-    "linear-gradient(145deg, #2a1b3d, #1d142b)", // Deep Indigo to Dark Teal
+    "linear-gradient(145deg, #fbf8cc, #fefef5)", 
+    "linear-gradient(145deg, #fde4cf, #fff9f5)", 
+    "linear-gradient(145deg, #ffcfd2, #fff6f6)", 
+    "linear-gradient(145deg, #f1c0e8, #fcf2fa)", 
+    "linear-gradient(145deg, #a3c4f3, #edf3fd)", 
+    "linear-gradient(145deg, #90dbf4, #e9f8fd)", 
+    "linear-gradient(145deg, #98f5e1, #ebfdf9)", 
+    "linear-gradient(145deg, #2a1b3d, #1d142b)", 
   ];
 
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-deep_indigo to-dark_teal">
-      {/* Particle animation in the background */}
+
       <motion.div
         className="absolute top-0 left-0 z-10 w-full h-full"
         initial={{ opacity: 0 }}
@@ -86,10 +85,9 @@ const Loader = () => {
         ))}
       </motion.div>
 
-      {/* Lottie animation in the foreground */}
       <Lottie options={lottieOptions} height={350} width={350} className="z-20" />
 
-      {/* Animated message below Lottie */}
+
       <motion.div
         className="absolute z-30 text-xl text-center text-white bottom-20 sm:text-2xl md:text-3xl"
         initial={{ opacity: 0 }}

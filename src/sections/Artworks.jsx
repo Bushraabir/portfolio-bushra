@@ -12,9 +12,7 @@ const Artworks = () => {
   const [activeTab, setActiveTab] = useState("illustration");
   const [selectedArtwork, setSelectedArtwork] = useState(null);
   const [loading, setLoading] = useState(true);
-
   const tabs = ["illustration", "modeling"];
-
   const artworks = {
     illustration: [
       { src: kingdom, title: "Kingdom", description: "Acrylic painting depicting a mystical kingdom." },
@@ -24,11 +22,7 @@ const Artworks = () => {
       { src: ship, title: "Space Ship", description: "3D model of a futuristic space ship." },
     ],
   };
-
   const isMobile = window.innerWidth <= 768;
-
-
-
   useEffect(() => {
     gsap.to(".artwork-gallery", {
       scrollTrigger: {
@@ -41,7 +35,6 @@ const Artworks = () => {
       y: 0,
       ease: "power3.out",
     });
-
     gsap.from(".section-header", {
       scrollTrigger: {
         trigger: ".section-header",
@@ -53,17 +46,11 @@ const Artworks = () => {
       y: 40,
       ease: "power3.out",
     });
-
     if (!isMobile) {
-      gsap.utils.toArray(".artwork-card").forEach((card, index) => {
+      gsap.utils.toArray(".artwork-card").forEach((card) => {
         gsap.fromTo(
           card,
-          {
-            y: 50,
-            opacity: 0,
-            scale: 1,
-            zIndex: 1,
-          },
+          { y: 50, opacity: 0, scale: 1, zIndex: 1 },
           {
             y: 0,
             opacity: 1,
@@ -79,7 +66,6 @@ const Artworks = () => {
           }
         );
       });
-
       gsap.to(".artwork-card", {
         scrollTrigger: {
           trigger: ".artwork-gallery",
@@ -92,7 +78,6 @@ const Artworks = () => {
             const y = progress * 300;
             const x = progress * 80;
             const opacity = 1 - progress * 0.4;
-
             gsap.to(".artwork-card", {
               scale,
               y,
@@ -107,21 +92,15 @@ const Artworks = () => {
       });
     }
   }, []);
-
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1200);
     return () => clearTimeout(timer);
   }, []);
-
   return (
     <section id="artworks" className="w-full py-16 bg-gradient-to-br from-lemon_chiffon via-champagne_pink to-tea_rose">
       <div className="container px-6 mx-auto text-center lg:px-20">
-      <motion.h2 
-        className="mt-5 achievement-heading text-5xl sm:text-6xl md:text-7xl font-serif font-extrabold relative z-20 
-          text-[#2A1B3D] transition-all duration-500 ease-out 
-          before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent 
-          before:border-[#fbf8cc] before:-webkit-text-stroke-[2px] text-stroke 
-          hover:text-[#90DBF4] hover:scale-105"
+      <motion.h2
+        className="mt-5 font-heading text-6xl sm:text-6xl md:text-7xl font-extrabold relative z-20 text-deep_indigo-500 transition-all duration-500 ease-out before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent before:border-deep_indigo-500 before:-webkit-text-stroke-[2px] hover:text-non_photo_blue-500 hover:scale-110"
         data-content="Art in Pixels"
         initial={{ opacity: 0, x: 100 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -131,18 +110,15 @@ const Artworks = () => {
         Art in Pixels
       </motion.h2>
 
-
-
-        <p className="mt-8 text-xl opacity-80 text-deep_indigo tracking-wide leading-relaxed animate-slide-up">
-        Step into the world of digital artistry, where technology and creativity blend to form innovative works that push boundaries. Each piece is crafted using advanced tools to evoke emotions and bring new perspectives to life.
+        <p className="mt-8 text-xl opacity-80 text-deep_indigo tracking-wide leading-relaxed animate-slide-up font-description">
+          Step into the world of digital artistry, where technology and creativity blend to form innovative works that push boundaries. Each piece is crafted using advanced tools to evoke emotions and bring new perspectives to life.
         </p>
-
         <div className="flex justify-center mt-10 mb-12 space-x-8">
           {tabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`tabs-button text-lg font-semibold transition-all duration-300 transform hover:text-[#FFC857] hover:scale-105 ${
+              className={`text-lg font-semibold font-heading transition-all duration-300 transform hover:text-[#FFC857] hover:scale-105 ${
                 activeTab === tab ? "text-[#FFC857] text-xl font-extrabold" : "text-[#cfbaf0]"
               }`}
             >
@@ -150,10 +126,7 @@ const Artworks = () => {
             </button>
           ))}
         </div>
-
-        <motion.div
-          className="grid grid-cols-1 gap-12 artwork-gallery sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
-        >
+        <motion.div className="grid grid-cols-1 gap-12 artwork-gallery sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
           {loading ? (
             <div className="w-full h-[300px] bg-[#34344F] rounded-lg animate-pulse"></div>
           ) : (
@@ -174,14 +147,13 @@ const Artworks = () => {
                   transition={{ delay: index * 0.1 }}
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-end p-6 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 hover:opacity-80 transition-opacity">
-                  <h3 className="text-xl font-semibold text-white">{artwork.title}</h3>
+                  <h3 className="text-xl font-semibold text-white font-heading">{artwork.title}</h3>
                 </div>
               </motion.div>
             ))
           )}
         </motion.div>
       </div>
-
       {selectedArtwork && (
         <motion.div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
@@ -199,12 +171,11 @@ const Artworks = () => {
             transition={{ duration: 0.5 }}
           >
             <button
-              className="absolute top-6 right-6 text-4xl text-[#FFC857] hover:text-[#FF6F3C]"
+              className="absolute top-6 right-6 text-4xl text-[#FFC857] hover:text-[#FF6F3C] font-cta"
               onClick={() => setSelectedArtwork(null)}
             >
               ×
             </button>
-
             <motion.img
               src={selectedArtwork.src}
               alt={selectedArtwork.title}
@@ -212,13 +183,14 @@ const Artworks = () => {
               initial={{ opacity: 0, scale: 1.1 }}
               animate={{ opacity: 1, scale: 1 }}
             />
-            <h3 className="mt-6 text-2xl font-bold text-[#FFC857] text-center">{selectedArtwork.title}</h3>
-            <p className="mt-4 text-lg text-[#F9F5F0] text-center leading-relaxed">
+            <h3 className="mt-6 text-2xl font-bold text-[#FFC857] text-center font-heading">
+              {selectedArtwork.title}
+            </h3>
+            <p className="mt-4 text-lg text-[#F9F5F0] text-center leading-relaxed font-description">
               {selectedArtwork.description}
             </p>
-
             <button
-              className="mt-8 px-8 py-3 text-white bg-[#007C8A] rounded-xl hover:bg-[#1A1A1A] block mx-auto text-lg transition-all duration-300"
+              className="mt-8 px-8 py-3 text-white bg-[#007C8A] rounded-xl hover:bg-[#1A1A1A] block mx-auto text-lg transition-all duration-300 font-cta"
               onClick={() => setSelectedArtwork(null)}
             >
               Close

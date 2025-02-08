@@ -1,50 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import Lottie from 'react-lottie';
-import loaderAnimation from '../assets/animation/loader1.json'; 
+import React, { useState, useEffect } from "react";
+import Lottie from "react-lottie";
+import loaderAnimation from "../assets/animation/loader1.json";
 
-const Loader1 = ({ isLoading }) => {
-  const [isAnimationCompleted, setIsAnimationCompleted] = useState(false);
-
-
-  const options = {
+const Loader1 = () => {
+  const lottieOptions = {
+    animationData: loaderAnimation,
     loop: true,
     autoplay: true,
-    animationData: loaderAnimation,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
 
+  const [displayedText, setDisplayedText] = useState("");
+  const fullText = "wait a sec let me create the world for You! 😊";
 
-  const handleAnimationComplete = () => {
-    setIsAnimationCompleted(true);
-  };
-
-
-  const loaderSpeed = isLoading ? 1 : 0.5; 
+  useEffect(() => {
+    let currentIndex = 0;
+    const interval = setInterval(() => {
+      setDisplayedText(fullText.slice(0, currentIndex + 1));
+      currentIndex++;
+      if (currentIndex === fullText.length) {
+        clearInterval(interval);
+      }
+    }, 100); 
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <>
-      {isLoading && (
-        <div className="flex items-center justify-center w-full h-screen bg-lemon_chiffon bg-opacity-80">
-          <Lottie
-            options={{ ...options, speed: loaderSpeed }}
-            height={200}
-            width={200}
-            isStopped={!isLoading}
-            isPaused={!isLoading}
-            eventListeners={[{ eventName: 'complete', callback: handleAnimationComplete }]}
-          />
-        </div>
-      )}
-      {/* If you want to add any logic after loader finishes */}
-      {isAnimationCompleted && !isLoading && (
-        <div className="flex items-center justify-center w-full h-screen bg-champagne_pink">
-          {/* Additional content after the animation finishes */}
-          <p className="font-serif text-lg text-deep_indigo">Animation completed!</p>
-        </div>
-      )}
-    </>
+    <div className="relative min-h-screen bg-gradient-to-br from-deep_indigo to-dark_teal">
+      
+      <div className="absolute inset-0 z-10">
+        <Lottie options={lottieOptions} height="200%" width="100%" />
+      </div>
+
+
+      <div className="absolute inset-0 flex items-end justify-center z-20 p-10">
+        <h2 className="text-white text-2xl font-bold">
+          {displayedText}
+          <span className="inline-block blinking-cursor">|</span>
+        </h2>
+      </div>
+
+  
+      <style jsx>{`
+        @keyframes blink {
+          0% { opacity: 1; }
+          50% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+        .blinking-cursor {
+          animation: blink 1s infinite;
+        }
+      `}</style>
+    </div>
   );
 };
 

@@ -161,22 +161,22 @@ const AchievementCard = ({ achievement }) => {
         backdropFilter: "blur(1px)",
         borderRadius: "1.5rem",
         padding: "2.5rem",
-        border: "3px solid rgba(255, 255, 255, 0.5)",
+        border: "3px solid rgba(255, 255, 255, 0.5)"
       }}
       contentArrowStyle={{ borderRight: "10px solid rgba(30, 30, 60, 0.6)" }}
       iconStyle={{
         background: "linear-gradient(135deg, #6A5ACD, #FF6347)",
         color: "#fefef5",
         boxShadow: "0 6px 15px rgba(0, 0, 0, 0.2)",
-        border: "2px solid #FFC857",
+        border: "2px solid #FFC857"
       }}
       icon={<AnimatedModel />}
     >
       <motion.div onClick={toggleCard} role="button" aria-expanded={isExpanded}>
-        <h3 className="text-3xl sm:text-4xl font-serif font-extrabold text-transparent bg-gradient-to-r from-lemon_chiffon to-purple-700 bg-clip-text transition-transform transform hover:scale-105 hover:text-accent">
+        <h3 className="text-4xl sm:text-5xl font-heading font-bold text-transparent bg-gradient-to-r from-lemon_chiffon to-pink_lavender bg-clip-text tracking-tight transition-transform transform hover:scale-105 hover:text-white">
           {achievement.title}
         </h3>
-        <p className="mt-6 text-lg sm:text-xl leading-relaxed text-champagne_pink opacity-85 font-light">
+        <p className="mt-6 text-lg sm:text-2xl leading-relaxed tracking-wide text-champagne_pink opacity-85 font-description transition-colors duration-300 hover:text-white">
           {achievement.description}
         </p>
         <motion.div
@@ -184,33 +184,35 @@ const AchievementCard = ({ achievement }) => {
           transition={{ duration: 0.3 }}
           className="mt-3 inline-block transform transition-transform duration-300 ease-in-out"
         >
-          <FaChevronDown className="text-3xl text-tea_rose hover:text-non_photo_blue" />
+          <FaChevronDown className="text-3xl text-tea_rose hover:text-dark_teal" />
         </motion.div>
       </motion.div>
       <motion.div
         initial={{ height: 0, opacity: 0 }}
         animate={isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
         transition={{ duration: 0.6, ease: "easeInOut" }}
-        style={{ overflow: "hidden", marginTop: "1.5rem" }}
+        className="overflow-hidden mt-6"
       >
         <ul className="space-y-4">
           {achievement.points.map((point, index) => (
             <motion.li
               key={index}
-              className="flex items-start space-x-3 text-sm sm:text-md text-non_photo_blue opacity-90"
+              className="flex items-start space-x-3 text-sm sm:text-md text-lemon_chiffon opacity-90 font-description"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
             >
               <div className="flex items-center justify-center w-7 h-7 text-white border-2 border-gradient-to-r from-lemon_chiffon-500 to-tea_rose-600 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md">
-                <FaCheck className="text-xs" />
+                <FaCheck className="text-xl" />
               </div>
-              <span className="font-medium">{point}</span>
+              <span className="font-xxs tracking-wide">{point}</span>
             </motion.li>
           ))}
         </ul>
       </motion.div>
     </VerticalTimelineElement>
+
+
   );
   
 };
@@ -238,44 +240,39 @@ const Achievements = () => {
   }, []);
 
   return (
-    <section id="achievements" className="p-6 mt-16 space-y-12 shadow-xl md:p-12 lg:p-16 bg-gradient-to-b from-deep_indigo via-mauve to-pink_lavender bg-opacity-90 backdrop-blur-sm rounded-t-4xl">
-
+    <section
+      id="achievements"
+      className="p-8 mt-16 space-y-12 shadow-2xl md:p-12 lg:p-16 bg-gradient-to-b from-deep_indigo via-mauve to-pink_lavender bg-opacity-80 backdrop-blur-sm rounded-t-4xl"
+    >
       <motion.div className="mb-32 text-center relative overflow-hidden">
-      <motion.h2 
-        className="mt-5 achievement-heading text-5xl sm:text-6xl md:text-7xl font-serif font-extrabold text-transparent relative z-20 
-          before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent 
-          before:border-[#fbf8cc] before:-webkit-text-stroke-[2px] text-stroke transition-all duration-1500 ease-out 
-          transform hover:scale-105 hover:text-white"
-        data-content="Accomplishments"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 0.8, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      >
-        Accomplishments
-      </motion.h2>
-
-      <motion.p 
-        className="mt-6 sm:mt-8 text-xl sm:text-2xl font-mono text-champagne_pink-500 opacity-85 tracking-wide leading-relaxed max-w-4xl mx-auto transition-all duration-500 ease-in-out transform hover:text-white"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-      >
-        From my first day of school to now, I’ve committed myself to not only understanding the world around me but also to making an impact through innovative projects and academic pursuits. This section highlights my journey of continuous learning, where I've combined my passion for technology, science, and creativity to create solutions that are both meaningful and transformative.
-      </motion.p>
-
-      <motion.p 
-        className="mt-6 sm:mt-8 text-xl sm:text-2xl font-mono text-champagne_pink-500 opacity-85 tracking-wide leading-relaxed max-w-4xl mx-auto transition-all duration-500 ease-in-out transform hover:text-white"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-      >
-        Whether through my academic achievements, collaborative projects, or hands-on experience in programming, 3D modeling, and scientific exploration, I have strived to push the boundaries of what I know and share that knowledge with others. I believe in the power of learning to drive change, and I am excited to bring this mindset into my future endeavors.
-
-
-      </motion.p>
+        <motion.h2
+          className="mt-5 text-6xl sm:text-7xl md:text-8xl font-heading font-extrabold text-transparent relative z-20 before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent before:text-stroke transition-all duration-1000 ease-out transform hover:scale-105 hover:text-white"
+          data-content="Accomplishments"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 0.9, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        >
+          Accomplishments
+        </motion.h2>
+        <motion.p
+          className="mt-8 sm:mt-10 text-xl sm:text-2xl font-description text-champagne_pink-500 opacity-90 tracking-wide leading-relaxed max-w-4xl mx-auto transition-all duration-500 ease-in-out transform hover:text-white"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
+          From my first day of school to now, I’ve committed myself to not only understanding the world around me but also to making an impact through innovative projects and academic pursuits. This section highlights my journey of continuous learning, where I've combined my passion for technology, science, and creativity to create solutions that are both meaningful and transformative.
+        </motion.p>
+        <motion.p
+          className="mt-6 sm:mt-8 text-xl sm:text-2xl font-description text-champagne_pink-500 opacity-85 tracking-wide leading-relaxed max-w-4xl mx-auto transition-all duration-500 ease-in-out transform hover:text-white"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
+          Whether through my academic achievements, collaborative projects, or hands-on experience in programming, 3D modeling, and scientific exploration, I have strived to push the boundaries of what I know and share that knowledge with others. I believe in the power of learning to drive change, and I am excited to bring this mindset into my future endeavors.
+        </motion.p>
       </motion.div>
       <Star cursorPosition={cursorPosition} />
       <VerticalTimeline lineColor="rgba(255, 255, 255, 0.2)">
@@ -284,6 +281,7 @@ const Achievements = () => {
         ))}
       </VerticalTimeline>
     </section>
+  
   );
 };
 

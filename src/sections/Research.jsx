@@ -5,7 +5,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-
 import Bushra from "../assets/Bushra.png";
 import schrodinger_cat from "../assets/articles/schrodinger_cat.webp";
 import Photons from "../assets/articles/Photons.webp";
@@ -242,18 +241,17 @@ const Research = () => {
       className="w-full px-4 sm:px-8 md:px-16 py-12 sm:py-24 mx-auto bg-lemon_chiffon text-deep_indigo"
     >
       <div className="mb-12 text-center" data-aos="fade-up">
-        <h1 className="text-4xl sm:text-5xl font-serif text-gradient mb-6 leading-tight tracking-wide">
+        <h1 className="text-4xl sm:text-5xl font-heading text-gradient mb-6 leading-tight tracking-wide">
           My Research & Publications
         </h1>
-        <p className="max-w-4xl mx-auto text-lg sm:text-xl">
-        Delve into my research, where I challenge conventional boundaries in technology, design, and innovation. My work aims to unlock transformative insights in fields like Computer Science, Engineering Physics, and Astrophysics, driving forward-thinking solutions for real-world problems
+        <p className="max-w-4xl mx-auto text-lg sm:text-xl font-description">
+          Delve into my research, where I challenge conventional boundaries in technology, design, and innovation. My work aims to unlock transformative insights in fields like Computer Science, Engineering Physics, and Astrophysics, driving forward-thinking solutions for real-world problems
         </p>
       </div>
-
       <div className="flex flex-col items-center justify-center gap-6 mb-12 lg:flex-row">
         <div className="flex items-center p-4 space-x-4 sm:space-x-6 shadow-xl bg-champagne_pink rounded-2xl">
           <motion.button
-            className={`px-6 py-3 sm:px-8 sm:py-4 font-medium rounded-lg text-base sm:text-xl transition-all duration-300 ${
+            className={`px-6 py-3 sm:px-8 sm:py-4 font-heading rounded-lg text-base sm:text-xl transition-all duration-300 ${
               filter === "books"
                 ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white shadow-xl"
                 : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
@@ -264,7 +262,7 @@ const Research = () => {
             Books
           </motion.button>
           <motion.button
-            className={`px-6 py-3 sm:px-8 sm:py-4 font-medium rounded-lg text-base sm:text-xl transition-all duration-300 ${
+            className={`px-6 py-3 sm:px-8 sm:py-4 font-heading rounded-lg text-base sm:text-xl transition-all duration-300 ${
               filter === "articles"
                 ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white shadow-xl"
                 : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
@@ -275,11 +273,10 @@ const Research = () => {
             Articles
           </motion.button>
         </div>
-
         <motion.input
           type="text"
           placeholder="Search..."
-          className="w-full max-w-xl px-4 sm:px-8 py-3 border-2 border-deep_indigo bg-champagne_pink rounded-2xl focus:outline-none focus:ring-2 focus:ring-accent1 focus:ring-opacity-50 placeholder:text-deep_indigo"
+          className="w-full max-w-xl px-4 sm:px-8 py-3 border-2 border-deep_indigo bg-champagne_pink rounded-2xl focus:outline-none focus:ring-2 focus:ring-accent1 focus:ring-opacity-50 placeholder:text-deep_indigo font-description"
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
@@ -288,7 +285,6 @@ const Research = () => {
           whileFocus={{ scale: 1.02 }}
         />
       </div>
-
       <div className="grid grid-cols-1 gap-8 sm:gap-10 sm:grid-cols-2 lg:grid-cols-3">
         <AnimatePresence>
           {paginatedData.map((item, index) => (
@@ -308,13 +304,13 @@ const Research = () => {
                       src={item.img}
                       alt={item.title}
                       className="object-cover w-full h-full rounded-t-xl transition-transform duration-300 group-hover:scale-110"
-                      loading="lazy" 
+                      loading="lazy"
                     />
                   </div>
                   <div className="p-8">
-                    <h3 className="text-3xl font-serif text-accent1 mb-4">{item.title}</h3>
-                    <p className="text-lg text-deep_indigo mb-4">Published: {item.year}</p>
-                    <p className="text-deep_indigo text-lg">{item.description}</p>
+                    <h3 className="text-3xl font-heading text-accent1 mb-4">{item.title}</h3>
+                    <p className="text-lg text-deep_indigo mb-4 font-description">Published: {item.year}</p>
+                    <p className="text-deep_indigo text-lg font-description">{item.description}</p>
                   </div>
                 </>
               ) : (
@@ -326,21 +322,20 @@ const Research = () => {
                     effect="blur"
                     className="w-24 sm:w-36 h-24 sm:h-36 object-cover shadow-2xl rounded-full border-4 sm:border-8 border-deep_indigo transition-transform duration-300 group-hover:scale-110 z-20"
                     style={{
-                      clipPath:
-                        "polygon(10% 0%, 80% 5%, 95% 40%, 70% 75%, 30% 90%, 5% 60%, 10% 20%)",
+                      clipPath: "polygon(10% 0%, 80% 5%, 95% 40%, 70% 75%, 30% 90%, 5% 60%, 10% 20%)",
                     }}
                   />
                   <div className="relative z-20 mt-4 sm:mt-6">
-                    <h3 className="text-xl sm:text-2xl font-serif text-accent1 mb-2">
+                    <h3 className="text-xl sm:text-2xl font-heading text-accent1 mb-2">
                       {item.title}
                     </h3>
-                    <p className="text-base sm:text-lg text-deep_indigo">
+                    <p className="text-base sm:text-lg text-deep_indigo font-description">
                       Platform:{" "}
                       <span className="font-semibold text-accent2">
                         {item.platform}
                       </span>
                     </p>
-                    <p className="text-sm sm:text-base text-deep_indigo mt-2">
+                    <p className="text-sm sm:text-base text-deep_indigo mt-2 font-description">
                       {item.description}
                     </p>
                   </div>
@@ -348,7 +343,7 @@ const Research = () => {
                     {item.tags.map((tag, idx) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 text-xs sm:text-sm text-deep_indigo bg-white bg-opacity-80 rounded-full shadow-lg transition-all duration-300"
+                        className="px-3 py-1 text-xs sm:text-sm text-deep_indigo bg-white bg-opacity-80 rounded-full shadow-lg transition-all duration-300 font-description"
                       >
                         {tag}
                       </span>
@@ -358,7 +353,7 @@ const Research = () => {
                     href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center mt-4 text-base sm:text-lg text-accent1 font-semibold group hover:text-deep_indigo transition-all duration-300"
+                    className="flex items-center mt-4 text-base sm:text-lg text-accent1 font-heading font-semibold group hover:text-deep_indigo transition-all duration-300"
                   >
                     <span className="mr-2">Read More</span>
                     <svg
@@ -380,9 +375,8 @@ const Research = () => {
           ))}
         </AnimatePresence>
       </div>
-
       <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
-        <p className="text-base sm:text-xl font-semibold text-deep_indigo">
+        <p className="text-base sm:text-xl font-semibold text-deep_indigo font-description">
           Page {filter === "books" ? currentPage : articlePage} of{" "}
           {Math.ceil(filteredData.length / itemsPerPage)}
         </p>
@@ -391,7 +385,7 @@ const Research = () => {
             (filter === "articles" && articlePage > 1)) && (
             <motion.button
               onClick={() => changePage(-1, filter)}
-              className="px-4 sm:px-6 py-2 sm:py-3 text-white bg-gradient-to-r from-electric_blue to-aquamarine rounded-lg shadow-md hover:shadow-xl transition-all duration-300 text-sm sm:text-base"
+              className="px-4 sm:px-6 py-2 sm:py-3 text-white bg-gradient-to-r from-electric_blue to-aquamarine rounded-lg shadow-md hover:shadow-xl transition-all duration-300 text-sm sm:text-base font-cta"
               whileHover={{ scale: 1.05 }}
             >
               Previous
@@ -403,7 +397,7 @@ const Research = () => {
               articlePage * itemsPerPage < filteredData.length)) && (
             <motion.button
               onClick={() => changePage(1, filter)}
-              className="px-4 sm:px-6 py-2 sm:py-3 text-white bg-gradient-to-r from-electric_blue to-aquamarine rounded-lg shadow-md hover:shadow-xl transition-all duration-300 text-sm sm:text-base"
+              className="px-4 sm:px-6 py-2 sm:py-3 text-white bg-gradient-to-r from-electric_blue to-aquamarine rounded-lg shadow-md hover:shadow-xl transition-all duration-300 text-sm sm:text-base font-cta"
               whileHover={{ scale: 1.05 }}
             >
               Next
