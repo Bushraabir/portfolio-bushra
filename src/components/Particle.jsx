@@ -1,102 +1,178 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+  Suspense,
+} from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Physics, useSphere, usePlane } from '@react-three/cannon';
-import { OrbitControls, Environment, PerspectiveCamera } from '@react-three/drei';
-import { Bloom, EffectComposer, SSAO, DepthOfField } from '@react-three/postprocessing';
+import {
+  OrbitControls,
+  Environment,
+  PerspectiveCamera,
+  Html,
+  useProgress,
+} from '@react-three/drei';
+import {
+  EffectComposer,
+  Bloom,
+  SSAO,
+  DepthOfField,
+} from '@react-three/postprocessing';
 import * as THREE from 'three';
-import { motion } from 'framer-motion';
 import spaceBackground from '../assets/background.jpg';
 
-const InteractiveParticle = ({ position, color, radius, isLowQuality }) => {
-  const [particleColor, setParticleColor] = useState(color);
-  const [particleRadius, setParticleRadius] = useState(radius);
-  const [ref] = useSphere(() => ({
-    mass: 0.5,
-    position,
-    args: [particleRadius],
-    material: { friction: 0.1, restitution: 0.9 },
-    linearDamping: 0.02,
-    angularDamping: 0.02,
-  }));
-
-  const handleClick = () => {
-    const colors = [
-      '#00A7D0',
-      '#F26B38',
-      '#E6B800',
-      '#2F3A58',
-      '#4A5672',
-      '#F2D966',
-      '#0088A6',
-      '#F79D7D',
-      '#C59700',
-      '#B8B8B8',
-    ];
-    const newColor = colors[Math.floor(Math.random() * colors.length)];
-    const newRadius = Math.random() * 0.5 + 0.5;
-    setParticleColor(newColor);
-    setParticleRadius(newRadius);
-    console.log('Particle clicked! New color:', newColor, 'New radius:', newRadius);
-  };
-
-  const generateNoiseTexture = () => {
-    const size = 256;
-    const data = new Uint8Array(size * size);
-    for (let i = 0; i < size * size; i++) {
-      data[i] = Math.floor(Math.random() * 255);
-    }
-    const texture = new THREE.DataTexture(data, size, size, THREE.LuminanceFormat);
-    texture.needsUpdate = true;
-    return texture;
-  };
-
-  const displacementTexture = useMemo(() => {
-    return !isLowQuality ? generateNoiseTexture() : null;
-  }, [isLowQuality]);
-
-  const roughnessTexture = useMemo(() => {
-    return !isLowQuality ? generateNoiseTexture() : null;
-  }, [isLowQuality]);
-
-  return (
-    <mesh ref={ref} castShadow onClick={handleClick}>
-      <sphereGeometry
-        args={[
-          particleRadius,
-          isLowQuality ? 32 : 128,
-          isLowQuality ? 16 : 128,
-        ]}
-      />
-      <meshPhysicalMaterial
-        color={particleColor}
-        metalness={0.9}
-        roughness={0.05}
-        clearcoat={1}
-        clearcoatRoughness={0.15}
-        reflectivity={0.95}
-        envMapIntensity={0.5}
-        transmission={0.8}
-        ior={1.45}
-        thickness={1.2}
-        sheen={1}
-        sheenColor={new THREE.Color(0xffffff)}
-      >
-        {!isLowQuality && displacementTexture && roughnessTexture && (
-          <>
-            <primitive attach="displacementMap" object={displacementTexture} />
-            <primitive attach="roughnessMap" object={roughnessTexture} />
-          </>
-        )}
-      </meshPhysicalMaterial>
-    </mesh>
-  );
+const Loader = () => {
+  const { progress } = useProgress();
+  return <Html center>{progress.toFixed(0)}% loaded</Html>;
 };
 
-const GroundPlane = () => {
+const InteractiveParticle = React.memo(
+  ({ position, color, radius, quality }) => {
+    const [particleColor, setParticleColor] = useState(color);
+    const [particleRadius, setParticleRadius] = useState(radius);
+
+    const [ref] = useSphere(
+      () => ({
+        mass: 0.5,
+        position,
+        args: [particleRadius],
+        material: { friction: 0.5, restitution: 0.9 },
+        linearDamping: 0.1,
+        angularDamping: 0.1,
+        ccdSpeedThreshold: 0.1,
+        ccdIterations: 10,
+        onCollide: (e) => {
+          console.log('Collision detected on particle!', e.contact);
+        },
+      }),
+      [particleRadius]
+    );
+
+    const handleClick = useCallback(() => {
+      const colors = [
+        '#00A7D0',
+        '#F26B38',
+        '#E6B800',
+        '#2F3A58',
+        '#4A5672',
+        '#F2D966',
+        '#0088A6',
+        '#F79D7D',
+        '#C59700',
+        '#B8B8B8',
+      ];
+      const newColor = colors[Math.floor(Math.random() * colors.length)];
+      const newRadius = Math.random() * 0.5 + 0.5;
+      setParticleColor(newColor);
+      setParticleRadius(newRadius);
+      console.log('Particle clicked! New color:', newColor, 'New radius:', newRadius);
+    }, []);
+
+    const dragStart = useRef(null);
+    const initialRadius = useRef(particleRadius);
+    const dragging = useRef(false);
+
+    const onPointerDown = useCallback((event) => {
+      event.stopPropagation();
+      dragStart.current = { x: event.clientX, y: event.clientY };
+      initialRadius.current = particleRadius;
+      dragging.current = false;
+    }, [particleRadius]);
+
+    const onPointerMove = useCallback((event) => {
+      if (!dragStart.current) return;
+      const dx = event.clientX - dragStart.current.x;
+      if (Math.abs(dx) > 5) {
+        dragging.current = true;
+      }
+      if (dragging.current) {
+       
+        let newRadius = initialRadius.current + dx * 0.01;
+     
+        newRadius = Math.max(0.1, Math.min(newRadius, 5));
+        setParticleRadius(newRadius);
+      }
+    }, []);
+
+    const onPointerUp = useCallback((event) => {
+      
+      if (!dragging.current) {
+        handleClick();
+      }
+      dragStart.current = null;
+      dragging.current = false;
+    }, [handleClick]);
+
+
+    const generateNoiseTexture = useCallback(() => {
+      const size = 256;
+      const data = new Uint8Array(size * size);
+      for (let i = 0; i < size * size; i++) {
+        data[i] = Math.floor(Math.random() * 255);
+      }
+      const texture = new THREE.DataTexture(data, size, size, THREE.LuminanceFormat);
+      texture.needsUpdate = true;
+      return texture;
+    }, []);
+
+    const displacementTexture = useMemo(
+      () => (quality !== 'low' ? generateNoiseTexture() : null),
+      [quality, generateNoiseTexture]
+    );
+    const roughnessTexture = useMemo(
+      () => (quality !== 'low' ? generateNoiseTexture() : null),
+      [quality, generateNoiseTexture]
+    );
+
+    return (
+      <mesh
+        ref={ref}
+        castShadow
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+      >
+        <sphereGeometry
+          args={[
+            particleRadius,
+            quality === 'low' ? 32 : 128,
+            quality === 'low' ? 16 : 128,
+          ]}
+        />
+        <meshPhysicalMaterial
+          color={particleColor}
+          metalness={0.9}
+          roughness={0.05}
+          clearcoat={1}
+          clearcoatRoughness={0.15}
+          reflectivity={0.95}
+          envMapIntensity={0.5}
+          transmission={0.8}
+          ior={1.45}
+          thickness={1.2}
+          sheen={1}
+          sheenColor={new THREE.Color(0xffffff)}
+        >
+          {quality !== 'low' && displacementTexture && roughnessTexture && (
+            <>
+              <primitive attach="displacementMap" object={displacementTexture} />
+              <primitive attach="roughnessMap" object={roughnessTexture} />
+            </>
+          )}
+        </meshPhysicalMaterial>
+      </mesh>
+    );
+  }
+);
+
+const GroundPlane = React.memo(() => {
   const [ref] = usePlane(() => ({
     position: [0, -2.5, 0],
     rotation: [-Math.PI / 2, 0, 0],
-    material: { friction: 0.2, restitution: 0.9 },
+    material: { friction: 0.3, restitution: 0.9 },
   }));
 
   return (
@@ -105,9 +181,9 @@ const GroundPlane = () => {
       <meshStandardMaterial color="#2a1b3d" roughness={0.8} metalness={0.2} />
     </mesh>
   );
-};
+});
 
-const BackgroundScene = () => {
+const BackgroundScene = React.memo(() => {
   const gradientMaterial = useMemo(
     () =>
       new THREE.ShaderMaterial({
@@ -142,39 +218,18 @@ const BackgroundScene = () => {
     <group>
       <mesh position={[0, -50, -50]}>
         <sphereGeometry args={[100, 64, 64]} />
-        <meshBasicMaterial attach="material" color="#8eecf5" />
+        <meshBasicMaterial color="#8eecf5" />
         <primitive
-          object={new THREE.Mesh(
-            new THREE.SphereGeometry(100, 64, 64),
-            gradientMaterial
-          )}
+          object={
+            new THREE.Mesh(new THREE.SphereGeometry(100, 64, 64), gradientMaterial)
+          }
         />
       </mesh>
     </group>
   );
-};
+});
 
-const ParticleSystem = ({
-  addParticleAt,
-  setAddParticleAt,
-  initialParticles,
-  isLowQuality,
-}) => {
-  const [particles, setParticles] = useState(initialParticles);
-
-  useEffect(() => {
-    if (addParticleAt) {
-      const colors = ['#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672'];
-      const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      const randomRadius = Math.random() * 0.5 + 0.5;
-      setParticles((prevParticles) => [
-        ...prevParticles,
-        { position: addParticleAt, color: randomColor, radius: randomRadius },
-      ]);
-      setAddParticleAt(null);
-    }
-  }, [addParticleAt, setAddParticleAt]);
-
+const ParticleSystem = React.memo(({ particles, quality }) => {
   return (
     <>
       {particles.map((particle, index) => (
@@ -183,46 +238,14 @@ const ParticleSystem = ({
           position={particle.position}
           color={particle.color}
           radius={particle.radius}
-          isLowQuality={isLowQuality}
+          quality={quality}
         />
       ))}
     </>
   );
-};
+});
 
 const ParticleScene = () => {
-  const [addParticleAt, setAddParticleAt] = useState(null);
-  const cameraRef = useRef();
-  const [isLowQuality, setIsLowQuality] = useState(false);
-
-  useEffect(() => {
-    const checkConnectionQuality = () => {
-      if (window.navigator.connection) {
-        const connection = window.navigator.connection;
-        if (
-          connection.downlink < 2.5 ||
-          (connection.effectiveType && connection.effectiveType.includes('2g'))
-        ) {
-          setIsLowQuality(true);
-        } else {
-          setIsLowQuality(false);
-        }
-      }
-    };
-
-    checkConnectionQuality();
-
-    if (window.navigator.connection && typeof window.navigator.connection.addEventListener === 'function') {
-      window.navigator.connection.addEventListener('change', checkConnectionQuality);
-    }
-
-    return () => {
-      if (window.navigator.connection && typeof window.navigator.connection.removeEventListener === 'function') {
-        window.navigator.connection.removeEventListener('change', checkConnectionQuality);
-      }
-    };
-  }, []);
-
   const initialParticles = useMemo(() => {
     const particles = [];
     for (let i = 0; i < 19; i++) {
@@ -240,11 +263,47 @@ const ParticleScene = () => {
           '#4A5672',
           '#F2D966',
         ][Math.floor(Math.random() * 6)],
-        radius: Math.random() * (1.5 - 0.5) + 0.5,
+        radius: Math.random() * (1.7 - 0.5) + 0.5,
       });
     }
     return particles;
   }, []);
+
+  const [particles, setParticles] = useState(initialParticles);
+  const [quality, setQuality] = useState('high');
+  const cameraRef = useRef();
+
+  const checkPerformance = useCallback(() => {
+    let perf = 'high';
+    if (window.navigator.connection) {
+      const { downlink, effectiveType } = window.navigator.connection;
+      if (downlink < 2.5 || (effectiveType && effectiveType.includes('2g'))) {
+        perf = 'low';
+      }
+    }
+    if (window.navigator.deviceMemory && window.navigator.deviceMemory < 4) {
+      perf = 'low';
+    }
+    setQuality(perf);
+  }, []);
+
+  useEffect(() => {
+    checkPerformance();
+    if (
+      window.navigator.connection &&
+      typeof window.navigator.connection.addEventListener === 'function'
+    ) {
+      window.navigator.connection.addEventListener('change', checkPerformance);
+    }
+    return () => {
+      if (
+        window.navigator.connection &&
+        typeof window.navigator.connection.removeEventListener === 'function'
+      ) {
+        window.navigator.connection.removeEventListener('change', checkPerformance);
+      }
+    };
+  }, [checkPerformance]);
 
   const handleCanvasClick = (event) => {
     event.stopPropagation();
@@ -259,10 +318,51 @@ const ParticleScene = () => {
       return;
     }
     raycaster.setFromCamera(mouse, camera);
-    const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 2.5);
+
+    const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -1);
     const intersectPoint = new THREE.Vector3();
     if (raycaster.ray.intersectPlane(plane, intersectPoint)) {
-      setAddParticleAt(intersectPoint.toArray());
+      const randomOffset = (Math.random() * 2 - 1) * 1.0;
+      const offsetVector = raycaster.ray.direction.clone().multiplyScalar(randomOffset);
+      intersectPoint.add(offsetVector);
+
+      const colors = ['#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672'];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      const randomRadius = Math.random() * 0.3 + 0.3;
+      let newPosition = intersectPoint.clone();
+      const groundY = -2.5;
+      const margin = 0.05;
+      if (newPosition.y - randomRadius < groundY + margin) {
+        newPosition.y = groundY + randomRadius + margin;
+      }
+
+      const maxAttempts = 10;
+      let attempt = 0;
+      let collision = true;
+      while (collision && attempt < maxAttempts) {
+        collision = false;
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          const existingPos = new THREE.Vector3(...p.position);
+          const distance = newPosition.distanceTo(existingPos);
+          if (distance < randomRadius + p.radius + margin) {
+            collision = true;
+            break;
+          }
+        }
+        if (collision) {
+          newPosition.add(raycaster.ray.direction.clone().multiplyScalar(0.2));
+          if (newPosition.y - randomRadius < groundY + margin) {
+            newPosition.y = groundY + randomRadius + margin;
+          }
+        }
+        attempt++;
+      }
+
+      setParticles((prevParticles) => [
+        ...prevParticles,
+        { position: newPosition.toArray(), color: randomColor, radius: randomRadius },
+      ]);
     }
   };
 
@@ -271,57 +371,64 @@ const ParticleScene = () => {
       style={{ height: '215vh', width: '100vw' }}
       shadows
       onClick={handleCanvasClick}
-      dpr={isLowQuality ? [1, 1] : [1, 2]}
+      dpr={quality === 'low' ? [1, 1] : [1, 2]}
     >
-      <PerspectiveCamera
-        makeDefault
-        ref={cameraRef}
-        position={[0, 5, 15]}
-        fov={50}
-        near={0.1}
-        far={1000}
-      />
-      {!isLowQuality && <BackgroundScene />}
-      <ambientLight intensity={0.2} color="#404040" />
-      <directionalLight
-        position={[15, 20, 10]}
-        intensity={1.2}
-        castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-      />
-      <spotLight
-        position={[-15, 25, -10]}
-        angle={Math.PI / 6}
-        penumbra={0.5}
-        intensity={1.5}
-        castShadow
-      />
-      <pointLight position={[5, 10, 5]} intensity={0.8} />
-      <hemisphereLight skyColor="#bb99ff" groundColor="#664422" intensity={0.4} />
-      {!isLowQuality && <Environment files={spaceBackground} background />}
-      <Physics gravity={[0, -9.8, 0]}>
-        <GroundPlane />
-        <ParticleSystem
-          addParticleAt={addParticleAt}
-          setAddParticleAt={setAddParticleAt}
-          initialParticles={initialParticles}
-          isLowQuality={isLowQuality}
+      <Suspense fallback={<Loader />}>
+        <PerspectiveCamera
+          makeDefault
+          ref={cameraRef}
+          position={[0, 5, 15]}
+          fov={50}
+          near={0.1}
+          far={1000}
         />
-      </Physics>
-      <OrbitControls
-        enableZoom={false}
-        enableRotate
-        maxPolarAngle={Math.PI / 2}
-        minPolarAngle={Math.PI / 2}
-      />
-      {!isLowQuality && (
-        <EffectComposer>
-          <Bloom intensity={1.0} radius={0.2} />
-          <SSAO radius={0.2} intensity={12} />
-          <DepthOfField focusDistance={0.02} focalLength={0.1} bokehScale={2.5} />
-        </EffectComposer>
-      )}
+        {quality !== 'low' && <BackgroundScene />}
+        <ambientLight intensity={0.2} color="#404040" />
+        <directionalLight
+          position={[15, 20, 10]}
+          intensity={1.2}
+          castShadow
+          shadow-mapSize-width={2048}
+          shadow-mapSize-height={2048}
+        />
+        <spotLight
+          position={[-15, 25, -10]}
+          angle={Math.PI / 6}
+          penumbra={0.5}
+          intensity={1.5}
+          castShadow
+        />
+        <pointLight position={[5, 10, 5]} intensity={0.8} />
+        <hemisphereLight skyColor="#bb99ff" groundColor="#664422" intensity={0.4} />
+        {quality !== 'low' && <Environment files={spaceBackground} background />}
+        <Physics
+          gravity={[0, -9.8, 0]}
+          iterations={20}
+          allowSleep
+          defaultContactMaterial={{
+            friction: 0.5,
+            restitution: 0.6,
+            contactEquationStiffness: 1e7,
+            contactEquationRelaxation: 4,
+          }}
+        >
+          <GroundPlane />
+          <ParticleSystem particles={particles} quality={quality} />
+        </Physics>
+        <OrbitControls
+          enableZoom={false}
+          enableRotate
+          maxPolarAngle={Math.PI / 2}
+          minPolarAngle={Math.PI / 2}
+        />
+        {quality !== 'low' && (
+          <EffectComposer>
+            <Bloom intensity={1.0} radius={0.2} />
+            <SSAO radius={0.2} intensity={12} />
+            <DepthOfField focusDistance={0.02} focalLength={0.1} bokehScale={2.5} />
+          </EffectComposer>
+        )}
+      </Suspense>
     </Canvas>
   );
 };
