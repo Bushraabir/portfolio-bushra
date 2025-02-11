@@ -10,6 +10,21 @@ import gsap from "gsap";
 import color from "../assets/animation/arrow.json";
 import Lottie from "react-lottie";
 
+function IconButton({ href, children }) {
+  return (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      className="inline-block"
+    >
+      {children}
+    </motion.a>
+  );
+}
+
 export default function OrganizationGallery() {
   const items = [
     {
@@ -53,7 +68,7 @@ export default function OrganizationGallery() {
         { opacity: 1, y: 0, duration: 2, ease: "power3.out", delay: 0.5 }
       );
     }
-  }, [items.length]);
+  }, []);
 
   return (
     <article id="organization" className="w-full bg-lemon_chiffon">
@@ -135,16 +150,37 @@ export default function OrganizationGallery() {
             clarity, fear into confidence, and learners into trailblazers. This isn’t just education;
             it’s the dawn of a new era in learning.
           </p>
-          <motion.a
-            href="https://bushraabir.github.io/empowereducation/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block px-8 py-3 mt-8 text-lg font-bold font-cta text-white transition-all duration-300 rounded-lg bg-electric_blue hover:bg-aquamarine"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Learn More
-          </motion.a>
+          <div className="flex flex-row gap-4 items-center">
+
+         <IconButton href="https://bushraabir.github.io/empowereducation/">
+           <svg
+             xmlns="http://www.w3.org/2000/svg" 
+             className="w-10 h-10 text-lemon_chiffon" 
+             fill="none" 
+             viewBox="0 0 24 24" 
+             stroke="currentColor"
+             strokeWidth="2" 
+             strokeLinecap="round" 
+             strokeLinejoin="round"
+           >
+             <path d="M13.828 10.172a4 4 0 010 5.656L10.172 19.414a4 4 0 01-5.656-5.656l1.414-1.414" />
+             <path d="M10.172 13.828a4 4 0 010-5.656L13.828 4.586a4 4 0 015.656 5.656l-1.414 1.414" />
+           </svg>
+         </IconButton>
+
+
+         <IconButton href="https://www.facebook.com/profile.php?id=61569631168287">
+           <svg
+             xmlns="http://www.w3.org/2000/svg"
+             fill="currentColor"
+             className="w-10 h-10 text-lemon_chiffon"
+             viewBox="0 0 24 24"
+           >
+             <path d="M22.675 0H1.325C.593 0 0 .593 0 1.326v21.348C0 23.407.593 24 1.325 24H12.82v-9.294H9.692V11.01h3.128V8.413c0-3.1 1.893-4.788 4.66-4.788 1.325 0 2.464.099 2.794.143v3.24h-1.918c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.696h-3.12V24h6.116C23.407 24 24 23.407 24 22.674V1.326C24 .593 23.407 0 22.675 0z"/>
+           </svg>
+         </IconButton>
+        </div>
+
         </div>
       </section>
     </article>
