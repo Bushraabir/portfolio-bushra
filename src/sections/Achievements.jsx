@@ -299,7 +299,7 @@ const AchievementCard = ({ achievement }) => {
 const Achievements = () => {
   const [cursorPosition, setCursorPosition] = useState(null);
 
-  // Track mouse position (for the Stars component, if needed)
+
   const handleMouseMove = (event) =>
     setCursorPosition({ x: event.clientX, y: event.clientY });
 
@@ -331,16 +331,19 @@ const Achievements = () => {
       className="p-8 mt-16 space-y-12 shadow-2xl md:p-12 lg:p-16 bg-gradient-to-b from-deep_indigo via-mauve to-pink_lavender bg-opacity-90 backdrop-blur-lg rounded-t-3xl"
     >
       <motion.div className="mb-16 text-center relative overflow-hidden">
-        <motion.h2
-          className="mt-5 text-5xl sm:text-6xl md:text-7xl font-heading font-extrabold text-transparent relative z-20 before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent before:text-stroke transition-all duration-1000 ease-out transform hover:scale-105 hover:text-white"
-          data-content="Accomplishments"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 0.9, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, ease: "easeOut" }}
-        >
-          Accomplishments
-        </motion.h2>
+      <motion.h2
+        className="mt-5 text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-heading font-extrabold text-transparent relative z-20 
+                   before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent before:[-webkit-text-stroke:1px_white] 
+                   transition-all duration-1000 ease-out transform hover:scale-105 hover:text-white"
+        data-content="Accomplishments"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 0.9, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, ease: "easeOut" }}
+      >
+        Accomplishments
+      </motion.h2>
+
         <motion.p
           className="mt-8 sm:mt-10 text-base sm:text-lg md:text-xl font-serif text-champagne_pink opacity-90 tracking-wide leading-relaxed max-w-3xl mx-auto transition-all duration-500 ease-in-out transform hover:text-white"
           initial={{ opacity: 0, y: 20 }}
