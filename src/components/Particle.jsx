@@ -21,8 +21,8 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ color: 'red', textAlign: 'center', paddingTop: '20px' }}>
-          Oops! Something went wrong with the 3D scene. Please try again later.
+        <div style={{ color: 'lemon_chiffon', textAlign: 'center', paddingTop: '20px' }}>
+          Oops! Something went wrong with the 3D scene.<br/>You can refreash the screen to reload the model ...
         </div>
       );
     }
