@@ -169,6 +169,8 @@ const SkillCard = ({ skillCategory }) => {
       viewport={{ once: true }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={handleMouseEnter}
+      onTouchEnd={handleMouseLeave}
     >
       <div className="flip-card-inner" ref={innerRef}>
         <div className="flip-card-front" ref={frontRef}>
@@ -197,13 +199,15 @@ const SkillCard = ({ skillCategory }) => {
 const Skill = () => {
   const sectionRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState("All");
-  const filteredSkills = activeCategory === "All" ? skillsData : skillsData.filter((s) => s.category === activeCategory);
+  const filteredSkills =
+    activeCategory === "All" ? skillsData : skillsData.filter((s) => s.category === activeCategory);
   const bgImageUrl = skill;
   useEffect(() => {
     const container = sectionRef.current;
     const magnifier = container.querySelector(".section-magnifying-glass");
     magnifier.style.background = `url(${bgImageUrl}) no-repeat`;
-    let naturalWidth = 0, naturalHeight = 0;
+    let naturalWidth = 0,
+      naturalHeight = 0;
     const img = new Image();
     img.src = bgImageUrl;
     img.onload = () => {
@@ -233,12 +237,12 @@ const Skill = () => {
     const handleMove = (e) => {
       let x, y;
       const rect = container.getBoundingClientRect();
-      if (e.type === "touchmove") {
-        x = e.touches[0].clientX - rect.left;
-        y = e.touches[0].clientY - rect.top;
-      } else {
+      if (e.type === "pointermove") {
         x = e.clientX - rect.left;
         y = e.clientY - rect.top;
+      } else if (e.type === "touchmove") {
+        x = e.touches[0].clientX - rect.left;
+        y = e.touches[0].clientY - rect.top;
       }
       if (x >= 0 && y >= 0 && x <= rect.width && y <= rect.height) {
         gsap.to(magnifier, {
@@ -265,13 +269,14 @@ const Skill = () => {
         ease: "power3.out",
       });
     };
-    container.addEventListener("mousemove", handleMove);
-    container.addEventListener("mouseleave", handleLeave);
+
+    container.addEventListener("pointermove", handleMove);
+    container.addEventListener("pointerleave", handleLeave);
     container.addEventListener("touchmove", handleMove);
     container.addEventListener("touchend", handleLeave);
     return () => {
-      container.removeEventListener("mousemove", handleMove);
-      container.removeEventListener("mouseleave", handleLeave);
+      container.removeEventListener("pointermove", handleMove);
+      container.removeEventListener("pointerleave", handleLeave);
       container.removeEventListener("touchmove", handleMove);
       container.removeEventListener("touchend", handleLeave);
     };
@@ -289,7 +294,7 @@ const Skill = () => {
         .btn-group button { padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; border: 1px solid #fbf8cc; background: transparent; color: #fbf8cc; cursor: pointer; transition: background 0.3s, color 0.3s; }
         .btn-group button.active, .btn-group button:hover { background: #fbf8cc; color: #2a1b3d; }
         .grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); width: 100%; max-width: 1200px; margin: 2rem auto 0 auto; }
-        .flip-card { perspective: 1500px; width: 100%; max-width: 250px; height: 300px; margin: 1rem auto; position: relative; }
+        .flip-card { perspective: 1500px; width: 100%; max-width: 250px; height: 300px; margin: 1rem auto; position: relative; cursor: pointer; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
         .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 1rem; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; }
         .flip-card-front { background: linear-gradient(135deg, var(--overlay-bg), rgba(255,255,255,0.05)); backdrop-filter: blur(10px); border: 2px solid var(--border-color); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
