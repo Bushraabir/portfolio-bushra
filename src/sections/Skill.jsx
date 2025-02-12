@@ -289,7 +289,7 @@ const Skill = () => {
         .skill-section { position: relative; min-height: 100vh; background: url(${bgImageUrl}) center/cover no-repeat; font-family: 'Playfair Display', serif; display: flex; flex-direction: column; align-items: center; padding: 2rem; overflow: hidden; color: var(--secondary-color); }
         .section-magnifying-glass { position: absolute; height: 220px; width: 220px; border-radius: 50%; opacity: 0; pointer-events: none; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
         .content { position: relative; z-index: 2; text-align: center; width: 100%; padding: 1rem; }
-        .content h1 { font-size: 3rem; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.4); }
+        .content h1 { font-size: 3rem; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
         .btn-group { margin-bottom: 2rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
         .btn-group button { padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; border: 1px solid #fbf8cc; background: transparent; color: #fbf8cc; cursor: pointer; transition: background 0.3s, color 0.3s; }
         .btn-group button.active, .btn-group button:hover { background: #fbf8cc; color: #2a1b3d; }
@@ -297,12 +297,12 @@ const Skill = () => {
         .flip-card { perspective: 1500px; width: 100%; max-width: 250px; height: 300px; margin: 1rem auto; position: relative; cursor: pointer; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
         .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 1rem; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; }
-        .flip-card-front { background: linear-gradient(135deg, var(--overlay-bg), rgba(255,255,255,0.05)); backdrop-filter: blur(10px); border: 2px solid var(--border-color); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
-        .flip-card-back { background: linear-gradient(135deg, rgba(0,0,0,0.1), rgba(0,0,0,0.05)); backdrop-filter: blur(10px); border: 2px solid var(--border-color); box-shadow: 0 8px 20px rgba(0,0,0,0.2); transform: rotateY(180deg); overflow: hidden; }
+        .flip-card-front { background: linear-gradient(135deg, var(--overlay-bg), rgba(255,255,255,0.01)); backdrop-filter: blur(1px); border: 2px solid var(--border-color); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .flip-card-back { background: linear-gradient(135deg, rgba(0,0,0,0.1), rgba(0,0,0,0.01)); backdrop-filter: blur(1px); border: 2px solid var(--border-color); box-shadow: 0 8px 20px rgba(0,0,0,0.2); transform: rotateY(180deg); overflow: hidden; }
         .category-icon { font-size: 3rem; margin-bottom: 0.5rem; color: var(--primary-color); transition: transform 0.3s ease; }
         .flip-card:hover .category-icon { transform: scale(1.1); }
         .card-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; padding: 0.5rem; width: 100%; height: 100%; justify-items: center; align-items: center; }
-        .card-item-inner { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(5px); border-radius: 0.5rem; padding: 0.75rem; text-align: center; color: #2a1b3d; font-family: 'Source Code Pro', monospace; width: 100%; box-sizing: border-box; }
+        .card-item-inner { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); border-radius: 0.5rem; padding: 0.75rem; text-align: center; color: #2a1b3d; font-family: 'Source Code Pro', monospace; width: 100%; box-sizing: border-box; }
         .card-item-inner .icon { display: block; font-size: 2rem; margin-bottom: 0.5rem; color: #2a1b3d; }
         .card-item-inner p { font-size: 0.875rem; color: #2a1b3d; }
         @media (max-width: 1024px) { .content h1 { font-size: 2.5rem; } .grid { gap: 1.5rem; } }

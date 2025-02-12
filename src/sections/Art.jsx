@@ -57,7 +57,7 @@ import chess_1 from "../assets/crafts/10.jpg";
 gsap.registerPlugin(ScrollTrigger);
 
 const Art = () => {
-  const [activeTab, setActiveTab] = useState("acrylic");
+  const [activeTab, setActiveTab] = useState("sketch");
   const [selectedArtwork, setSelectedArtwork] = useState(null);
   const containerRef = useRef(null);
   const modalRef = useRef(null);
@@ -68,6 +68,11 @@ const Art = () => {
   const itemsPerPage = 3;
   const tabs = [
     {
+      id: "sketch",
+      title: "Sketch",
+      description: "Detailed and intricate pencil sketches.",
+    },
+    {
       id: "acrylic",
       title: "Acrylic",
       description: "Explore vibrant and textured acrylic art pieces.",
@@ -77,11 +82,7 @@ const Art = () => {
       title: "Watercolor",
       description: "Soft, flowing, and colorful watercolor creations.",
     },
-    {
-      id: "sketch",
-      title: "Sketch",
-      description: "Detailed and intricate pencil sketches.",
-    },
+
     {
       id: "crafts and models",
       title: "Crafts & Models",
@@ -133,11 +134,10 @@ const Art = () => {
     
       { src: line_1, description: "This artwork represents a transformative journey from nature’s organic patterns to structured resonance. Beginning with a dot composition inspired by a traced image, the piece evolves through layers of interpretation—first into a rhythmic line composition and then into a three-dimensional resonance structure. The delicate balance between negative space, depth, and materiality breathes life into the abstracted form. Through meticulous placement of bamboo sticks in a cork sheet, the artwork captures the tension between order and randomness, precision and spontaneity, echoing the fluidity of nature within a structured framework.", title: "Echoes of Line", date: "2024" },
       { src: dot, description: "Inspired by nature’s intricate patterns, this artwork embarks on a transformative journey from observation to abstraction. Beginning with a traced image, the composition evolves into a delicate arrangement of dots, capturing the organic essence of the source. Through meticulous craftsmanship, bamboo sticks emerge from a cork sheet, shaping a dynamic 3D representation of negative space. The interplay of absence and presence invites the viewer to explore the unseen, where light and shadow redefine the perception of depth and structure. This piece stands as a testament to the harmony between natural inspiration and geometric precision.", title: "Void and Form: A Dialogue in Dots", date: "2024" },
-      { src: emotion, description: "Craft model 2", title: "Handcrafted Vase", date: "2024" },
-      { src: brain, description: "Craft model 2", title: "Handcrafted Vase", date: "2022" },
-      { src: notebook, description: "Craft model 2", title: "Handcrafted Vase", date: "2022" },
-      { src: penholder, description: "Craft model 2", title: "Handcrafted Vase", date: "2022" },
-      { src: chess_1, description: "Craft model 2", title: "Handcrafted Vase", date: "2022" },
+      { src: emotion, description: "'Incarnate Anxiety' is a dynamic, abstract manifestation that transforms the ephemeral weight of inner turmoil into a striking tangible form. The work’s fragmented planes and interlocking contours create a visual symphony of tension and restless energy. Jagged lines and overlapping surfaces seem to pulse with an inner rhythm—a subtle, almost imperceptible heartbeat that echoes the relentless barrage of anxious thoughts. Shadows and stark contrasts interweave with delicate, almost translucent layers, inviting the viewer to trace the elusive boundaries between chaos and order. Each element, though disjointed at first glance, converges to form a coherent narrative of vulnerability and strength, offering a visceral representation of anxiety rendered in physical space. The piece compels us to confront the paradoxical beauty found in moments of emotional disarray, ultimately reminding us that even the most intangible of feelings can be given form and presence.", title: "Incarnate Anxiety", date: "2024" },
+      { src: brain, description: "'The Watchful Gaze' is a raw and evocative clay sculpture that delves into the deep psychological struggle of social anxiety and self-perception. The central brain-like mass, intricately textured with organic folds, symbolizes the overactive mind—anxiously constructing the illusion that every movement, every thought, is under scrutiny. Surrounding this core, hovering orbs with hollowed-out centers evoke an eerie sense of omnipresence—silent spectators looming, watching, and waiting. The twisted, rope-like strands tethering them to the mind represent the inescapable cycle of self-doubt and hyper-awareness, pulling the psyche deeper into its own web of fear. As the brain seeks refuge, trying to bury itself within the clay, it reflects the universal impulse to retreat, to disappear from judgmental eyes. This piece powerfully captures the weight of imagined perceptions and the burden of an anxious mind.", title: " The Watchful Gaze", date: "2024" },
+      { src: penholder, description: "'Ephemeral Reverie' is a delicate testament to the transient beauty of handmade art. Crafted from humble tissue and adhesive, this vase transcends its modest materials, embodying a quiet elegance and vulnerability. Its subtle textures and graceful contours evoke the fleeting nature of a blossom in mid-bloom, inviting viewers to pause and reflect on the impermanence of life. Every careful fold and layered detail speaks to an artful balance between fragility and resilience, turning the everyday into a poignant narrative of transformation and delicate strength.", title: "Ephemeral Reverie", date: "2022" },
+      { src: chess_1, description: "In 'Terra’s Gambit: A Symphony in Clay,' every chess piece becomes a poetic embodiment of the earth’s enduring spirit and artistic ingenuity. Hand-molded from raw clay, each piece carries a tactile narrative—an interplay of robust form and delicate finesse reminiscent of nature’s own balance. The set invites its beholder to consider the timeless dance between strategy and spontaneity, where every move echoes the ancient whispers of the earth and the subtle cadence of artistic expression.This title and description aim to celebrate both the elemental material and the thoughtful craftsmanship that transforms everyday clay into an arena of creative contest.", title: "Terra’s Gambit: A Symphony in Clay", date: "2025" },
     ],
 
   };
