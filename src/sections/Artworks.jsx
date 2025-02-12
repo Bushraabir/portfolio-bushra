@@ -16,6 +16,8 @@ const Artworks = () => {
   const [activeTab, setActiveTab] = useState("modeling");
   const [selectedArtwork, setSelectedArtwork] = useState(null);
   const [loading, setLoading] = useState(true);
+  const isMobile = window.innerWidth <= 768;
+
   const tabs = [ "modeling","illustration"];
   const artworks = {
     modeling: [
@@ -30,7 +32,7 @@ const Artworks = () => {
     ],
 
   };
-  const isMobile = window.innerWidth <= 768;
+
   useEffect(() => {
     gsap.to(".artwork-gallery", {
       scrollTrigger: {
@@ -99,25 +101,29 @@ const Artworks = () => {
         },
       });
     }
-  }, []);
+  }, [isMobile]);
+
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1200);
     return () => clearTimeout(timer);
   }, []);
-  return (
-    <section id="artworks" className="w-full py-16 bg-gradient-to-br from-lemon_chiffon via-champagne_pink to-tea_rose">
-      <div className="container px-6 mx-auto text-center lg:px-20">
-      <motion.h2
-        className="mt-5 font-heading text-6xl sm:text-6xl md:text-7xl font-extrabold relative z-20 text-deep_indigo-500 transition-all duration-500 ease-out before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent before:border-deep_indigo-500 before:-webkit-text-stroke-[2px] hover:text-non_photo_blue-500 hover:scale-110"
-        data-content="Art in Pixels"
-        initial={{ opacity: 0, x: 100 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-      >
-        Art in Pixels
-      </motion.h2>
 
+  return (
+    <section
+      id="artworks"
+      className="w-full py-16 bg-gradient-to-br from-lemon_chiffon via-champagne_pink to-tea_rose"
+    >
+      <div className="container px-6 mx-auto text-center lg:px-20">
+        <motion.h2
+          className="mt-5 font-heading text-6xl sm:text-6xl md:text-7xl font-extrabold relative z-20 text-deep_indigo-500 transition-all duration-500 ease-out before:content-[attr(data-content)] before:absolute before:inset-0 before:text-transparent before:border-deep_indigo-500 before:-webkit-text-stroke-[2px] hover:text-non_photo_blue-500 hover:scale-110"
+          data-content="Art in Pixels"
+          initial={{ opacity: 0, x: 100 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        >
+          Art in Pixels
+        </motion.h2>
         <p className="mt-8 text-xl opacity-80 text-deep_indigo tracking-wide leading-relaxed animate-slide-up font-description">
           Step into the world of digital artistry, where technology and creativity blend to form innovative works that push boundaries. Each piece is crafted using advanced tools to evoke emotions and bring new perspectives to life.
         </p>
@@ -127,7 +133,9 @@ const Artworks = () => {
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`text-lg font-semibold font-heading transition-all duration-300 transform hover:text-[#FFC857] hover:scale-105 ${
-                activeTab === tab ? "text-[#FFC857] text-xl font-extrabold" : "text-[#cfbaf0]"
+                activeTab === tab
+                  ? "text-[#FFC857] text-xl font-extrabold"
+                  : "text-[#cfbaf0]"
               }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -155,7 +163,9 @@ const Artworks = () => {
                   transition={{ delay: index * 0.1 }}
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-end p-6 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 hover:opacity-80 transition-opacity">
-                  <h3 className="text-xl font-semibold text-white font-heading">{artwork.title}</h3>
+                  <h3 className="text-xl font-semibold text-white font-heading">
+                    {artwork.title}
+                  </h3>
                 </div>
               </motion.div>
             ))
@@ -171,7 +181,11 @@ const Artworks = () => {
           onClick={() => setSelectedArtwork(null)}
         >
           <motion.div
-            className="relative p-8 bg-[#1B1B34] rounded-3xl shadow-2xl max-w-3xl mx-auto"
+            className={`relative bg-[#1B1B34] ${
+              isMobile
+                ? "w-full h-full p-4"
+                : "p-8 rounded-3xl shadow-2xl max-w-3xl mx-auto"
+            }`}
             onClick={(e) => e.stopPropagation()}
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
@@ -187,17 +201,18 @@ const Artworks = () => {
             <motion.img
               src={selectedArtwork.src}
               alt={selectedArtwork.title}
-              className="w-full h-auto rounded-xl shadow-xl transition-all duration-500"
+              className={`w-full h-auto rounded-xl shadow-xl transition-all duration-500 ${
+                isMobile ? "max-h-[50vh] object-contain" : ""
+              }`}
               initial={{ opacity: 0, scale: 1.1 }}
               animate={{ opacity: 1, scale: 1 }}
             />
-            <h3 className="mt-3 text-2xl font-bold text-[#FFC857] text-center font-heading">
+            <h3 className="mt-3 text-xl font-bold text-[#FFC857] text-center font-heading">
               {selectedArtwork.title}
             </h3>
-            <p className="mt-1 text-xl text-[#F9F5F0] text-center leading-relaxed font-description">
+            <p className="mt-1 text-xxs text-[#F9F5F0] text-center leading-relaxed font-description">
               {selectedArtwork.description}
             </p>
-
           </motion.div>
         </motion.div>
       )}

@@ -1,14 +1,15 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { animate, scroll } from "motion";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import Lottie from "react-lottie";
+
 import AntiSmoking from "../assets/EmpowerEd/antismoking.jpg";
 import EcoFriendly from "../assets/EmpowerEd/ecofriendly.jpg";
 import Health from "../assets/EmpowerEd/mental health.png";
 import logo from "../assets/EmpowerEd/logo.png";
-import gsap from "gsap";
 import color from "../assets/animation/arrow.json";
-import Lottie from "react-lottie";
 
 function IconButton({ href, children }) {
   return (
@@ -52,22 +53,39 @@ export default function OrganizationGallery() {
 
   const containerRef = useRef(null);
   const groupRef = useRef(null);
+  const headingRef = useRef(null);
 
   useEffect(() => {
-    if (groupRef.current && containerRef.current) {
-      const itemCount = items.length;
-      scroll(
-        animate(groupRef.current, {
-          transform: ["none", `translateX(-${itemCount - 1}00vw)`],
-        }),
-        { target: containerRef.current }
-      );
-      gsap.fromTo(
-        ".empowered-heading",
-        { opacity: 0, y: -50 },
-        { opacity: 1, y: 0, duration: 2, ease: "power3.out", delay: 0.5 }
-      );
-    }
+    gsap.registerPlugin(ScrollTrigger);
+    
+
+    const totalScrollWidth = groupRef.current.scrollWidth;
+    const viewportWidth = containerRef.current.clientWidth;
+    const scrollDistance = totalScrollWidth - viewportWidth;
+
+
+    gsap.to(groupRef.current, {
+      x: -scrollDistance,
+      ease: "none",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top",
+        end: () => `+=${scrollDistance}`,
+        scrub: true,
+        pin: true,
+        anticipatePin: 1,
+      },
+    });
+
+    gsap.fromTo(
+      headingRef.current,
+      { opacity: 0, y: -50 },
+      { opacity: 1, y: 0, duration: 2, ease: "power3.out", delay: 0.5 }
+    );
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
   }, []);
 
   return (
@@ -81,7 +99,8 @@ export default function OrganizationGallery() {
             className="w-48 h-auto mx-auto mb-6 sm:w-64 lg:w-80 drop-shadow-2xl animate-spin-slow"
           />
           <motion.h2
-            className="font-heading text-3xl font-semibold leading-tight tracking-tight sm:text-4xl lg:text-6xl sm:leading-tight lg:leading-snug text-dark_teal drop-shadow-2xl"
+            ref={headingRef}
+            className="empowered-heading font-heading text-3xl font-semibold leading-tight tracking-tight sm:text-4xl lg:text-6xl sm:leading-tight lg:leading-snug text-dark_teal drop-shadow-2xl"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
@@ -111,15 +130,15 @@ export default function OrganizationGallery() {
         </div>
       </header>
       <section
-        className="img-group-container h-[500vh] relative"
+        className="img-group-container h-[100vh] relative"
         ref={containerRef}
       >
-        <div className="sticky top-0 overflow-hidden h-[100vh] w-full sm:w-full">
+        <div className="sticky top-0 overflow-hidden h-[100vh] w-full">
           <ul className="flex" ref={groupRef}>
             {items.map((item, index) => (
               <li
                 key={index}
-                className="flex w-full sm:w-[100vw] h-[100vh] flex-none flex-col items-center justify-center bg-lemon_chiffon transition-all ease-out duration-300"
+                className="flex w-full h-[100vh] flex-none flex-col items-center justify-center bg-lemon_chiffon transition-all ease-out duration-300"
               >
                 <img
                   src={item.img}
@@ -140,7 +159,7 @@ export default function OrganizationGallery() {
           </ul>
         </div>
       </section>
-      <section className="h-[70vh] flex justify-center items-center bg-gradient-to-b from-lemon_chiffon via-tea_rose to-deep_indigo">
+      <section className="h-[70vh] flex justify-center items-center bg-gradient-to-b from-lemon_chiffon via-tea_rose to-deep_indigo -mt-100">
         <div className="px-6 text-center sm:px-12">
           <p className="max-w-3xl mx-auto text-lg font-description font-semibold sm:text-xl text-dark_teal">
             Empowered Ed is more than an initiative—it’s a spark in the dark, a bridge where
@@ -151,36 +170,32 @@ export default function OrganizationGallery() {
             it’s the dawn of a new era in learning.
           </p>
           <div className="flex flex-row gap-4 items-center">
-
-         <IconButton href="https://bushraabir.github.io/empowereducation/">
-           <svg
-             xmlns="http://www.w3.org/2000/svg" 
-             className="w-10 h-10 text-lemon_chiffon" 
-             fill="none" 
-             viewBox="0 0 24 24" 
-             stroke="currentColor"
-             strokeWidth="2" 
-             strokeLinecap="round" 
-             strokeLinejoin="round"
-           >
-             <path d="M13.828 10.172a4 4 0 010 5.656L10.172 19.414a4 4 0 01-5.656-5.656l1.414-1.414" />
-             <path d="M10.172 13.828a4 4 0 010-5.656L13.828 4.586a4 4 0 015.656 5.656l-1.414 1.414" />
-           </svg>
-         </IconButton>
-
-
-         <IconButton href="https://www.facebook.com/profile.php?id=61569631168287">
-           <svg
-             xmlns="http://www.w3.org/2000/svg"
-             fill="currentColor"
-             className="w-10 h-10 text-lemon_chiffon"
-             viewBox="0 0 24 24"
-           >
-             <path d="M22.675 0H1.325C.593 0 0 .593 0 1.326v21.348C0 23.407.593 24 1.325 24H12.82v-9.294H9.692V11.01h3.128V8.413c0-3.1 1.893-4.788 4.66-4.788 1.325 0 2.464.099 2.794.143v3.24h-1.918c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.696h-3.12V24h6.116C23.407 24 24 23.407 24 22.674V1.326C24 .593 23.407 0 22.675 0z"/>
-           </svg>
-         </IconButton>
-        </div>
-
+            <IconButton href="https://bushraabir.github.io/empowereducation/">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-10 h-10 text-lemon_chiffon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M13.828 10.172a4 4 0 010 5.656L10.172 19.414a4 4 0 01-5.656-5.656l1.414-1.414" />
+                <path d="M10.172 13.828a4 4 0 010-5.656L13.828 4.586a4 4 0 015.656 5.656l-1.414 1.414" />
+              </svg>
+            </IconButton>
+            <IconButton href="https://www.facebook.com/profile.php?id=61569631168287">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                className="w-10 h-10 text-lemon_chiffon"
+                viewBox="0 0 24 24"
+              >
+                <path d="M22.675 0H1.325C.593 0 0 .593 0 1.326v21.348C0 23.407.593 24 1.325 24H12.82v-9.294H9.692V11.01h3.128V8.413c0-3.1 1.893-4.788 4.66-4.788 1.325 0 2.464.099 2.794.143v3.24h-1.918c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.696h-3.12V24h6.116C23.407 24 24 23.407 24 22.674V1.326C24 .593 23.407 0 22.675 0z" />
+              </svg>
+            </IconButton>
+          </div>
         </div>
       </section>
     </article>
