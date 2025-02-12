@@ -1,0 +1,1 @@
+import{j as e}from"./index-c42f3090.js";const t=()=>e.jsx("footer",{className:"bg-gray-800 py-6 text-center",children:e.jsxs("p",{className:"text-gray-400",children:["© ",new Date().getFullYear()," Bushra's Portfolio. All rights reserved."]})});export{t as default};
