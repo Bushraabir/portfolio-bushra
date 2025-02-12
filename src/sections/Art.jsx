@@ -60,10 +60,12 @@ const Art = () => {
   const [activeTab, setActiveTab] = useState("acrylic");
   const [selectedArtwork, setSelectedArtwork] = useState(null);
   const containerRef = useRef(null);
+  const modalRef = useRef(null);
+  const touchStartY = useRef(0);
+  const touchCurrentY = useRef(0);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
-
   const tabs = [
     {
       id: "acrylic",
@@ -166,11 +168,12 @@ const Art = () => {
 
   const indexOfLastArtwork = currentPage * itemsPerPage;
   const indexOfFirstArtwork = indexOfLastArtwork - itemsPerPage;
-  const currentArtworks = artworks[activeTab]?.slice(indexOfFirstArtwork, indexOfLastArtwork);
+  const currentArtworks =
+    artworks[activeTab]?.slice(indexOfFirstArtwork, indexOfLastArtwork) || [];
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const totalPages = Math.ceil(artworks[activeTab]?.length / itemsPerPage);
+  const totalPages = Math.ceil((artworks[activeTab]?.length || 0) / itemsPerPage);
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
@@ -225,6 +228,27 @@ const Art = () => {
     });
   };
 
+  const handleTouchStart = (e) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e) => {
+    touchCurrentY.current = e.touches[0].clientY;
+    const deltaY = touchCurrentY.current - touchStartY.current;
+    if (deltaY > 0) {
+      gsap.to(modalRef.current, { y: deltaY, duration: 0.1 });
+    }
+  };
+
+  const handleTouchEnd = () => {
+    const deltaY = touchCurrentY.current - touchStartY.current;
+    if (deltaY > 150) {
+      closeModal();
+    } else {
+      gsap.to(modalRef.current, { y: 0, duration: 0.3, ease: "back.out(1.7)" });
+    }
+  };
+
   useEffect(() => {
     gsap.fromTo(
       ".artwork",
@@ -245,36 +269,32 @@ const Art = () => {
   }, []);
 
   return (
-    <section className="relative bg-gradient-to-b from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] p-16 overflow-hidden">
+    <section className="relative bg-gradient-to-b from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] p-8 sm:p-12 md:p-16 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] opacity-70 backdrop-blur-[10px] shadow-2xl"></div>
-      <div className="container relative z-10 px-6 mx-auto lg:px-20" ref={containerRef}>
-        <div className="mb-20 text-center">
-          <h1 className="text-7xl font-heading font-extrabold text-[#F5F8CC] tracking-widest drop-shadow-xl">
+      <div className="container relative z-10 px-4 sm:px-6 lg:px-20 mx-auto" ref={containerRef}>
+        <div className="mb-12 sm:mb-20 text-center">
+          <h1 className="text-5xl sm:text-7xl font-heading font-extrabold text-[#F5F8CC] tracking-widest drop-shadow-xl">
             Exquisite Artistry
           </h1>
-          <p className="mt-6 text-2xl text-[#F1C0E8] font-description opacity-90">
+          <p className="mt-4 sm:mt-6 text-lg sm:text-2xl text-[#F1C0E8] font-description opacity-90">
             A curated collection of artworks, meticulously crafted to inspire and engage through emotion and creativity.
           </p>
         </div>
-        <div className="flex flex-wrap justify-center gap-8 mb-16">
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-8 mb-12 sm:mb-16">
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              className={`py-3 px-10 text-xl font-heading rounded-full border-4 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-md hover:border-[#F5F8CC] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${
-                activeTab === tab.id
-                  ? "bg-gradient-to-r from-[#F5F8CC] to-[#FDE4CF] text-[#2A1B3D] border-[#F5F8CC]"
-                  : "bg-transparent text-[#F5F8CC] border-[#F5F8CC]"
-              }`}
+              className={`py-2 px-6 sm:py-3 sm:px-10 text-base sm:text-xl font-heading rounded-full border-4 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-md hover:border-[#F5F8CC] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${activeTab === tab.id ? "bg-gradient-to-r from-[#F5F8CC] to-[#FDE4CF] text-[#2A1B3D] border-[#F5F8CC]" : "bg-transparent text-[#F5F8CC] border-[#F5F8CC]"}`}
               onClick={() => handleTabChange(tab.id)}
             >
               {tab.title}
             </button>
           ))}
         </div>
-        <div className="text-center text-[#F5F8CC] mb-16 text-xl font-description">
+        <div className="text-center text-[#F5F8CC] mb-8 sm:mb-16 text-base sm:text-xl font-description">
           {tabs.find((tab) => tab.id === activeTab)?.description}
         </div>
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 sm:gap-12 sm:grid-cols-2 lg:grid-cols-3">
           {currentArtworks.map((artwork, index) => (
             <div
               key={index}
@@ -283,10 +303,7 @@ const Art = () => {
               onMouseEnter={artworkHover}
               onMouseLeave={artworkHoverOut}
             >
-              <Tilt
-                options={{ max: 15, scale: 1.02, speed: 900 }}
-                className="relative w-full h-[400px] bg-transparent backdrop-blur-lg bg-opacity-30 p-8 rounded-3xl shadow-xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:opacity-90"
-              >
+              <Tilt options={{ max: 15, scale: 1.02, speed: 900 }} className="relative w-full h-[300px] sm:h-[400px] bg-transparent backdrop-blur-lg bg-opacity-30 p-4 sm:p-8 rounded-3xl shadow-xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:opacity-90">
                 <LazyLoadImage
                   src={artwork.src}
                   alt={artwork.description}
@@ -294,23 +311,21 @@ const Art = () => {
                   loading="lazy"
                   placeholderSrc={artwork.placeholderSrc}
                 />
-                <div className="absolute text-white bottom-5 left-5">
-                  <h3 className="text-2xl font-heading font-semibold">{artwork.title}</h3>
-                  <p className="text-lg font-description">{artwork.date}</p>
+                <div className="absolute text-white bottom-3 left-3 sm:bottom-5 sm:left-5">
+                  <h3 className="text-lg sm:text-2xl font-heading font-semibold">{artwork.title}</h3>
+                  <p className="text-sm sm:text-lg font-description">{artwork.date}</p>
                 </div>
               </Tilt>
             </div>
           ))}
         </div>
-        <div className="flex justify-center mt-16">
-          <div className="flex items-center gap-6">
+        <div className="flex justify-center mt-8 sm:mt-16">
+          <div className="flex items-center gap-4 sm:gap-6">
             {Array.from({ length: totalPages }).map((_, index) => (
               <button
                 key={index}
                 onClick={() => paginate(index + 1)}
-                className={`text-lg font-medium font-description px-4 py-2 rounded-full transition-all duration-300 ease-in-out hover:bg-[#F5F8CC] hover:text-[#2A1B3D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${
-                  currentPage === index + 1 ? "bg-[#F5F8CC] text-[#2A1B3D]" : "bg-transparent text-[#F5F8CC]"
-                }`}
+                className={`text-sm sm:text-lg font-medium font-description px-3 sm:px-4 py-1 sm:py-2 rounded-full transition-all duration-300 ease-in-out hover:bg-[#F5F8CC] hover:text-[#2A1B3D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${currentPage === index + 1 ? "bg-[#F5F8CC] text-[#2A1B3D]" : "bg-transparent text-[#F5F8CC]"}`}
               >
                 {index + 1}
               </button>
@@ -318,35 +333,33 @@ const Art = () => {
           </div>
         </div>
         {selectedArtwork && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
-            onClick={closeModal}
-          >
+          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md p-4" onClick={closeModal}>
             <div
-              className="modal-content bg-gradient-to-r from-lemon_chiffon to-tea_rose p-6 md:p-12 rounded-3xl relative w-full md:w-10/12 lg:w-8/12 xl:w-7/12 max-h-[90vh] overflow-auto shadow-3xl transform transition-all duration-500 ease-in-out animate-fade-in opacity-90"
+              ref={modalRef}
+              className="modal-content bg-gradient-to-r from-lemon_chiffon to-tea_rose p-4 sm:p-6 md:p-12 rounded-3xl relative w-full sm:w-11/12 md:w-10/12 lg:w-8/12 xl:w-7/12 max-h-[90vh] overflow-auto shadow-3xl transform transition-all duration-500 ease-in-out animate-fade-in opacity-90"
               onClick={(e) => e.stopPropagation()}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
-              <button
-                className="absolute font-heading text-4xl font-extrabold transition-all duration-300 ease-in-out transform top-6 right-6 text-deep_indigo hover:text-electric_blue"
-                onClick={closeModal}
-              >
+              <button className="absolute font-heading text-3xl sm:text-xl font-extrabold transition-all duration-300 ease-in-out transform top-4 sm:top-6 right-4 sm:right-6 text-deep_indigo hover:text-electric_blue" onClick={closeModal}>
                 &times;
               </button>
               <LazyLoadImage
                 src={selectedArtwork.src}
                 alt={selectedArtwork.description}
-                className="object-contain w-full h-full max-h-[80vh] mb-8 rounded-xl border-4 border-transparent transition-all duration-500 hover:scale-105 hover:rotate-3 hover:shadow-2xl hover:border-[#F5F8CC] hover:border-8 hover:ring-4 hover:ring-[#FFC857] hover:ring-opacity-30 animate-slide-up"
+                className="object-contain w-full h-full max-h-[80vh] mb-4 sm:mb-8 rounded-xl border-4 border-transparent transition-all duration-500 hover:scale-105 hover:rotate-3 hover:shadow-2xl hover:border-[#F5F8CC] hover:border-8 hover:ring-4 hover:ring-[#FFC857] hover:ring-opacity-30 animate-slide-up"
                 loading="lazy"
                 placeholderSrc={selectedArtwork.placeholderSrc}
               />
-              <div className="mt-6 text-center">
-                <h2 className="font-heading text-4xl font-extrabold text-[#2A1B3D] mb-3 tracking-wide hover:text-non_photo_blue transition-all duration-300 ease-in-out">
+              <div className="mt-4 sm:mt-6 text-center">
+                <h2 className="font-heading text-2xl sm:text-2xl font-extrabold text-[#2A1B3D] mb-2 sm:mb-3 tracking-wide hover:text-non_photo_blue transition-all duration-300 ease-in-out">
                   {selectedArtwork.title}
                 </h2>
-                <p className="max-w-4xl px-4 mx-auto mb-6 text-xl font-medium font-description leading-relaxed text-deep_indigo opacity-90">
+                <p className="max-w-md sm:max-w-4xl px-2 sm:px-4 mx-auto mb-4 sm:mb-6 text-base sm:text-xxs font-medium font-description leading-relaxed text-deep_indigo opacity-90">
                   {selectedArtwork.description}
                 </p>
-                <p className="text-lg font-medium font-description text-[#A7A6B0] uppercase tracking-widest">
+                <p className="text-sm sm:text-lg font-medium font-description text-[#A7A6B0] uppercase tracking-widest">
                   {selectedArtwork.date}
                 </p>
               </div>
