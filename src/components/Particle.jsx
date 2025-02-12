@@ -33,15 +33,15 @@ const Loader = () => {
 };
 
 //
-// InteractiveParticle: A single sphere that responds to clicks and drags,
-// and uses lower‑resolution textures and geometry when in “low” quality mode.
+// InteractiveParticle: A single physics-enabled sphere that responds to pointer events.
+// It uses different geometry and texture resolutions depending on the quality mode.
 //
 const InteractiveParticle = React.memo(
   ({ position, color, radius, quality }) => {
     const [particleColor, setParticleColor] = useState(color);
     const [particleRadius, setParticleRadius] = useState(radius);
 
-    // Use a sphere physics body
+    // Create a sphere physics body.
     const [ref] = useSphere(
       () => ({
         mass: 0.5,
@@ -52,14 +52,13 @@ const InteractiveParticle = React.memo(
         angularDamping: 0.1,
         ccdSpeedThreshold: 0.1,
         ccdIterations: 10,
-        onCollide: (e) => {
-          console.log('Collision detected on particle!', e.contact);
-        },
+        onCollide: (e) =>
+          console.log('Collision detected on particle!', e.contact),
       }),
       [particleRadius]
     );
 
-    // When tapped (or clicked) change color and radius randomly
+    // On pointer tap/click, randomize color and size.
     const handleClick = useCallback(() => {
       const colors = [
         '#00A7D0',
@@ -85,7 +84,7 @@ const InteractiveParticle = React.memo(
       );
     }, []);
 
-    // For dragging to resize
+    // Variables and handlers for pointer dragging (to resize the sphere).
     const dragStart = useRef(null);
     const initialRadius = useRef(particleRadius);
     const dragging = useRef(false);
@@ -103,9 +102,7 @@ const InteractiveParticle = React.memo(
     const onPointerMove = useCallback((event) => {
       if (!dragStart.current) return;
       const dx = event.clientX - dragStart.current.x;
-      if (Math.abs(dx) > 5) {
-        dragging.current = true;
-      }
+      if (Math.abs(dx) > 5) dragging.current = true;
       if (dragging.current) {
         let newRadius = initialRadius.current + dx * 0.01;
         newRadius = Math.max(0.1, Math.min(newRadius, 5));
@@ -114,15 +111,13 @@ const InteractiveParticle = React.memo(
     }, []);
 
     const onPointerUp = useCallback(() => {
-      if (!dragging.current) {
-        handleClick();
-      }
+      if (!dragging.current) handleClick();
       dragStart.current = null;
       dragging.current = false;
     }, [handleClick]);
 
     // Generate a noise texture for displacement and roughness.
-    // On low quality devices, use a smaller texture resolution.
+    // Lower resolution (128) is used when quality is "low".
     const generateNoiseTexture = useCallback(() => {
       const size = quality === 'low' ? 128 : 256;
       const data = new Uint8Array(size * size);
@@ -139,7 +134,6 @@ const InteractiveParticle = React.memo(
       return texture;
     }, [quality]);
 
-    // Always include the maps (even on low quality) but with adjusted resolution.
     const displacementTexture = useMemo(() => generateNoiseTexture(), [
       quality,
       generateNoiseTexture,
@@ -187,7 +181,7 @@ const InteractiveParticle = React.memo(
 );
 
 //
-// GroundPlane: A static physics plane that receives shadows
+// GroundPlane: A static physics plane that receives shadows.
 //
 const GroundPlane = React.memo(() => {
   const [ref] = usePlane(() => ({
@@ -206,7 +200,8 @@ const GroundPlane = React.memo(() => {
 
 //
 // BackgroundScene: A sky/gradient sphere background.
-// Its geometry detail is reduced for low‑quality (mobile) devices.
+// Its level of detail is adjusted based on quality mode.
+//
 const BackgroundScene = React.memo(({ quality }) => {
   const segments = quality === 'low' ? 32 : 64;
   const gradientMaterial = useMemo(
@@ -258,7 +253,39 @@ const BackgroundScene = React.memo(({ quality }) => {
 });
 
 //
+// MobileParticleField: A background particle field used only on mobile devices.
+// This creates a Points object with many random particles to fill the background.
+//
+const MobileParticleField = React.memo(() => {
+  const count = 1000; // Adjust count as needed for a nice background
+  const positions = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      pos[i * 3 + 0] = (Math.random() - 0.5) * 100;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 100;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 100;
+    }
+    return pos;
+  }, [count]);
+
+  return (
+    <points>
+      <bufferGeometry>
+        <bufferAttribute
+          attachObject={['attributes', 'position']}
+          count={positions.length / 3}
+          array={positions}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial color="white" size={0.5} sizeAttenuation />
+    </points>
+  );
+});
+
+//
 // ParticleSystem: Maps over particle data and creates an InteractiveParticle for each.
+// (This is used on desktop/high-quality mode.)
 //
 const ParticleSystem = React.memo(({ particles, quality }) => {
   return (
@@ -277,11 +304,12 @@ const ParticleSystem = React.memo(({ particles, quality }) => {
 });
 
 //
-// ParticleScene: The main component that sets up the scene, camera, physics,
+// ParticleScene: Main component that sets up the scene, camera, physics,
 // and handles performance adjustments and particle creation.
+// When running on mobile, we add a MobileParticleField as the background.
 //
 const ParticleScene = () => {
-  // Create some initial random particles
+  // Create some initial random particles (for desktop/high quality).
   const initialParticles = useMemo(() => {
     const particles = [];
     for (let i = 0; i < 19; i++) {
@@ -309,11 +337,10 @@ const ParticleScene = () => {
   const [quality, setQuality] = useState('high');
   const cameraRef = useRef();
 
-  // Check performance based on connection speed, device memory, and viewport width.
+  // Check performance based on viewport width, network info, and device memory.
   const checkPerformance = useCallback(() => {
     let perf = 'high';
     if (typeof window !== 'undefined') {
-      // If on a small viewport (likely a phone), lower quality
       if (window.innerWidth < 768) {
         perf = 'low';
       } else if (window.navigator.connection) {
@@ -347,10 +374,10 @@ const ParticleScene = () => {
     };
   }, [checkPerformance]);
 
-  // Use quality as a proxy for mobile in this case.
+  // isMobile is a proxy for quality === 'low'
   const isMobile = quality === 'low';
 
-  // Handle canvas clicks/taps to add a new particle
+  // Handle canvas clicks/taps to add a new interactive particle.
   const handleCanvasClick = (event) => {
     event.stopPropagation();
     const mouse = new THREE.Vector2();
@@ -382,7 +409,7 @@ const ParticleScene = () => {
         newPosition.y = groundY + randomRadius + margin;
       }
 
-      // Ensure the new particle doesn't overlap with existing ones
+      // Prevent overlapping of particles.
       const maxAttempts = 10;
       let attempt = 0;
       let collision = true;
@@ -391,8 +418,7 @@ const ParticleScene = () => {
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
           const existingPos = new THREE.Vector3(...p.position);
-          const distance = newPosition.distanceTo(existingPos);
-          if (distance < randomRadius + p.radius + margin) {
+          if (newPosition.distanceTo(existingPos) < randomRadius + p.radius + margin) {
             collision = true;
             break;
           }
@@ -429,7 +455,8 @@ const ParticleScene = () => {
           near={0.1}
           far={1000}
         />
-        {/* Always show background; its geometry adjusts based on quality */}
+        {/* On mobile devices, render the MobileParticleField as a background */}
+        {isMobile && <MobileParticleField />}
         <BackgroundScene quality={quality} />
         <ambientLight intensity={0.2} color="#404040" />
         <directionalLight
@@ -448,7 +475,6 @@ const ParticleScene = () => {
         />
         <pointLight position={[5, 10, 5]} intensity={0.8} />
         <hemisphereLight skyColor="#bb99ff" groundColor="#664422" intensity={0.4} />
-        {/* Always include the environment background */}
         <Environment files={spaceBackground} background />
         <Physics
           gravity={[0, -9.8, 0]}
@@ -462,7 +488,8 @@ const ParticleScene = () => {
           }}
         >
           <GroundPlane />
-          <ParticleSystem particles={particles} quality={quality} />
+          {/* Render interactive particles only on high-quality devices */}
+          {!isMobile && <ParticleSystem particles={particles} quality={quality} />}
         </Physics>
         <OrbitControls
           enableZoom={false}
@@ -470,21 +497,10 @@ const ParticleScene = () => {
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
         />
-        {/* Postprocessing is always applied but with reduced parameters on low‑quality devices */}
         <EffectComposer>
-          <Bloom
-            intensity={quality === 'low' ? 0.5 : 1.0}
-            radius={quality === 'low' ? 0.1 : 0.2}
-          />
-          <SSAO
-            radius={quality === 'low' ? 0.1 : 0.2}
-            intensity={quality === 'low' ? 6 : 12}
-          />
-          <DepthOfField
-            focusDistance={0.02}
-            focalLength={0.1}
-            bokehScale={quality === 'low' ? 1.5 : 2.5}
-          />
+          <Bloom intensity={quality === 'low' ? 0.5 : 1.0} radius={quality === 'low' ? 0.1 : 0.2} />
+          <SSAO radius={quality === 'low' ? 0.1 : 0.2} intensity={quality === 'low' ? 6 : 12} />
+          <DepthOfField focusDistance={0.02} focalLength={0.1} bokehScale={quality === 'low' ? 1.5 : 2.5} />
         </EffectComposer>
       </Suspense>
     </Canvas>
