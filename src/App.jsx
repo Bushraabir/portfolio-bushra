@@ -71,6 +71,7 @@ const NavbarComponent = () => {
         initial="closed"
         animate={isOpen ? "open" : "closed"}
         variants={sidebarVariants}
+        style={{ pointerEvents: isOpen ? "auto" : "none" }}
         className="absolute left-0 flex flex-col p-5 border-2 shadow-xl bg-deep_indigo bg-opacity-80 backdrop-blur-lg rounded-lg w-40 sm:w-60"
       >
         <motion.ul className="p-0 m-0 list-none">
@@ -103,25 +104,28 @@ const NavbarComponent = () => {
 const App = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    if (document.readyState === "complete") {
-      setIsLoaded(true);
-    } else {
-      window.addEventListener("load", () => setIsLoaded(true));
-    }
-    return () => {
-      window.removeEventListener("load", () => setIsLoaded(true));
+    const handleLoad = () => {
+      setTimeout(() => {
+        setIsLoaded(true);
+      }, 1500);
     };
+    if (document.readyState === "complete") {
+      handleLoad();
+    } else {
+      window.addEventListener("load", handleLoad);
+    }
+    return () => window.removeEventListener("load", handleLoad);
   }, []);
   if (!isLoaded) return <Loader1 />;
   return (
-    <div className="bg-deep_indigo text-light min-h-screen font-description">
+    <div className="bg-deep_indigo text-light min-h-screen font-description overflow-hidden">
       <NavbarComponent />
       <div className="absolute top-0 left-0 w-full h-full">
         <Suspense fallback={<Loader1 />}>
           <ParticleScene />
         </Suspense>
       </div>
-      <main className="min-h-screen">
+      <main className="min-h-screen overflow-hidden">
         <Suspense fallback={<Loader1 />}>
           <Hero id="hero" />
           <AboutMe id="about" />

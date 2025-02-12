@@ -253,7 +253,7 @@ const ParticleScene = () => {
     }
   };
   return (
-    <Canvas style={{ height: isMobile ? '80vh' : '215vh', width: '100vw', touchAction: 'pan-y' }} shadows onClick={handleCanvasClick} dpr={quality === 'low' ? [1, 1] : [1, 2]}>
+    <Canvas style={{ height: isMobile ? '100vh' : '215vh', width: '100vw', touchAction: 'pan-y' }} shadows onClick={handleCanvasClick} dpr={quality === 'low' ? [1, 1] : [1, 2]}>
       <Suspense fallback={<Loader />}>
         <PerspectiveCamera makeDefault ref={cameraRef} position={[0, 5, 15]} fov={50} near={0.1} far={1000} />
         <BackgroundScene quality={quality} />
@@ -267,7 +267,7 @@ const ParticleScene = () => {
           <GroundPlane />
           <ParticleSystem particles={particles} quality={quality} />
         </Physics>
-        <OrbitControls enableZoom={isMobile ? false : false} enableRotate={isMobile ? false : true} maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} />
+        <OrbitControls enableZoom={isMobile ? false : false} enableRotate={isMobile ? true : true} maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} />
         <EffectComposer>
           <Bloom intensity={quality === 'low' ? 0.5 : 1.0} radius={quality === 'low' ? 0.1 : 0.2} />
           <SSAO radius={quality === 'low' ? 0.1 : 0.2} intensity={quality === 'low' ? 6 : 12} />
