@@ -52,11 +52,9 @@ const ToggleButton = ({ isOpen, setIsOpen }) => (
 
 const NavbarComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
-
   const navLinks = [
     { id: "about", name: "About Me" },
     { id: "achievements", name: "Achievements" },
@@ -66,7 +64,6 @@ const NavbarComponent = () => {
     { id: "organization", name: "Organization" },
     { id: "testimonials", name: "Testimonials" },
   ];
-
   return (
     <div className="fixed top-0 left-0 z-50">
       <ToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -105,24 +102,17 @@ const NavbarComponent = () => {
 
 const App = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-
-  const handleLoad = () => {
-    setIsLoaded(true);
-  };
-
   useEffect(() => {
     if (document.readyState === "complete") {
-      handleLoad();
+      setIsLoaded(true);
     } else {
-      window.addEventListener("load", handleLoad);
+      window.addEventListener("load", () => setIsLoaded(true));
     }
     return () => {
-      window.removeEventListener("load", handleLoad);
+      window.removeEventListener("load", () => setIsLoaded(true));
     };
   }, []);
-
   if (!isLoaded) return <Loader1 />;
-
   return (
     <div className="bg-deep_indigo text-light min-h-screen font-description">
       <NavbarComponent />
@@ -136,7 +126,6 @@ const App = () => {
           <Hero id="hero" />
           <AboutMe id="about" />
           <Achievements />
-          
           <Skill />
           <Gallery id="gallery" className="h-[120vh]" />
           <Websites id="websites" />
