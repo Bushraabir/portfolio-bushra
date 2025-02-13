@@ -17,6 +17,8 @@ import Expanding from "../assets/articles/Expanding.webp";
 import Universe_1 from "../assets/articles/Universe_1.webp";
 import Quantum from "../assets/articles/Quantum.webp";
 import Material from "../assets/articles/Material.webp";
+import BlackHole from "../assets/ResearchPaper/BlackHole.png";
+import MCU from "../assets/ResearchPaper/MCU.png";
 
 const Research = () => {
   const [filter, setFilter] = useState("books");
@@ -24,9 +26,9 @@ const Research = () => {
   const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [currentPage, setCurrentPage] = useState(1);
   const [articlePage, setArticlePage] = useState(1);
+  const [researchPage, setResearchPage] = useState(1);
   const itemsPerPage = 3;
   const isMobile = useRef(window.innerWidth <= 768);
-
   const books = [
     {
       title: "Terraforming Our Future: The Evolution of Space Exploration, Technology, and Multiplanetary Civilization",
@@ -52,7 +54,6 @@ const Research = () => {
       description:
         "Delve into the fundamentals of aerospace engineering, covering key principles, design concepts, and applications. This exploration highlights the complexities of flight mechanics, propulsion systems, materials, and structural design, providing a comprehensive overview of the field. As technology advances, aerospace engineers play a crucial role in shaping the future of air and space travel, from cutting-edge aircraft to interplanetary missions. Explore the evolving landscape of this dynamic field, its impact on industries, and its contributions to global advancements in transportation and exploration.",
     },
-
     {
       title: "Atomic Energy and Engineering: A Beginner’s Guide to Nuclear Engineering",
       year: "2025(Currently writing)",
@@ -62,7 +63,6 @@ const Research = () => {
         "This guide provides an accessible introduction to the world of nuclear engineering, focusing on the science behind atomic energy and its practical applications. From the fundamentals of nuclear physics to the design and operation of nuclear reactors, this exploration covers the key principles that drive the industry. Learn about the processes of fission, radiation, and safety protocols, as well as the challenges and benefits of harnessing atomic energy for power generation. As the world seeks sustainable energy solutions, nuclear engineering stands at the forefront, promising to shape the future of clean and efficient energy systems.",
     },
   ];
-
   const articles = [
     {
       title:
@@ -210,40 +210,54 @@ const Research = () => {
         "Black holes are famously known as cosmic objects from which nothing, not even light, can escape. Yet, recent observations challenge this notion, showing material being ejected from the vicinity of black holes at near-light speeds. In 2018 and 2019, NASA’s Chandra X-ray Observatory and Harvard-Smithsonian Center for Astrophysics captured such phenomena in the system MAXI J1820+070, located about 10,000 light-years from Earth. This paradox sparks curiosity and further questions about black hole behavior.",
     },
   ];
-
+  const research = [
+    {
+      title: "Design, Fabrication, and Characterization of a Low-Voltage, High-Density Homemade Integrated Circuit",
+      year: "2025(Currently writing)",
+      img: MCU,
+      tags: ["Architecture", "Future"],
+      description:
+        "This paper explores the design, fabrication, and characterization of a low-voltage, high-density integrated circuit, focusing on performance optimization and practical applications in modern electronics.",
+    },
+    {
+      title: "Black Hole Singularity: A Possible Solution",
+      year: "2025(Currently writing)",
+      img: BlackHole,
+      tags: ["Programming", "Creativity"],
+      description:
+        "This paper explores a potential solution to the black hole singularity problem, proposing that black holes are 4D objects. Everything that falls into a black hole is absorbed into this 4D space and vaporized by Hawking radiation. From our 3D perspective, the singularity appears infinite, but if black holes were 3D objects, they would appear infinite to a 2D observer. This analogy suggests that the singularity might not be infinite, but a result of our limited perspective.",
+    },
+  ];
   const handleSearch = debounce((value) => {
     setDebouncedSearch(value);
     setCurrentPage(1);
     setArticlePage(1);
+    setResearchPage(1);
   }, 500);
-
-  const filteredData = (filter === "books" ? books : articles).filter((item) =>
+  const dataToFilter = filter === "books" ? books : filter === "articles" ? articles : research;
+  const filteredData = dataToFilter.filter((item) =>
     item.title.toLowerCase().includes(debouncedSearch.toLowerCase())
   );
-
-  const paginatedData = filteredData.slice(
-    (filter === "books" ? currentPage - 1 : articlePage - 1) * itemsPerPage,
-    (filter === "books" ? currentPage : articlePage) * itemsPerPage
-  );
-
+  const page = filter === "books" ? currentPage : filter === "articles" ? articlePage : researchPage;
+  const paginatedData = filteredData.slice((page - 1) * itemsPerPage, page * itemsPerPage);
   const changePage = (direction, type) => {
     if (type === "books") {
       setCurrentPage((prevPage) => prevPage + direction);
     } else if (type === "articles") {
       setArticlePage((prevPage) => prevPage + direction);
+    } else {
+      setResearchPage((prevPage) => prevPage + direction);
     }
   };
-
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
     setCurrentPage(1);
     setArticlePage(1);
+    setResearchPage(1);
   };
-
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
   }, []);
-
   return (
     <div
       id="research"
@@ -281,6 +295,17 @@ const Research = () => {
           >
             Articles
           </motion.button>
+          <motion.button
+            className={`px-6 py-3 sm:px-8 sm:py-4 font-heading rounded-lg text-base sm:text-xl transition-all duration-300 ${
+              filter === "research" 
+                ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white shadow-xl"
+                : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
+            }`}
+            onClick={() => handleFilterChange("research")}
+            whileHover={{ scale: 1.05 }}
+          >
+            Research Paper
+          </motion.button>
         </div>
         <motion.input
           type="text"
@@ -306,7 +331,7 @@ const Research = () => {
               className="overflow-hidden shadow-2xl bg-champagne_pink rounded-3xl group hover:shadow-3xl hover:scale-105 transition-transform"
               data-aos="fade-up"
             >
-              {filter === "books" ? (
+              {(filter === "books" || filter === "research") ? (
                 <>
                   <div className="relative h-72">
                     <img
@@ -386,12 +411,10 @@ const Research = () => {
       </div>
       <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
         <p className="text-base sm:text-xl font-semibold text-deep_indigo font-description">
-          Page {filter === "books" ? currentPage : articlePage} of{" "}
-          {Math.ceil(filteredData.length / itemsPerPage)}
+          Page {page} of {Math.ceil(filteredData.length / itemsPerPage)}
         </p>
         <div className="flex gap-4">
-          {((filter === "books" && currentPage > 1) ||
-            (filter === "articles" && articlePage > 1)) && (
+          {page > 1 && (
             <motion.button
               onClick={() => changePage(-1, filter)}
               className="px-4 sm:px-6 py-2 sm:py-3 text-white bg-gradient-to-r from-electric_blue to-aquamarine rounded-lg shadow-md hover:shadow-xl transition-all duration-300 text-sm sm:text-base font-cta"
@@ -400,10 +423,7 @@ const Research = () => {
               Previous
             </motion.button>
           )}
-          {((filter === "books" &&
-            currentPage * itemsPerPage < filteredData.length) ||
-            (filter === "articles" &&
-              articlePage * itemsPerPage < filteredData.length)) && (
+          {page * itemsPerPage < filteredData.length && (
             <motion.button
               onClick={() => changePage(1, filter)}
               className="px-4 sm:px-6 py-2 sm:py-3 text-white bg-gradient-to-r from-electric_blue to-aquamarine rounded-lg shadow-md hover:shadow-xl transition-all duration-300 text-sm sm:text-base font-cta"
