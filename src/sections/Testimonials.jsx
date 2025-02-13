@@ -22,22 +22,22 @@ const testimonials = [
     designation: "Head of Innovation Lab",
   },
   {
-    quote: "A reliable and motivated individual, Bushra exceeds expectations. Her work ethic is second to none, and she consistently meets deadlines with high-quality results. She handles high-pressure situations with grace and maintains a positive attitude even when faced with challenges. Bushra has the ability to lead and motivate those around her, always keeping the team on track and focused on success.",
+    quote: "I have had the privilege of teaching Bushra, and her academic excellence has consistently stood out in my class. She approaches complex subjects with both curiosity and clarity, making her an asset during discussions. Her proactive engagement and dedication have enriched our learning environment. I am confident that Bushra will bring the same enthusiasm and rigor to her university studies.",
     name: "Mr. K. Islam",
     designation: "Senior Lecturer, CUET",
   },
   {
-    quote: "Bushra has a unique ability to solve complex problems. Her analytical skills are exceptional, and she can break down challenging issues into manageable parts. She is also able to communicate her findings in a clear and concise manner, which makes her a valuable asset to any team. Her critical thinking and ability to find solutions quickly make her an outstanding problem solver.",
+    quote: "Bushra has demonstrated exceptional analytical skills and an innovative mindset in every project she undertakes. Her ability to connect theoretical concepts with practical applications has significantly elevated our classroom debates. She works well both independently and collaboratively, often leading by example. I wholeheartedly support her scholarship application, knowing she will excel in any academic setting.",
     name: "Prof. J. Dutta",
     designation: "Dean of Students",
   },
   {
-    quote: "She is an excellent team player with great leadership qualities. Bushra’s ability to work with others and motivate a group is truly impressive. She’s able to listen to different perspectives and bring the best ideas to the table. Her interpersonal skills are strong, and she is always willing to help her colleagues. Bushra has a natural ability to lead and inspire others to achieve their best work.",
+    quote: "Throughout my time teaching Bushra, she has impressed me with her perseverance and intellectual curiosity. She consistently seeks out new challenges and approaches them with a thoughtful and creative perspective. Her contributions to class discussions not only reflect deep understanding but also inspire her peers. I am proud to recommend Bushra for this scholarship as she is truly deserving of this opportunity.",
     name: "Mr. T. Karim",
     designation: "Project Manager",
   },
   {
-    quote: "Her analytical skills make him stand out in every task. Bushra has a sharp mind for analyzing data and finding insights that others might miss. She approaches problems methodically and ensures she has a full understanding before proceeding. Her attention to detail and thoroughness are remarkable, and she brings this mindset into every project she works on. Bushra’s analytical abilities are a valuable asset in any environment.",
+    quote: "Bushra is a dedicated and motivated student whose passion for learning is evident in every assignment. Her ability to synthesize complex information and present it clearly has made a lasting impact on our classroom dynamic. She balances academic rigor with active participation, often taking initiative in group projects. I am confident that Bushra’s drive and commitment will make her an excellent candidate for this scholarship.",
     name: "Ms. R. Akhtar",
     designation: "Senior Researcher",
   },

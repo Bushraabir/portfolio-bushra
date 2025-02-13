@@ -29,28 +29,37 @@ const Research = () => {
 
   const books = [
     {
-      title: "The Architecture of Future",
-      year: 2023,
+      title: "Terraforming Our Future: The Evolution of Space Exploration, Technology, and Multiplanetary Civilization",
+      year: "2025(Currently writing)",
       img: Bushra,
       tags: ["Architecture", "Future"],
       description:
-        "Explore the future of architecture with cutting-edge designs and innovations.",
+        "Explore the potential future of human civilization, space exploration, colonization, the path to a Type 7 civilization, and the politics of space.",
     },
     {
-      title: "Code & Creativity",
-      year: 2024,
+      title: "The Physics Odyssey: Understanding the Forces of Nature",
+      year: "2025(Currently writing)",
       img: Bushra,
       tags: ["Programming", "Creativity"],
       description:
-        "A deep dive into the world of creative coding and its impact on technology.",
+        "This work delves into the fundamental forces—gravity, electromagnetism, and nuclear forces—shaping the universe. It aims to simplify complex physics concepts, offering a clear understanding of the forces that govern everything from our planet to the cosmos",
     },
     {
-      title: "Design Thinking in Practice",
-      year: 2022,
+      title: "Introduction to Aerospace Engineering: Principles and Practices",
+      year: "2025(Currently writing)",
       img: Bushra,
       tags: ["Design", "Innovation"],
       description:
-        "A practical guide on implementing design thinking to solve real-world problems.",
+        "Delve into the fundamentals of aerospace engineering, covering key principles, design concepts, and applications. This exploration highlights the complexities of flight mechanics, propulsion systems, materials, and structural design, providing a comprehensive overview of the field. As technology advances, aerospace engineers play a crucial role in shaping the future of air and space travel, from cutting-edge aircraft to interplanetary missions. Explore the evolving landscape of this dynamic field, its impact on industries, and its contributions to global advancements in transportation and exploration.",
+    },
+
+    {
+      title: "Atomic Energy and Engineering: A Beginner’s Guide to Nuclear Engineering",
+      year: "2025(Currently writing)",
+      img: Bushra,
+      tags: ["Design", "Innovation"],
+      description:
+        "This guide provides an accessible introduction to the world of nuclear engineering, focusing on the science behind atomic energy and its practical applications. From the fundamentals of nuclear physics to the design and operation of nuclear reactors, this exploration covers the key principles that drive the industry. Learn about the processes of fission, radiation, and safety protocols, as well as the challenges and benefits of harnessing atomic energy for power generation. As the world seeks sustainable energy solutions, nuclear engineering stands at the forefront, promising to shape the future of clean and efficient energy systems.",
     },
   ];
 
@@ -245,7 +254,7 @@ const Research = () => {
           My Research & Publications
         </h1>
         <p className="max-w-4xl mx-auto text-lg sm:text-xl font-description">
-          Delve into my research, where I challenge conventional boundaries in technology, design, and innovation. My work aims to unlock transformative insights in fields like Computer Science, Engineering Physics, and Astrophysics, driving forward-thinking solutions for real-world problems
+          I've explored a range of engineering fields and advanced scientific topics. This includes nuclear, aerospace, astronautical, and electronics engineering, along with in-depth work on astronomy, astrophysics, and quantum mechanics.
         </p>
       </div>
       <div className="flex flex-col items-center justify-center gap-6 mb-12 lg:flex-row">
