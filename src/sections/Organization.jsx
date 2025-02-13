@@ -108,12 +108,9 @@ export default function OrganizationGallery() {
             Empowered Education
           </motion.h2>
           <p className="max-w-3xl mx-auto mt-4 font-description text-lg leading-relaxed sm:text-xl lg:text-2xl text-dark_teal">
-            EmpowerEd is a non-profit organization founded by Muzahidul Islam Abir,
-            Bushra Khandoker, and others. It focuses on providing education,
-            scholarships, and skill-building opportunities to empower individuals.
-            The organization aims to create accessible learning platforms, support
-            academic growth, and foster research initiatives, helping people achieve
-            their educational and professional goals.
+          EmpowerEd is a non-profit organization with a mission to make education 
+          accessible to everyone, everywhere. We believe that every student deserves 
+          the same starting line, and we’re here to make that happen—at no cost to you!
           </p>
           <div className="mt-6">
             <Lottie
@@ -163,7 +160,7 @@ export default function OrganizationGallery() {
         <div className="px-6 text-center sm:px-12">
           <p className="max-w-3xl mx-auto text-lg font-description font-semibold sm:text-xl text-dark_teal">
             Empowered Ed is more than an initiative—it’s a spark in the dark, a bridge where
-            knowledge meets innovation. Co-founded by me and Muzahidul Islam Abir, it transforms
+            knowledge meets innovation. Founded by me and Muzahidul Islam Abir, it transforms
             rigid learning into an adventure, where students don’t just memorize but discover,
             create, and conquer. Through interactive tools and mentorship, we turn confusion into
             clarity, fear into confidence, and learners into trailblazers. This isn’t just education;

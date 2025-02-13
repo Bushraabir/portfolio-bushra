@@ -15,22 +15,22 @@ gsap.registerPlugin(ScrollTrigger);
 const achievements = [
   {
     title: "Academic Excellence & Scholarships",
-    description: "Demonstrating consistent academic excellence, I have secured prestigious ranks, scholarships, and accolades throughout my educational journey.",
+    description: "Consistently achieved top ranks, scholarships, and accolades throughout my education.",
     points: [
-      "Ranked 31st in the Bangladesh University of Engineering and Technology (BUET) Architecture admission test (2023)",
-      "Awarded Upazilla Bitthik Sresto Shikkharti recognition (2024)",
-      "Achieved a perfect GPA 5.00 in Higher Secondary Certificate (HSC) (2023)",
-      "Recipient of the General Grade Scholarship in HSC (2023)",
-      "Earned GPA 5.00 in Secondary School Certificate (SSC) (2021)",
-      "Awarded Talent Pool Scholarship in SSC (2021)",
-      "Attained GPA 5.00 in Junior School Certificate (JSC) (2018)",
-      "Received Talent Pool Scholarship in JSC (2018)",
-      "Achieved GPA 5.00 in Primary Education Completion Examination (PECE) (2015)",
+      "31st in the Bangladesh University of Engineering and Technology (BUET) Architecture admission test (2023)",
+      "Upazilla Bitthik Sresto Shikkharti recognition (2024)",
+      "GPA 5.00 in Higher Secondary Certificate (HSC) (2023)",
+      "General Grade Scholarship in HSC (2023)",
+      "GPA 5.00 in Secondary School Certificate (SSC) (2021)",
+      "Talent Pool Scholarship in SSC (2021)",
+      "GPA 5.00 in Junior School Certificate (JSC) (2018)",
+      "Talent Pool Scholarship in JSC (2018)",
+      "GPA 5.00 in Primary Education Completion Examination (PECE) (2015)",
     ],
   },
   {
     title: "Leadership & Team Management",
-    description: "I have taken on leadership roles, guiding teams with discipline, integrity, and vision, fostering excellence in academics and extracurriculars.",
+    description: "Led teams with discipline, integrity, and vision, promoting excellence in academics and extracurriculars.",
     points: [
       "Junior Prefect – Appointed as the Junior Prefect of Bir Protik Dr. Captain Sitara Begum House (2021)",
       "House Prefect – Led 92 cadets as the House Prefect of Bir Protik Dr. Captain Sitara Begum House (2022-2023)",
@@ -40,7 +40,7 @@ const achievements = [
   },
   {
     title: "STEM Competitions & Olympiads",
-    description: "Excelling in national-level Olympiads and science fairs, I have continuously pushed my intellectual boundaries.",
+    description: "Excelled in national Olympiads and science fairs, pushing my intellectual boundaries.",
     points: [
       "Bangladesh Math Olympiad – Regional Winner, National Round Participant (2020)",
       "Bangladesh Physics Olympiad (BdPhO) – 1st place in the regional round (Jessore), National Round Participant (2023)",
@@ -51,7 +51,7 @@ const achievements = [
   },
   {
     title: "Writing & Communication Excellence",
-    description: "With a passion for writing, I have earned multiple awards in essay competitions, demonstrating strong analytical and expressive skills.",
+    description: "Earned multiple awards in essay competitions, showcasing strong analytical and expressive skills.",
     points: [
       "1st place – MCSK Essay Writing Competition (2017)",
       "2nd place – Interhouse Essay Writing Competition (2020)",
@@ -62,62 +62,63 @@ const achievements = [
   },
   {
     title: "Creative & Artistic Achievements",
-    description: "My artistic skills, spanning traditional and digital media, have been recognized in national and institutional competitions.",
+    description: "My artistic skills, in both traditional and digital media, have been recognized in national and institutional competitions.",
     points: [
       "3rd place – Bangla Vision Painting Competition (2013)",
       "1st place – Bissho Shishu o Jubo Theater Dibosh Painting Competition (2019, 2022)",
       "1st place – National Mourning Day Painting Competition (2019)",
       "3rd place – 7th March Historical Speech Painting Competition (2022)",
-      "Recognized as Best Artist – Interhouse Painting Competition (2018)",
+      "Best Artist – Interhouse Painting Competition (2018)",
     ],
   },
   {
     title: "Innovation & Scientific Research",
-    description: "Merging science with technology, I have led innovative projects that provide real-world solutions.",
+    description: "Led projects combining science and technology to provide real-world solutions.",
     points: [
       "Team Leader – InterHouse Science Fair (Senior Group), Developed 'Gusto,' a virtual assistant with Face Recognition, awarded Best Project (2022)",
-      "Led a project on Easy Water Purification and Supply, awarded Best Project (2019)",
-      "Biggan Uthsob (National) – Regional Winner, National Round Participant (2019)",
+      "Team Leader - Easy Water Purification and Supply, awarded Best Project (2019)",
+      "Biggan Uthsob (National) – Biodegradable Polythene - Regional Winner, National Round Participant (2019)",
     ],
   },
   {
     title: "Public Speaking & Debate",
-    description: "Effective communication is key to leadership, and I have honed this skill through competitive speaking events.",
+    description: "Improved communication skills through speaking competitions.",
     points: [
-      "Awarded Soujonno Pouroshkar – 7th March Extempore Speech Competition (2022)",
+      "Soujonno Pouroshkar – 7th March Extempore Speech Competition (2022)",
       "Runners-up – Debate Competition (2016)",
     ],
   },
   {
-    title: "Empowering Through Education",
-    description: "As the founder of EmpowerEd, I strive to inspire and uplift through education and innovation.",
+    title: "NPO Volunteering",
+    description: "Volunteered with EmpowerEd, supporting its mission to provide education and opportunities.",
     points: [
-      "Founded EmpowerEd – An initiative focused on skill development and mentorship",
-      "Organized educational programs to enhance knowledge and career readiness",
-      "Exhibited leadership, teamwork, and entrepreneurial vision in managing the organization",
+      "Founded EmpowerEd, a non-profit organization.",
+      "Vice President of EmpowerEd.",
+      "STEM Innovation Advisor at EmpowerEd.",
+      "Fundraising Coordinator at EmpowerEd."
     ],
   },
   {
     title: "Mentorship & Teaching Experience",
-    description: "Passionate about teaching, I have mentored students, helping them excel academically.",
+    description: "Mentored students, helped them academically.",
     points: [
-      "Provided tuition to 3 students for 2 months, improving their Physics and Mathematics comprehension",
-      "Focused on problem-solving skills and conceptual clarity",
+      "Provided tuition to 3 students for 2 months, improving their Physics and Mathematics.",
+      "Created interactive PDFs and notes.",
       "Implemented adaptive teaching techniques to enhance student learning",
     ],
   },
   {
     title: "Technical Expertise & Digital Skills",
-    description: "With a strong technical foundation, I integrate programming, design, and 3D visualization to create impactful solutions.",
+    description: "Strong technical foundation in programming, design, and 3D visualization to create solutions.",
     points: [
-      "Proficient in programming languages: C, C++, Python",
+      "Programming languages : C, C++, Python",
       "Passionate about Machine Learning and Artificial Intelligence with Python",
-      "Experienced in frontend web development (HTML, CSS, JavaScript, React, Vite, Three.js, Tailwind CSS)",
+      "Frontend web development : HTML, CSS, JavaScript, React, Vite, Three.js, Tailwind CSS",
       "Backend experience with Firebase",
-      "Skilled in web animation using GSAP and Framer Motion",
-      "Passionate about 3D physics simulations",
-      "Proficient in 3D modeling and rendering using Blender",
-      "Expert in Graphic Design and Digital Art (Adobe Illustrator, Photoshop, Krita)",
+      "Web animation using GSAP and Framer Motion",
+      "3D physics simulations using blender",
+      "3D modeling and rendering using Blender",
+      "Graphic Design and Digital Art : Adobe Illustrator, Photoshop, Krita ",
     ],
   },
 ];
@@ -317,7 +318,7 @@ const Achievements = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          From my first day of school to now, I've committed to understanding the world and making an impact through innovative projects and academic pursuits. My journey merges a passion for technology, science, and creativity into meaningful solutions.
+          From the first day of school until now, everything I've done has been driven by my curiosity. This curiosity has not only allowed me to explore my purpose and interests but has also been the catalyst for my continuous personal development. Each step has been a part of a greater journey toward growth.
         </motion.p>
         <motion.p
           className={paraClass2}

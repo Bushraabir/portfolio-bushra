@@ -3,18 +3,21 @@ import { motion } from "framer-motion";
 import { Tilt as ReactTilt } from "react-tilt";
 import Lottie from "react-lottie";
 import animationData from "../assets/animation/coding.json";
+
 import emp1 from "../assets/Website/EmpEd/1.png";
 import emp2 from "../assets/Website/EmpEd/2.png";
 import emp3 from "../assets/Website/EmpEd/3.png";
 import emp4 from "../assets/Website/EmpEd/4.png";
 import emp5 from "../assets/Website/EmpEd/5.png";
 import emp6 from "../assets/Website/EmpEd/6.png";
+
 import PeriodicTableVisualiser1 from "../assets/Website/PeriodicTableVisualiser/1.png";
 import PeriodicTableVisualiser2 from "../assets/Website/PeriodicTableVisualiser/2.png";
 import PeriodicTableVisualiser3 from "../assets/Website/PeriodicTableVisualiser/3.png";
 import PeriodicTableVisualiser4 from "../assets/Website/PeriodicTableVisualiser/4.png";
 import PeriodicTableVisualiser5 from "../assets/Website/PeriodicTableVisualiser/5.png";
 import PeriodicTableVisualiser6 from "../assets/Website/PeriodicTableVisualiser/6.png";
+
 import StudyBuddy1 from "../assets/Website/StudyBuddy/1.png";
 import StudyBuddy2 from "../assets/Website/StudyBuddy/2.png";
 import StudyBuddy3 from "../assets/Website/StudyBuddy/3.png";
@@ -23,16 +26,26 @@ import StudyBuddy5 from "../assets/Website/StudyBuddy/5.png";
 import StudyBuddy6 from "../assets/Website/StudyBuddy/6.png";
 import StudyBuddy7 from "../assets/Website/StudyBuddy/7.png";
 import StudyBuddy8 from "../assets/Website/StudyBuddy/8.png";
+
 import Sustainibility1 from "../assets/Website/Sustainibility/1.png";
 import Sustainibility2 from "../assets/Website/Sustainibility/2.png";
 import Sustainibility3 from "../assets/Website/Sustainibility/3.png";
 import Sustainibility4 from "../assets/Website/Sustainibility/4.png";
 import Sustainibility5 from "../assets/Website/Sustainibility/5.png";
 
+import Satellite from "../assets/Projects/Satellite.png";
+import Rocket from "../assets/Projects/Rocket.png";
+import Nuclear from "../assets/Projects/Nuclear.png";
+import AeroSpace from "../assets/Projects/Aerospace.png";
+
+
+import Satellite1 from "../assets/Projects/Satellite1.png";
+
 const Tilt = (props) => {
   const { jsx, ...rest } = props;
   return <ReactTilt {...rest} />;
 };
+
 
 const cardVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -57,187 +70,149 @@ const typingAnimation = {
   visible: { opacity: 1, transition: { duration: 1.5, ease: "easeInOut" } }
 };
 
-const ProjectCard = ({
-  index,
-  name,
-  description,
-  tags,
-  images,
-  detailedDescription,
-  source_code_link
-}) => (
-  <motion.div
-    custom={index}
-    variants={cardVariants}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true, amount: 0.2 }}
-    whileHover="hover"
-    className="w-full max-w-[360px] p-8 rounded-3xl shadow-2xl transition-transform transform bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 border border-gray-600 opacity-60"
-  >
-    <Tilt options={{ max: 25, scale: 1.1, speed: 450 }} className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
-      <motion.img
-        src={images[0]}
-        alt={name}
-        className="object-cover w-full h-full transition-transform duration-500 ease-in-out rounded-xl hover:scale-125 hover:rotate-2"
-      />
-      <div className="absolute inset-0 flex justify-end m-4">
-        <motion.div
-          onClick={(e) => {
-            e.stopPropagation();
-            window.open(source_code_link, "_blank");
-          }}
-          className="flex items-center justify-center transition-transform duration-500 rounded-full shadow-lg cursor-pointer w-14 h-14 bg-gradient-to-r from-aquamarine to-jordy_blue"
-          whileHover={{ scale: 1.1 }}
-        >
-          <img
-            src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png"
-            alt="GitHub"
-            className="w-7 h-7"
-          />
-        </motion.div>
-      </div>
-    </Tilt>
-    <div className="mt-6">
-      <motion.h3
-        variants={typingAnimation}
-        initial="hidden"
-        animate="visible"
-        className="text-3xl font-semibold font-heading transition-colors duration-500 text-aquamarine hover:text-jordy_blue"
-      >
-        {name}
-      </motion.h3>
-      <motion.p
-        variants={typingAnimation}
-        initial="hidden"
-        animate="visible"
-        className="mt-3 transition-colors duration-300 font-description text-lemon_chiffon hover:text-champagne_pink"
-      >
-        {description}
-      </motion.p>
-    </div>
-    <div className="flex flex-wrap gap-3 mt-6">
-      {tags.slice(0, 3).map((tag, tagIndex) => (
-        <motion.span
-          key={tagIndex}
+
+const Card = ({ index, data, onClick }) => {
+  const title = data.title || data.name;
+  const { description, tags, images, source_code_link } = data;
+  return (
+    <motion.div
+      custom={index}
+      variants={cardVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      whileHover="hover"
+      onClick={() => onClick(data)}
+      className="w-full max-w-[360px] p-8 rounded-3xl shadow-2xl transition-transform transform bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-deep_indigo"
+    >
+      <Tilt options={{ max: 25, scale: 1.1, speed: 450 }} className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
+        <motion.img
+          src={images[0]}
+          alt={title}
+          className="object-cover w-full h-full transition-transform duration-500 ease-in-out rounded-xl hover:scale-110 hover:rotate-2"
+        />
+        <div className="absolute inset-0 flex justify-end m-4">
+          <motion.div
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(source_code_link, "_blank");
+            }}
+            className="flex items-center justify-center transition-transform duration-500 rounded-full shadow-lg cursor-pointer w-14 h-14 bg-gradient-to-r from-aquamarine to-jordy_blue"
+            whileHover={{ scale: 1.1 }}
+          >
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png"
+              alt="GitHub"
+              className="w-7 h-7"
+            />
+          </motion.div>
+        </div>
+      </Tilt>
+      <div className="mt-6">
+        <motion.h3
           variants={typingAnimation}
           initial="hidden"
           animate="visible"
-          className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
+          className="text-3xl font-semibold font-heading transition-colors duration-500 text-aquamarine hover:text-jordy_blue"
         >
-          #{tag.name}
-        </motion.span>
-      ))}
-    </div>
-  </motion.div>
-);
-
-const WebsiteCard = ({
-  index,
-  title,
-  description,
-  tags,
-  images,
-  detailedDescription,
-  source_code_link
-}) => (
-  <motion.div
-    custom={index}
-    variants={cardVariants}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true, amount: 0.2 }}
-    whileHover="hover"
-    className="w-full opacity-60 max-w-[360px] p-8 rounded-3xl shadow-xl transition-transform transform bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 border border-gray-600"
-  >
-    <Tilt options={{ max: 25, scale: 1.1, speed: 450 }} className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
-      <motion.img
-        src={images[0]}
-        alt={title}
-        className="object-cover w-full h-full transition-transform duration-500 ease-in-out rounded-xl hover:scale-110 hover:rotate-2"
-      />
-      <div className="absolute inset-0 flex justify-end m-4">
-        <motion.div
-          onClick={(e) => {
-            e.stopPropagation();
-            window.open(source_code_link, "_blank");
-          }}
-          className="flex items-center justify-center transition-transform duration-500 rounded-full shadow-lg cursor-pointer w-14 h-14 bg-gradient-to-r from-aquamarine to-jordy_blue"
-          whileHover={{ scale: 1.1 }}
-        >
-          <img
-            src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png"
-            alt="GitHub"
-            className="w-7 h-7"
-          />
-        </motion.div>
-      </div>
-    </Tilt>
-    <div className="mt-6">
-      <motion.h3
-        variants={typingAnimation}
-        initial="hidden"
-        animate="visible"
-        className="text-3xl font-semibold font-heading transition-colors duration-500 text-aquamarine hover:text-jordy_blue"
-      >
-        {title}
-      </motion.h3>
-      <motion.p
-        variants={typingAnimation}
-        initial="hidden"
-        animate="visible"
-        className="mt-3 transition-colors duration-300 font-description text-lemon_chiffon hover:text-champagne_pink"
-      >
-        {description}
-      </motion.p>
-    </div>
-    <div className="flex flex-wrap gap-3 mt-6">
-      {tags.slice(0, 3).map((tag, tagIndex) => (
-        <motion.span
-          key={tagIndex}
+          {title}
+        </motion.h3>
+        <motion.p
           variants={typingAnimation}
           initial="hidden"
           animate="visible"
-          className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
+          className="mt-3 transition-colors duration-300 font-description text-lemon_chiffon hover:text-champagne_pink"
         >
-          #{tag.name}
-        </motion.span>
-      ))}
-    </div>
-  </motion.div>
-);
-
-const atheletics = emp1;
+          {description}
+        </motion.p>
+      </div>
+      <div className="flex flex-wrap gap-3 mt-6">
+        {tags.slice(0, 3).map((tag, tagIndex) => (
+          <motion.span
+            key={tagIndex}
+            variants={typingAnimation}
+            initial="hidden"
+            animate="visible"
+            className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
+          >
+            #{tag.name}
+          </motion.span>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
 
 const Websites = () => {
   const [activeTab, setActiveTab] = useState("websites");
   const [selectedProject, setSelectedProject] = useState(null);
-  const projects = [
+
+ 
+  const courses = [
     {
-      name: "EmpowerEd Website",
-      description: "A dynamic platform for accessible quality education.",
+      name: "Satellite Engineering Course",
+      description: "An introductory course on satellite systems and engineering, covering the basics of satellite design, operations, and technologies used in modern space exploration.",
       tags: [
-        { name: "React", color: "text-cyan-400" },
-        { name: "Framer Motion", color: "text-pink-400" }
+        { name: "Satellite Engineering", color: "text-cyan-400" },
+        { name: "Space Tech", color: "text-pink-400" },
+        { name: "STEM Education", color: "text-pink-400" },
+        { name: "Satellite System", color: "text-pink-400" },
+        { name: "Space Exploration", color: "text-pink-400" }
       ],
-      images: [emp1, emp2, emp3, emp4, emp5, emp6],
+      images: [Satellite],
       detailedDescription:
-        "EmpowerEd is a non-profit educational platform offering mentorship, mental health support, research funding, scholarship opportunities, and study abroad guidance. It uses immersive animations and real-time communication tools for an engaging user experience.",
+        "An introductory course on satellite systems and engineering, covering the basics of satellite design, operations, and technologies used in modern space exploration.",
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     },
     {
-      name: "Project Two",
-      description: "Focuses on performance optimization and advanced animations.",
+      name: "Rocket Propulsion Systems",
+      description: "An introductory course on rocket propulsion, focusing on the principles of thrust, engine design, and the technologies driving modern rocketry.",
       tags: [
-        { name: "JavaScript", color: "text-yellow-500" },
-        { name: "GSAP", color: "text-green-500" }
+        { name: "Rocket Production", color: "text-yellow-500" },
+        { name: "Rocket Science", color: "text-green-500" },
+        { name: "Space Engineering", color: "text-pink-400" },
+        { name: "STEM", color: "text-pink-400" },
+        { name: "Thrust", color: "text-pink-400" },
+        { name: "Aerospace Tech", color: "text-pink-400" }
       ],
-      images: [atheletics, atheletics],
+      images: [Rocket],
       detailedDescription:
-        "Project Two leverages advanced animations with GSAP to create a multi-step interactive UI with performance optimization at its core.",
+        "An introductory course on rocket propulsion, focusing on the principles of thrust, engine design, and the technologies driving modern rocketry.",
       source_code_link: "https://github.com/project-two"
+    },
+    {
+      name: "Satellite Engineering Course",
+      description: "An introductory course on satellite systems and engineering, covering the basics of satellite design, operations, and technologies used in modern space exploration.",
+      tags: [
+        { name: "Satellite Engineering", color: "text-cyan-400" },
+        { name: "Space Tech", color: "text-pink-400" },
+        { name: "STEM Education", color: "text-pink-400" },
+        { name: "Satellite System", color: "text-pink-400" },
+        { name: "Space Exploration", color: "text-pink-400" }
+      ],
+      images: [Satellite],
+      detailedDescription:
+        "An introductory course on satellite systems and engineering, covering the basics of satellite design, operations, and technologies used in modern space exploration.",
+      source_code_link: "https://github.com/Bushraabir/empowereducation"
+    },
+    {
+      name: "Nuclear Science and Engineering",
+      description: "An introductory course on nuclear science, covering the fundamentals of nuclear reactions, reactor design, and applications in energy production and medical technology.",
+      tags: [
+        { name: "Nuclear Science", color: "text-cyan-400" },
+        { name: "Nuclear Engineering", color: "text-pink-400" },
+        { name: "Energy Tech", color: "text-pink-400" },
+        { name: "Reactor Eesign", color: "text-pink-400" },
+        { name: "Atomic Energy", color: "text-pink-400" }
+      ],
+      images: [Nuclear],
+      detailedDescription:
+        "An introductory course on nuclear science, covering the fundamentals of nuclear reactions, reactor design, and applications in energy production and medical technology.",
+      source_code_link: "https://github.com/Bushraabir/empowereducation"
     }
   ];
+
+ 
   const websites = [
     {
       title: "EmpowerEd Website",
@@ -254,7 +229,8 @@ const Websites = () => {
         { name: "React Router", color: "text-pink-400" }
       ],
       images: [emp3, emp1, emp2, emp3, emp4, emp5, emp6],
-      detailedDescription: "EmpowerEd is a non-profit educational platform designed to provide students with mentorship, mental health support, research funding, scholarship opportunities, and study abroad guidance. It features immersive animations and real-time communication tools, built with React.js, GSAP, Framer Motion, and EmailJS.",
+      detailedDescription:
+        "EmpowerEd is a non-profit educational platform designed to provide students with mentorship, mental health support, research funding, scholarship opportunities, and study abroad guidance. It features immersive animations and real-time communication tools, built with React.js, GSAP, Framer Motion, and EmailJS.",
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     },
     {
@@ -275,7 +251,8 @@ const Websites = () => {
         PeriodicTableVisualiser5,
         PeriodicTableVisualiser6
       ],
-      detailedDescription: "The Advanced Periodic Table Visualizer is a web tool built with Python, Streamlit, Plotly, and Pandas. It offers interactive data visualizations, filtering options, and insights into periodic trends through charts and 3D visualizations.",
+      detailedDescription:
+        "The Advanced Periodic Table Visualizer is a web tool built with Python, Streamlit, Plotly, and Pandas. It offers interactive data visualizations, filtering options, and insights into periodic trends through charts and 3D visualizations.",
       source_code_link: "https://github.com/Bushraabir/periodic_table_visualizer"
     },
     {
@@ -294,17 +271,9 @@ const Websites = () => {
         { name: "Plotly.js", color: "text-cyan-400" },
         { name: "Math.js", color: "text-emerald-400" }
       ],
-      images: [
-        StudyBuddy2,
-        StudyBuddy1,
-        StudyBuddy3,
-        StudyBuddy4,
-        StudyBuddy5,
-        StudyBuddy6,
-        StudyBuddy7,
-        StudyBuddy8
-      ],
-      detailedDescription: "Study Buddy is an advanced educational application that enhances study efficiency with interactive flashcards (including quiz mode), a Pomodoro-based session manager, a versatile graphing calculator for multiple equation types, and a smart note-taking system synced in real time via Firebase. Built using React.js, GSAP, Framer Motion, and Plotly.js, it delivers a modern, engaging, and responsive study experience.",
+      images: [StudyBuddy2, StudyBuddy1, StudyBuddy3, StudyBuddy4, StudyBuddy5, StudyBuddy6, StudyBuddy7, StudyBuddy8],
+      detailedDescription:
+        "Study Buddy is an advanced educational application that enhances study efficiency with interactive flashcards (including quiz mode), a Pomodoro-based session manager, a versatile graphing calculator for multiple equation types, and a smart note-taking system synced in real time via Firebase. Built using React.js, GSAP, Framer Motion, and Plotly.js, it delivers a modern, engaging, and responsive study experience.",
       source_code_link: "https://github.com/Bushraabir/sustainibility"
     },
     {
@@ -320,26 +289,52 @@ const Websites = () => {
         { name: "CSS", color: "text-indigo-400" },
         { name: "JavaScript", color: "text-yellow-300" }
       ],
-      images: [
-        Sustainibility1,
-        Sustainibility2,
-        Sustainibility3,
-        Sustainibility4,
-        Sustainibility5
-      ],
-      detailedDescription: "Sustainability Adventure is a dynamic Flask-based application that encourages eco-friendly living through community events, user engagement, and curated sustainability tips. With secure authentication, event management, and an admin dashboard, it provides a responsive and modern interface built with Flask, SQLAlchemy, and Flask-Login.",
+      images: [Sustainibility1, Sustainibility2, Sustainibility3, Sustainibility4, Sustainibility5],
+      detailedDescription:
+        "Sustainability Adventure is a dynamic Flask-based application that encourages eco-friendly living through community events, user engagement, and curated sustainability tips. With secure authentication, event management, and an admin dashboard, it provides a responsive and modern interface built with Flask, SQLAlchemy, and Flask-Login.",
       source_code_link: "https://github.com/your-username/sustainability-adventure"
     }
   ];
+
+  const projects = [
+    {
+      name: ": Building a Self-Made Satellite with a Self-Made Rocket",
+      description: "This project involves designing and building a satellite along with a custom rocket, powered by hydrogen and oxygen fuel that is processed by us. The satellite will include a transmitter to send its location back to us. The ultimate goal is to launch the satellite into Low Earth Orbit (LEO), aiming to reach the Kármán Line.",
+      tags: [
+        { name: "Satellite Engineering", color: "text-cyan-400" },
+        { name: "Space Tech", color: "text-pink-400" },
+        { name: "STEM Education", color: "text-pink-400" },
+        { name: "Satellite System", color: "text-pink-400" },
+        { name: "Space Exploration", color: "text-pink-400" }
+      ],
+      images: [Satellite1],
+      detailedDescription:
+        "This project involves designing and building a satellite along with a custom rocket, powered by hydrogen and oxygen fuel that is processed by us. The satellite will include a transmitter to send its location back to us. The ultimate goal is to launch the satellite into Low Earth Orbit (LEO), aiming to reach the Kármán Line.",
+      source_code_link: "https://github.com/Bushraabir/empowereducation"
+    },
+  ];
+
   const lottieOptions = {
     loop: true,
     autoplay: true,
     animationData: animationData,
     rendererSettings: { preserveAspectRatio: "xMidYMid slice" }
   };
+
   const closeDetails = () => {
     setSelectedProject(null);
   };
+
+
+  let activeData = [];
+  if (activeTab === "websites") {
+    activeData = websites;
+  } else if (activeTab === "projects") {
+    activeData = projects;
+  } else if (activeTab === "courses") {
+    activeData = courses;
+  }
+
   return (
     <section id="websites" className="relative py-16 lg:py-24 bg-dark_teal text-lemon_chiffon overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-deep_indigo to-tea_rose opacity-60"></div>
@@ -353,16 +348,10 @@ const Websites = () => {
         >
           <div className="max-w-xl text-center lg:w-1/2 lg:text-left">
             <h1 className="mb-6 font-heading text-5xl font-extrabold leading-tight tracking-wide text-champagne_pink">
-              Code Canvas
+              STEM Collaboration 
             </h1>
             <p className="mb-4 text-lg font-description text-lemon_chiffon">
-              Partnering with Muzahidul Islam Abir, we develop innovative solutions in Computer Science, Engineering Physics, and Astrophysics to tackle real-world challenges and empower communities.
-            </p>
-            <p className="mb-4 text-lg font-description text-lemon_chiffon">
-              With expertise in C, C++, Python, HTML, CSS, JavaScript, and more, we build interactive applications, machine learning models, and simulations that drive progress.
-            </p>
-            <p className="text-lg font-description text-lemon_chiffon">
-              Fueled by creativity and problem-solving, we contribute to technological and scientific advancements that shape the future.
+              Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
             </p>
           </div>
           <div className="mt-12 lg:w-1/2 lg:mt-0 flex justify-center">
@@ -390,6 +379,16 @@ const Websites = () => {
           >
             Projects
           </button>
+          <button
+            className={`py-3 px-8 text-lg font-medium rounded-full transition-all duration-300 shadow-lg transform hover:scale-105 ${
+              activeTab === "courses"
+                ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
+                : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
+            }`}
+            onClick={() => setActiveTab("courses")}
+          >
+            Courses
+          </button>
         </div>
         <motion.div
           className="grid grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3 sm:px-8"
@@ -398,32 +397,9 @@ const Websites = () => {
           viewport={{ once: true }}
           transition={{ staggerChildren: 0.2, delay: 0.4 }}
         >
-          {activeTab === "projects" &&
-            projects.map((project, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                onClick={() => setSelectedProject(project)}
-              >
-                <ProjectCard index={index} {...project} />
-              </motion.div>
-            ))}
-          {activeTab === "websites" &&
-            websites.map((website, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                onClick={() => setSelectedProject(website)}
-              >
-                <WebsiteCard index={index} {...website} />
-              </motion.div>
-            ))}
+          {activeData.map((item, index) => (
+            <Card key={index} index={index} data={item} onClick={setSelectedProject} />
+          ))}
         </motion.div>
         {selectedProject && (
           <motion.div
@@ -453,7 +429,7 @@ const Websites = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
               >
-                {selectedProject.name || selectedProject.title}
+                {selectedProject.title || selectedProject.name}
               </motion.h2>
               <motion.p
                 className="mb-8 text-lg font-description leading-relaxed text-deep_indigo"
