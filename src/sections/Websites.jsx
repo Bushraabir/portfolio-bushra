@@ -4,7 +4,7 @@ import { Tilt as ReactTilt } from "react-tilt";
 import Lottie from "react-lottie";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import animationData from "../assets/animation/coding.json";
+import animationData from "../assets/animation/coding1.json";
 gsap.registerPlugin(ScrollTrigger);
 import emp1 from "../assets/Website/EmpEd/1.png";
 import emp2 from "../assets/Website/EmpEd/2.png";
@@ -64,10 +64,10 @@ const Website = () => {
         scrub: true
       }
     });
-    tl.to(stemRef.current, { x: -1000, scale: 1.5, ease: "expo.out", duration: 1000050 }, 0)
-      .to(collabRef.current, { x: 1000, scale: 1.5, ease: "expo.out", duration: 1000050 }, 0)
-      .to(lottieContainerRef.current, { scale: 65, ease: "expo.out", duration: 1000050 }, 0)
-      .to(initialMessageRef.current, { opacity: 0, ease: "expo.out", duration: 1000050 }, 0.8);
+    tl.to(stemRef.current, { x: -2500, scale: 5.5, ease: "expo.out", duration: 999000050 }, 0)
+      .to(collabRef.current, { x: 3500, scale: 5.5, ease: "expo.out", duration: 999000050 }, 0)
+      .to(lottieContainerRef.current, { scale: 65, ease: "expo.out", duration: 999000050 }, 0)
+      .to(lottieContainerRef.current, { opacity: 0, ease: "expo.out", duration: 999000050 }, 0.01);
     gsap.fromTo(
       descriptionRef.current,
       { opacity: 0, y: 50 },
@@ -420,16 +420,16 @@ const Website = () => {
       `}</style>
       <section id="research" className="py-16 lg:py-24 bg-deep_indigo text-lemon_chiffon">
         <div className="container mx-auto px-6 lg:px-20">
-          <div ref={initialMessageRef} className="flex flex-col items-center justify-center min-h-screen">
+          <div ref={initialMessageRef} className="flex flex-col items-center justify-center min-h-screen mt-55">
             <div className="flex items-center">
               <motion.h1 ref={stemRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
                 STEM
               </motion.h1>
-              <div ref={lottieContainerRef} className="mx-4">
+              <div ref={lottieContainerRef} className="-mx-3 mt-4">
                 <Lottie
                   options={lottieOptions}
-                  height={isDesktop ? 50 : 30}
-                  width={isDesktop ? 50 : 30}
+                  height={isDesktop ? 80 : 30}
+                  width={isDesktop ? 80 : 30}
                 />
               </div>
               <motion.h1 ref={collabRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
