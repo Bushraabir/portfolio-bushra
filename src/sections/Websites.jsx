@@ -364,7 +364,7 @@ const Website = () => {
     return (
       <motion.div
         onClick={() => onClick(data)}
-        className="mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-deep_indigo cursor-pointer transition-transform transform hover:scale-105 "
+        className="mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-deep_indigo cursor-pointer transition-transform transform hover:scale-105"
       >
         <ReactTilt options={{ max: 25, scale: 1.1, speed: 450 }} className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
           <motion.img
@@ -372,7 +372,7 @@ const Website = () => {
             alt={title}
             className="object-cover w-full h-full rounded-xl transition-transform duration-500 ease-in-out hover:scale-110 hover:rotate-2"
           />
-          <div className="absolute inset-0 flex justify-end m-4 ">
+          <div className="absolute inset-0 flex justify-end m-4">
             <motion.div
               onClick={(e) => {
                 e.stopPropagation();
@@ -389,7 +389,7 @@ const Website = () => {
           </div>
         </ReactTilt>
         <div className="mt-6">
-          <motion.h6 className="sm:text-4xl text-2xl font-heading text-aquamarine transition-colors duration-500 hover:text-jordy_blue ">
+          <motion.h6 className="sm:text-4xl text-2xl font-heading text-aquamarine transition-colors duration-500 hover:text-jordy_blue">
             {title}
           </motion.h6>
           <motion.p className="mt-3 font-description text-lemon_chiffon transition-colors duration-300 hover:text-champagne_pink">
@@ -432,14 +432,14 @@ const Website = () => {
                   width={isDesktop ? 50 : 30}
                 />
               </div>
-              <motion.h1 ref={collabRef} className="sm:text-12xl text-xl font-extrabold font-heading text-champagne_pink">
+              <motion.h1 ref={collabRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
                 Collabolation
               </motion.h1>
             </div>
           </div>
           <div ref={descriptionRef} className="text-center mb-12 mt-32">
             <p className="text-lg font-description">
-            Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
+              Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
             </p>
           </div>
           <div ref={buttonsRef} className="flex justify-center mb-8 space-x-4 sm:space-x-6">
