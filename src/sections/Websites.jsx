@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Tilt as ReactTilt } from "react-tilt";
 import Lottie from "react-lottie";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import animationData from "../assets/animation/coding.json";
-
+gsap.registerPlugin(ScrollTrigger);
 import emp1 from "../assets/Website/EmpEd/1.png";
 import emp2 from "../assets/Website/EmpEd/2.png";
 import emp3 from "../assets/Website/EmpEd/3.png";
 import emp4 from "../assets/Website/EmpEd/4.png";
 import emp5 from "../assets/Website/EmpEd/5.png";
 import emp6 from "../assets/Website/EmpEd/6.png";
-
 import PeriodicTableVisualiser1 from "../assets/Website/PeriodicTableVisualiser/1.png";
 import PeriodicTableVisualiser2 from "../assets/Website/PeriodicTableVisualiser/2.png";
 import PeriodicTableVisualiser3 from "../assets/Website/PeriodicTableVisualiser/3.png";
 import PeriodicTableVisualiser4 from "../assets/Website/PeriodicTableVisualiser/4.png";
 import PeriodicTableVisualiser5 from "../assets/Website/PeriodicTableVisualiser/5.png";
 import PeriodicTableVisualiser6 from "../assets/Website/PeriodicTableVisualiser/6.png";
-
 import StudyBuddy1 from "../assets/Website/StudyBuddy/1.png";
 import StudyBuddy2 from "../assets/Website/StudyBuddy/2.png";
 import StudyBuddy3 from "../assets/Website/StudyBuddy/3.png";
@@ -26,135 +26,102 @@ import StudyBuddy5 from "../assets/Website/StudyBuddy/5.png";
 import StudyBuddy6 from "../assets/Website/StudyBuddy/6.png";
 import StudyBuddy7 from "../assets/Website/StudyBuddy/7.png";
 import StudyBuddy8 from "../assets/Website/StudyBuddy/8.png";
-
 import Sustainibility1 from "../assets/Website/Sustainibility/1.png";
 import Sustainibility2 from "../assets/Website/Sustainibility/2.png";
 import Sustainibility3 from "../assets/Website/Sustainibility/3.png";
 import Sustainibility4 from "../assets/Website/Sustainibility/4.png";
 import Sustainibility5 from "../assets/Website/Sustainibility/5.png";
-
 import Satellite from "../assets/Projects/Satellite.png";
 import Rocket from "../assets/Projects/Rocket.png";
 import Nuclear from "../assets/Projects/Nuclear.png";
 import AeroSpace from "../assets/Projects/Aerospace.png";
-
 import Satellite1 from "../assets/Projects/Satellite1.png";
 
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-const Tilt = (props) => {
-  const { jsx, ...rest } = props;
-  return <ReactTilt {...rest} />;
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: (i) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.2, type: "spring", stiffness: 100 }
-  })
-};
-
-const hoverVariants = {
-  hover: {
-    scale: 1.07,
-    rotate: 1,
-    boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.3)",
-    transition: { type: "spring", stiffness: 400, damping: 20 }
-  }
-};
-
-const typingAnimation = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 1.5, ease: "easeInOut" } }
-};
-
-const Card = ({ index, data, onClick }) => {
-  const title = data.title || data.name;
-  const { description, tags, images, source_code_link } = data;
-
-  return (
-    <motion.div
-      custom={index}
-      variants={cardVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      whileHover="hover"
-      onClick={() => onClick(data)}
-      className="mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl transition-transform transform bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-deep_indigo card"
-    >
-      <Tilt
-        options={{ max: 25, scale: 1.1, speed: 450 }}
-        className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl"
-      >
-        <motion.img
-          src={images[0]}
-          alt={title}
-          className="object-cover w-full h-full transition-transform duration-500 ease-in-out rounded-xl hover:scale-110 hover:rotate-2"
-        />
-        <div className="absolute inset-0 flex justify-end m-4">
-          <motion.div
-            onClick={(e) => {
-              e.stopPropagation();
-              window.open(source_code_link, "_blank");
-            }}
-            className="flex items-center justify-center transition-transform duration-500 rounded-full shadow-lg cursor-pointer w-14 h-14 bg-gradient-to-r from-aquamarine to-jordy_blue"
-            whileHover={{ scale: 1.1 }}
-          >
-            <img
-              src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png"
-              alt="GitHub"
-              className="w-7 h-7"
-            />
-          </motion.div>
-        </div>
-      </Tilt>
-      <div className="mt-6">
-        <motion.h3
-          variants={typingAnimation}
-          initial="hidden"
-          animate="visible"
-          className="text-3xl font-semibold font-heading transition-colors duration-500 text-aquamarine hover:text-jordy_blue"
-        >
-          {title}
-        </motion.h3>
-        <motion.p
-          variants={typingAnimation}
-          initial="hidden"
-          animate="visible"
-          className="mt-3 transition-colors duration-300 font-description text-lemon_chiffon hover:text-champagne_pink"
-        >
-          {description}
-        </motion.p>
-      </div>
-      <div className="flex flex-wrap gap-3 mt-6">
-        {tags.slice(0, 3).map((tag, tagIndex) => (
-          <motion.span
-            key={tagIndex}
-            variants={typingAnimation}
-            initial="hidden"
-            animate="visible"
-            className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
-          >
-            #{tag.name}
-          </motion.span>
-        ))}
-      </div>
-    </motion.div>
-  );
-};
-
-const Websites = () => {
+const Website = () => {
   const [activeTab, setActiveTab] = useState("websites");
   const [selectedProject, setSelectedProject] = useState(null);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
+  const initialMessageRef = useRef(null);
+  const stemRef = useRef(null);
+  const collabRef = useRef(null);
+  const lottieContainerRef = useRef(null);
+  const descriptionRef = useRef(null);
+  const buttonsRef = useRef(null);
+  const cardsRef = useRef(null);
 
   useEffect(() => {
-    setIsDesktop(window.innerWidth > 768);
+    const handleResize = () => setIsDesktop(window.innerWidth > 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    let tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: initialMessageRef.current,
+        start: "top top",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+    tl.to(stemRef.current, { x: -1000, scale: 1.5, ease: "expo.out", duration: 1000050 }, 0)
+      .to(collabRef.current, { x: 1000, scale: 1.5, ease: "expo.out", duration: 1000050 }, 0)
+      .to(lottieContainerRef.current, { scale: 65, ease: "expo.out", duration: 1000050 }, 0)
+      .to(initialMessageRef.current, { opacity: 0, ease: "expo.out", duration: 1000050 }, 0.8);
+    gsap.fromTo(
+      descriptionRef.current,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        ease: "expo.out",
+        duration: 1.2,
+        scrollTrigger: {
+          trigger: descriptionRef.current,
+          start: "top 90%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+    gsap.fromTo(
+      buttonsRef.current,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        ease: "expo.out",
+        duration: 1.2,
+        delay: 0.4,
+        scrollTrigger: {
+          trigger: buttonsRef.current,
+          start: "top 90%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+    gsap.fromTo(
+      cardsRef.current,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        ease: "expo.out",
+        duration: 1.2,
+        delay: 0.6,
+        scrollTrigger: {
+          trigger: cardsRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+  }, []);
+
+  const lottieOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: { preserveAspectRatio: "xMidYMid slice" }
+  };
 
   const courses = [
     {
@@ -391,318 +358,224 @@ const Websites = () => {
   for (let i = 0; i < activeData.length; i += 2) {
     groupedData.push(activeData.slice(i, i + 2));
   }
-  
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-  
-    const isMobile = window.innerWidth <= 768;
-  
-    const leftXValues = isMobile ? [-80, -80, -60] : [-600, -600, -400];
-    const rightXValues = isMobile ? [80, 80, 60] : [600, 600, 400];
-    const leftRotationValues = isMobile ? [-5, -7, -10] : [-20, -20, -35];
-    const rightRotationValues = isMobile ? [5, 7, 10] : [20, 20, 35];
-    const yValues = isMobile ? [60, -60, -80] : [100, -150, -400];
-  
-    gsap.utils.toArray(".row").forEach((row, index) => {
-      const cardLeft = row.querySelector(".card-left");
-      const cardRight = row.querySelector(".card-right");
-  
-      if (cardLeft) {
-        gsap.fromTo(
-          cardLeft,
-          { x: 0, y: 0, rotation: 0 },
-          {
-            x: leftXValues[index] || 0,
-            y: yValues[index] || 0,
-            rotation: leftRotationValues[index] || 0,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: ".main",
-              start: "top 60%",
-              end: "150% bottom",
-              scrub: 0.5,
-              onUpdate: (self) => {
-                const progress = self.progress;
-                gsap.set(cardLeft, {
-                  x: progress * (leftXValues[index] || 0),
-                  y: progress * (yValues[index] || 0),
-                  rotation: progress * (leftRotationValues[index] || 0)
-                });
-              }
-            }
-          }
-        );
-      }
-  
-      if (cardRight) {
-        gsap.fromTo(
-          cardRight,
-          { x: 0, y: 0, rotation: 0 },
-          {
-            x: rightXValues[index] || 0,
-            y: yValues[index] || 0,
-            rotation: rightRotationValues[index] || 0,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: ".main",
-              start: "top 60%",
-              end: "150% bottom",
-              scrub: 0.5,
-              onUpdate: (self) => {
-                const progress = self.progress;
-                gsap.set(cardRight, {
-                  x: progress * (rightXValues[index] || 0),
-                  y: progress * (yValues[index] || 0),
-                  rotation: progress * (rightRotationValues[index] || 0)
-                });
-              }
-            }
-          }
-        );
-      }
-    });
-
-
-    if (!isMobile) {
-      gsap.fromTo(
-        ".desc-row",
-        { opacity: 0, y: 50 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 1, 
-          ease: "power2.out", 
-          scrollTrigger: {
-            trigger: ".desc-row",
-            start: "top 80%",
-            end: "bottom center",
-            scrub: true,
-          }
-        }
-      );
-    }
-  }, [activeData]);
-
-  const closeDetails = () => {
-    setSelectedProject(null);
+  const Card = ({ data, onClick }) => {
+    const title = data.title || data.name;
+    const { description, tags, images, source_code_link } = data;
+    return (
+      <motion.div
+        onClick={() => onClick(data)}
+        className="mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-deep_indigo cursor-pointer transition-transform transform hover:scale-105 "
+      >
+        <ReactTilt options={{ max: 25, scale: 1.1, speed: 450 }} className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
+          <motion.img
+            src={images[0]}
+            alt={title}
+            className="object-cover w-full h-full rounded-xl transition-transform duration-500 ease-in-out hover:scale-110 hover:rotate-2"
+          />
+          <div className="absolute inset-0 flex justify-end m-4 ">
+            <motion.div
+              onClick={(e) => {
+                e.stopPropagation();
+                window.open(source_code_link, "_blank");
+              }}
+              className="flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer transition-transform duration-500 hover:scale-110"
+            >
+              <img
+                src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png"
+                alt="GitHub"
+                className="w-7 h-7"
+              />
+            </motion.div>
+          </div>
+        </ReactTilt>
+        <div className="mt-6">
+          <motion.h6 className="sm:text-4xl text-2xl font-heading text-aquamarine transition-colors duration-500 hover:text-jordy_blue ">
+            {title}
+          </motion.h6>
+          <motion.p className="mt-3 font-description text-lemon_chiffon transition-colors duration-300 hover:text-champagne_pink">
+            {description}
+          </motion.p>
+        </div>
+        <div className="flex flex-wrap gap-3 mt-6">
+          {tags.slice(0, 3).map((tag, index) => (
+            <motion.span
+              key={index}
+              className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
+            >
+              #{tag.name}
+            </motion.span>
+          ))}
+        </div>
+      </motion.div>
+    );
   };
-
-  const lottieOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: { preserveAspectRatio: "xMidYMid slice" }
-  };
-
   return (
     <>
-
       <style>{`
-        .card{ 
+        .card { 
           will-change: transform;
           background: transparent;
           border: transparent;
         }
       `}</style>
-
-      <section
-        id="websites"
-        className="overflow-hidden relative py-16 lg:py-24 bg-dark_teal text-lemon_chiffon overflow-hidden"
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-deep_indigo to-tea_rose opacity-60 pointer-events-none"></div>
-        <div className="main bg-transparent">
-          <div className="container relative z-10 px-6 mx-auto lg:px-20 bg-transparent">
-           
-            {!isDesktop && (
-              <motion.div
-                className="flex flex-col items-center mb-12 lg:flex-row"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2, duration: 0.8 }}
-              >
-                <div className="max-w-xl text-center lg:w-1/2 lg:text-left">
-                  <h1 className="mb-6 font-heading text-5xl font-extrabold leading-tight tracking-wide text-champagne_pink">
-                    STEM Collaboration
-                  </h1>
-                  <p className="mb-4 text-lg font-description text-lemon_chiffon">
-                    Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
-                  </p>
-                </div>
-
-              </motion.div>
-            )}
-
-            <div className="flex justify-center mb-8 space-x-4 sm:space-x-6 px-4">
-              <button
-                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full transition-all duration-300 shadow-lg transform hover:scale-105 ${
-                  activeTab === "websites"
-                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                    : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
-                }`}
-                onClick={() => setActiveTab("websites")}
-              >
-                Websites
-              </button>
-              <button
-                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full transition-all duration-300 shadow-lg transform hover:scale-105 ${
-                  activeTab === "projects"
-                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                    : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
-                }`}
-                onClick={() => setActiveTab("projects")}
-              >
-                Projects
-              </button>
-              <button
-                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full transition-all duration-300 shadow-lg transform hover:scale-105 ${
-                  activeTab === "courses"
-                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                    : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
-                }`}
-                onClick={() => setActiveTab("courses")}
-              >
-                Courses
-              </button>
+      <section id="research" className="py-16 lg:py-24 bg-deep_indigo text-lemon_chiffon">
+        <div className="container mx-auto px-6 lg:px-20">
+          <div ref={initialMessageRef} className="flex flex-col items-center justify-center min-h-screen">
+            <div className="flex items-center">
+              <motion.h1 ref={stemRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
+                STEM
+              </motion.h1>
+              <div ref={lottieContainerRef} className="mx-4">
+                <Lottie
+                  options={lottieOptions}
+                  height={isDesktop ? 50 : 30}
+                  width={isDesktop ? 50 : 30}
+                />
+              </div>
+              <motion.h1 ref={collabRef} className="sm:text-12xl text-xl font-extrabold font-heading text-champagne_pink">
+                Collabolation
+              </motion.h1>
             </div>
-
-
-            
+          </div>
+          <div ref={descriptionRef} className="text-center mb-12 mt-32">
+            <p className="text-lg font-description">
+            Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
+            </p>
+          </div>
+          <div ref={buttonsRef} className="flex justify-center mb-8 space-x-4 sm:space-x-6">
+            <button
+              className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${
+                activeTab === "websites"
+                  ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
+                  : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
+              }`}
+              onClick={() => setActiveTab("websites")}
+            >
+              Websites
+            </button>
+            <button
+              className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${
+                activeTab === "projects"
+                  ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
+                  : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
+              }`}
+              onClick={() => setActiveTab("projects")}
+            >
+              Projects
+            </button>
+            <button
+              className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${
+                activeTab === "courses"
+                  ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
+                  : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
+              }`}
+              onClick={() => setActiveTab("courses")}
+            >
+              Courses
+            </button>
+          </div>
+          <div ref={cardsRef}>
             {groupedData.map((group, rowIndex) => (
-              <React.Fragment key={rowIndex}>
-                <div className="row grid grid-cols-1 sm:grid-cols-2 gap-8 px-4 sm:px-8">
-                  {group.map((item, cardIndex) => (
-                    <div
-                      key={cardIndex}
-                      className={cardIndex === 0 ? "card-left card" : "card-right card"}
-                    >
-                      <Card
-                        index={rowIndex * 2 + cardIndex}
-                        data={item}
-                        onClick={setSelectedProject}
-                      />
-                    </div>
-                  ))}
-                </div>
-                {isDesktop && rowIndex === 0 && groupedData.length > 1 && (
-                  <div className="desc-row row flex flex-col lg:flex-row items-center justify-between my-12 px-4 sm:px-8">
-                    <div className="max-w-xl text-center lg:text-left">
-                      <h1 className="mb-6 font-heading text-5xl font-extrabold leading-tight tracking-wide text-champagne_pink">
-                        STEM Collaboration
-                      </h1>
-                      <p className="mb-4 text-lg font-description text-lemon_chiffon">
-                        Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
-                      </p>
-                    </div>
-
-                  </div>
-                )}
-              </React.Fragment>
+              <div key={rowIndex} className="grid grid-cols-1 sm:grid-cols-2 gap-8 px-4 sm:px-8 mb-8">
+                {group.map((item, cardIndex) => (
+                  <Card key={cardIndex} data={item} onClick={setSelectedProject} />
+                ))}
+              </div>
             ))}
           </div>
-
-          {selectedProject && (
+        </div>
+        {selectedProject && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-70"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+          >
             <motion.div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-70"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-8 rounded-2xl w-11/12 sm:w-3/4 md:w-1/2 max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-md border-4 border-lemon_chiffon border-opacity-80 relative"
+              initial={{ scale: 0.85 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.85 }}
+              transition={{ type: "spring", stiffness: 320, damping: 35 }}
             >
-              <motion.div
-                className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-8 rounded-2xl w-11/12 sm:w-3/4 md:w-1/2 max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-md border-4 border-lemon_chiffon border-opacity-80 relative"
-                initial={{ scale: 0.85 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.85 }}
-                transition={{ type: "spring", stiffness: 320, damping: 35 }}
+              <motion.button
+                onClick={() => setSelectedProject(null)}
+                className="absolute p-2 top-4 right-4 rounded-full shadow-xl text-lemon_chiffon bg-aquamarine transition-transform hover:scale-110 hover:shadow-2xl"
+                whileHover={{ scale: 1.1, rotate: 15, transition: { type: "spring", stiffness: 400 } }}
               >
-                <motion.button
-                  onClick={() => setSelectedProject(null)}
-                  className="absolute p-2 top-4 right-4 transition-transform rounded-full shadow-xl text-lemon_chiffon bg-aquamarine hover:scale-110 hover:shadow-2xl"
-                  whileHover={{
-                    scale: 1.1,
-                    rotate: 15,
-                    transition: { type: "spring", stiffness: 400 }
-                  }}
-                >
-                  ✕
-                </motion.button>
-
-                <motion.h2
-                  className="mb-6 font-heading text-4xl font-extrabold text-dark_teal"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                >
-                  {selectedProject.title || selectedProject.name}
-                </motion.h2>
-
-                <motion.p
-                  className="mb-8 text-lg font-description leading-relaxed text-deep_indigo"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 0.6 }}
-                >
-                  {selectedProject.detailedDescription}
-                </motion.p>
-
-                <motion.div
-                  className="flex flex-wrap gap-3 mb-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6, duration: 0.6 }}
-                >
-                  {selectedProject.tags.map((tag, idx) => (
-                    <motion.span
-                      key={idx}
-                      className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
-                    >
-                      #{tag.name}
-                    </motion.span>
-                  ))}
-                </motion.div>
-
-                <motion.div
-                  className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7, duration: 0.6 }}
-                >
-                  {selectedProject.images.map((image, idx) => (
-                    <motion.img
-                      key={idx}
-                      src={image}
-                      alt={`Image ${idx}`}
-                      className="object-cover w-full h-32 transition-transform rounded-xl hover:scale-105 hover:shadow-xl"
-                      initial={{ scale: 0.9 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: idx * 0.2, duration: 0.4 }}
-                    />
-                  ))}
-                </motion.div>
-
-                <motion.div
-                  className="flex justify-center mt-8"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1, duration: 0.6 }}
-                >
-                  <a
-                    href={selectedProject.source_code_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-6 py-3 text-lg font-medium font-cta transition-transform rounded-full shadow-2xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue hover:scale-110 hover:opacity-90"
+                ✕
+              </motion.button>
+              <motion.h2
+                className="mb-6 font-heading text-4xl font-extrabold text-dark_teal"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+              >
+                {selectedProject.title || selectedProject.name}
+              </motion.h2>
+              <motion.p
+                className="mb-8 text-lg font-description leading-relaxed text-deep_indigo"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
+              >
+                {selectedProject.detailedDescription}
+              </motion.p>
+              <motion.div
+                className="flex flex-wrap gap-3 mb-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.6 }}
+              >
+                {selectedProject.tags.map((tag, idx) => (
+                  <motion.span
+                    key={idx}
+                    className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
                   >
-                    View Source Code
-                  </a>
-                </motion.div>
+                    #{tag.name}
+                  </motion.span>
+                ))}
+              </motion.div>
+              <motion.div
+                className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7, duration: 0.6 }}
+              >
+                {selectedProject.images.map((image, idx) => (
+                  <motion.img
+                    key={idx}
+                    src={image}
+                    alt={`Image ${idx}`}
+                    className="object-cover w-full h-32 rounded-xl transition-transform hover:scale-105 hover:shadow-xl"
+                    initial={{ scale: 0.9 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: idx * 0.2, duration: 0.4 }}
+                  />
+                ))}
+              </motion.div>
+              <motion.div
+                className="flex justify-center mt-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 0.6 }}
+              >
+                <a
+                  href={selectedProject.source_code_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 text-lg font-medium font-cta rounded-full shadow-2xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue transition-transform hover:scale-110 hover:opacity-90"
+                >
+                  View Source Code
+                </a>
               </motion.div>
             </motion.div>
-          )}
-        </div>
+          </motion.div>
+        )}
       </section>
     </>
   );
 };
 
-export default Websites;
+export default Website;
