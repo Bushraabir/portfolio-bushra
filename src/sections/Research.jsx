@@ -1,8 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { debounce } from "lodash";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import Bushra from "../assets/Bushra.png";
@@ -29,9 +26,11 @@ const Research = () => {
   const [researchPage, setResearchPage] = useState(1);
   const itemsPerPage = 3;
   const isMobile = useRef(window.innerWidth <= 768);
+
   const books = [
     {
-      title: "Terraforming Our Future: The Evolution of Space Exploration, Technology, and Multiplanetary Civilization",
+      title:
+        "Terraforming Our Future: The Evolution of Space Exploration, Technology, and Multiplanetary Civilization",
       year: "2025(Currently writing)",
       img: Bushra,
       tags: ["Architecture", "Future"],
@@ -63,6 +62,7 @@ const Research = () => {
         "This guide provides an accessible introduction to the world of nuclear engineering, focusing on the science behind atomic energy and its practical applications. From the fundamentals of nuclear physics to the design and operation of nuclear reactors, this exploration covers the key principles that drive the industry. Learn about the processes of fission, radiation, and safety protocols, as well as the challenges and benefits of harnessing atomic energy for power generation. As the world seeks sustainable energy solutions, nuclear engineering stands at the forefront, promising to shape the future of clean and efficient energy systems.",
     },
   ];
+
   const articles = [
     {
       title:
@@ -210,9 +210,11 @@ const Research = () => {
         "Black holes are famously known as cosmic objects from which nothing, not even light, can escape. Yet, recent observations challenge this notion, showing material being ejected from the vicinity of black holes at near-light speeds. In 2018 and 2019, NASA’s Chandra X-ray Observatory and Harvard-Smithsonian Center for Astrophysics captured such phenomena in the system MAXI J1820+070, located about 10,000 light-years from Earth. This paradox sparks curiosity and further questions about black hole behavior.",
     },
   ];
+
   const research = [
     {
-      title: "Design, Fabrication, and Characterization of a Low-Voltage, High-Density Homemade Integrated Circuit",
+      title:
+        "Design, Fabrication, and Characterization of a Low-Voltage, High-Density Homemade Integrated Circuit",
       year: "2025(Currently writing)",
       img: MCU,
       tags: ["Architecture", "Future"],
@@ -228,18 +230,26 @@ const Research = () => {
         "This paper explores a potential solution to the black hole singularity problem, proposing that black holes are 4D objects. Everything that falls into a black hole is absorbed into this 4D space and vaporized by Hawking radiation. From our 3D perspective, the singularity appears infinite, but if black holes were 3D objects, they would appear infinite to a 2D observer. This analogy suggests that the singularity might not be infinite, but a result of our limited perspective.",
     },
   ];
+
   const handleSearch = debounce((value) => {
     setDebouncedSearch(value);
     setCurrentPage(1);
     setArticlePage(1);
     setResearchPage(1);
   }, 500);
-  const dataToFilter = filter === "books" ? books : filter === "articles" ? articles : research;
+
+  const dataToFilter =
+    filter === "books" ? books : filter === "articles" ? articles : research;
   const filteredData = dataToFilter.filter((item) =>
     item.title.toLowerCase().includes(debouncedSearch.toLowerCase())
   );
-  const page = filter === "books" ? currentPage : filter === "articles" ? articlePage : researchPage;
-  const paginatedData = filteredData.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const page =
+    filter === "books" ? currentPage : filter === "articles" ? articlePage : researchPage;
+  const paginatedData = filteredData.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
   const changePage = (direction, type) => {
     if (type === "books") {
       setCurrentPage((prevPage) => prevPage + direction);
@@ -249,190 +259,177 @@ const Research = () => {
       setResearchPage((prevPage) => prevPage + direction);
     }
   };
+
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
     setCurrentPage(1);
     setArticlePage(1);
     setResearchPage(1);
   };
-  useEffect(() => {
-    AOS.init({ duration: 1000, once: true });
-  }, []);
+
   return (
-    <div
-      id="research"
-      className="w-full px-4 sm:px-8 md:px-16 py-12 sm:py-24 mx-auto bg-lemon_chiffon text-deep_indigo"
-    >
-      <div className="mb-12 text-center" data-aos="fade-up">
-        <h1 className="text-4xl sm:text-5xl font-heading text-gradient mb-6 leading-tight tracking-wide">
-          My Research & Publications
-        </h1>
-        <p className="max-w-4xl mx-auto text-lg sm:text-xl font-description">
-          I've explored a range of engineering fields and advanced scientific topics. This includes nuclear, aerospace, astronautical, and electronics engineering, along with in-depth work on astronomy, astrophysics, and quantum mechanics.
-        </p>
-      </div>
-      <div className="flex flex-col items-center justify-center gap-6 mb-12 lg:flex-row">
-        <div className="flex items-center p-4 space-x-4 sm:space-x-6 shadow-xl bg-champagne_pink rounded-2xl">
-          <motion.button
-            className={`px-6 py-3 sm:px-8 sm:py-4 font-heading rounded-lg text-base sm:text-xl transition-all duration-300 ${
-              filter === "books"
-                ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white shadow-xl"
-                : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
-            }`}
-            onClick={() => handleFilterChange("books")}
-            whileHover={{ scale: 1.05 }}
-          >
-            Books
-          </motion.button>
-          <motion.button
-            className={`px-6 py-3 sm:px-8 sm:py-4 font-heading rounded-lg text-base sm:text-xl transition-all duration-300 ${
-              filter === "articles"
-                ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white shadow-xl"
-                : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
-            }`}
-            onClick={() => handleFilterChange("articles")}
-            whileHover={{ scale: 1.05 }}
-          >
-            Articles
-          </motion.button>
-          <motion.button
-            className={`px-6 py-3 sm:px-8 sm:py-4 font-heading rounded-lg text-base sm:text-xl transition-all duration-300 ${
-              filter === "research" 
-                ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white shadow-xl"
-                : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
-            }`}
-            onClick={() => handleFilterChange("research")}
-            whileHover={{ scale: 1.05 }}
-          >
-            Research Paper
-          </motion.button>
-        </div>
-        <motion.input
-          type="text"
-          placeholder="Search..."
-          className="w-full max-w-xl px-4 sm:px-8 py-3 border-2 border-deep_indigo bg-champagne_pink rounded-2xl focus:outline-none focus:ring-2 focus:ring-accent1 focus:ring-opacity-50 placeholder:text-deep_indigo font-description"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            handleSearch(e.target.value);
-          }}
-          whileFocus={{ scale: 1.02 }}
-        />
-      </div>
-      <div className="grid grid-cols-1 gap-8 sm:gap-10 sm:grid-cols-2 lg:grid-cols-3">
-        <AnimatePresence>
-          {paginatedData.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -40 }}
-              transition={{ duration: 0.6 }}
-              className="overflow-hidden shadow-2xl bg-champagne_pink rounded-3xl group hover:shadow-3xl hover:scale-105 transition-transform"
-              data-aos="fade-up"
+    <div className="bg-lemon_chiffon text-deep_indigo min-h-screen">
+      <div className="container mx-auto p-6 flex flex-col md:flex-row">
+        {/* Sidebar with Filters & Search */}
+        <aside className="md:w-1/4 mb-6 md:mb-0 md:mr-6">
+          <h2 className="text-2xl font-bold mb-4">Filters</h2>
+          <div className="flex flex-col space-y-4">
+            <button
+              onClick={() => handleFilterChange("books")}
+              className={`px-4 py-2 rounded ${
+                filter === "books"
+                  ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white"
+                  : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
+              }`}
             >
-              {(filter === "books" || filter === "research") ? (
-                <>
-                  <div className="relative h-72">
-                    <img
-                      src={item.img}
-                      alt={item.title}
-                      className="object-cover w-full h-full rounded-t-xl transition-transform duration-300 group-hover:scale-110"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="p-8">
-                    <h3 className="text-3xl font-heading text-accent1 mb-4">{item.title}</h3>
-                    <p className="text-lg text-deep_indigo mb-4 font-description">Published: {item.year}</p>
-                    <p className="text-deep_indigo text-lg font-description">{item.description}</p>
-                  </div>
-                </>
-              ) : (
-                <div className="relative p-4 sm:p-8 rounded-xl overflow-hidden">
-                  <div className="absolute inset-0 opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
-                  <LazyLoadImage
-                    src={item.img}
-                    alt={item.title}
-                    effect="blur"
-                    className="w-24 sm:w-36 h-24 sm:h-36 object-cover shadow-2xl rounded-full border-4 sm:border-8 border-deep_indigo transition-transform duration-300 group-hover:scale-110 z-20"
-                    style={{
-                      clipPath: "polygon(10% 0%, 80% 5%, 95% 40%, 70% 75%, 30% 90%, 5% 60%, 10% 20%)",
-                    }}
-                  />
-                  <div className="relative z-20 mt-4 sm:mt-6">
-                    <h3 className="text-xl sm:text-2xl font-heading text-accent1 mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-base sm:text-lg text-deep_indigo font-description">
-                      Platform:{" "}
-                      <span className="font-semibold text-accent2">
+              Books
+            </button>
+            <button
+              onClick={() => handleFilterChange("articles")}
+              className={`px-4 py-2 rounded ${
+                filter === "articles"
+                  ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white"
+                  : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
+              }`}
+            >
+              Articles
+            </button>
+            <button
+              onClick={() => handleFilterChange("research")}
+              className={`px-4 py-2 rounded ${
+                filter === "research"
+                  ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white"
+                  : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
+              }`}
+            >
+              Research Paper
+            </button>
+          </div>
+          <div className="mt-6">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                handleSearch(e.target.value);
+              }}
+              className="w-full px-4 py-2 border-2 border-deep_indigo rounded focus:outline-none focus:ring-2 focus:ring-accent1"
+            />
+          </div>
+        </aside>
+
+        {/* Main Content Area */}
+        <main className="md:w-3/4">
+          <header className="mb-8">
+            <h1 className="text-4xl font-bold mb-4">
+              My Research & Publications
+            </h1>
+            <p className="text-lg">
+              I've explored a range of engineering fields and advanced scientific
+              topics. This includes nuclear, aerospace, astronautical, and
+              electronics engineering, along with in-depth work on astronomy,
+              astrophysics, and quantum mechanics.
+            </p>
+          </header>
+
+          {/* Cards List */}
+          <section className="space-y-6">
+            {paginatedData.map((item, index) => (
+              <div
+                key={index}
+                className="bg-champagne_pink rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row"
+              >
+                {filter === "books" || filter === "research" ? (
+                  <>
+                    <div className="md:w-1/3">
+                      <img
+                        src={item.img}
+                        alt={item.title}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="p-6 md:w-2/3">
+                      <h3 className="text-2xl font-bold mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="mb-2">
+                        <span className="font-semibold">Published:</span>{" "}
+                        {item.year}
+                      </p>
+                      <p>{item.description}</p>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex flex-col md:flex-row w-full">
+                    <div className="md:w-1/3 flex justify-center items-center p-4">
+                      <LazyLoadImage
+                        src={item.img}
+                        alt={item.title}
+                        effect="blur"
+                        className="w-32 h-32 rounded-full border-4 border-deep_indigo"
+                      />
+                    </div>
+                    <div className="p-6 md:w-2/3">
+                      <h3 className="text-2xl font-bold mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="mb-2">
+                        <span className="font-semibold">Platform:</span>{" "}
                         {item.platform}
-                      </span>
-                    </p>
-                    <p className="text-sm sm:text-base text-deep_indigo mt-2 font-description">
-                      {item.description}
-                    </p>
-                  </div>
-                  <div className="flex gap-1 sm:gap-2 flex-wrap mt-4 z-20">
-                    {item.tags.map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 text-xs sm:text-sm text-deep_indigo bg-white bg-opacity-80 rounded-full shadow-lg transition-all duration-300 font-description"
+                      </p>
+                      <p className="mb-2">{item.description}</p>
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        {item.tags.map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="px-3 py-1 text-xs bg-white bg-opacity-80 rounded-full shadow font-medium"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block mt-2 px-4 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-white rounded hover:bg-pink_lavender"
                       >
-                        {tag}
-                      </span>
-                    ))}
+                        Read More
+                      </a>
+                    </div>
                   </div>
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center mt-4 text-base sm:text-lg text-accent1 font-heading font-semibold group hover:text-deep_indigo transition-all duration-300"
-                  >
-                    <span className="mr-2">Read More</span>
-                    <svg
-                      className="w-5 h-5 sm:w-6 sm:h-6 transform group-hover:translate-x-1 transition-transform duration-300"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </a>
-                </div>
+                )}
+              </div>
+            ))}
+          </section>
+
+          {/* Pagination */}
+          <div className="flex justify-between items-center mt-8">
+            <p className="text-lg font-semibold">
+              Page {page} of {Math.ceil(filteredData.length / itemsPerPage)}
+            </p>
+            <div className="space-x-4">
+              {page > 1 && (
+                <button
+                  onClick={() => changePage(-1, filter)}
+                  className="px-4 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-white rounded hover:bg-pink_lavender"
+                >
+                  Previous
+                </button>
               )}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
-      <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
-        <p className="text-base sm:text-xl font-semibold text-deep_indigo font-description">
-          Page {page} of {Math.ceil(filteredData.length / itemsPerPage)}
-        </p>
-        <div className="flex gap-4">
-          {page > 1 && (
-            <motion.button
-              onClick={() => changePage(-1, filter)}
-              className="px-4 sm:px-6 py-2 sm:py-3 text-white bg-gradient-to-r from-electric_blue to-aquamarine rounded-lg shadow-md hover:shadow-xl transition-all duration-300 text-sm sm:text-base font-cta"
-              whileHover={{ scale: 1.05 }}
-            >
-              Previous
-            </motion.button>
-          )}
-          {page * itemsPerPage < filteredData.length && (
-            <motion.button
-              onClick={() => changePage(1, filter)}
-              className="px-4 sm:px-6 py-2 sm:py-3 text-white bg-gradient-to-r from-electric_blue to-aquamarine rounded-lg shadow-md hover:shadow-xl transition-all duration-300 text-sm sm:text-base font-cta"
-              whileHover={{ scale: 1.05 }}
-            >
-              Next
-            </motion.button>
-          )}
-        </div>
+              {page * itemsPerPage < filteredData.length && (
+                <button
+                  onClick={() => changePage(1, filter)}
+                  className="px-4 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-white rounded hover:bg-pink_lavender"
+                >
+                  Next
+                </button>
+              )}
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   );

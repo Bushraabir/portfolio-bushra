@@ -131,6 +131,7 @@ const categoryIcons = {
 const SkillCard = ({ skillCategory }) => {
   const innerRef = useRef(null);
   const frontRef = useRef(null);
+
   useEffect(() => {
     if (frontRef.current) {
       Splitting({ target: frontRef.current, by: "chars" });
@@ -144,6 +145,7 @@ const SkillCard = ({ skillCategory }) => {
       });
     }
   }, []);
+
   const handleMouseEnter = () => {
     gsap.to(innerRef.current, {
       duration: 0.6,
@@ -152,6 +154,7 @@ const SkillCard = ({ skillCategory }) => {
       ease: "power3.out",
     });
   };
+
   const handleMouseLeave = () => {
     gsap.to(innerRef.current, {
       duration: 0.6,
@@ -160,6 +163,7 @@ const SkillCard = ({ skillCategory }) => {
       ease: "power3.out",
     });
   };
+
   return (
     <motion.div
       className="flip-card"
@@ -174,7 +178,9 @@ const SkillCard = ({ skillCategory }) => {
     >
       <div className="flip-card-inner" ref={innerRef}>
         <div className="flip-card-front" ref={frontRef}>
-          <div className="category-icon">{categoryIcons[skillCategory.category]}</div>
+          <div className="category-icon">
+            {categoryIcons[skillCategory.category]}
+          </div>
         </div>
         <div className="flip-card-back">
           <div className="card-items">
@@ -200,12 +206,15 @@ const Skill = () => {
   const sectionRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState("All");
   const filteredSkills =
-    activeCategory === "All" ? skillsData : skillsData.filter((s) => s.category === activeCategory);
+    activeCategory === "All"
+      ? skillsData
+      : skillsData.filter((s) => s.category === activeCategory);
   const bgImageUrl = skill;
+
   useEffect(() => {
     const container = sectionRef.current;
     const magnifier = container.querySelector(".section-magnifying-glass");
-    magnifier.style.background = `url(${bgImageUrl}) no-repeat`;
+    magnifier.style.background = `url(${bgImageUrl}) no-repeat center center`;
     let naturalWidth = 0,
       naturalHeight = 0;
     const img = new Image();
@@ -234,6 +243,7 @@ const Skill = () => {
         ease: "power3.out",
       });
     };
+
     const handleMove = (e) => {
       let x, y;
       const rect = container.getBoundingClientRect();
@@ -261,6 +271,7 @@ const Skill = () => {
         });
       }
     };
+
     const handleLeave = () => {
       gsap.to(magnifier, {
         duration: 0.3,
@@ -281,41 +292,226 @@ const Skill = () => {
       container.removeEventListener("touchend", handleLeave);
     };
   }, [bgImageUrl]);
+
   return (
     <>
       <style>{`
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { width: 100%; height: 100%; }
-        .skill-section { position: relative; min-height: 100vh; background: url(${bgImageUrl}) center/cover no-repeat; font-family: 'Playfair Display', serif; display: flex; flex-direction: column; align-items: center; padding: 2rem; overflow: hidden; color: var(--secondary-color); }
-        .section-magnifying-glass { position: absolute; height: 220px; width: 220px; border-radius: 50%; opacity: 0; pointer-events: none; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
-        .content { position: relative; z-index: 2; text-align: center; width: 100%; padding: 1rem; }
-        .content h1 { font-size: 3rem; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
-        .btn-group { margin-bottom: 2rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
-        .btn-group button { padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; border: 1px solid #fbf8cc; background: transparent; color: #fbf8cc; cursor: pointer; transition: background 0.3s, color 0.3s; }
-        .btn-group button.active, .btn-group button:hover { background: #fbf8cc; color: #2a1b3d; }
-        .grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); width: 100%; max-width: 1200px; margin: 2rem auto 0 auto; }
-        .flip-card { perspective: 1500px; width: 100%; max-width: 250px; height: 300px; margin: 1rem auto; position: relative; cursor: pointer; }
-        .flip-card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 1rem; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; }
-        .flip-card-front { background: linear-gradient(135deg, var(--overlay-bg), rgba(255,255,255,0.01)); backdrop-filter: blur(1px); border: 2px solid var(--border-color); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
-        .flip-card-back { background: linear-gradient(135deg, rgba(0,0,0,0.1), rgba(0,0,0,0.01)); backdrop-filter: blur(1px); border: 2px solid var(--border-color); box-shadow: 0 8px 20px rgba(0,0,0,0.2); transform: rotateY(180deg); overflow: hidden; }
-        .category-icon { font-size: 3rem; margin-bottom: 0.5rem; color: var(--primary-color); transition: transform 0.3s ease; }
-        .flip-card:hover .category-icon { transform: scale(1.1); }
-        .card-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; padding: 0.5rem; width: 100%; height: 100%; justify-items: center; align-items: center; }
-        .card-item-inner { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); border-radius: 0.5rem; padding: 0.75rem; text-align: center; color: #2a1b3d; font-family: 'Source Code Pro', monospace; width: 100%; box-sizing: border-box; }
-        .card-item-inner .icon { display: block; font-size: 2rem; margin-bottom: 0.5rem; color: #2a1b3d; }
-        .card-item-inner p { font-size: 0.875rem; color: #2a1b3d; }
-        @media (max-width: 1024px) { .content h1 { font-size: 2.5rem; } .grid { gap: 1.5rem; } }
-        @media (max-width: 768px) { .content h1 { font-size: 2rem; } .btn-group button { font-size: 0.8rem; padding: 0.4rem 0.8rem; } .flip-card { max-width: 200px; height: 250px; } .category-icon { font-size: 2.5rem; } .card-item-inner .icon { font-size: 1.75rem; } }
-        @media (max-width: 480px) { .content h1 { font-size: 1.75rem; } .btn-group button { font-size: 0.75rem; padding: 0.3rem 0.6rem; } .grid { gap: 1rem; } .flip-card { max-width: 180px; height: 220px; } }
+        :root {
+          --primary-color: #d4af37;
+          --secondary-color: #f5f5f5;
+          --accent-color: #2a1b3d;
+          --border-color: rgba(255, 255, 255, 0.3);
+          --overlay-bg: rgba(0, 0, 0, 0.6);
+        }
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+        html, body {
+          width: 100%;
+          height: 100%;
+          font-family: 'Playfair Display', serif;
+          background-color: #1e1e1e;
+        }
+        .skill-section {
+          position: relative;
+          min-height: 100vh;
+          background: linear-gradient(135deg, rgba(26,26,26,0.9), rgba(26,26,26,0.7)), url(${bgImageUrl}) center/cover no-repeat;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 3rem 2rem;
+          overflow: hidden;
+          color: var(--secondary-color);
+        }
+        .section-magnifying-glass {
+          position: absolute;
+          height: 240px;
+          width: 240px;
+          border-radius: 50%;
+          opacity: 0;
+          pointer-events: none;
+          box-shadow: 0 0 30px rgba(0,0,0,0.7);
+          border: 2px solid var(--primary-color);
+        }
+        .content {
+          position: relative;
+          z-index: 2;
+          text-align: center;
+          width: 100%;
+          max-width: 1200px;
+        }
+        .content h1 {
+          font-size: 3.5rem;
+          margin-bottom: 2rem;
+          color: var(--primary-color);
+          text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+        }
+        .btn-group {
+          margin-bottom: 2rem;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 1rem;
+        }
+        .btn-group button {
+          padding: 0.6rem 1.2rem;
+          border-radius: 50px;
+          font-size: 1rem;
+          font-weight: 600;
+          border: 2px solid var(--primary-color);
+          background: transparent;
+          color: var(--primary-color);
+          cursor: pointer;
+          transition: background 0.3s, color 0.3s, transform 0.3s;
+        }
+        .btn-group button.active,
+        .btn-group button:hover {
+          background: var(--primary-color);
+          color: var(--accent-color);
+          transform: translateY(-3px);
+        }
+        .grid {
+          display: grid;
+          gap: 2rem;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          width: 100%;
+          margin: 2rem auto 0;
+        }
+        .flip-card {
+          perspective: 1500px;
+          width: 100%;
+          max-width: 280px;
+          height: 320px;
+          margin: 0 auto;
+          cursor: pointer;
+        }
+        .flip-card-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transform-style: preserve-3d;
+          transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .flip-card-front,
+        .flip-card-back {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          backface-visibility: hidden;
+          border-radius: 1rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 1.5rem;
+          box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .flip-card-front {
+          background: linear-gradient(135deg, var(--overlay-bg), rgba(0,0,0,0.15));
+          border: 2px solid var(--border-color);
+        }
+        .flip-card-back {
+          background: linear-gradient(135deg, rgba(0,0,0,0.25), rgba(0,0,0,0.1));
+          border: 2px solid var(--border-color);
+          transform: rotateY(180deg);
+          overflow: hidden;
+        }
+        .category-icon {
+          font-size: 3rem;
+          margin-bottom: 0.5rem;
+          color: var(--primary-color);
+          transition: transform 0.3s ease;
+        }
+        .flip-card:hover .category-icon {
+          transform: scale(1.1);
+        }
+        .card-items {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+          width: 100%;
+          justify-items: center;
+          align-items: center;
+        }
+        .card-item-inner {
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(5px);
+          border-radius: 0.75rem;
+          padding: 0.8rem;
+          text-align: center;
+          color: var(--accent-color);
+          font-family: 'Source Code Pro', monospace;
+          width: 100%;
+          transition: transform 0.3s;
+        }
+        .card-item-inner .icon {
+          display: block;
+          font-size: 2rem;
+          margin-bottom: 0.5rem;
+          color: var(--accent-color);
+        }
+        .card-item-inner p {
+          font-size: 0.9rem;
+        }
+        @media (max-width: 1024px) {
+          .content h1 {
+            font-size: 3rem;
+          }
+          .grid {
+            gap: 1.5rem;
+          }
+        }
+        @media (max-width: 768px) {
+          .content h1 {
+            font-size: 2.5rem;
+          }
+          .btn-group button {
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+          }
+          .flip-card {
+            max-width: 240px;
+            height: 280px;
+          }
+          .category-icon {
+            font-size: 2.5rem;
+          }
+          .card-item-inner .icon {
+            font-size: 1.75rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .content h1 {
+            font-size: 2rem;
+          }
+          .btn-group button {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+          }
+          .grid {
+            gap: 1rem;
+          }
+          .flip-card {
+            max-width: 220px;
+            height: 260px;
+          }
+        }
       `}</style>
       <div ref={sectionRef} className="skill-section">
         <div className="section-magnifying-glass"></div>
         <div className="content">
-          <h1 className="split-text" data-splitting>My Skill Set</h1>
+          <h1 className="split-text" data-splitting>
+            My Skill Set
+          </h1>
           <div className="btn-group">
             {categories.map((cat, idx) => (
-              <button key={idx} className={activeCategory === cat ? "active" : ""} onClick={() => setActiveCategory(cat)}>
+              <button
+                key={idx}
+                className={activeCategory === cat ? "active" : ""}
+                onClick={() => setActiveCategory(cat)}
+              >
                 {cat}
               </button>
             ))}
