@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Lottie from "react-lottie";
-import loaderAnimation from "../assets/animation/loader1.json";
+import loaderAnimation from "../assets/animation/loader2.json";
 
 const fullText = "wait a sec let me create the world for You! 😊";
 
@@ -34,10 +34,10 @@ const Loader1 = () => {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-deep_indigo to-dark_teal flex items-center justify-center">
       <div className="absolute inset-0 z-10">
-        <Lottie options={lottieOptions} height="200%" width="100%" />
+        <Lottie options={lottieOptions} height="100%" width="100%" />
       </div>
       <div className="absolute inset-0 flex items-end justify-center z-20 p-4 sm:p-10">
-        <h2 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold">
+        <h2 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold text-description">
           {displayedText}
           <span className="inline-block blinking-cursor">|</span>
         </h2>
