@@ -131,6 +131,14 @@ const categoryIcons = {
 const SkillCard = ({ skillCategory }) => {
   const innerRef = useRef(null);
   const frontRef = useRef(null);
+  const [flipped, setFlipped] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(hover: none)").matches) {
+      setIsMobile(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (frontRef.current) {
@@ -145,6 +153,24 @@ const SkillCard = ({ skillCategory }) => {
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (flipped) {
+      gsap.to(innerRef.current, {
+        duration: 0.6,
+        rotationY: 180,
+        scale: 1.2,
+        ease: "power3.out",
+      });
+    } else {
+      gsap.to(innerRef.current, {
+        duration: 0.6,
+        rotationY: 0,
+        scale: 1,
+        ease: "power3.out",
+      });
+    }
+  }, [flipped]);
 
   const handleMouseEnter = () => {
     gsap.to(innerRef.current, {
@@ -164,6 +190,10 @@ const SkillCard = ({ skillCategory }) => {
     });
   };
 
+  const toggleFlip = () => {
+    setFlipped((prev) => !prev);
+  };
+
   return (
     <motion.div
       className="flip-card"
@@ -171,10 +201,9 @@ const SkillCard = ({ skillCategory }) => {
       whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       viewport={{ once: true }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onTouchStart={handleMouseEnter}
-      onTouchEnd={handleMouseLeave}
+      {...(isMobile
+        ? { onClick: toggleFlip }
+        : { onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave })}
     >
       <div className="flip-card-inner" ref={innerRef}>
         <div className="flip-card-front" ref={frontRef}>
@@ -188,7 +217,7 @@ const SkillCard = ({ skillCategory }) => {
               <motion.div
                 key={idx}
                 className="card-item-inner"
-                whileHover={{ scale: 1.1, rotate: 3 }}
+                whileHover={{ scale: 1.3, rotate: 3 }}
                 transition={{ type: "spring", stiffness: 300, damping: 15 }}
               >
                 <span className="icon">{item.icon}</span>
@@ -210,7 +239,6 @@ const Skill = () => {
       ? skillsData
       : skillsData.filter((s) => s.category === activeCategory);
   const bgImageUrl = skill;
-
   useEffect(() => {
     const container = sectionRef.current;
     const magnifier = container.querySelector(".section-magnifying-glass");
@@ -243,7 +271,6 @@ const Skill = () => {
         ease: "power3.out",
       });
     };
-
     const handleMove = (e) => {
       let x, y;
       const rect = container.getBoundingClientRect();
@@ -271,7 +298,6 @@ const Skill = () => {
         });
       }
     };
-
     const handleLeave = () => {
       gsap.to(magnifier, {
         duration: 0.3,
@@ -280,7 +306,6 @@ const Skill = () => {
         ease: "power3.out",
       });
     };
-
     container.addEventListener("pointermove", handleMove);
     container.addEventListener("pointerleave", handleLeave);
     container.addEventListener("touchmove", handleMove);
@@ -292,14 +317,14 @@ const Skill = () => {
       container.removeEventListener("touchend", handleLeave);
     };
   }, [bgImageUrl]);
-
   return (
     <>
       <style>{`
         :root {
-          --primary-color: #d4af37;
-          --secondary-color: #f5f5f5;
+          --primary-color: #fbf8cc;
+          --secondary-color: #fde4cf;
           --accent-color: #2a1b3d;
+          --dark-teal: #1d3557;
           --border-color: rgba(255, 255, 255, 0.3);
           --overlay-bg: rgba(0, 0, 0, 0.6);
         }
@@ -312,12 +337,12 @@ const Skill = () => {
           width: 100%;
           height: 100%;
           font-family: 'Playfair Display', serif;
-          background-color: #1e1e1e;
+          background-color: var(--accent-color);
         }
         .skill-section {
           position: relative;
           min-height: 100vh;
-          background: linear-gradient(135deg, rgba(26,26,26,0.9), rgba(26,26,26,0.7)), url(${bgImageUrl}) center/cover no-repeat;
+          background: linear-gradient(135deg, rgba(29,53,87,0.9), rgba(29,53,87,0.7)), url(${bgImageUrl}) center/cover no-repeat;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -357,7 +382,7 @@ const Skill = () => {
         }
         .btn-group button {
           padding: 0.6rem 1.2rem;
-          border-radius: 50px;
+          border-radius: 9999px;
           font-size: 1rem;
           font-weight: 600;
           border: 2px solid var(--primary-color);

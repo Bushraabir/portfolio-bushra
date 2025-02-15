@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { debounce } from "lodash";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
@@ -25,7 +25,22 @@ const Research = () => {
   const [articlePage, setArticlePage] = useState(1);
   const [researchPage, setResearchPage] = useState(1);
   const itemsPerPage = 3;
-  const isMobile = useRef(window.innerWidth <= 768);
+
+  // Responsive state for mobile interactivity
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [showFilters, setShowFilters] = useState(!isMobile); // show filters by default on desktop
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setShowFilters(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const books = [
     {
@@ -269,63 +284,73 @@ const Research = () => {
 
   return (
     <div className="bg-lemon_chiffon text-deep_indigo min-h-screen">
-      <div className="container mx-auto p-6 flex flex-col md:flex-row">
-        {/* Sidebar with Filters & Search */}
-        <aside className="md:w-1/4 mb-6 md:mb-0 md:mr-6">
-          <h2 className="text-2xl font-bold mb-4">Filters</h2>
-          <div className="flex flex-col space-y-4">
-            <button
-              onClick={() => handleFilterChange("books")}
-              className={`px-4 py-2 rounded ${
-                filter === "books"
-                  ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white"
-                  : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
-              }`}
-            >
-              Books
-            </button>
-            <button
-              onClick={() => handleFilterChange("articles")}
-              className={`px-4 py-2 rounded ${
-                filter === "articles"
-                  ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white"
-                  : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
-              }`}
-            >
-              Articles
-            </button>
-            <button
-              onClick={() => handleFilterChange("research")}
-              className={`px-4 py-2 rounded ${
-                filter === "research"
-                  ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white"
-                  : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
-              }`}
-            >
-              Research Paper
-            </button>
-          </div>
-          <div className="mt-6">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                handleSearch(e.target.value);
-              }}
-              className="w-full px-4 py-2 border-2 border-deep_indigo rounded focus:outline-none focus:ring-2 focus:ring-accent1"
-            />
-          </div>
-        </aside>
+      <div className="max-w-7xl mx-auto p-8 flex flex-col md:flex-row">
+        {isMobile && (
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="mb-4 px-4 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-white rounded transition-colors duration-300 hover:bg-pink_lavender"
+            aria-label="Toggle Filters"
+          >
+            {showFilters ? "Hide Filters" : "Show Filters"}
+          </button>
+        )}
 
-        {/* Main Content Area */}
+        {(!isMobile || showFilters) && (
+          <aside className="md:w-1/4 mb-8 md:mb-0 md:mr-8">
+            <h2 className="text-3xl font-bold mb-6">Filters</h2>
+            <div className="flex flex-col space-y-4">
+              <button
+                onClick={() => handleFilterChange("books")}
+                className={`px-4 py-2 rounded transition-colors duration-300 ${
+                  filter === "books"
+                    ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white"
+                    : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
+                }`}
+              >
+                Books
+              </button>
+              <button
+                onClick={() => handleFilterChange("articles")}
+                className={`px-4 py-2 rounded transition-colors duration-300 ${
+                  filter === "articles"
+                    ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white"
+                    : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
+                }`}
+              >
+                Articles
+              </button>
+              <button
+                onClick={() => handleFilterChange("research")}
+                className={`px-4 py-2 rounded transition-colors duration-300 ${
+                  filter === "research"
+                    ? "bg-gradient-to-r from-electric_blue to-aquamarine text-white"
+                    : "bg-tea_rose text-deep_indigo hover:bg-pink_lavender"
+                }`}
+              >
+                Research Paper
+              </button>
+            </div>
+            <div className="mt-8">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  handleSearch(e.target.value);
+                }}
+                className="w-full px-4 py-2 border-2 border-deep_indigo rounded focus:outline-none focus:ring-2 focus:ring-accent1"
+              />
+            </div>
+          </aside>
+        )}
+
         <main className="md:w-3/4">
-          <header className="mb-8">
-            <h1 className="text-4xl font-bold mb-4">
+          <header className="mb-10">
+            <h1 className="text-5xl font-extrabold mb-4">
               My Research & Publications
             </h1>
-            <p className="text-lg">
+            <p className="text-xl leading-relaxed">
               I've explored a range of engineering fields and advanced scientific
               topics. This includes nuclear, aerospace, astronautical, and
               electronics engineering, along with in-depth work on astronomy,
@@ -333,12 +358,11 @@ const Research = () => {
             </p>
           </header>
 
-          {/* Cards List */}
-          <section className="space-y-6">
+          <section className="space-y-8">
             {paginatedData.map((item, index) => (
               <div
                 key={index}
-                className="bg-champagne_pink rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row"
+                className="bg-champagne_pink rounded-xl shadow-xl overflow-hidden flex flex-col md:flex-row transition-shadow duration-300 hover:shadow-2xl"
               >
                 {filter === "books" || filter === "research" ? (
                   <>
@@ -350,20 +374,19 @@ const Research = () => {
                         loading="lazy"
                       />
                     </div>
-                    <div className="p-6 md:w-2/3">
-                      <h3 className="text-2xl font-bold mb-2">
+                    <div className="p-8 md:w-2/3 flex flex-col justify-center">
+                      <h3 className="text-3xl font-bold mb-3">
                         {item.title}
                       </h3>
-                      <p className="mb-2">
-                        <span className="font-semibold">Published:</span>{" "}
-                        {item.year}
+                      <p className="mb-4">
+                        <span className="font-semibold">Published:</span> {item.year}
                       </p>
-                      <p>{item.description}</p>
+                      <p className="text-lg">{item.description}</p>
                     </div>
                   </>
                 ) : (
                   <div className="flex flex-col md:flex-row w-full">
-                    <div className="md:w-1/3 flex justify-center items-center p-4">
+                    <div className="md:w-1/3 flex justify-center items-center p-6">
                       <LazyLoadImage
                         src={item.img}
                         alt={item.title}
@@ -371,16 +394,15 @@ const Research = () => {
                         className="w-32 h-32 rounded-full border-4 border-deep_indigo"
                       />
                     </div>
-                    <div className="p-6 md:w-2/3">
-                      <h3 className="text-2xl font-bold mb-2">
+                    <div className="p-8 md:w-2/3 flex flex-col justify-center">
+                      <h3 className="text-3xl font-bold mb-3">
                         {item.title}
                       </h3>
-                      <p className="mb-2">
-                        <span className="font-semibold">Platform:</span>{" "}
-                        {item.platform}
+                      <p className="mb-2 text-lg">
+                        <span className="font-semibold">Platform:</span> {item.platform}
                       </p>
-                      <p className="mb-2">{item.description}</p>
-                      <div className="flex flex-wrap gap-2 mb-2">
+                      <p className="mb-4 text-lg">{item.description}</p>
+                      <div className="flex flex-wrap gap-2 mb-4">
                         {item.tags.map((tag, idx) => (
                           <span
                             key={idx}
@@ -394,7 +416,7 @@ const Research = () => {
                         href={item.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block mt-2 px-4 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-white rounded hover:bg-pink_lavender"
+                        className="inline-block mt-2 px-6 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-white rounded transition-colors duration-300 hover:bg-pink_lavender"
                       >
                         Read More
                       </a>
@@ -405,16 +427,15 @@ const Research = () => {
             ))}
           </section>
 
-          {/* Pagination */}
-          <div className="flex justify-between items-center mt-8">
-            <p className="text-lg font-semibold">
+          <div className="flex justify-between items-center mt-10">
+            <p className="text-xl font-semibold">
               Page {page} of {Math.ceil(filteredData.length / itemsPerPage)}
             </p>
             <div className="space-x-4">
               {page > 1 && (
                 <button
                   onClick={() => changePage(-1, filter)}
-                  className="px-4 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-white rounded hover:bg-pink_lavender"
+                  className="px-6 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-white rounded transition-colors duration-300 hover:bg-pink_lavender"
                 >
                   Previous
                 </button>
@@ -422,7 +443,7 @@ const Research = () => {
               {page * itemsPerPage < filteredData.length && (
                 <button
                   onClick={() => changePage(1, filter)}
-                  className="px-4 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-white rounded hover:bg-pink_lavender"
+                  className="px-6 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-white rounded transition-colors duration-300 hover:bg-pink_lavender"
                 >
                   Next
                 </button>
