@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, memo } from "react";
+import React, { useState, useEffect, Suspense, memo, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -25,8 +25,8 @@ const achievements = [
       "Talent Pool Scholarship in SSC (2021)",
       "GPA 5.00 in Junior School Certificate (JSC) (2018)",
       "Talent Pool Scholarship in JSC (2018)",
-      "GPA 5.00 in Primary Education Completion Examination (PECE) (2015)",
-    ],
+      "GPA 5.00 in Primary Education Completion Examination (PECE) (2015)"
+    ]
   },
   {
     title: "Leadership & Team Management",
@@ -35,8 +35,8 @@ const achievements = [
       "Junior Prefect – Appointed as the Junior Prefect of Bir Protik Dr. Captain Sitara Begum House (2021)",
       "House Prefect – Led 92 cadets as the House Prefect of Bir Protik Dr. Captain Sitara Begum House (2022-2023)",
       "Under my leadership, the house won the Overall Championship in the 2023 Annual Athletics based on discipline, academics, and teamwork",
-      "Best Cadet Award (2017) – Recognized for outstanding discipline, academics, and co-curricular excellence",
-    ],
+      "Best Cadet Award (2017) – Recognized for outstanding discipline, academics, and co-curricular excellence"
+    ]
   },
   {
     title: "STEM Competitions & Olympiads",
@@ -46,8 +46,8 @@ const achievements = [
       "Bangladesh Physics Olympiad (BdPhO) – 1st place in the regional round (Jessore), National Round Participant (2023)",
       "Interhouse Astro Olympiad – 3rd place (2022)",
       "Interhouse Astrophysics Olympiad – 1st place in the junior group (2019)",
-      "Biggan Uthsob (National) – Regional Winner, National Round Participant with a project on Biodegradable Polythene (2019)",
-    ],
+      "Biggan Uthsob (National) – Regional Winner, National Round Participant with a project on Biodegradable Polythene (2019)"
+    ]
   },
   {
     title: "Writing & Communication Excellence",
@@ -57,8 +57,8 @@ const achievements = [
       "2nd place – Interhouse Essay Writing Competition (2020)",
       "1st place – International Mother Language Day Essay Competition (2019)",
       "1st place – Essay Writing Competition on Independence Day of Bangladesh (2022)",
-      "Best Writing Award – InterHouse Wall Magazine Competition (2017)",
-    ],
+      "Best Writing Award – InterHouse Wall Magazine Competition (2017)"
+    ]
   },
   {
     title: "Creative & Artistic Achievements",
@@ -68,8 +68,8 @@ const achievements = [
       "1st place – Bissho Shishu o Jubo Theater Dibosh Painting Competition (2019, 2022)",
       "1st place – National Mourning Day Painting Competition (2019)",
       "3rd place – 7th March Historical Speech Painting Competition (2022)",
-      "Best Artist – Interhouse Painting Competition (2018)",
-    ],
+      "Best Artist – Interhouse Painting Competition (2018)"
+    ]
   },
   {
     title: "Innovation & Scientific Research",
@@ -77,16 +77,16 @@ const achievements = [
     points: [
       "Team Leader – InterHouse Science Fair (Senior Group), Developed 'Gusto,' a virtual assistant with Face Recognition, awarded Best Project (2022)",
       "Team Leader - Easy Water Purification and Supply, awarded Best Project (2019)",
-      "Biggan Uthsob (National) – Biodegradable Polythene - Regional Winner, National Round Participant (2019)",
-    ],
+      "Biggan Uthsob (National) – Biodegradable Polythene - Regional Winner, National Round Participant (2019)"
+    ]
   },
   {
     title: "Public Speaking & Debate",
     description: "Improved communication skills through speaking competitions.",
     points: [
       "Soujonno Pouroshkar – 7th March Extempore Speech Competition (2022)",
-      "Runners-up – Debate Competition (2016)",
-    ],
+      "Runners-up – Debate Competition (2016)"
+    ]
   },
   {
     title: "NPO Volunteering",
@@ -96,7 +96,7 @@ const achievements = [
       "Vice President of EmpowerEd.",
       "STEM Innovation Advisor at EmpowerEd.",
       "Fundraising Coordinator at EmpowerEd."
-    ],
+    ]
   },
   {
     title: "Mentorship & Teaching Experience",
@@ -104,8 +104,8 @@ const achievements = [
     points: [
       "Provided tuition to 3 students for 2 months, improving their Physics and Mathematics.",
       "Created interactive PDFs and notes.",
-      "Implemented adaptive teaching techniques to enhance student learning",
-    ],
+      "Implemented adaptive teaching techniques to enhance student learning"
+    ]
   },
   {
     title: "Technical Expertise & Digital Skills",
@@ -118,18 +118,17 @@ const achievements = [
       "Web animation using GSAP and Framer Motion",
       "3D physics simulations using blender",
       "3D modeling and rendering using Blender",
-      "Graphic Design and Digital Art : Adobe Illustrator, Photoshop, Krita ",
-    ],
-  },
+      "Graphic Design and Digital Art : Adobe Illustrator, Photoshop, Krita "
+    ]
+  }
 ];
-
 
 class WebGLErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
   }
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
   componentDidCatch(error, errorInfo) {
@@ -138,17 +137,7 @@ class WebGLErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div
-          style={{
-            width: 350,
-            height: 350,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "#000",
-            color: "#fff",
-          }}
-        >
+        <div style={{ width: 350, height: 350, display: "flex", alignItems: "center", justifyContent: "center", background: "#000", color: "#fff" }}>
           WebGL Error
         </div>
       );
@@ -166,16 +155,7 @@ const LoadingFallback = () => (
 
 const AnimatedModel = memo(() => (
   <WebGLErrorBoundary>
-    <Canvas
-      style={{
-        width: 350,
-        height: 350,
-        position: "absolute",
-        top: "-149px",
-        left: "-145px",
-        zIndex: 10,
-      }}
-    >
+    <Canvas style={{ width: 350, height: 350, position: "absolute", top: "-149px", left: "-145px", zIndex: 10 }}>
       <ambientLight intensity={3} color="#a3c4f3" />
       <spotLight position={[15, 25, 10]} angle={0.7} penumbra={0.9} intensity={40} color="#f1c0e8" castShadow />
       <directionalLight position={[-10, 20, -10]} intensity={6} color="#ffcfd2" />
@@ -190,20 +170,16 @@ const AnimatedModel = memo(() => (
 
 const AchievementCard = ({ achievement, isMobile }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const toggleCard = () => setIsExpanded((prev) => !prev);
+  const toggleCard = useCallback(() => setIsExpanded(prev => !prev), []);
+  const headingRef = useRef(null);
   useEffect(() => {
-    gsap.fromTo(
-      ".achievement-heading",
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        delay: 0.2,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".achievement-heading", start: "top 90%" },
-      }
-    );
+    if (headingRef.current) {
+      gsap.fromTo(
+        headingRef.current,
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, delay: 0.2, ease: "power3.out", scrollTrigger: { trigger: headingRef.current, start: "top 90%" } }
+      );
+    }
   }, []);
   const titleClass = isMobile
     ? "achievement-heading text-2xl font-heading font-bold text-transparent bg-gradient-to-r from-lemon_chiffon to-pink_lavender bg-clip-text tracking-tight transition-transform transform hover:scale-105 hover:text-white"
@@ -222,37 +198,22 @@ const AchievementCard = ({ achievement, isMobile }) => {
         backdropFilter: "blur(1px)",
         borderRadius: "1.5rem",
         padding: isMobile ? "1rem" : "2rem",
-        border: "2px solid rgba(255,255,255,0.3)",
+        border: "2px solid rgba(255,255,255,0.3)"
       }}
       contentArrowStyle={{ borderRight: "8px solid rgba(20,20,40,0.1)" }}
       icon={<AnimatedModel />}
     >
       <motion.div onClick={toggleCard} role="button" aria-expanded={isExpanded} className="cursor-pointer">
-        <h3 className={titleClass}>{achievement.title}</h3>
+        <h3 ref={headingRef} className={titleClass}>{achievement.title}</h3>
         <p className={descriptionClass}>{achievement.description}</p>
-        <motion.div
-          animate={{ rotate: isExpanded ? 0 : 180 }}
-          transition={{ duration: 0.3 }}
-          className="mt-3 inline-block transform transition-transform duration-300 ease-in-out"
-        >
+        <motion.div animate={{ rotate: isExpanded ? 0 : 180 }} transition={{ duration: 0.3 }} className="mt-3 inline-block transform transition-transform duration-300 ease-in-out">
           <FaChevronDown className="text-2xl text-pink_lavender hover:text-white" />
         </motion.div>
       </motion.div>
-      <motion.div
-        initial={{ height: 0, opacity: 0 }}
-        animate={isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
-        className="overflow-hidden mt-4"
-      >
+      <motion.div initial={{ height: 0, opacity: 0 }} animate={isExpanded ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }} transition={{ duration: 0.6, ease: "easeInOut" }} className="overflow-hidden mt-4">
         <ul className="space-y-3">
           {achievement.points.map((point, index) => (
-            <motion.li
-              key={index}
-              className={pointClass}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-            >
+            <motion.li key={index} className={pointClass} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: index * 0.1, duration: 0.5 }}>
               <div className="flex items-center justify-center w-6 h-6 text-white border-2 border-transparent rounded-full bg-gradient-to-r from-tea_rose to-pink_lavender shadow-md">
                 <FaCheck className="text-lg" />
               </div>
@@ -269,15 +230,35 @@ const Achievements = () => {
   const [cursorPosition, setCursorPosition] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 600);
+    let resizeFrame;
+    const handleResize = () => {
+      if (resizeFrame) return;
+      resizeFrame = requestAnimationFrame(() => {
+        setIsMobile(window.innerWidth < 600);
+        resizeFrame = null;
+      });
+    };
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (resizeFrame) cancelAnimationFrame(resizeFrame);
+    };
   }, []);
   useEffect(() => {
-    const updateCursor = (event) => setCursorPosition({ x: event.clientX, y: event.clientY });
+    let moveFrame;
+    const updateCursor = (event) => {
+      if (moveFrame) return;
+      moveFrame = requestAnimationFrame(() => {
+        setCursorPosition({ x: event.clientX, y: event.clientY });
+        moveFrame = null;
+      });
+    };
     window.addEventListener("mousemove", updateCursor);
-    return () => window.removeEventListener("mousemove", updateCursor);
+    return () => {
+      window.removeEventListener("mousemove", updateCursor);
+      if (moveFrame) cancelAnimationFrame(moveFrame);
+    };
   }, []);
   useEffect(() => {
     gsap.fromTo(
