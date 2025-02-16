@@ -19,6 +19,33 @@ const Gallery = React.lazy(() => import("./sections/Gallery"));
 const Art = React.lazy(() => import("./sections/Art"));
 const Skill = React.lazy(() => import("./sections/Skill"));
 
+
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+  componentDidCatch(error, info) {
+    console.error('Error in 3D scene:', error, info);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ color: 'lemon_chiffon', textAlign: 'center', paddingTop: '20px' }}>
+          Oops! Something went wrong with the 3D scene.<br/>You can refreash the screen to reload the model ...
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+
+
 const sidebarVariants = {
   open: { width: "250px", opacity: 1, transition: { type: "tween", ease: "easeOut", duration: 1 } },
   closed: { width: "0", opacity: 0, transition: { type: "tween", ease: "easeIn", duration: 1 } },
@@ -122,7 +149,9 @@ const App = () => {
       <NavbarComponent />
       <div className="absolute top-0 left-0 w-full h-full">
         <Suspense fallback={<Loader1 />}>
-          <ParticleScene />
+          <ErrorBoundary>
+            <ParticleScene />
+          </ErrorBoundary>
         </Suspense>
       </div>
       <main className="min-h-screen overflow-hidden">

@@ -6,30 +6,6 @@ import { EffectComposer, Bloom, SSAO, DepthOfField } from '@react-three/postproc
 import * as THREE from 'three';
 import spaceBackground from '../assets/background.jpg';
 
-
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
-  }
-  componentDidCatch(error, info) {
-    console.error('Error in 3D scene:', error, info);
-  }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{ color: 'lemon_chiffon', textAlign: 'center', paddingTop: '20px' }}>
-          Oops! Something went wrong with the 3D scene.<br/>You can refreash the screen to reload the model ...
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
 const Loader = () => {
   const { progress } = useProgress();
   return <Html center>{progress.toFixed(0)}% loaded</Html>;
@@ -38,7 +14,6 @@ const Loader = () => {
 const InteractiveParticle = React.memo(({ position, color, radius, quality }) => {
   const [particleColor, setParticleColor] = useState(color);
   const [particleRadius, setParticleRadius] = useState(radius);
-
   const [ref] = useSphere(() => ({
     mass: 0.5,
     position,
@@ -48,11 +23,8 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality }) =>
     angularDamping: 0.1,
     ccdSpeedThreshold: 0.1,
     ccdIterations: 10,
-    onCollide: (e) => {
-      console.log('Collision detected on particle!', e.contact);
-    }
+    onCollide: (e) => { console.log('Collision detected on particle!', e.contact); }
   }), [particleRadius]);
-
 
   const handleClick = useCallback(() => {
     const colors = ['#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672', '#F2D966', '#0088A6', '#F79D7D', '#C59700', '#B8B8B8'];
@@ -62,7 +34,6 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality }) =>
     setParticleRadius(newRadius);
     console.log('Particle clicked! New color:', newColor, 'New radius:', newRadius);
   }, []);
-
 
   const dragStart = useRef(null);
   const initialRadius = useRef(particleRadius);
@@ -148,22 +119,8 @@ const BackgroundScene = React.memo(({ quality }) => {
   const segments = quality === 'low' ? 32 : 64;
   const gradientMaterial = useMemo(() => new THREE.ShaderMaterial({
     uniforms: { topColor: { value: new THREE.Color('#1d3557') }, bottomColor: { value: new THREE.Color('#fbf8cc') } },
-    vertexShader: `
-      varying vec3 vPosition; 
-      void main(){ 
-        vPosition = position; 
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); 
-      }
-    `,
-    fragmentShader: `
-      varying vec3 vPosition; 
-      uniform vec3 topColor; 
-      uniform vec3 bottomColor; 
-      void main(){ 
-        float mixValue = (vPosition.y+50.0)/100.0; 
-        gl_FragColor = vec4(mix(bottomColor, topColor, mixValue),1.0); 
-      }
-    `,
+    vertexShader: `varying vec3 vPosition; void main(){ vPosition = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+    fragmentShader: `varying vec3 vPosition; uniform vec3 topColor; uniform vec3 bottomColor; void main(){ float mixValue = (vPosition.y+50.0)/100.0; gl_FragColor = vec4(mix(bottomColor, topColor, mixValue),1.0); }`,
     side: THREE.BackSide,
     depthWrite: false,
     transparent: true
@@ -179,30 +136,23 @@ const BackgroundScene = React.memo(({ quality }) => {
   );
 });
 
-const ParticleSystem = React.memo(({ particles, quality }) => {
-  return (
-    <>
-      {particles.map((particle, index) => (
-        <InteractiveParticle key={index} position={particle.position} color={particle.color} radius={particle.radius} quality={quality} />
-      ))}
-    </>
-  );
-});
+const ParticleSystem = React.memo(({ particles, quality }) => (
+  <>
+    {particles.map((particle, index) => (
+      <InteractiveParticle key={index} position={particle.position} color={particle.color} radius={particle.radius} quality={quality} />
+    ))}
+  </>
+));
 
 const ParticleScene = () => {
   const [quality, setQuality] = useState('high');
   const cameraRef = useRef();
-
   const initialParticleCount = typeof window !== 'undefined' && window.innerWidth < 768 ? 5 : 19;
   const [particles, setParticles] = useState(() => {
     const arr = [];
     for (let i = 0; i < initialParticleCount; i++) {
       arr.push({
-        position: [
-          (Math.random() - 0.5) * 20,
-          Math.random() * 5 + 2,
-          (Math.random() - 0.5) * 20
-        ],
+        position: [(Math.random() - 0.5) * 20, Math.random() * 5 + 2, (Math.random() - 0.5) * 20],
         color: ['#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672', '#F2D966'][Math.floor(Math.random() * 6)],
         radius: Math.random() * (1.7 - 0.5) + 0.5
       });
@@ -287,10 +237,7 @@ const ParticleScene = () => {
         }
         attempt++;
       }
-      setParticles((prevParticles) => [
-        ...prevParticles,
-        { position: newPosition.toArray(), color: randomColor, radius: randomRadius }
-      ]);
+      setParticles((prev) => [...prev, { position: newPosition.toArray(), color: randomColor, radius: randomRadius }]);
     }
   };
 
@@ -304,12 +251,7 @@ const ParticleScene = () => {
       <Suspense fallback={<Loader />}>
         <PerspectiveCamera makeDefault ref={cameraRef} position={[0, 5, 15]} fov={50} near={0.1} far={1000} />
         <BackgroundScene quality={quality} />
-
-        {quality === 'high' ? (
-          <Environment files={spaceBackground} background />
-        ) : (
-          <color attach="background" args={['#000']} />
-        )}
+        {quality === 'high' ? <Environment files={spaceBackground} background /> : <color attach="background" args={['#000']} />}
         <ambientLight intensity={0.2} color="#404040" />
         <directionalLight position={[15, 20, 10]} intensity={1.2} castShadow shadow-mapSize-width={2048} shadow-mapSize-height={2048} />
         <spotLight position={[-15, 25, -10]} angle={Math.PI / 6} penumbra={0.5} intensity={1.5} castShadow />
@@ -317,7 +259,7 @@ const ParticleScene = () => {
         <hemisphereLight skyColor="#bb99ff" groundColor="#664422" intensity={0.4} />
         <Physics
           gravity={[0, -9.8, 0]}
-          iterations={quality === 'low' ? 10 : 20}  
+          iterations={quality === 'low' ? 10 : 20}
           allowSleep
           defaultContactMaterial={{
             friction: 0.5,
@@ -329,12 +271,7 @@ const ParticleScene = () => {
           <GroundPlane />
           <ParticleSystem particles={particles} quality={quality} />
         </Physics>
-        <OrbitControls
-          enableZoom={false}
-          enableRotate={true}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 2}
-        />
+        <OrbitControls enableZoom={false} enableRotate={true} maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} />
         <EffectComposer>
           <Bloom intensity={quality === 'low' ? 0.5 : 1.0} radius={quality === 'low' ? 0.1 : 0.2} />
           <SSAO radius={quality === 'low' ? 0.1 : 0.2} intensity={quality === 'low' ? 6 : 12} />
@@ -345,10 +282,4 @@ const ParticleScene = () => {
   );
 };
 
-const App = () => (
-  <ErrorBoundary>
-    <ParticleScene />
-  </ErrorBoundary>
-);
-
-export default App;
+export default ParticleScene;
