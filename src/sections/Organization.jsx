@@ -124,7 +124,7 @@ export default function OrganizationGallery() {
       },
     });
     gsap.to({ val: 0 }, {
-      val: 4418,
+      val: 3130,
       duration: 2,
       ease: "power1.out",
       delay: 0.6,
@@ -149,7 +149,7 @@ export default function OrganizationGallery() {
 
   return (
     <article id="organization" className="w-full bg-lemon_chiffon">
-      <header className="relative h-screen flex flex-col justify-center items-center bg-gradient-to-r from-electric_blue to-aquamarine overflow-hidden px-4 sm:px-6 lg:px-8">
+      <header className="relative h-auto flex flex-col justify-center items-center bg-gradient-to-r from-electric_blue to-aquamarine overflow-hidden px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 opacity-50 bg-gradient-to-r from-electric_blue to-deep_indigo animate-gradient-move"></div>
         <div className="relative z-10 w-full max-w-screen-xl text-center">
           <img
@@ -166,19 +166,19 @@ export default function OrganizationGallery() {
           >
             Founder of EmpowerEd
           </motion.h2>
-          <p className="max-w-3xl mx-auto mt-4 font-description text-base sm:text-lg lg:text-xl leading-relaxed text-dark_teal">
+          <p className="max-w-3xl mx-auto  font-description text-base sm:text-lg lg:text-xl leading-relaxed text-dark_teal">
             EmpowerEd is a non-profit organization with a mission to make education accessible to everyone, everywhere. We believe that every student deserves the same starting line, and we’re here to make that happen—at no cost to you!
           </p>
-          <div className="-mt-1 flex justify-center">
+          <div className="flex justify-center ">
             <Lottie
               options={lottieOptions}
               height={300}
               width={300}
-              className="w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96"
+              className="w-50 h-50 sm:w-40 sm:h-40 lg:w-96 lg:h-96"
             />
           </div>
         </div>
-        <div className="absolute bottom-8 flex flex-row gap-5 items-center z-20">
+        <div className="absolute bottom-10 flex flex-row gap-5 items-center z-20">
           <IconButton
             href="https://bushraabir.github.io/empowereducation/"
             ariaLabel="Visit our website"
@@ -228,8 +228,8 @@ export default function OrganizationGallery() {
           </IconButton>
         </div>
       </header>
-      <section className="img-group-container h-[100vh] relative" ref={containerRef}>
-        <div className="sticky top-0 overflow-hidden h-[100vh] w-full">
+      <section className="img-group-container  relative" ref={containerRef}>
+        <div className="sticky top-0 overflow-hidden h-auto w-full">
           <ul className="flex flex-col md:flex-row" ref={groupRef}>
             {items.map((item, index) => (
               <li
@@ -254,8 +254,7 @@ export default function OrganizationGallery() {
             ))}
           </ul>
         </div>
-      </section>
-      <section
+      </section>      <section
         ref={counterSectionRef}
         className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden"
       >
@@ -351,7 +350,7 @@ export default function OrganizationGallery() {
               Solved 226 Problems in C++
             </motion.a>
           </motion.div>
-          {/* C Block */}
+
           <motion.div
             className="flex flex-col items-center"
             variants={{
@@ -395,7 +394,7 @@ export default function OrganizationGallery() {
               </span>
             </div>
             <span className="text-lg sm:text-xl text-description text-lemon_chiffon-500 mt-2">
-              Ranking: 4418 (Top 1%)
+              Ranking: 3130 (Top 1%)
             </span>
           </motion.div>
         </motion.div>
