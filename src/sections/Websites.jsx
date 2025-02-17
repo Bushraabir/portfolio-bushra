@@ -48,81 +48,79 @@ const Website = () => {
   const descriptionRef = useRef(null);
   const buttonsRef = useRef(null);
   const cardsRef = useRef(null);
-
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
   useEffect(() => {
-    let tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: initialMessageRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: true
-      }
-    });
-    tl.to(stemRef.current, { x: -2500, scale: 5.5, ease: "expo.out", duration: 999000050 }, 0)
-      .to(collabRef.current, { x: 3500, scale: 5.5, ease: "expo.out", duration: 999000050 }, 0)
-      .to(lottieContainerRef.current, { scale: 65, ease: "expo.out", duration: 999000050 }, 0)
-      .to(lottieContainerRef.current, { opacity: 0, ease: "expo.out", duration: 999000050 }, 0.01);
-    gsap.fromTo(
-      descriptionRef.current,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        ease: "expo.out",
-        duration: 1.2,
+    if (isDesktop) {
+      let tl = gsap.timeline({
         scrollTrigger: {
-          trigger: descriptionRef.current,
-          start: "top 90%",
-          toggleActions: "play none none reverse"
+          trigger: initialMessageRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true
         }
-      }
-    );
-    gsap.fromTo(
-      buttonsRef.current,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        ease: "expo.out",
-        duration: 1.2,
-        delay: 0.4,
-        scrollTrigger: {
-          trigger: buttonsRef.current,
-          start: "top 90%",
-          toggleActions: "play none none reverse"
+      });
+      tl.to(stemRef.current, { x: -2500, scale: 5.5, ease: "expo.out", duration: 999000050 }, 0)
+        .to(collabRef.current, { x: 3500, scale: 5.5, ease: "expo.out", duration: 999000050 }, 0)
+        .to(lottieContainerRef.current, { scale: 65, ease: "expo.out", duration: 999000050 }, 0)
+        .to(lottieContainerRef.current, { opacity: 0, ease: "expo.out", duration: 999000050 }, 0.01);
+      gsap.fromTo(
+        descriptionRef.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          ease: "expo.out",
+          duration: 1.2,
+          scrollTrigger: {
+            trigger: descriptionRef.current,
+            start: "top 90%",
+            toggleActions: "play none none reverse"
+          }
         }
-      }
-    );
-    gsap.fromTo(
-      cardsRef.current,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        ease: "expo.out",
-        duration: 1.2,
-        delay: 0.6,
-        scrollTrigger: {
-          trigger: cardsRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
+      );
+      gsap.fromTo(
+        buttonsRef.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          ease: "expo.out",
+          duration: 1.2,
+          delay: 0.4,
+          scrollTrigger: {
+            trigger: buttonsRef.current,
+            start: "top 90%",
+            toggleActions: "play none none reverse"
+          }
         }
-      }
-    );
-  }, []);
-
+      );
+      gsap.fromTo(
+        cardsRef.current,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          ease: "expo.out",
+          duration: 1.2,
+          delay: 0.6,
+          scrollTrigger: {
+            trigger: cardsRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
+  }, [isDesktop]);
   const lottieOptions = {
     loop: true,
     autoplay: true,
     animationData: animationData,
     rendererSettings: { preserveAspectRatio: "xMidYMid slice" }
   };
-
   const courses = [
     {
       name: "Satellite Engineering Course",
@@ -190,7 +188,6 @@ const Website = () => {
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     }
   ];
-
   const websites = [
     {
       title: "EmpowerEd Website",
@@ -294,7 +291,6 @@ const Website = () => {
         "https://github.com/your-username/sustainability-adventure"
     }
   ];
-
   const projects = [
     {
       name: ": Building a Self-Made Satellite with a Self-Made Rocket",
@@ -345,7 +341,6 @@ const Website = () => {
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     }
   ];
-
   let activeData = [];
   if (activeTab === "websites") {
     activeData = websites;
@@ -361,6 +356,37 @@ const Website = () => {
   const Card = ({ data, onClick }) => {
     const title = data.title || data.name;
     const { description, tags, images, source_code_link } = data;
+    if (!isDesktop) {
+      return (
+        <div onClick={() => onClick(data)} className="mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-deep_indigo cursor-pointer transition-transform">
+          <div className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
+            <img src={images[0]} alt={title} className="object-cover w-full h-full rounded-xl" />
+            <div className="absolute inset-0 flex justify-end m-4">
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(source_code_link, "_blank");
+                }}
+                className="flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer"
+              >
+                <img src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png" alt="GitHub" className="w-7 h-7" />
+              </div>
+            </div>
+          </div>
+          <div className="mt-6">
+            <h6 className="sm:text-4xl text-2xl font-heading text-aquamarine">{title}</h6>
+            <p className="mt-3 font-description text-lemon_chiffon">{description}</p>
+          </div>
+          <div className="flex flex-wrap gap-3 mt-6">
+            {tags.slice(0, 3).map((tag, index) => (
+              <span key={index} className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg`}>
+                #{tag.name}
+              </span>
+            ))}
+          </div>
+        </div>
+      );
+    }
     return (
       <motion.div
         onClick={() => onClick(data)}
@@ -380,11 +406,7 @@ const Website = () => {
               }}
               className="flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer transition-transform duration-500 hover:scale-110"
             >
-              <img
-                src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png"
-                alt="GitHub"
-                className="w-7 h-7"
-              />
+              <img src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png" alt="GitHub" className="w-7 h-7" />
             </motion.div>
           </div>
         </ReactTilt>
@@ -398,10 +420,7 @@ const Website = () => {
         </div>
         <div className="flex flex-wrap gap-3 mt-6">
           {tags.slice(0, 3).map((tag, index) => (
-            <motion.span
-              key={index}
-              className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
-            >
+            <motion.span key={index} className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}>
               #{tag.name}
             </motion.span>
           ))}
@@ -422,157 +441,257 @@ const Website = () => {
         <div className="container mx-auto px-6 lg:px-20">
           <div ref={initialMessageRef} className="flex flex-col items-center justify-center min-h-screen mt-55">
             <div className="flex items-center">
-              <motion.h1 ref={stemRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
-                STEM
-              </motion.h1>
+              {isDesktop ? (
+                <motion.h1 ref={stemRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
+                  STEM
+                </motion.h1>
+              ) : (
+                <h1 ref={stemRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
+                  STEM
+                </h1>
+              )}
               <div ref={lottieContainerRef} className="-mx-3 mt-4">
-                <Lottie
-                  options={lottieOptions}
-                  height={isDesktop ? 80 : 30}
-                  width={isDesktop ? 80 : 30}
-                />
+                <Lottie options={lottieOptions} height={isDesktop ? 80 : 30} width={isDesktop ? 80 : 30} />
               </div>
-              <motion.h1 ref={collabRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
-                Collabolation
-              </motion.h1>
+              {isDesktop ? (
+                <motion.h1 ref={collabRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
+                  Collabolation
+                </motion.h1>
+              ) : (
+                <h1 ref={collabRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
+                  Collabolation
+                </h1>
+              )}
             </div>
           </div>
-          <div ref={descriptionRef} className="text-center mb-12 mt-32">
-            <p className="text-lg font-description">
-              Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
-            </p>
-          </div>
-          <div ref={buttonsRef} className="flex justify-center mb-8 space-x-4 sm:space-x-6">
-            <button
-              className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${
-                activeTab === "websites"
-                  ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                  : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
-              }`}
-              onClick={() => setActiveTab("websites")}
-            >
-              Websites
-            </button>
-            <button
-              className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${
-                activeTab === "projects"
-                  ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                  : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
-              }`}
-              onClick={() => setActiveTab("projects")}
-            >
-              Projects
-            </button>
-            <button
-              className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${
-                activeTab === "courses"
-                  ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                  : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
-              }`}
-              onClick={() => setActiveTab("courses")}
-            >
-              Courses
-            </button>
-          </div>
-          <div ref={cardsRef}>
-            {groupedData.map((group, rowIndex) => (
-              <div key={rowIndex} className="grid grid-cols-1 sm:grid-cols-2 gap-8 px-4 sm:px-8 mb-8">
-                {group.map((item, cardIndex) => (
-                  <Card key={cardIndex} data={item} onClick={setSelectedProject} />
-                ))}
-              </div>
-            ))}
-          </div>
+          {isDesktop ? (
+            <motion.div ref={descriptionRef} className="text-center mb-12 mt-32">
+              <p className="text-lg font-description">
+                Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
+              </p>
+            </motion.div>
+          ) : (
+            <div ref={descriptionRef} className="text-center mb-12 mt-32">
+              <p className="text-lg font-description">
+                Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
+              </p>
+            </div>
+          )}
+          {isDesktop ? (
+            <motion.div ref={buttonsRef} className="flex justify-center mb-8 space-x-4 sm:space-x-6">
+              <button
+                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${
+                  activeTab === "websites"
+                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
+                    : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
+                }`}
+                onClick={() => setActiveTab("websites")}
+              >
+                Websites
+              </button>
+              <button
+                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${
+                  activeTab === "projects"
+                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
+                    : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
+                }`}
+                onClick={() => setActiveTab("projects")}
+              >
+                Projects
+              </button>
+              <button
+                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${
+                  activeTab === "courses"
+                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
+                    : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
+                }`}
+                onClick={() => setActiveTab("courses")}
+              >
+                Courses
+              </button>
+            </motion.div>
+          ) : (
+            <div ref={buttonsRef} className="flex justify-center mb-8 space-x-4 sm:space-x-6">
+              <button
+                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg ${
+                  activeTab === "websites"
+                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
+                    : "bg-transparent text-champagne_pink border border-champagne_pink"
+                }`}
+                onClick={() => setActiveTab("websites")}
+              >
+                Websites
+              </button>
+              <button
+                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg ${
+                  activeTab === "projects"
+                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
+                    : "bg-transparent text-champagne_pink border border-champagne_pink"
+                }`}
+                onClick={() => setActiveTab("projects")}
+              >
+                Projects
+              </button>
+              <button
+                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg ${
+                  activeTab === "courses"
+                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
+                    : "bg-transparent text-champagne_pink border border-champagne_pink"
+                }`}
+                onClick={() => setActiveTab("courses")}
+              >
+                Courses
+              </button>
+            </div>
+          )}
+          {isDesktop ? (
+            <motion.div ref={cardsRef}>
+              {groupedData.map((group, rowIndex) => (
+                <div key={rowIndex} className="grid grid-cols-1 sm:grid-cols-2 gap-8 px-4 sm:px-8 mb-8">
+                  {group.map((item, cardIndex) => (
+                    <Card key={cardIndex} data={item} onClick={setSelectedProject} />
+                  ))}
+                </div>
+              ))}
+            </motion.div>
+          ) : (
+            <div ref={cardsRef}>
+              {groupedData.map((group, rowIndex) => (
+                <div key={rowIndex} className="grid grid-cols-1 sm:grid-cols-2 gap-8 px-4 sm:px-8 mb-8">
+                  {group.map((item, cardIndex) => (
+                    <Card key={cardIndex} data={item} onClick={setSelectedProject} />
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        {selectedProject && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-70"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-          >
+        {selectedProject &&
+          (isDesktop ? (
             <motion.div
-              className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-8 rounded-2xl w-11/12 sm:w-3/4 md:w-1/2 max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-md border-4 border-lemon_chiffon border-opacity-80 relative"
-              initial={{ scale: 0.85 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.85 }}
-              transition={{ type: "spring", stiffness: 320, damping: 35 }}
+              className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-70"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
             >
-              <motion.button
-                onClick={() => setSelectedProject(null)}
-                className="absolute p-2 top-4 right-4 rounded-full shadow-xl text-lemon_chiffon bg-aquamarine transition-transform hover:scale-110 hover:shadow-2xl"
-                whileHover={{ scale: 1.1, rotate: 15, transition: { type: "spring", stiffness: 400 } }}
-              >
-                ✕
-              </motion.button>
-              <motion.h2
-                className="mb-6 font-heading text-4xl font-extrabold text-dark_teal"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-              >
-                {selectedProject.title || selectedProject.name}
-              </motion.h2>
-              <motion.p
-                className="mb-8 text-lg font-description leading-relaxed text-deep_indigo"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
-              >
-                {selectedProject.detailedDescription}
-              </motion.p>
               <motion.div
-                className="flex flex-wrap gap-3 mb-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6, duration: 0.6 }}
+                className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-8 rounded-2xl w-11/12 sm:w-3/4 md:w-1/2 max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-md border-4 border-lemon_chiffon border-opacity-80 relative"
+                initial={{ scale: 0.85 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.85 }}
+                transition={{ type: "spring", stiffness: 320, damping: 35 }}
               >
-                {selectedProject.tags.map((tag, idx) => (
-                  <motion.span
-                    key={idx}
-                    className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
-                  >
-                    #{tag.name}
-                  </motion.span>
-                ))}
-              </motion.div>
-              <motion.div
-                className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.7, duration: 0.6 }}
-              >
-                {selectedProject.images.map((image, idx) => (
-                  <motion.img
-                    key={idx}
-                    src={image}
-                    alt={`Image ${idx}`}
-                    className="object-cover w-full h-32 rounded-xl transition-transform hover:scale-105 hover:shadow-xl"
-                    initial={{ scale: 0.9 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: idx * 0.2, duration: 0.4 }}
-                  />
-                ))}
-              </motion.div>
-              <motion.div
-                className="flex justify-center mt-8"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 0.6 }}
-              >
-                <a
-                  href={selectedProject.source_code_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 text-lg font-medium font-cta rounded-full shadow-2xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue transition-transform hover:scale-110 hover:opacity-90"
+                <motion.button
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute p-2 top-4 right-4 rounded-full shadow-xl text-lemon_chiffon bg-aquamarine transition-transform hover:scale-110 hover:shadow-2xl"
+                  whileHover={{ scale: 1.1, rotate: 15, transition: { type: "spring", stiffness: 400 } }}
                 >
-                  View Source Code
-                </a>
+                  ✕
+                </motion.button>
+                <motion.h2
+                  className="mb-6 font-heading text-4xl font-extrabold text-dark_teal"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.6 }}
+                >
+                  {selectedProject.title || selectedProject.name}
+                </motion.h2>
+                <motion.p
+                  className="mb-8 text-lg font-description leading-relaxed text-deep_indigo"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.6 }}
+                >
+                  {selectedProject.detailedDescription}
+                </motion.p>
+                <motion.div
+                  className="flex flex-wrap gap-3 mb-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6, duration: 0.6 }}
+                >
+                  {selectedProject.tags.map((tag, idx) => (
+                    <motion.span
+                      key={idx}
+                      className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
+                    >
+                      #{tag.name}
+                    </motion.span>
+                  ))}
+                </motion.div>
+                <motion.div
+                  className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7, duration: 0.6 }}
+                >
+                  {selectedProject.images.map((image, idx) => (
+                    <motion.img
+                      key={idx}
+                      src={image}
+                      alt={`Image ${idx}`}
+                      className="object-cover w-full h-32 rounded-xl transition-transform hover:scale-105 hover:shadow-xl"
+                      initial={{ scale: 0.9 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: idx * 0.2, duration: 0.4 }}
+                    />
+                  ))}
+                </motion.div>
+                <motion.div
+                  className="flex justify-center mt-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1, duration: 0.6 }}
+                >
+                  <a
+                    href={selectedProject.source_code_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 text-lg font-medium font-cta rounded-full shadow-2xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue transition-transform hover:scale-110 hover:opacity-90"
+                  >
+                    View Source Code
+                  </a>
+                </motion.div>
               </motion.div>
             </motion.div>
-          </motion.div>
-        )}
+          ) : (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-70">
+              <div className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-8 rounded-2xl w-11/12 sm:w-3/4 md:w-1/2 max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-md border-4 border-lemon_chiffon border-opacity-80 relative">
+                <button onClick={() => setSelectedProject(null)} className="absolute p-2 top-4 right-4 rounded-full shadow-xl text-lemon_chiffon bg-aquamarine">
+                  ✕
+                </button>
+                <h2 className="mb-6 font-heading text-4xl font-extrabold text-dark_teal">
+                  {selectedProject.title || selectedProject.name}
+                </h2>
+                <p className="mb-8 text-lg font-description leading-relaxed text-deep_indigo">
+                  {selectedProject.detailedDescription}
+                </p>
+                <div className="flex flex-wrap gap-3 mb-4">
+                  {selectedProject.tags.map((tag, idx) => (
+                    <span key={idx} className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg`}>
+                      #{tag.name}
+                    </span>
+                  ))}
+                </div>
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                  {selectedProject.images.map((image, idx) => (
+                    <img key={idx} src={image} alt={`Image ${idx}`} className="object-cover w-full h-32 rounded-xl" />
+                  ))}
+                </div>
+                <div className="flex justify-center mt-8">
+                  <a
+                    href={selectedProject.source_code_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 text-lg font-medium font-cta rounded-full shadow-2xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue"
+                  >
+                    View Source Code
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
       </section>
     </>
   );

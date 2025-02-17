@@ -76,26 +76,38 @@ const images = [
 const Gallery = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0 });
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const sliderRef = useRef(null);
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile) {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+    }
+  }, [isMobile]);
 
   useEffect(() => {
-    if (sliderRef.current) {
+    if (!isMobile && sliderRef.current) {
       const sliderWidth = sliderRef.current.scrollWidth;
       const containerWidth = sliderRef.current.offsetWidth;
       setDragConstraints({ left: containerWidth - sliderWidth, right: 0 });
     }
-  }, [sliderRef, images]);
+  }, [sliderRef, images, isMobile]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     let mm = gsap.matchMedia();
+    if (!isMobile) {
     mm.add("(min-width: 769px)", () => {
       gsap.utils.toArray(".row").forEach((row, index) => {
         const cardLeft = row.querySelector(".card-left");
@@ -196,8 +208,9 @@ const Gallery = () => {
         );
       });
     });
+    }
     return () => mm.revert();
-  }, []);
+  }, [isMobile]);
 
   const handleHover = (e, show = true) => {
     const descriptionElement = e.currentTarget.querySelector(".image-description");
@@ -320,7 +333,6 @@ const Gallery = () => {
   -webkit-text-stroke: 2px #2a1b3d;
   color: transparent;
 }
-
 .banner .content h2 {
   font-size: 3.5rem;
   font-weight: bold;
@@ -377,63 +389,77 @@ const Gallery = () => {
     font-size: 2.5rem;
     text-align: center;
   }
+  .mobile-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 5px;
+  }
+  .mobile-gallery .card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  .mobile-gallery .image-description {
+    font-family: 'Jura', sans-serif;
+    font-size: 0.8em;
+    color: #2a1b3d;
+    opacity: 0;
+    pointer-events: none;
+    background: rgba(173, 167, 201, 0.7);
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #E6B800;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .mobile-gallery .card:hover .image-description {
+    opacity: 1;
+    color: #E6B800;
+    background: rgba(90, 4, 71, 0.1);
+  }
 }
       `}</style>
-      <div className="relative py-16 banner  bg-lemon_chiffon h-[200vh] main">
+      <div className="relative py-16 banner bg-lemon_chiffon h-[200vh] main">
         <div className="font-sans text-lg text-right text-center text-dark_teal">
           <h2 className="mb-2 font-heading text-6xl text-pink_lavender">Stories Captured</h2>
-          <p className="text-xl font-description  text-deep_indigo">Adventures of my life</p>
-          <p className="mt-2 text-lg text-subheading text-deep_indigo">
-            Explore moments that define my journey and shape my dreams!
-          </p>
+          <p className="text-xl font-description text-deep_indigo">Adventures of my life</p>
+          <p className="mt-2 text-lg text-subheading text-deep_indigo">Explore moments that define my journey and shape my dreams!</p>
         </div>
-        <motion.div
-          ref={sliderRef}
-          drag="x"
-          dragConstraints={dragConstraints}
-          className="slider rounded-3xl"
-          style={{ "--quantity": images.length }}
-        >
+        {isMobile ? (
+          <div className="mobile-gallery">
+            {images.map((img, index) => (
+              <div className="card border-2 shadow-lg rounded-xl relative" key={index} onMouseEnter={(e) => handleHover(e, true)} onMouseLeave={(e) => handleHover(e, false)}>
+                <img src={img.src} alt={img.description} className="w-full h-auto object-cover" />
+                <div className="image-description absolute inset-0 flex justify-center items-center">{img.description}</div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <motion.div ref={sliderRef} drag="x" dragConstraints={dragConstraints} className="slider rounded-3xl" style={{ "--quantity": images.length }}>
           {rows.map((row, index) => (
             <div className="row" key={index}>
-              <div
-                className="card card-left border-2 shadow-lg item border-lemon_chiffon rounded-xl"
-                onMouseEnter={(e) => handleHover(e, true)}
-                onMouseLeave={(e) => handleHover(e, false)}
-              >
+                <div className="card card-left border-2 shadow-lg item border-lemon_chiffon rounded-xl" onMouseEnter={(e) => handleHover(e, true)} onMouseLeave={(e) => handleHover(e, false)}>
                 <img src={row[0].src} alt={row[0].description} />
-                <div className="image-description bg-lavender-gray text-deep_indigo">
-                  {row[0].description}
+                  <div className="image-description bg-lavender-gray text-deep_indigo">{row[0].description}</div>
                 </div>
-              </div>
-              <div
-                className="card card-right border-2 shadow-lg item border-lemon_chiffon rounded-xl"
-                onMouseEnter={(e) => handleHover(e, true)}
-                onMouseLeave={(e) => handleHover(e, false)}
-              >
+                <div className="card card-right border-2 shadow-lg item border-lemon_chiffon rounded-xl" onMouseEnter={(e) => handleHover(e, true)} onMouseLeave={(e) => handleHover(e, false)}>
                 <img src={row[1].src} alt={row[1].description} />
-                <div className="image-description bg-lavender-gray text-golden-yellow">
-                  {row[1].description}
-                </div>
+                  <div className="image-description bg-lavender-gray text-golden-yellow">{row[1].description}</div>
               </div>
             </div>
           ))}
         </motion.div>
+        )}
         <div className="content">
-          <motion.h1
-            data-content="In Frame"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
+          <motion.h1 data-content="In Frame" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }}>
             In Frame
           </motion.h1>
           <div className="model">
-            <Lottie
-              options={{ animationData, loop: true, autoplay: true }}
-              height={800}
-              width="80%"
-            />
+            <Lottie options={{ animationData, loop: true, autoplay: true }} height={800} width="80%" />
           </div>
         </div>
       </div>

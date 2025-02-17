@@ -48,7 +48,7 @@ export default {
         "4xl": "2.5rem",
         "5xl": "3rem",
         "6xl": "4rem",
-        "12xl" : "8rem"
+        "12xl" : "5rem"
       },
       spacing: {
         72: "18rem",
