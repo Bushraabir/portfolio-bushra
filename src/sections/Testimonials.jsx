@@ -227,7 +227,7 @@ const TestimonialPolygon = () => {
             Teacher's Reflections
             <br />
           </motion.h1>
-          <p className="text-lg font-description leading-relaxed tracking-wide text-neutral">
+          <p className="text-lg font-description leading-relaxed tracking-wide text-lemon_chiffon">
             Insights from my closest mentors, highlighting my journey, character, and achievements.
           </p>
         </motion.div>
