@@ -495,17 +495,20 @@ const Art = () => {
           </div>
         </div>
         {selectedArtwork && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md p-4" onClick={closeModal}>
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+            onClick={closeModal}
+          >
             <div
               ref={modalRef}
-              className="modal-content bg-gradient-to-r from-lemon_chiffon to-tea_rose p-4 sm:p-6 md:p-12 rounded-3xl relative w-full sm:w-11/12 md:w-10/12 lg:w-8/12 xl:w-7/12 max-h-[90vh] overflow-auto shadow-3xl transform transition-all duration-500 ease-in-out animate-fade-in opacity-90"
+              className="bg-gradient-to-r from-lemon_chiffon to-tea_rose p-4 sm:p-6 md:p-12 rounded-3xl relative w-full sm:w-11/12 md:w-10/12 lg:w-8/12 xl:w-7/12 max-h-[90vh] overflow-auto shadow-3xl transform transition-all duration-500 ease-in-out animate-fade-in opacity-90"
               onClick={(e) => e.stopPropagation()}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
               <button
-                className="absolute font-heading text-3xl sm:text-xl font-extrabold transition-all duration-300 ease-in-out transform top-4 sm:top-6 right-4 sm:right-6 text-deep_indigo hover:text-electric_blue"
+                className="absolute top-4 sm:top-6 right-4 sm:right-6 font-heading text-3xl sm:text-xl font-extrabold transition-all duration-300 ease-in-out transform text-deep_indigo hover:text-electric_blue hover:scale-110 focus:outline-none"
                 onClick={closeModal}
               >
                 &times;
@@ -513,12 +516,12 @@ const Art = () => {
               <LazyLoadImage
                 src={selectedArtwork.src}
                 alt={selectedArtwork.description}
-                className="object-contain w-full h-full max-h-[80vh] mb-4 sm:mb-8 rounded-xl border-4 border-transparent transition-all duration-500 hover:scale-105 hover:rotate-3 hover:shadow-2xl hover:border-[#F5F8CC] hover:border-8 hover:ring-4 hover:ring-[#FFC857] hover:ring-opacity-30 animate-slide-up"
+                className="object-contain w-full h-full max-h-[40vh] mb-4 sm:mb-8 rounded-xl border-4 border-transparent"
                 loading="lazy"
                 placeholderSrc={selectedArtwork.placeholderSrc}
               />
               <div className="mt-4 sm:mt-6 text-center">
-                <h2 className="font-heading text-2xl sm:text-2xl font-extrabold text-[#2A1B3D] mb-2 sm:mb-3 tracking-wide hover:text-non_photo_blue transition-all duration-300 ease-in-out">
+                <h2 className="font-heading text-2xl sm:text-2xl font-extrabold text-deep_indigo mb-2 sm:mb-3 tracking-wide transition-colors duration-300 ease-in-out">
                   {selectedArtwork.title}
                 </h2>
                 <p className="max-w-md sm:max-w-4xl px-2 sm:px-4 mx-auto mb-4 sm:mb-6 text-base sm:text-xl font-medium font-description leading-relaxed text-deep_indigo opacity-90">
@@ -531,6 +534,7 @@ const Art = () => {
             </div>
           </div>
         )}
+
       </div>
     </section>
   );

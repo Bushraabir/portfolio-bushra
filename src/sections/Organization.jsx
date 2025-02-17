@@ -147,68 +147,106 @@ export default function OrganizationGallery() {
 
   return (
     <article id="organization" className="w-full bg-lemon_chiffon">
-      <header className="relative min-h-screen flex justify-center items-center bg-gradient-to-r from-electric_blue to-aquamarine overflow-hidden px-4 sm:px-6 lg:px-8">
-        <motion.div className="absolute inset-0 opacity-50 bg-gradient-to-r from-electric_blue to-deep_indigo animate-gradient-move" layout />
-        <div className="relative z-10 w-full max-w-screen-xl text-center">
-          <motion.img
-            src={logo}
-            alt="EmpowerEd Logo"
-            className="w-48 h-auto mx-auto mb-6 sm:w-64 lg:w-80 drop-shadow-2xl"
-            initial={{ opacity: 0, rotate: 0 }}
-            animate={{ opacity: 1, rotate: 360 }}
-            transition={{
-              opacity: { duration: 1.2, ease: "easeOut" },
-              rotate: { duration: 10, ease: "linear", repeat: Infinity, repeatType: "loop" }
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+    <header className="relative h-screen flex flex-col justify-center items-center bg-gradient-to-r from-electric_blue to-aquamarine overflow-hidden px-4 sm:px-6 lg:px-8">
+
+      <div className="absolute inset-0 opacity-50 bg-gradient-to-r from-electric_blue to-deep_indigo animate-gradient-move"></div>
+
+
+      <div className="relative z-10 w-full max-w-screen-xl text-center">
+        <img
+          src={logo}
+          alt="EmpowerEd Logo"
+          className="w-40 sm:w-48 md:w-64 lg:w-80 h-auto mx-auto mb-6 drop-shadow-2xl animate-spin-slow"
+        />
+        <motion.h2
+          ref={headingRef}
+          className="empowered-heading font-heading text-3xl sm:text-4xl lg:text-6xl font-semibold leading-tight tracking-tight text-dark_teal drop-shadow-2xl"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+        >
+          Founder of EmpowerEd
+        </motion.h2>
+        <p className="max-w-3xl mx-auto mt-4 font-description text-base sm:text-lg lg:text-xl leading-relaxed text-dark_teal">
+          EmpowerEd is a non-profit organization with a mission to make education accessible to everyone, everywhere. We believe that every student deserves the same starting line, and we’re here to make that happen—at no cost to you!
+        </p>
+        <div className="-mt-1 flex justify-center">
+          <Lottie
+            options={lottieOptions}
+            height={300}
+            width={300}
+            className="w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96"
           />
-          <motion.h2
-            ref={headingRef}
-            className="empowered-heading font-heading text-3xl font-semibold leading-tight tracking-tight sm:text-4xl lg:text-6xl text-dark_teal drop-shadow-2xl"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
-            whileHover={{ scale: 1.02 }}
-          >
-            Empowered Education
-          </motion.h2>
-          <motion.p
-            className="max-w-3xl mx-auto mt-4 font-description text-lg leading-relaxed sm:text-xl lg:text-2xl text-dark_teal"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.5, delay: 1, ease: "easeOut" }}
-          >
-            EmpowerEd is a non-profit organization with a mission to make education accessible to everyone, everywhere. We believe that every student deserves the same starting line, and we’re here to make that happen—at no cost to you!
-          </motion.p>
-          <motion.div className="flex flex-row gap-4 items-center mt-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2, delay: 1.2, ease: "easeOut" }}>
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <IconButton href="https://bushraabir.github.io/empowereducation/">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-lemon_chiffon" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path d="M13.828 10.172a4 4 0 010 5.656L10.172 19.414a4 4 0 01-5.656-5.656l1.414-1.414" />
-                  <path d="M10.172 13.828a4 4 0 010-5.656L13.828 4.586a4 4 0 015.656 5.656l-1.414 1.414" />
-                </svg>
-              </IconButton>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <IconButton href="https://www.facebook.com/profile.php?id=61569631168287">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-10 h-10 text-lemon_chiffon" viewBox="0 0 24 24">
-                  <path d="M22.675 0H1.325C.593 0 0 .593 0 1.326v21.348C0 23.407.593 24 1.325 24H12.82v-9.294H9.692V11.01h3.128V8.413c0-3.1 1.893-4.788 4.66-4.788 1.325 0 2.464.099 2.794.143v3.24h-1.918c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.696h-3.12V24h6.116C23.407 24 24 23.407 24 22.674V1.326C24 .593 23.407 0 22.675 0z" />
-                </svg>
-              </IconButton>
-            </motion.div>
-          </motion.div>
-          <motion.div className="mt-6" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5, delay: 1.4, ease: "easeOut" }} whileHover={{ scale: 1.05 }}>
-            <Lottie options={lottieOptions} height={300} width={300} className="sm:h-400 sm:w-400 lg:h-400 lg:w-400" />
-          </motion.div>
         </div>
-      </header>
-      <section className="img-group-container h-[100vh] relative" ref={containerRef}>
+      </div>
+
+
+      <div className="absolute bottom-8 flex flex-row gap-40 items-center z-20">
+        <IconButton
+          href="https://bushraabir.github.io/empowereducation/"
+          ariaLabel="Visit our website"
+          className="hover:scale-110 transition-transform duration-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-10 h-10 text-lemon_chiffon"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M13.828 10.172a4 4 0 010 5.656L10.172 19.414a4 4 0 01-5.656-5.656l1.414-1.414" />
+            <path d="M10.172 13.828a4 4 0 010-5.656L13.828 4.586a4 4 0 015.656 5.656l-1.414 1.414" />
+          </svg>
+        </IconButton>
+        <IconButton
+          href="https://www.facebook.com/profile.php?id=61569631168287"
+          ariaLabel="Follow us on Facebook"
+          className="hover:scale-110 transition-transform duration-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            className="w-10 h-10 text-lemon_chiffon"
+            viewBox="0 0 24 24"
+          >
+            <path d="M22.675 0H1.325C.593 0 0 .593 0 1.326v21.348C0 23.407.593 24 1.325 24H12.82v-9.294H9.692V11.01h3.128V8.413c0-3.1 1.893-4.788 4.66-4.788 1.325 0 2.464.099 2.794.143v3.24h-1.918c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.696h-3.12V24h6.116C23.407 24 24 23.407 24 22.674V1.326C24 .593 23.407 0 22.675 0z" />
+          </svg>
+        </IconButton>
+        <IconButton
+          href="https://wa.me/8801912641197"
+          ariaLabel="Chat with us on WhatsApp"
+          className="hover:scale-110 transition-transform duration-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            className="w-10 h-10 text-lemon_chiffon"
+            viewBox="0 0 24 24"
+          >
+            <path d="M20.52 3.48A11.955 11.955 0 0012.02 0C5.383 0 0 5.383 0 12.02c0 2.126.558 4.22 1.617 6.092L0 24l5.978-1.597A11.93 11.93 0 0012.02 24c6.636 0 12.02-5.383 12.02-12.02 0-3.206-1.26-6.197-3.52-8.52zM12.02 21.64c-2.315 0-4.482-.632-6.337-1.826l-.454-.274-3.547.948.95-3.48-.295-.47A9.945 9.945 0 012.38 12.02C2.38 6.924 6.924 2.38 12.02 2.38s9.64 4.544 9.64 9.64-4.544 9.64-9.64 9.64z" />
+          </svg>
+        </IconButton>
+      </div>
+    </header>
+      <section
+        className="img-group-container h-[100vh] relative"
+        ref={containerRef}
+      >
         <div className="sticky top-0 overflow-hidden h-[100vh] w-full">
           <ul className="flex" ref={groupRef}>
             {items.map((item, index) => (
-              <li key={index} className="flex w-full h-[100vh] flex-none flex-col items-center justify-center bg-lemon_chiffon transition-all ease-out duration-300">
-                <img src={item.img} alt={item.title} className="w-[280px] sm:w-[350px] h-[350px] sm:h-[450px] object-cover rounded-xl shadow-lg hover:scale-105 transition-transform ease-out duration-300" />
+              <li
+                key={index}
+                className="flex w-full h-[100vh] flex-none flex-col items-center justify-center bg-lemon_chiffon transition-all ease-out duration-300"
+              >
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-[280px] sm:w-[350px] h-[350px] sm:h-[450px] object-cover rounded-xl shadow-lg hover:scale-105 transition-transform ease-out duration-300"
+                />
                 <h3 className="text-[30px] sm:text-[50px] font-heading font-semibold tracking-tight leading-[1.2] relative bottom-[20px] sm:bottom-[30px] text-dark_teal opacity-90 hover:opacity-100 transition-all duration-300 ease-out transform hover:scale-105 hover:translate-y-[-8px]">
                   {item.title}
                 </h3>
