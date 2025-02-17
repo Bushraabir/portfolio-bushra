@@ -37,7 +37,7 @@ const Loader1 = () => {
         <Lottie options={lottieOptions} height="100%" width="100%" />
       </div>
       <div className="absolute inset-0 flex items-end justify-center z-20 p-4 sm:p-10">
-        <h2 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold text-description">
+        <h2 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold text-description bottom-20">
           {displayedText}
           <span className="inline-block blinking-cursor">|</span>
         </h2>
