@@ -26,9 +26,9 @@ const Research = () => {
   const [researchPage, setResearchPage] = useState(1);
   const itemsPerPage = 3;
 
-  // Responsive state for mobile interactivity
+
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [showFilters, setShowFilters] = useState(!isMobile); // show filters by default on desktop
+  const [showFilters, setShowFilters] = useState(!isMobile); 
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,7 +46,7 @@ const Research = () => {
     {
       title:
         "Terraforming Our Future: The Evolution of Space Exploration, Technology, and Multiplanetary Civilization",
-      year: "2025(Currently writing)",
+      year: "(Currently writing)",
       img: Bushra,
       tags: ["Architecture", "Future"],
       description:
@@ -54,7 +54,7 @@ const Research = () => {
     },
     {
       title: "The Physics Odyssey: Understanding the Forces of Nature",
-      year: "2025(Currently writing)",
+      year: "(Currently writing)",
       img: Bushra,
       tags: ["Programming", "Creativity"],
       description:
@@ -62,7 +62,7 @@ const Research = () => {
     },
     {
       title: "Introduction to Aerospace Engineering: Principles and Practices",
-      year: "2025(Currently writing)",
+      year: "(Currently writing)",
       img: Bushra,
       tags: ["Design", "Innovation"],
       description:
@@ -70,7 +70,7 @@ const Research = () => {
     },
     {
       title: "Atomic Energy and Engineering: A Beginner’s Guide to Nuclear Engineering",
-      year: "2025(Currently writing)",
+      year: "(Currently writing)",
       img: Bushra,
       tags: ["Design", "Innovation"],
       description:
@@ -379,7 +379,7 @@ const Research = () => {
                         {item.title}
                       </h3>
                       <p className="mb-4">
-                        <span className="font-semibold">Published:</span> {item.year}
+                        <span className="font-semibold text-subheading"></span> {item.year}
                       </p>
                       <p className="text-lg">{item.description}</p>
                     </div>

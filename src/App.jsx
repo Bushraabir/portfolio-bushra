@@ -145,7 +145,7 @@ const App = () => {
   }, []);
   if (!isLoaded) return <Loader1 />;
   return (
-    <div className="bg-deep_indigo text-light min-h-screen font-description overflow-hidden">
+    <div className="bg-deep_indigo text-deep_indigo min-h-screen font-description overflow-hidden">
       <NavbarComponent />
       <div className="absolute top-0 left-0 w-full h-full">
         <Suspense fallback={<Loader1 />}>
