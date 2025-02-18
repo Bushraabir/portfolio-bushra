@@ -38,7 +38,7 @@ import skill from "../assets/skill.png";
 
 const skillsData = [
   {
-    category: "Physics & Mathematics",
+    category: "STEM",
     items: [
       { name: "Physics", icon: <GiAtomicSlashes /> },
       { name: "Mathematics", icon: <FaCalculator /> },
@@ -116,7 +116,7 @@ const skillsData = [
 const categories = ["All", ...skillsData.map((s) => s.category)];
 
 const categoryIcons = {
-  "Physics & Mathematics": <GiAtomicSlashes />,
+  STEM: <GiAtomicSlashes />,
   Programming: <SiCplusplus />,
   Frontend: <FaReact />,
   "HTML & CSS": <SiHtml5 />,

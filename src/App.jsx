@@ -160,7 +160,7 @@ const App = () => {
           <AboutMe id="about" />
           <Achievements />
           <Skill />
-          <Gallery id="gallery" className="h-[120vh]" />
+          <Gallery id="gallery" />
           <Websites id="websites" />
           <Artworks id="artworks" />
           <Art id="digital" />
