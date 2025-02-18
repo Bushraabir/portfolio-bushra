@@ -46,7 +46,7 @@ import Aquarium from "../assets/Projects/Aquarium.png";
 import Drone from "../assets/Projects/Drone.png";
 import Bio from "../assets/Projects/Bio.png";
 import Telescope from "../assets/Projects/Telescope.png";
-
+import Biogas from "../assets/Projects/Biogas.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -314,6 +314,16 @@ const Website = () => {
       tags: [],
       images: [Telescope],
       detailedDescription: "This project involves designing and constructing a simple, low-cost refracting telescope using affordable, off-the-shelf components. The telescope will use optical lenses to collect and focus light, enabling observation of celestial objects like the Moon, planets, and bright star clusters. The ultimate goal is to create a functional, portable telescope for educational purposes learning fundamental principles of optics and astronomy.",
+      source_code_link: "https://github.com/Bushraabir/empowereducation"
+    },
+
+
+    {
+      name: "Bio Gas Plant for Household Energy",
+      description: "This project involves designing and constructing a small-scale bio gas system that converts organic household waste (e.g., kitchen scraps, garden waste, or livestock manure) into methane gas and organic fertilizer.but our main gfoal is human fesses cause its 0 cost to us and its hard to maintain the waste . The system will use anaerobic digestion to break down waste, capture methane for cooking or heating, and produce nutrient-rich slurry for gardening and farnming . The ultimate goal is to create a sustainable, closed-loop energy solution that reduces waste, lowers reliance on fossil fuels, and supports eco-friendly agriculture.",
+      tags: [],
+      images: [Biogas],
+      detailedDescription: "This project involves designing and constructing a small-scale bio gas system that converts organic household waste (e.g., kitchen scraps, garden waste, or livestock manure) into methane gas and organic fertilizer.but our main gfoal is human fesses cause its 0 cost to us and its hard to maintain the waste . The system will use anaerobic digestion to break down waste, capture methane for cooking or heating, and produce nutrient-rich slurry for gardening and farnming . The ultimate goal is to create a sustainable, closed-loop energy solution that reduces waste, lowers reliance on fossil fuels, and supports eco-friendly agriculture.",
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     },
   ];
