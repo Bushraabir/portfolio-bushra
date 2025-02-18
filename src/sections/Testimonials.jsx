@@ -13,33 +13,33 @@ gsap.registerPlugin(ScrollTrigger);
 const testimonials = [
   {
     quote: "During breaks at noon, I often see her studying in the library. If it's closed—even forcefully—she finds a spot on the stairs or anywhere else. She even skips meals to save time for studying.",
-    name: "Dr. A. Rahman",
-    designation: "Professor of Mechanical Engineering",
+    name: "Md. Shishir Saidy",
+    designation: "Lecturer, Dept. of English, MCSK",
   },
   {
     quote: "She was one of the first students to be so active in Olympiads, securing 1st place in Jessore in the Physics Olympiad. Her academic scores in STEM are nearly 100%, and she constantly asks thought-provoking questions.",
-    name: "Ms. S. Hasan",
-    designation: "Head of Innovation Lab",
+    name: "Md. Jahangir Hossain",
+    designation: "Associate Professor, Dept. of Physics, MCSK",
   },
   {
-    quote: "I have had the privilege of teaching Bushra, and her academic excellence has consistently stood out in my class. She approaches complex subjects with both curiosity and clarity, making her an asset during discussions. Her proactive engagement and dedication have enriched our learning environment. I am confident that Bushra will bring the same enthusiasm and rigor to her university studies.",
-    name: "Mr. K. Islam",
-    designation: "Senior Lecturer, CUET",
+    quote: "I have had the privilege of teaching Bushra, and her academic excellence has consistently stood out in my class. She approaches complex subjects with both curiosity and clarity, making her an asset during discussions. Her proactive engagement and dedication have enriched our learning environment.In particular, I have observed her ability to derive different physics equations swiftly, demonstrating a deep and intuitive understanding of the subject. Her grasp of complex concepts and problem-solving skills set her apart, and I am confident that she will bring the same enthusiasm and rigor to her university studies.",
+    name: "Ifat Al Karim Shaikot",
+    designation: "Lecturer, Dept. Of Physics, KU",
   },
   {
     quote: "Bushra has demonstrated exceptional analytical skills and an innovative mindset in every project she undertakes. Her ability to connect theoretical concepts with practical applications has significantly elevated our classroom debates. She works well both independently and collaboratively, often leading by example. I wholeheartedly support her scholarship application, knowing she will excel in any academic setting.",
-    name: "Prof. J. Dutta",
-    designation: "Dean of Students",
+    name: "Dr. K. M. Salim Reza",
+    designation: "Associate Professor, Dept. of Chemistry, MCSK",
   },
   {
     quote: "Throughout my time teaching Bushra, she has impressed me with her perseverance and intellectual curiosity. She consistently seeks out new challenges and approaches them with a thoughtful and creative perspective. Her contributions to class discussions not only reflect deep understanding but also inspire her peers. I am proud to recommend Bushra for this scholarship as she is truly deserving of this opportunity.",
-    name: "Mr. T. Karim",
-    designation: "Project Manager",
+    name: "Md. Enayet Hossain",
+    designation: "Demonstrator, Dept. of Physics, MCSK",
   },
   {
-    quote: "Bushra is a dedicated and motivated student whose passion for learning is evident in every assignment. Her ability to synthesize complex information and present it clearly has made a lasting impact on our classroom dynamic. She balances academic rigor with active participation, often taking initiative in group projects. I am confident that Bushra’s drive and commitment will make her an excellent candidate for this scholarship.",
-    name: "Ms. R. Akhtar",
-    designation: "Senior Researcher",
+    quote: "Bushra is a dedicated and motivated student whose passion for learning is evident in every assignment. Her ability to synthesize complex algorithm and present it clearly has made a lasting impact on our classroom dynamic. She balances academic rigor with active participation, often taking initiative in group projects. I am confident that Bushra’s drive and commitment will make her an excellent candidate for this scholarship.",
+    name: "Partha Chowdhury",
+    designation: "Lecturer, Dept. of ICT, MCSK",
   },
 ];
 
@@ -159,7 +159,7 @@ const TestimonialPolygon = () => {
     wrapText(context, testimonial.quote, quoteX, quoteY, maxWidth, lineHeight);
     context.fillStyle = "#FFC857";
     context.font = isLowQuality ? "italic 12px 'Roboto', sans-serif" : "italic 14px 'Roboto', sans-serif";
-    const nameY = quoteY + maxWidth * 0.6;
+    const nameY = quoteY + maxWidth * 0.8;
     context.fillText(testimonial.name, canvas.width / 2, nameY);
     const designationSpacing = isLowQuality ? 25 : 35;
     const designationY = nameY + designationSpacing;
@@ -224,11 +224,11 @@ const TestimonialPolygon = () => {
             transition={{ duration: 1.5, ease: "easeOut" }}
           >
             <br />
-            Teacher's Reflections
+            Insights from My Closest Mentors
             <br />
           </motion.h1>
           <p className="text-lg font-description leading-relaxed tracking-wide text-lemon_chiffon">
-            Insights from my closest mentors, highlighting my journey, character, and achievements.
+          Highlighting my journey, character, and achievements.
           </p>
         </motion.div>
       )}
