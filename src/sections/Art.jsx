@@ -81,7 +81,7 @@ const artworksData = {
     {
       src: Nature,
       description:
-        "'Winter's Veiled Whispers' is an evocative acrylic canvas painting that transports the viewer into a realm of ethereal mystery. A delicate mist shrouds a silent, ancient forest, where gnarled trees emerge as ghostly silhouettes against a subdued, wintry palette. Soft gradations of light and shadow interplay with the diffuse haze, suggesting the fleeting secrets of nature hidden beneath the frost. The work invites quiet contemplation, as if nature herself is whispering forgotten tales of endurance and solitude, leaving an indelible impression of winter’s enigmatic beauty.This title and description draw inspiration from contemporary discussions and artistic approaches to winter landscapes, where elements like mist and silence evoke a sense of mystery and introspection",
+        "'Winter's Veiled Whispers' is an evocative acrylic canvas painting that transports the viewer into a realm of ethereal mystery. A delicate mist shrouds a silent, ancient forest, where gnarled trees emerge as ghostly silhouettes against a subdued, wintry palette. Soft gradations of light and shadow interplay with the diffuse haze, suggesting the fleeting secrets of nature hidden beneath the frost. The work invites quiet contemplation, as if nature herself is whispering forgotten tales of endurance and solitude, leaving an indelible impression of winter’s enigmatic beauty.",
       title: "Winter's Veiled Whispers",
       date: "2023"
     },
@@ -102,7 +102,7 @@ const artworksData = {
     {
       src: BlueMosque,
       description:
-        " This acrylic painting captures the timeless beauty of the Blue Mosque, bathed in the soft glow of the setting sun. The towering minarets reach towards the heavens, mirrored gracefully in the tranquil waters below. Delicate brushstrokes bring depth to the sky, where drifting clouds add to the dreamlike atmosphere. The interplay of blues and golden hues evokes a sense of peace and reverence, inviting the viewer to pause and admire the harmony of architecture and nature.",
+        "This acrylic painting captures the timeless beauty of the Blue Mosque, bathed in the soft glow of the setting sun. The towering minarets reach towards the heavens, mirrored gracefully in the tranquil waters below. Delicate brushstrokes bring depth to the sky, where drifting clouds add to the dreamlike atmosphere. The interplay of blues and golden hues evokes a sense of peace and reverence, inviting the viewer to pause and admire the harmony of architecture and nature.",
       title: "Reflections of Serenity",
       date: "2020"
     },
@@ -116,7 +116,7 @@ const artworksData = {
     {
       src: Vase,
       description:
-        "This acrylic canvas painting blossoms with the radiant promise of human potential, rendered through the evocative form of a flower. At first glance, its vibrant petals—delicately unfurling in a dynamic interplay of light and color—suggest the tender emergence of a new self. Yet, woven into each stroke is an abstract echo of the human spirit: fragile yet resolute, constantly evolving and reaching toward the infinite. The painting invites viewers to contemplate that every individual, much like this blooming flower, carries within a seed of transformative possibility. Subtle gradations of hue and the interplay of luminous highlights with soft shadows evoke both the transient beauty of life and the enduring capacity for growth and renewal. In its very essence, Floral Genesis: The Unfolding of Self celebrates the journey from potential to realization—a poetic testament to the perennial nature of hope and the transformative power of self-discovery",
+        "This acrylic canvas painting blossoms with the radiant promise of human potential, rendered through the evocative form of a flower. At first glance, its vibrant petals—delicately unfurling in a dynamic interplay of light and color—suggest the tender emergence of a new self. Yet, woven into each stroke is an abstract echo of the human spirit: fragile yet resolute, constantly evolving and reaching toward the infinite. The painting invites viewers to contemplate that every individual, much like this blooming flower, carries within a seed of transformative possibility. Subtle gradations of hue and the interplay of luminous highlights with soft shadows evoke both the transient beauty of life and the enduring capacity for growth and renewal.",
       title: "Floral Genesis: The Unfolding of Self",
       date: "2017"
     },
@@ -124,7 +124,7 @@ const artworksData = {
       src: Sunset,
       description:
         "This acrylic canvas is a visual meditation on transformation. At first glance, the deep, muted hues evoke a lingering twilight—a symbolic night where life’s darker moments seem to prevail. Yet, as the eye travels across the scene, gentle streaks of luminous color emerge, gradually overpowering the somber tones. The interplay of shadow and light suggests that no darkness is permanent; rather, it is the quiet prelude to an inevitable awakening. With fluid brushstrokes that capture both stillness and the promise of motion, the painting invites viewers to reflect on the resilience of nature—and by extension, the human spirit—reminding us that even in our most challenging hours, dawn is always on the horizon.",
-      title: " Eternal Dawn: When Shadows Surrender",
+      title: "Eternal Dawn: When Shadows Surrender",
       date: "2024"
     }
   ],
@@ -212,7 +212,7 @@ const artworksData = {
       src: still_1,
       description:
         "In this evocative pencil sketch, everyday objects emerge as poetic echoes of quiet beauty. The still life drawing transforms mundane items into a contemplative tableau through delicate pencil strokes and refined shading. A subtle play of light and shadow reveals intricate textures and forms, inviting the viewer to pause and appreciate the silent narrative woven by ordinary elements. Each mark speaks to a moment of stillness, capturing the serene interplay between simplicity and depth.",
-      title: " Whispers of the Ordinary: A Still Life Drawing",
+      title: "Whispers of the Ordinary: A Still Life Drawing",
       date: "2024"
     },
     {
@@ -247,7 +247,7 @@ const artworksData = {
       src: flower,
       description:
         "This exquisite pen sketch captures the essence of nature’s fluid beauty with its gracefully curved, intertwined leaves. The artist’s deft use of fine lines and subtle shading creates a delicate interplay between light and shadow, evoking both the fragility and strength of the natural world. Each sinuous contour is rendered with a precision that speaks to traditional botanical illustration, yet the work pulses with a poetic, almost dreamlike quality. “Sinuous Reverie” invites the viewer to pause and appreciate the quiet elegance and intricate rhythm of life as expressed through the dynamic forms of its singular botanical subject.",
-      title: "Sinuous Reverier",
+      title: "Sinuous Reverie",
       date: "2021"
     },
     {
@@ -290,15 +290,15 @@ const artworksData = {
     {
       src: emotion,
       description:
-        "'Incarnate Anxiety' is a dynamic, abstract manifestation that transforms the ephemeral weight of inner turmoil into a striking tangible form. The work’s fragmented planes and interlocking contours create a visual symphony of tension and restless energy. Jagged lines and overlapping surfaces seem to pulse with an inner rhythm—a subtle, almost imperceptible heartbeat that echoes the relentless barrage of anxious thoughts. Shadows and stark contrasts interweave with delicate, almost translucent layers, inviting the viewer to trace the elusive boundaries between chaos and order. Each element, though disjointed at first glance, converges to form a coherent narrative of vulnerability and strength, offering a visceral representation of anxiety rendered in physical space. The piece compels us to confront the paradoxical beauty found in moments of emotional disarray, ultimately reminding us that even the most intangible of feelings can be given form and presence.",
+        "'Incarnate Anxiety' is a dynamic, abstract manifestation that transforms the ephemeral weight of inner turmoil into a striking tangible form. The work’s fragmented planes and interlocking contours create a visual symphony of tension and restless energy. Jagged lines and overlapping surfaces seem to pulse with an inner rhythm—a subtle, almost imperceptible heartbeat that echoes the relentless barrage of anxious thoughts. Shadows and stark contrasts interweave with delicate, almost translucent layers, inviting the viewer to trace the elusive boundaries between chaos and order. Each element, though disjointed at first glance, converges to form a coherent narrative of vulnerability and strength, offering a visceral representation of anxiety rendered in physical space.",
       title: "Incarnate Anxiety",
       date: "2024"
     },
     {
       src: brain,
       description:
-        "'The Watchful Gaze' is a raw and evocative clay sculpture that delves into the deep psychological struggle of social anxiety and self-perception. The central brain-like mass, intricately textured with organic folds, symbolizes the overactive mind—anxiously constructing the illusion that every movement, every thought, is under scrutiny. Surrounding this core, hovering orbs with hollowed-out centers evoke an eerie sense of omnipresence—silent spectators looming, watching, and waiting. The twisted, rope-like strands tethering them to the mind represent the inescapable cycle of self-doubt and hyper-awareness, pulling the psyche deeper into its own web of fear. As the brain seeks refuge, trying to bury itself within the clay, it reflects the universal impulse to retreat, to disappear from judgmental eyes. This piece powerfully captures the weight of imagined perceptions and the burden of an anxious mind.",
-      title: " The Watchful Gaze",
+        "'The Watchful Gaze' is a raw and evocative clay sculpture that delves into the deep psychological struggle of social anxiety and self-perception. The central brain-like mass, intricately textured with organic folds, symbolizes the overactive mind—anxiously constructing the illusion that every movement, every thought, is under scrutiny. Surrounding this core, hovering orbs with hollowed-out centers evoke an eerie sense of omnipresence—silent spectators looming, watching, and waiting. The twisted, rope-like strands tethering them to the mind represent the inescapable cycle of self-doubt and hyper-awareness, pulling the psyche deeper into its own web of fear.",
+      title: "The Watchful Gaze",
       date: "2024"
     },
     {
@@ -311,7 +311,7 @@ const artworksData = {
     {
       src: chess_1,
       description:
-        "In 'Terra’s Gambit: A Symphony in Clay,' every chess piece becomes a poetic embodiment of the earth’s enduring spirit and artistic ingenuity. Hand-molded from raw clay, each piece carries a tactile narrative—an interplay of robust form and delicate finesse reminiscent of nature’s own balance. The set invites its beholder to consider the timeless dance between strategy and spontaneity, where every move echoes the ancient whispers of the earth and the subtle cadence of artistic expression.This title and description aim to celebrate both the elemental material and the thoughtful craftsmanship that transforms everyday clay into an arena of creative contest.",
+        "In 'Terra’s Gambit: A Symphony in Clay,' every chess piece becomes a poetic embodiment of the earth’s enduring spirit and artistic ingenuity. Hand-molded from raw clay, each piece carries a tactile narrative—an interplay of robust form and delicate finesse reminiscent of nature’s own balance. The set invites its beholder to consider the timeless dance between strategy and spontaneity, where every move echoes the ancient whispers of the earth and the subtle cadence of artistic expression.",
       title: "Terra’s Gambit: A Symphony in Clay",
       date: "2025"
     }
@@ -328,36 +328,42 @@ const Art = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
+
   useEffect(() => {
     gsap.fromTo(
       containerRef.current,
-      { opacity: 0, y: 50 },
+      { opacity: 0, y: 100 },
       {
         opacity: 1,
         y: 0,
-        duration: 1.5,
-        ease: "power3.out",
+        duration: 1.8,
+        ease: "power4.out",
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top 80%"
+          start: "top 85%",
+          end: "bottom 20%",
+          scrub: 0.5
         }
       }
     );
   }, []);
+
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
+    const timer = setTimeout(() => setIsLoading(false), 1000);
     return () => clearTimeout(timer);
   }, []);
-  const closeDetails = useCallback(() => setSelectedArtwork(null), []);
+
   const currentArtworks = useMemo(() => {
     const indexOfLast = currentPage * itemsPerPage;
     const indexOfFirst = indexOfLast - itemsPerPage;
     return artworksData[activeTab]?.slice(indexOfFirst, indexOfLast) || [];
   }, [activeTab, currentPage]);
+
   const totalPages = useMemo(
     () => Math.ceil((artworksData[activeTab]?.length || 0) / itemsPerPage),
     [activeTab]
   );
+
   const handleTabChange = useCallback((tabId) => {
     setActiveTab(tabId);
     setCurrentPage(1);
@@ -365,85 +371,138 @@ const Art = () => {
       const img = new Image();
       img.src = art.src;
     });
-  }, []);
-  const artworkHover = useCallback((e) => {
-    const art = e.target.closest(".artwork");
-    gsap.to(art, { scale: 1.1, rotation: 5, duration: 0.3, ease: "power2.out" });
-  }, []);
-  const artworkHoverOut = useCallback((e) => {
-    const art = e.target.closest(".artwork");
-    gsap.to(art, { scale: 1, rotation: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-  const openModal = useCallback((art) => {
-    setSelectedArtwork(art);
-    gsap.fromTo(
-      ".modal-content",
-      { opacity: 0, scale: 0.8, y: -50 },
-      { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "back.out(1.7)" }
-    );
-  }, []);
-  const closeModal = useCallback(() => {
-    gsap.to(".modal-content", {
-      opacity: 0,
-      scale: 0.8,
-      y: 50,
-      duration: 0.3,
-      ease: "back.in(1.7)",
-      onComplete: () => setSelectedArtwork(null)
-    });
-  }, []);
-  const handleTouchStart = useCallback((e) => {
-    touchStartY.current = e.touches[0].clientY;
-  }, []);
-  const handleTouchMove = useCallback((e) => {
-    touchCurrentY.current = e.touches[0].clientY;
-    const deltaY = touchCurrentY.current - touchStartY.current;
-    if (deltaY > 0) gsap.to(modalRef.current, { y: deltaY, duration: 0.1 });
-  }, []);
-  const handleTouchEnd = useCallback(() => {
-    const deltaY = touchCurrentY.current - touchStartY.current;
-    if (deltaY > 150) closeModal();
-    else gsap.to(modalRef.current, { y: 0, duration: 0.3, ease: "back.out(1.7)" });
-  }, [closeModal]);
-  useEffect(() => {
     gsap.fromTo(
       ".artwork",
       { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out" }
+    );
+  }, []);
+
+  const artworkHover = useCallback((e) => {
+    const art = e.target.closest(".artwork");
+    gsap.to(art, {
+      scale: 1.15,
+      rotation: 8,
+      boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)",
+      duration: 0.4,
+      ease: "elastic.out(1, 0.5)"
+    });
+  }, []);
+
+  const artworkHoverOut = useCallback((e) => {
+    const art = e.target.closest(".artwork");
+    gsap.to(art, {
+      scale: 1,
+      rotation: 0,
+      boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
+      duration: 0.4,
+      ease: "elastic.out(1, 0.5)"
+    });
+  }, []);
+
+  const openModal = useCallback((art) => {
+    setSelectedArtwork(art);
+    gsap.fromTo(
+      modalRef.current,
+      { opacity: 0, scale: 0.7, y: -100, rotationX: 10 },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        rotationX: 0,
+        duration: 0.8,
+        ease: "back.out(1.4)"
+      }
+    );
+  }, []);
+
+  const closeModal = useCallback(() => {
+    gsap.to(modalRef.current, {
+      opacity: 0,
+      scale: 0.7,
+      y: 100,
+      rotationX: -10,
+      duration: 0.5,
+      ease: "back.in(1.4)",
+      onComplete: () => setSelectedArtwork(null)
+    });
+  }, []);
+
+  const handleTouchStart = useCallback((e) => {
+    touchStartY.current = e.touches[0].clientY;
+  }, []);
+
+  const handleTouchMove = useCallback((e) => {
+    touchCurrentY.current = e.touches[0].clientY;
+    const deltaY = touchCurrentY.current - touchStartY.current;
+    if (deltaY > 0) {
+      gsap.to(modalRef.current, { y: deltaY, duration: 0 });
+    }
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    const deltaY = touchCurrentY.current - touchStartY.current;
+    if (deltaY > 120) {
+      closeModal();
+    } else {
+      gsap.to(modalRef.current, {
+        y: 0,
+        duration: 0.5,
+        ease: "back.out(1.4)"
+      });
+    }
+  }, [closeModal]);
+
+  useEffect(() => {
+    gsap.fromTo(
+      ".artwork",
+      { opacity: 0, y: 80, scale: 0.9 },
       {
         opacity: 1,
         y: 0,
-        duration: 1,
-        ease: "power2.out",
-        stagger: 0.2,
+        scale: 1,
+        duration: 1.2,
+        ease: "power3.out",
+        stagger: 0.25,
         scrollTrigger: {
           trigger: ".artwork",
-          start: "top 80%",
+          start: "top 90%",
+          end: "bottom 20%",
           toggleActions: "play none none none"
         }
       }
     );
+  }, [currentArtworks]);
+
+  const paginate = useCallback((pageNumber) => {
+    setCurrentPage(pageNumber);
+    gsap.fromTo(
+      ".artwork",
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out" }
+    );
   }, []);
-  const paginate = useCallback((pageNumber) => setCurrentPage(pageNumber), []);
+
   return (
-    <section className="relative bg-gradient-to-b from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] p-8 sm:p-12 md:p-16 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] opacity-70 backdrop-blur-[10px] shadow-2xl"></div>
-      <div className="container relative z-10 px-4 sm:px-6 lg:px-20 mx-auto" ref={containerRef}>
-        <div className="mb-12 sm:mb-20 text-center">
-          <h1 className="text-5xl sm:text-7xl font-heading font-extrabold text-[#F5F8CC] tracking-widest drop-shadow-xl">
+    <section className="relative bg-gradient-to-br from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] p-6 sm:p-10 md:p-14 lg:p-20 overflow-hidden min-h-screen">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1D3557]/80 via-[#2A1B3D]/80 to-[#F5F8CC]/80 opacity-60 backdrop-blur-md shadow-2xl"></div>
+      <div className="container relative z-10 px-4 sm:px-8 lg:px-16 xl:px-24 mx-auto" ref={containerRef}>
+        <div className="mb-10 sm:mb-16 md:mb-24 text-center">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-[#F5F8CC] tracking-wider drop-shadow-2xl">
             Exquisite Artistry
           </h1>
-          <p className="mt-4 sm:mt-6 text-lg sm:text-2xl text-[#F1C0E8] font-description opacity-90">
+          <p className="mt-3 sm:mt-5 md:mt-7 text-base sm:text-lg md:text-xl lg:text-2xl text-[#F1C0E8] font-description opacity-85 leading-relaxed">
             A curated collection of artworks, meticulously crafted to inspire and engage through emotion and creativity.
           </p>
         </div>
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-8 mb-12 sm:mb-16">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-6 md:gap-8 mb-10 sm:mb-14 md:mb-20">
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              className={`py-2 px-6 sm:py-3 sm:px-10 text-base sm:text-xl font-heading rounded-full border-4 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-md hover:border-[#F5F8CC] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${
+              className={`py-2 px-5 sm:py-3 sm:px-8 md:py-4 md:px-12 text-sm sm:text-base md:text-lg lg:text-xl font-heading rounded-full border-2 sm:border-3 md:border-4 transition-all duration-400 ease-in-out transform hover:scale-110 hover:shadow-lg hover:border-[#F5F8CC] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-[#F5F8CC]/50 ${
                 activeTab === tab.id
-                  ? "bg-gradient-to-r from-[#F5F8CC] to-[#FDE4CF] text-[#2A1B3D] border-[#F5F8CC]"
-                  : "bg-transparent text-[#F5F8CC] border-[#F5F8CC]"
+                  ? "bg-gradient-to-r from-[#F5F8CC] to-[#FDE4CF] text-[#2A1B3D] border-[#F5F8CC] shadow-md"
+                  : "bg-transparent text-[#F5F8CC] border-[#F5F8CC]/70"
               }`}
               onClick={() => handleTabChange(tab.id)}
             >
@@ -451,42 +510,50 @@ const Art = () => {
             </button>
           ))}
         </div>
-        <div className="text-center text-[#F5F8CC] mb-8 sm:mb-16 text-base sm:text-xl font-description">
+        <div className="text-center text-[#F5F8CC] mb-8 sm:mb-12 md:mb-16 text-sm sm:text-base md:text-lg lg:text-xl font-description opacity-90">
           {tabs.find((tab) => tab.id === activeTab)?.description}
         </div>
-        <div className="grid grid-cols-1 gap-8 sm:gap-12 sm:grid-cols-2 lg:grid-cols-3">
-          {currentArtworks.map((art, index) => (
-            <div
-              key={index}
-              className="artwork group"
-              onClick={() => openModal(art)}
-              onMouseEnter={artworkHover}
-              onMouseLeave={artworkHoverOut}
-            >
-              <Tilt options={{ max: 15, scale: 1.02, speed: 900 }} className="relative w-full h-[300px] sm:h-[400px] bg-transparent backdrop-blur-lg bg-opacity-30 p-4 sm:p-8 rounded-3xl shadow-xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:opacity-90">
-                <LazyLoadImage
-                  src={art.src}
-                  alt={art.description}
-                  className="object-cover w-full h-full transition-all duration-500 transform rounded-xl group-hover:scale-110 group-hover:rotate-3"
-                  loading="lazy"
-                  placeholderSrc={art.placeholderSrc}
-                />
-                <div className="absolute text-white bottom-3 left-3 sm:bottom-5 sm:left-5">
-                  <h3 className="text-lg sm:text-2xl font-heading font-semibold">{art.title}</h3>
-                  <p className="text-sm sm:text-lg font-description">{art.date}</p>
-                </div>
-              </Tilt>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10 md:gap-14">
+          {isLoading ? (
+            Array.from({ length: itemsPerPage }).map((_, index) => (
+              <div key={index} className="artwork w-full h-[280px] sm:h-[360px] md:h-[420px] bg-gray-200/20 rounded-3xl animate-pulse"></div>
+            ))
+          ) : (
+            currentArtworks.map((art, index) => (
+              <motion.div
+                key={index}
+                className="artwork group relative w-full h-[280px] sm:h-[360px] md:h-[420px] rounded-3xl overflow-hidden shadow-lg"
+                onClick={() => openModal(art)}
+                onMouseEnter={artworkHover}
+                onMouseLeave={artworkHoverOut}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Tilt options={{ max: 20, scale: 1.05, speed: 1000, perspective: 1000 }} className="w-full h-full">
+                  <LazyLoadImage
+                    src={art.src}
+                    alt={art.description}
+                    className="object-cover w-full h-full transition-all duration-600 transform rounded-3xl group-hover:scale-115 group-hover:rotate-4"
+                    loading="lazy"
+                    effect="blur"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
+                  <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white">
+                    <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-heading font-semibold tracking-tight">{art.title}</h3>
+                    <p className="text-xs sm:text-sm md:text-base lg:text-lg font-description opacity-80">{art.date}</p>
+                  </div>
+                </Tilt>
+              </motion.div>
+            ))
+          )}
         </div>
-        <div className="flex justify-center mt-8 sm:mt-16">
-          <div className="flex items-center gap-4 sm:gap-6">
+        <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
+          <div className="flex items-center gap-3 sm:gap-5 md:gap-7">
             {Array.from({ length: totalPages }).map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => paginate(idx + 1)}
-                className={`text-sm sm:text-lg font-medium font-description px-3 sm:px-4 py-1 sm:py-2 rounded-full transition-all duration-300 ease-in-out hover:bg-[#F5F8CC] hover:text-[#2A1B3D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC] ${
-                  currentPage === idx + 1 ? "bg-[#F5F8CC] text-[#2A1B3D]" : "bg-transparent text-[#F5F8CC]"
+                className={`text-xs sm:text-sm md:text-base lg:text-lg font-medium font-description px-3 sm:px-4 md:px-5 py-1 sm:py-2 md:py-3 rounded-full transition-all duration-300 ease-in-out hover:bg-[#F5F8CC] hover:text-[#2A1B3D] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC]/50 ${
+                  currentPage === idx + 1 ? "bg-[#F5F8CC] text-[#2A1B3D] shadow-sm" : "bg-transparent text-[#F5F8CC]"
                 }`}
               >
                 {idx + 1}
@@ -496,45 +563,44 @@ const Art = () => {
         </div>
         {selectedArtwork && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 sm:p-6 md:p-8"
             onClick={closeModal}
           >
-            <div
+            <motion.div
               ref={modalRef}
-              className="bg-gradient-to-r from-lemon_chiffon to-tea_rose p-4 sm:p-6 md:p-12 rounded-3xl relative w-full sm:w-11/12 md:w-10/12 lg:w-8/12 xl:w-7/12 max-h-[90vh] overflow-auto shadow-3xl transform transition-all duration-500 ease-in-out animate-fade-in opacity-90"
+              className="bg-gradient-to-br from-[#F5F8CC] to-[#FDE4CF] p-4 sm:p-6 md:p-8 lg:p-12 rounded-3xl relative w-full max-w-[90vw] sm:max-w-[85vw] md:max-w-[75vw] lg:max-w-[65vw] max-h-[90vh] overflow-y-auto shadow-3xl"
               onClick={(e) => e.stopPropagation()}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
               <button
-                className="absolute top-4 sm:top-6 right-4 sm:right-6 font-heading text-3xl sm:text-xl font-extrabold transition-all duration-300 ease-in-out transform text-deep_indigo hover:text-electric_blue hover:scale-110 focus:outline-none"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 md:top-6 md:right-6 text-2xl sm:text-3xl md:text-4xl font-heading font-extrabold text-[#2A1B3D] hover:text-[#1D3557] hover:scale-110 transition-all duration-300 focus:outline-none"
                 onClick={closeModal}
               >
-                &times;
+                ×
               </button>
               <LazyLoadImage
                 src={selectedArtwork.src}
                 alt={selectedArtwork.description}
-                className="object-contain w-full h-full max-h-[40vh] mb-4 sm:mb-8 rounded-xl border-4 border-transparent"
+                className="object-contain w-full h-auto max-h-[35vh] sm:max-h-[45vh] md:max-h-[50vh] mb-4 sm:mb-6 md:mb-8 rounded-xl border-4 border-[#F5F8CC]/50"
                 loading="lazy"
-                placeholderSrc={selectedArtwork.placeholderSrc}
+                effect="blur"
               />
-              <div className="mt-4 sm:mt-6 text-center">
-                <h2 className="font-heading text-2xl sm:text-2xl font-extrabold text-deep_indigo mb-2 sm:mb-3 tracking-wide transition-colors duration-300 ease-in-out">
+              <div className="text-center">
+                <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-extrabold text-[#2A1B3D] mb-2 sm:mb-3 md:mb-4 tracking-wide">
                   {selectedArtwork.title}
                 </h2>
-                <p className="max-w-md sm:max-w-4xl px-2 sm:px-4 mx-auto mb-4 sm:mb-6 text-base sm:text-xl font-medium font-description leading-relaxed text-deep_indigo opacity-90">
+                <p className="max-w-full sm:max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto mb-3 sm:mb-4 md:mb-6 text-sm sm:text-base md:text-lg lg:text-xl font-medium font-description leading-relaxed text-[#2A1B3D]/90">
                   {selectedArtwork.description}
                 </p>
-                <p className="text-sm sm:text-lg font-medium font-description text-[#A7A6B0] uppercase tracking-widest">
+                <p className="text-xs sm:text-sm md:text-base lg:text-lg font-medium font-description text-[#A7A6B0] uppercase tracking-widest">
                   {selectedArtwork.date}
                 </p>
               </div>
-            </div>
+            </motion.div>
           </div>
         )}
-
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -74,170 +74,92 @@ const images = [
 ];
 
 const Gallery = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0 });
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0 });
   const sliderRef = useRef(null);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (!isMobile) {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(interval);
-    }
-  }, [isMobile]);
-
-  useEffect(() => {
-    if (!isMobile && sliderRef.current) {
-      const sliderWidth = sliderRef.current.scrollWidth;
-      const containerWidth = sliderRef.current.offsetWidth;
-      setDragConstraints({ left: containerWidth - sliderWidth, right: 0 });
-    }
-  }, [sliderRef, images, isMobile]);
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    let mm = gsap.matchMedia();
-    if (!isMobile) {
-    mm.add("(min-width: 769px)", () => {
-      gsap.utils.toArray(".row").forEach((row, index) => {
-        const cardLeft = row.querySelector(".card-left");
-        const cardRight = row.querySelector(".card-right");
-        gsap.fromTo(
-          cardLeft,
-          { x: 0, y: 0, rotation: 0 },
-          {
-            x: [-800, -900, -400][index % 3],
-            rotation: [-30, -20, -35][index % 3],
-            scrollTrigger: {
-              trigger: ".main",
-              start: "top 80%",
-              end: "150% bottom",
-              scrub: true,
-              onUpdate: (self) => {
-                const progress = self.progress;
-                gsap.set(cardLeft, {
-                  x: progress * [-800, -900, -400][index % 3],
-                  y: progress * [100, -150, -400][index % 3],
-                  rotation: progress * [-30, -20, -35][index % 3]
-                });
-              }
-            }
-          }
-        );
-        gsap.fromTo(
-          cardRight,
-          { x: 0, y: 0, rotation: 0 },
-          {
-            x: [800, 900, 400][index % 3],
-            rotation: [30, 20, 35][index % 3],
-            scrollTrigger: {
-              trigger: ".main",
-              start: "top 80%",
-              end: "150% bottom",
-              scrub: true,
-              onUpdate: (self) => {
-                const progress = self.progress;
-                gsap.set(cardRight, {
-                  x: progress * [800, 900, 400][index % 3],
-                  y: progress * [100, -150, -400][index % 3],
-                  rotation: progress * [30, 20, 35][index % 3]
-                });
-              }
-            }
-          }
-        );
-      });
-    });
-    mm.add("(max-width: 768px)", () => {
-      gsap.utils.toArray(".row").forEach((row, index) => {
-        const cardLeft = row.querySelector(".card-left");
-        const cardRight = row.querySelector(".card-right");
-        gsap.fromTo(
-          cardLeft,
-          { x: 0, y: 0, rotation: 0 },
-          {
-            x: [-1500, -1500, -500][index % 3],
-            rotation: [-45, -40, -50][index % 3],
-            scrollTrigger: {
-              trigger: ".main",
-              start: "top 80%",
-              end: "150% bottom",
-              scrub: true,
-              onUpdate: (self) => {
-                const progress = self.progress;
-                gsap.set(cardLeft, {
-                  x: progress * [-1500, -1500, -500][index % 3],
-                  y: progress * [200, -300, -700][index % 3],
-                  rotation: progress * [-45, -40, -50][index % 3]
-                });
-              }
-            }
-          }
-        );
-        gsap.fromTo(
-          cardRight,
-          { x: 0, y: 0, rotation: 0 },
-          {
-            x: [1500, 1500, 500][index % 3],
-            rotation: [45, 40, 50][index % 3],
-            scrollTrigger: {
-              trigger: ".main",
-              start: "top 80%",
-              end: "150% bottom",
-              scrub: true,
-              onUpdate: (self) => {
-                const progress = self.progress;
-                gsap.set(cardRight, {
-                  x: progress * [1500, 1500, 500][index % 3],
-                  y: progress * [200, -300, -700][index % 3],
-                  rotation: progress * [45, 40, 50][index % 3]
-                });
-              }
-            }
-          }
-        );
-      });
-    });
-    }
-    return () => mm.revert();
-  }, [isMobile]);
-
-  const handleHover = (e, show = true) => {
-    const descriptionElement = e.currentTarget.querySelector(".image-description");
-    const imgElement = e.currentTarget.querySelector("img");
-    gsap.to(descriptionElement, {
-      opacity: show ? 1 : 0,
-      y: show ? 0 : 20,
-      duration: 0.7,
-      ease: "power3.out"
-    });
-    gsap.to(imgElement, {
-      scale: show ? 1.1 : 1,
-      filter: show ? "blur(5px)" : "blur(0)",
-      duration: 0.5
-    });
-  };
-
-  const chunkArray = (arr, chunkSize) => {
+  const rows = useMemo(() => {
     const chunks = [];
-    for (let i = 0; i < arr.length; i += chunkSize) {
-      chunks.push(arr.slice(i, i + chunkSize));
+    for (let i = 0; i < images.length; i += 2) {
+      chunks.push(images.slice(i, i + 2));
     }
     return chunks;
+  }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      if (sliderRef.current && !mobile) {
+        const sliderWidth = sliderRef.current.scrollWidth;
+        const containerWidth = sliderRef.current.offsetWidth;
+        setDragConstraints({ left: containerWidth - sliderWidth, right: 0 });
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const leftParams = isMobile
+      ? { x: [-1500, -1500, -500], rotation: [-45, -40, -50], y: [200, -300, -700] }
+      : { x: [-800, -900, -400], rotation: [-30, -20, -35], y: [100, -150, -400] };
+    const rightParams = isMobile
+      ? { x: [1500, 1500, 500], rotation: [45, 40, 50], y: [200, -300, -700] }
+      : { x: [800, 900, 400], rotation: [30, 20, 35], y: [100, -150, -400] };
+    gsap.utils.toArray(".row").forEach((row, index) => {
+      const i = index % 3;
+      const cardLeft = row.querySelector(".card-left");
+      const cardRight = row.querySelector(".card-right");
+      gsap.fromTo(
+        cardLeft,
+        { x: 0, y: 0, rotation: 0 },
+        {
+          x: leftParams.x[i],
+          rotation: leftParams.rotation[i],
+          scrollTrigger: {
+            trigger: ".main",
+            start: "top 80%",
+            end: "150% bottom",
+            scrub: true,
+            onUpdate: ({ progress }) => {
+              gsap.set(cardLeft, {
+                x: progress * leftParams.x[i],
+                y: progress * leftParams.y[i],
+                rotation: progress * leftParams.rotation[i]
+              });
+            }
+          }
+        }
+      );
+      gsap.fromTo(
+        cardRight,
+        { x: 0, y: 0, rotation: 0 },
+        {
+          x: rightParams.x[i],
+          rotation: rightParams.rotation[i],
+          scrollTrigger: {
+            trigger: ".main",
+            start: "top 80%",
+            end: "150% bottom",
+            scrub: true,
+            onUpdate: ({ progress }) => {
+              gsap.set(cardRight, {
+                x: progress * rightParams.x[i],
+                y: progress * rightParams.y[i],
+                rotation: progress * rightParams.rotation[i]
+              });
+            }
+          }
+        }
+      );
+    });
+  }, [isMobile]);
+  const handleHover = (e, show) => {
+    const descriptionElement = e.currentTarget.querySelector(".image-description");
+    const imgElement = e.currentTarget.querySelector("img");
+    gsap.to(descriptionElement, { opacity: show ? 1 : 0, y: show ? 0 : 20, duration: 0.7, ease: "power3.out" });
+    gsap.to(imgElement, { scale: show ? 1.1 : 1, filter: show ? "blur(5px)" : "blur(0)", duration: 0.5 });
   };
-
-  const rows = chunkArray(images, 2);
-
   return (
     <>
       <style>{`
@@ -321,7 +243,7 @@ const Gallery = () => {
   font-family: 'Playfair Display', serif;
   font-size: 15em;
   line-height: 1;
-  color: ##fde4cf;
+  color: #fde4cf;
   position: relative;
   letter-spacing: -0.05em;
 }
@@ -440,19 +362,19 @@ const Gallery = () => {
           </div>
         ) : (
           <motion.div ref={sliderRef} drag="x" dragConstraints={dragConstraints} className="slider rounded-3xl" style={{ "--quantity": images.length }}>
-          {rows.map((row, index) => (
-            <div className="row" key={index}>
+            {rows.map((row, index) => (
+              <div className="row" key={index}>
                 <div className="card card-left border-2 shadow-lg item border-lemon_chiffon rounded-xl" onMouseEnter={(e) => handleHover(e, true)} onMouseLeave={(e) => handleHover(e, false)}>
-                <img src={row[0].src} alt={row[0].description} />
+                  <img src={row[0].src} alt={row[0].description} />
                   <div className="image-description bg-lavender-gray text-deep_indigo">{row[0].description}</div>
                 </div>
                 <div className="card card-right border-2 shadow-lg item border-lemon_chiffon rounded-xl" onMouseEnter={(e) => handleHover(e, true)} onMouseLeave={(e) => handleHover(e, false)}>
-                <img src={row[1].src} alt={row[1].description} />
+                  <img src={row[1].src} alt={row[1].description} />
                   <div className="image-description bg-lavender-gray text-golden-yellow">{row[1].description}</div>
+                </div>
               </div>
-            </div>
-          ))}
-        </motion.div>
+            ))}
+          </motion.div>
         )}
         <div className="content">
           <motion.h1 data-content="In Frame" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }}>

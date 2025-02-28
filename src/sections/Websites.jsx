@@ -5,7 +5,7 @@ import Lottie from "react-lottie";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import animationData from "../assets/animation/coding1.json";
-
+import { FiGithub } from "react-icons/fi";
 
 import emp1 from "../assets/Website/EmpEd/1.png";
 import emp2 from "../assets/Website/EmpEd/2.png";
@@ -33,10 +33,6 @@ import Sustainibility3 from "../assets/Website/Sustainibility/3.png";
 import Sustainibility4 from "../assets/Website/Sustainibility/4.png";
 import Sustainibility5 from "../assets/Website/Sustainibility/5.png";
 
-
-
-
-
 import Satellite from "../assets/Projects/Satellite.png";
 import Rocket from "../assets/Projects/Rocket.png";
 import Nuclear from "../assets/Projects/Nuclear.png";
@@ -47,6 +43,7 @@ import Drone from "../assets/Projects/Drone.png";
 import Bio from "../assets/Projects/Bio.png";
 import Telescope from "../assets/Projects/Telescope.png";
 import Biogas from "../assets/Projects/Biogas.png";
+import { FaEye } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,11 +58,13 @@ const Website = () => {
   const descriptionRef = useRef(null);
   const buttonsRef = useRef(null);
   const cardsRef = useRef(null);
+
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   useEffect(() => {
     if (isDesktop) {
       const durationVal = 999000050;
@@ -129,14 +128,17 @@ const Website = () => {
       );
     }
   }, [isDesktop]);
+
   const lottieOptions = {
     loop: true,
     autoplay: true,
     animationData: animationData,
     rendererSettings: { preserveAspectRatio: "xMidYMid slice" }
   };
+
   const courses = [
     {
+      type: "course",
       name: "Satellite Engineering Course",
       description: "An introductory course on satellite systems and engineering, covering the basics of satellite design, operations, and technologies used in modern space exploration.",
       tags: [
@@ -151,6 +153,7 @@ const Website = () => {
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     },
     {
+      type: "course",
       name: "Rocket Propulsion Systems",
       description: "An introductory course on rocket propulsion, focusing on the principles of thrust, engine design, and the technologies driving modern rocketry.",
       tags: [
@@ -166,6 +169,7 @@ const Website = () => {
       source_code_link: "https://github.com/project-two"
     },
     {
+      type: "course",
       name: "Introduction to Aerospace Engineering and Design",
       description: "An introductory course on aerospace engineering, focusing on the principles of aircraft and spacecraft design, aerodynamics, and propulsion systems.",
       tags: [
@@ -180,13 +184,14 @@ const Website = () => {
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     },
     {
+      type: "course",
       name: "Nuclear Science and Engineering",
       description: "An introductory course on nuclear science, covering the fundamentals of nuclear reactions, reactor design, and applications in energy production and medical technology.",
       tags: [
         { name: "Nuclear Science", color: "text-cyan-400" },
         { name: "Nuclear Engineering", color: "text-pink-400" },
         { name: "Energy Tech", color: "text-pink-400" },
-        { name: "Reactor Eesign", color: "text-pink-400" },
+        { name: "Reactor Design", color: "text-pink-400" },
         { name: "Atomic Energy", color: "text-pink-400" }
       ],
       images: [Nuclear],
@@ -194,8 +199,10 @@ const Website = () => {
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     }
   ];
+
   const websites = [
     {
+      type: "website",
       title: "EmpowerEd Website",
       description: "A dynamic and visually engaging web platform for accessible quality education.",
       tags: [
@@ -214,6 +221,7 @@ const Website = () => {
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     },
     {
+      type: "website",
       title: "Advanced Periodic Table Visualizer",
       description: "An interactive web application for exploring the periodic table with dynamic visualizations.",
       tags: [
@@ -228,6 +236,7 @@ const Website = () => {
       source_code_link: "https://github.com/Bushraabir/periodic_table_visualizer"
     },
     {
+      type: "website",
       title: "Study Buddy",
       description: "An interactive study companion designed to boost student productivity with smart learning tools.",
       tags: [
@@ -248,6 +257,7 @@ const Website = () => {
       source_code_link: "https://github.com/Bushraabir/sustainibility"
     },
     {
+      type: "website",
       title: "Sustainability Adventure",
       description: "A Flask-based web application promoting sustainable living through community events and eco-friendly tips.",
       tags: [
@@ -265,92 +275,112 @@ const Website = () => {
       source_code_link: "https://github.com/your-username/sustainability-adventure"
     }
   ];
+
   const projects = [
     {
-      name: " Building a Self-Made Satellite with a Self-Made Rocket",
+      type: "project",
+      name: "Building a Self-Made Satellite with a Self-Made Rocket",
       description: "This project involves designing and building a satellite along with a custom rocket, powered by hydrogen and oxygen fuel that is processed by us. The satellite will include a transmitter to send its location back to us. The ultimate goal is to launch the satellite into Low Earth Orbit (LEO), aiming to reach the Kármán Line.",
       tags: [],
       images: [Satellite1],
-      detailedDescription:
-        "This project involves designing and building a satellite along with a custom rocket, powered by hydrogen and oxygen fuel that is processed by us. The satellite will include a transmitter to send its location back to us. The ultimate goal is to launch the satellite into Low Earth Orbit (LEO), aiming to reach the Kármán Line.",
+      detailedDescription: "This project involves designing and building a satellite along with a custom rocket, powered by hydrogen and oxygen fuel that is processed by us. The satellite will include a transmitter to send its location back to us. The ultimate goal is to launch the satellite into Low Earth Orbit (LEO), aiming to reach the Kármán Line.",
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     },
-
-
     {
+      type: "project",
       name: "Aquarium Water Purification System",
-      description: "This project involves designing and building a satellite along with a custom rocket, powered by hydrogen and oxygen fuel that is processed by us. The satellite will include a transmitter to send its location back to us. The ultimate goal is to launch the satellite into Low Earth Orbit (LEO), aiming to reach the Kármán Line.",
+      description: "This project involves designing and building a custom aquarium water purifier equipped with a 12V water pump. The system will reduce ammonia levels, remove fish waste, and promote the growth of beneficial plankton while maintaining balanced oxygen levels in the water.",
       tags: [],
       images: [Aquarium],
-      detailedDescription: "This project involves designing and building a custom aquarium water purifier equipped with a 12V water pump. The system will reduce ammonia levels, remove fish waste, and promote the growth of beneficial planktonwhile maintaining balanced oxygen levels in the water. The purifier will include a filtration mechanism to ensure clean and healthy water for aquatic life. The ultimate goal is to create a self-sustaining ecosystem within the aquarium, ensuring optimal water quality and supporting the well-being of the fish and other aquatic organisms.",
+      detailedDescription: "This project involves designing and building a custom aquarium water purifier equipped with a 12V water pump. The system will reduce ammonia levels, remove fish waste, and promote the growth of beneficial plankton while maintaining balanced oxygen levels in the water. The purifier will include a filtration mechanism to ensure clean and healthy water for aquatic life. The ultimate goal is to create a self-sustaining ecosystem within the aquarium, ensuring optimal water quality and supporting the well-being of the fish and other aquatic organisms.",
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     },
-
     {
+      type: "project",
       name: "Quadcopter Drone for Aerial Photography and Surveillance",
-      description: "This project involves designing and assembling a customizable quadcopter drone using off-the-shelf components. The drone will be equipped with a camera for aerial photography, basic flight stabilization, and remote-control capabilities. The ultimate goal is to create a cost-effective, modular drone for hobbyist aerial imaging, environmental monitoring, or educational purposes, while learning principles of aerodynamics, electronics, and robotics.",
+      description: "This project involves designing and assembling a customizable quadcopter drone using off-the-shelf components. The drone will be equipped with a camera for aerial photography, basic flight stabilization, and remote-control capabilities.",
       tags: [],
       images: [Drone],
       detailedDescription: "This project involves designing and assembling a customizable quadcopter drone using off-the-shelf components. The drone will be equipped with a camera for aerial photography, basic flight stabilization, and remote-control capabilities. The ultimate goal is to create a cost-effective, modular drone for hobbyist aerial imaging, environmental monitoring, or educational purposes, while learning principles of aerodynamics, electronics, and robotics.",
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     },
-
-
-
-
     {
+      type: "project",
       name: "Bio Diesel Production System",
-      description: "This project involves designing and constructing a small-scale bio diesel reactor that converts waste cooking oil, vegetable oil, or animal fats into usable bio diesel fuel. The system will use a chemical process called transesterification to break down triglycerides into fatty acid methyl esters (FAME), producing clean-burning bio diesel. The ultimate goal is to create a sustainable, low-cost method to recycle waste oils into renewable fuel for vehicles, generators, or heating systems, reducing reliance on fossil fuels and lowering carbon emissions.",
+      description: "This project involves designing and constructing a small-scale bio diesel reactor that converts waste cooking oil, vegetable oil, or animal fats into usable bio diesel fuel.",
       tags: [],
       images: [Bio],
       detailedDescription: "This project involves designing and constructing a small-scale bio diesel reactor that converts waste cooking oil, vegetable oil, or animal fats into usable bio diesel fuel. The system will use a chemical process called transesterification to break down triglycerides into fatty acid methyl esters (FAME), producing clean-burning bio diesel. The ultimate goal is to create a sustainable, low-cost method to recycle waste oils into renewable fuel for vehicles, generators, or heating systems, reducing reliance on fossil fuels and lowering carbon emissions.",
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     },
-
-
     {
+      type: "project",
       name: "Telescope for Amateur Astronomy",
-      description: "This project involves designing and constructing a simple, low-cost refracting telescope using affordable, off-the-shelf components. The telescope will use optical lenses to collect and focus light, enabling observation of celestial objects like the Moon, planets, and bright star clusters. The ultimate goal is to create a functional, portable telescope for educational purposes learning fundamental principles of optics and astronomy.",
+      description: "This project involves designing and constructing a simple, low-cost refracting telescope using affordable, off-the-shelf components.",
       tags: [],
       images: [Telescope],
       detailedDescription: "This project involves designing and constructing a simple, low-cost refracting telescope using affordable, off-the-shelf components. The telescope will use optical lenses to collect and focus light, enabling observation of celestial objects like the Moon, planets, and bright star clusters. The ultimate goal is to create a functional, portable telescope for educational purposes learning fundamental principles of optics and astronomy.",
       source_code_link: "https://github.com/Bushraabir/empowereducation"
     },
-
-
     {
+      type: "project",
       name: "Bio Gas Plant for Household Energy",
-      description: "This project involves designing and constructing a small-scale bio gas system that converts organic household waste (e.g., kitchen scraps, garden waste, or livestock manure) into methane gas and organic fertilizer.but our main gfoal is human fesses cause its 0 cost to us and its hard to maintain the waste . The system will use anaerobic digestion to break down waste, capture methane for cooking or heating, and produce nutrient-rich slurry for gardening and farnming . The ultimate goal is to create a sustainable, closed-loop energy solution that reduces waste, lowers reliance on fossil fuels, and supports eco-friendly agriculture.",
+      description: "This project involves designing and constructing a small-scale bio gas system that converts organic household waste into methane gas and organic fertilizer.",
       tags: [],
       images: [Biogas],
-      detailedDescription: "This project involves designing and constructing a small-scale bio gas system that converts organic household waste (e.g., kitchen scraps, garden waste, or livestock manure) into methane gas and organic fertilizer.but our main gfoal is human fesses cause its 0 cost to us and its hard to maintain the waste . The system will use anaerobic digestion to break down waste, capture methane for cooking or heating, and produce nutrient-rich slurry for gardening and farnming . The ultimate goal is to create a sustainable, closed-loop energy solution that reduces waste, lowers reliance on fossil fuels, and supports eco-friendly agriculture.",
+      detailedDescription: "This project involves designing and constructing a small-scale bio gas system that converts organic household waste (e.g., kitchen scraps, garden waste, or livestock manure) into methane gas and organic fertilizer. The main goal is to use human feces as it is cost-free and challenging to manage as waste. The system will use anaerobic digestion to break down waste, capture methane for cooking or heating, and produce nutrient-rich slurry for gardening and farming. The ultimate goal is to create a sustainable, closed-loop energy solution that reduces waste, lowers reliance on fossil fuels, and supports eco-friendly agriculture.",
       source_code_link: "https://github.com/Bushraabir/empowereducation"
-    },
+    }
   ];
+
   const activeData = activeTab === "websites" ? websites : activeTab === "projects" ? projects : courses;
   const groupedData = activeData.reduce((acc, cur, i) => {
     if (i % 2 === 0) acc.push(activeData.slice(i, i + 2));
     return acc;
   }, []);
+
   const Card = memo(({ data, onClick }) => {
     const title = data.title || data.name;
-    const { description, tags, images, source_code_link } = data;
-    return !isDesktop ? (
-      <div onClick={() => onClick(data)} className="mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-deep_indigo cursor-pointer transition-transform">
-        <div className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
-          <img src={images[0]} alt={title} className="object-cover w-full h-full rounded-xl" />
-          <div className="absolute inset-0 flex justify-end m-4">
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(source_code_link, "_blank");
-              }}
-              className="flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer"
-            >
-              <img src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png" alt="GitHub" className="w-7 h-7" />
+    const { description, tags, images, source_code_link, type } = data;
+    const icon = type === "website" ? <FiGithub size={28} color="white" /> : <FaEye   size={28} color="white" />;
+    return (
+      <motion.div
+        onClick={() => onClick(data)}
+        className="mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-deep_indigo cursor-pointer"
+        whileHover={isDesktop ? { scale: 1.05 } : {}}
+        whileTap={{ scale: 0.95 }}
+      >
+        {isDesktop ? (
+          <ReactTilt options={{ max: 25, scale: 1.1, speed: 450 }} className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
+            <motion.img src={images[0]} alt={title} className="object-cover w-full h-full rounded-xl transition-transform duration-500 ease-in-out hover:scale-110 hover:rotate-2" />
+            <div className="absolute inset-0 flex justify-end m-4">
+              <motion.div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(source_code_link, "_blank");
+                }}
+                className="flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer transition-transform duration-500 hover:scale-110"
+              >
+                {icon}
+              </motion.div>
+            </div>
+          </ReactTilt>
+        ) : (
+          <div className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
+            <img src={images[0]} alt={title} className="object-cover w-full h-full rounded-xl" />
+            <div className="absolute inset-0 flex justify-end m-4">
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(source_code_link, "_blank");
+                }}
+                className="flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer"
+              >
+                {icon}
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <div className="mt-6">
           <h6 className="sm:text-4xl text-2xl font-heading text-aquamarine">{title}</h6>
           <p className="mt-3 font-description text-lemon_chiffon">{description}</p>
@@ -360,38 +390,6 @@ const Website = () => {
             <span key={index} className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg`}>
               #{tag.name}
             </span>
-          ))}
-        </div>
-      </div>
-    ) : (
-      <motion.div onClick={() => onClick(data)} className="mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-deep_indigo cursor-pointer transition-transform transform hover:scale-105">
-        <ReactTilt options={{ max: 25, scale: 1.1, speed: 450 }} className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
-          <motion.img src={images[0]} alt={title} className="object-cover w-full h-full rounded-xl transition-transform duration-500 ease-in-out hover:scale-110 hover:rotate-2" />
-          <div className="absolute inset-0 flex justify-end m-4">
-            <motion.div
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(source_code_link, "_blank");
-              }}
-              className="flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer transition-transform duration-500 hover:scale-110"
-            >
-              <img src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png" alt="GitHub" className="w-7 h-7" />
-            </motion.div>
-          </div>
-        </ReactTilt>
-        <div className="mt-6">
-          <motion.h6 className="sm:text-4xl text-2xl font-heading text-aquamarine transition-colors duration-500 hover:text-jordy_blue">
-            {title}
-          </motion.h6>
-          <motion.p className="mt-3 font-description text-lemon_chiffon transition-colors duration-300 hover:text-champagne_pink">
-            {description}
-          </motion.p>
-        </div>
-        <div className="flex flex-wrap gap-3 mt-6">
-          {tags.slice(0, 3).map((tag, index) => (
-            <motion.span key={index} className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}>
-              #{tag.name}
-            </motion.span>
           ))}
         </div>
       </motion.div>
@@ -535,132 +533,95 @@ const Website = () => {
             </div>
           )}
         </div>
-        {selectedProject &&
-          (isDesktop ? (
+        {selectedProject && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-70"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+          >
             <motion.div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-70"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-8 rounded-2xl w-11/12 sm:w-3/4 md:w-1/2 max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-md border-4 border-lemon_chiffon border-opacity-80 relative"
+              initial={{ scale: 0.85 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.85 }}
+              transition={{ type: "spring", stiffness: 320, damping: 35 }}
             >
-              <motion.div
-                className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-8 rounded-2xl w-11/12 sm:w-3/4 md:w-1/2 max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-md border-4 border-lemon_chiffon border-opacity-80 relative"
-                initial={{ scale: 0.85 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.85 }}
-                transition={{ type: "spring", stiffness: 320, damping: 35 }}
+              <motion.button
+                onClick={() => setSelectedProject(null)}
+                className="absolute p-2 top-4 right-4 rounded-full shadow-xl text-lemon_chiffon bg-aquamarine transition-transform hover:scale-110 hover:shadow-2xl"
+                whileHover={{ scale: 1.1, rotate: 15, transition: { type: "spring", stiffness: 400 } }}
               >
-                <motion.button
-                  onClick={() => setSelectedProject(null)}
-                  className="absolute p-2 top-4 right-4 rounded-full shadow-xl text-lemon_chiffon bg-aquamarine transition-transform hover:scale-110 hover:shadow-2xl"
-                  whileHover={{ scale: 1.1, rotate: 15, transition: { type: "spring", stiffness: 400 } }}
-                >
-                  ✕
-                </motion.button>
-                <motion.h2
-                  className="mb-6 font-heading text-4xl font-extrabold text-dark_teal"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                >
-                  {selectedProject.title || selectedProject.name}
-                </motion.h2>
-                <motion.p
-                  className="mb-8 text-lg font-description leading-relaxed text-deep_indigo"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 0.6 }}
-                >
-                  {selectedProject.detailedDescription}
-                </motion.p>
-                <motion.div
-                  className="flex flex-wrap gap-3 mb-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6, duration: 0.6 }}
-                >
-                  {selectedProject.tags.map((tag, idx) => (
-                    <motion.span
-                      key={idx}
-                      className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
-                    >
-                      #{tag.name}
-                    </motion.span>
-                  ))}
-                </motion.div>
-                <motion.div
-                  className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7, duration: 0.6 }}
-                >
-                  {selectedProject.images.map((image, idx) => (
-                    <motion.img
-                      key={idx}
-                      src={image}
-                      alt={`Image ${idx}`}
-                      className="object-cover w-full h-32 rounded-xl transition-transform hover:scale-105 hover:shadow-xl"
-                      initial={{ scale: 0.9 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: idx * 0.2, duration: 0.4 }}
-                    />
-                  ))}
-                </motion.div>
-                <motion.div
-                  className="flex justify-center mt-8"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1, duration: 0.6 }}
-                >
-                  <a
-                    href={selectedProject.source_code_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-6 py-3 text-lg font-medium font-cta rounded-full shadow-2xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue transition-transform hover:scale-110 hover:opacity-90"
+                ✕
+              </motion.button>
+              <motion.h2
+                className="mb-6 font-heading text-4xl font-extrabold text-dark_teal"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+              >
+                {selectedProject.title || selectedProject.name}
+              </motion.h2>
+              <motion.p
+                className="mb-8 text-lg font-description leading-relaxed text-deep_indigo"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
+              >
+                {selectedProject.detailedDescription}
+              </motion.p>
+              <motion.div
+                className="flex flex-wrap gap-3 mb-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.6 }}
+              >
+                {selectedProject.tags.map((tag, idx) => (
+                  <motion.span
+                    key={idx}
+                    className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
                   >
-                    View Source Code
-                  </a>
-                </motion.div>
+                    #{tag.name}
+                  </motion.span>
+                ))}
+              </motion.div>
+              <motion.div
+                className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7, duration: 0.6 }}
+              >
+                {selectedProject.images.map((image, idx) => (
+                  <motion.img
+                    key={idx}
+                    src={image}
+                    alt={`Image ${idx}`}
+                    className="object-cover w-full h-32 rounded-xl transition-transform hover:scale-105 hover:shadow-xl"
+                    initial={{ scale: 0.9 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: idx * 0.2, duration: 0.4 }}
+                  />
+                ))}
+              </motion.div>
+              <motion.div
+                className="flex justify-center mt-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 0.6 }}
+              >
+                <a
+                  href={selectedProject.source_code_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 text-lg font-medium font-cta rounded-full shadow-2xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue transition-transform hover:scale-110 hover:opacity-90"
+                >
+                  {selectedProject.type === "website" ? "View Source Code" : selectedProject.type === "project" ? "View Project" : "View Course"}
+                </a>
               </motion.div>
             </motion.div>
-          ) : (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-70">
-              <div className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-8 rounded-2xl w-11/12 sm:w-3/4 md:w-1/2 max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-md border-4 border-lemon_chiffon border-opacity-80 relative">
-                <button onClick={() => setSelectedProject(null)} className="absolute p-2 top-4 right-4 rounded-full shadow-xl text-lemon_chiffon bg-aquamarine">
-                  ✕
-                </button>
-                <h2 className="mb-6 font-heading text-4xl font-extrabold text-dark_teal">
-                  {selectedProject.title || selectedProject.name}
-                </h2>
-                <p className="mb-8 text-lg font-description leading-relaxed text-deep_indigo">
-                  {selectedProject.detailedDescription}
-                </p>
-                <div className="flex flex-wrap gap-3 mb-4">
-                  {selectedProject.tags.map((tag, idx) => (
-                    <span key={idx} className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg`}>
-                      #{tag.name}
-                    </span>
-                  ))}
-                </div>
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                  {selectedProject.images.map((image, idx) => (
-                    <img key={idx} src={image} alt={`Image ${idx}`} className="object-cover w-full h-32 rounded-xl" />
-                  ))}
-                </div>
-                <div className="flex justify-center mt-8">
-                  <a
-                    href={selectedProject.source_code_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-6 py-3 text-lg font-medium font-cta rounded-full shadow-2xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue"
-                  >
-                    View Source Code
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
+          </motion.div>
+        )}
       </section>
     </>
   );

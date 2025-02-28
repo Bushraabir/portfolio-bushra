@@ -4,7 +4,7 @@ import { FaFacebookF, FaInstagram, FaWhatsapp, FaPhoneAlt } from "react-icons/fa
 
 export default function Footer() {
   return (
-    <footer className="bg-deep_indigo text-lemon_chiffon relative overflow-hidden opacity-80">
+    <footer className="bg-deep_indigo text-lemon_chiffon relative overflow-hidden opacity-60">
       <div className="absolute inset-0 bg-gradient-to-r from-electric_blue to-aquamarine opacity-20 animate-gradient-move" />
       <div className="relative z-10 container mx-auto px-6 py-12 md:py-16 flex flex-col md:flex-row justify-between items-center">
         <motion.div

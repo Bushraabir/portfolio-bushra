@@ -12,76 +12,33 @@ const Loader = () => {
 };
 
 const InteractiveParticle = React.memo(({ position, color, radius, quality }) => {
-  const [particleColor, setParticleColor] = useState(color);
-  const [particleRadius, setParticleRadius] = useState(radius);
   const [ref] = useSphere(() => ({
     mass: 0.5,
     position,
-    args: [particleRadius],
+    args: [radius],
     material: { friction: 0.5, restitution: 0.9 },
     linearDamping: 0.1,
     angularDamping: 0.1,
     ccdSpeedThreshold: 0.1,
-    ccdIterations: 10,
-    onCollide: (e) => { console.log('Collision detected on particle!', e.contact); }
-  }), [particleRadius]);
+    ccdIterations: 10
+  }), [radius]);
 
   const handleClick = useCallback(() => {
     const colors = ['#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672', '#F2D966', '#0088A6', '#F79D7D', '#C59700', '#B8B8B8'];
     const newColor = colors[Math.floor(Math.random() * colors.length)];
-    const newRadius = Math.random() * 0.5 + 0.5;
-    setParticleColor(newColor);
-    setParticleRadius(newRadius);
-    console.log('Particle clicked! New color:', newColor, 'New radius:', newRadius);
-  }, []);
-
-  const dragStart = useRef(null);
-  const initialRadius = useRef(particleRadius);
-  const dragging = useRef(false);
+    ref.current.material.color.set(newColor);
+  }, [ref]);
 
   const onPointerDown = useCallback((event) => {
     event.stopPropagation();
-    dragStart.current = { x: event.clientX, y: event.clientY };
-    initialRadius.current = particleRadius;
-    dragging.current = false;
-  }, [particleRadius]);
-
-  const onPointerMove = useCallback((event) => {
-    if (!dragStart.current) return;
-    const dx = event.clientX - dragStart.current.x;
-    if (Math.abs(dx) > 5) dragging.current = true;
-    if (dragging.current) {
-      let newRadius = initialRadius.current + dx * 0.01;
-      newRadius = Math.max(0.1, Math.min(newRadius, 5));
-      setParticleRadius(newRadius);
-    }
-  }, []);
-
-  const onPointerUp = useCallback(() => {
-    if (!dragging.current) handleClick();
-    dragStart.current = null;
-    dragging.current = false;
+    handleClick();
   }, [handleClick]);
 
-  const generateNoiseTexture = useCallback(() => {
-    const size = quality === 'low' ? 128 : 256;
-    const data = new Uint8Array(size * size);
-    for (let i = 0; i < size * size; i++) {
-      data[i] = Math.floor(Math.random() * 255);
-    }
-    const texture = new THREE.DataTexture(data, size, size, THREE.LuminanceFormat);
-    texture.needsUpdate = true;
-    return texture;
-  }, [quality]);
-
-  const displacementTexture = useMemo(() => generateNoiseTexture(), [quality, generateNoiseTexture]);
-  const roughnessTexture = useMemo(() => generateNoiseTexture(), [quality, generateNoiseTexture]);
-
   return (
-    <mesh ref={ref} castShadow onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}>
-      <sphereGeometry args={[particleRadius, quality === 'low' ? 32 : 128, quality === 'low' ? 16 : 128]} />
+    <mesh ref={ref} castShadow onPointerDown={onPointerDown}>
+      <sphereGeometry args={[radius, quality === 'low' ? 32 : 128, quality === 'low' ? 16 : 128]} />
       <meshPhysicalMaterial
-        color={particleColor}
+        color={color}
         metalness={0.9}
         roughness={0.05}
         clearcoat={1}
@@ -93,10 +50,7 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality }) =>
         thickness={1.2}
         sheen={1}
         sheenColor={new THREE.Color(0xffffff)}
-      >
-        <primitive attach="displacementMap" object={displacementTexture} />
-        <primitive attach="roughnessMap" object={roughnessTexture} />
-      </meshPhysicalMaterial>
+      />
     </mesh>
   );
 });
@@ -147,7 +101,9 @@ const ParticleSystem = React.memo(({ particles, quality }) => (
 const ParticleScene = () => {
   const [quality, setQuality] = useState('high');
   const cameraRef = useRef();
-  const initialParticleCount = typeof window !== 'undefined' && window.innerWidth < 768 ? 5 : 19;
+  const initialParticleCount = useMemo(() => {
+    return typeof window !== 'undefined' && window.innerWidth < 768 ? 5 : 19;
+  }, []);
   const [particles, setParticles] = useState(() => {
     const arr = [];
     for (let i = 0; i < initialParticleCount; i++) {
@@ -196,10 +152,7 @@ const ParticleScene = () => {
     mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
     const raycaster = new THREE.Raycaster();
     const camera = cameraRef.current;
-    if (!camera) {
-      console.error('Camera reference not found!');
-      return;
-    }
+    if (!camera) return;
     raycaster.setFromCamera(mouse, camera);
     const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -1);
     const intersectPoint = new THREE.Vector3();

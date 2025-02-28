@@ -22,7 +22,7 @@ const testimonials = [
     designation: "Associate Professor, Dept. of Physics, MCSK",
   },
   {
-    quote: "I have had the privilege of teaching Bushra, and her academic excellence has consistently stood out in my class. She approaches complex subjects with both curiosity and clarity, making her an asset during discussions. Her proactive engagement and dedication have enriched our learning environment.In particular, I have observed her ability to derive different physics equations swiftly, demonstrating a deep and intuitive understanding of the subject. Her grasp of complex concepts and problem-solving skills set her apart, and I am confident that she will bring the same enthusiasm and rigor to her university studies.",
+    quote: "I have had the privilege of teaching Bushra, and her academic excellence has consistently stood out in my class. She approaches complex subjects with both curiosity and clarity, making her an asset during discussions. Her proactive engagement and dedication have enriched our learning environment. In particular, I have observed her ability to derive different physics equations swiftly, demonstrating a deep and intuitive understanding of the subject. Her grasp of complex concepts and problem-solving skills set her apart, and I am confident that she will bring the same enthusiasm and rigor to her university studies.",
     name: "Ifat Al Karim Shaikot",
     designation: "Lecturer, Dept. Of Physics, KU",
   },
@@ -47,6 +47,9 @@ const TestimonialPolygon = () => {
   const containerRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLowEnd, setIsLowEnd] = useState(false);
+  const timeoutIdRef = useRef(null);
+  const onStartRef = useRef(null);
+  const onEndRef = useRef(null);
 
   useEffect(() => {
     if (window.navigator.connection && window.navigator.connection.downlink < 2.5) {
@@ -56,6 +59,7 @@ const TestimonialPolygon = () => {
 
   useEffect(() => {
     if (!containerRef.current) return;
+
     let animationFrameId;
     const scene = new THREE.Scene();
     const aspectRatio = containerRef.current.offsetWidth / containerRef.current.offsetHeight;
@@ -65,14 +69,17 @@ const TestimonialPolygon = () => {
     renderer.setPixelRatio(isLowEnd ? 1 : window.devicePixelRatio);
     renderer.outputEncoding = THREE.sRGBEncoding;
     containerRef.current.appendChild(renderer.domElement);
+
+    let hdrTexture;
     if (!isLowEnd) {
       const rgbeLoader = new RGBELoader();
       rgbeLoader.load(
         hdr,
-        (hdrTexture) => {
-          hdrTexture.mapping = THREE.EquirectangularReflectionMapping;
-          scene.environment = hdrTexture;
-          scene.background = hdrTexture;
+        (texture) => {
+          hdrTexture = texture;
+          texture.mapping = THREE.EquirectangularReflectionMapping;
+          scene.environment = texture;
+          scene.background = texture;
           setIsLoaded(true);
         },
         undefined,
@@ -87,6 +94,7 @@ const TestimonialPolygon = () => {
       scene.background = new THREE.Color(0x1e1e1e);
       setIsLoaded(true);
     }
+
     const cubeSize = Math.min(containerRef.current.offsetWidth, containerRef.current.offsetHeight) / 10;
     const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
     const cubeMaterials = testimonials.map((testimonial) => {
@@ -97,27 +105,49 @@ const TestimonialPolygon = () => {
         color: 0xffffff,
         roughness: 0.2,
         metalness: 0.8,
-        clearcoat: 1,
+        clearcoat: isLowEnd ? 0 : 1,
         clearcoatRoughness: 0.1,
         reflectivity: 0.8,
-        envMapIntensity: 1.2,
+        envMapIntensity: isLowEnd ? 0 : 1.2,
       });
     });
     const cube = new THREE.Mesh(geometry, cubeMaterials);
     scene.add(cube);
-    camera.position.set(0, 20, 120);
+
+    const d = cubeSize * 1.2;
+    camera.position.set(0, 0, d);
     camera.lookAt(0, 0, 0);
-    setupLighting(scene);
+
+    setupLighting(scene, isLowEnd);
+
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
     controls.enableZoom = !isLowEnd;
+
+    if (!isLowEnd) {
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 0.5;
+      onStartRef.current = () => {
+        controls.autoRotate = false;
+        if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+      };
+      onEndRef.current = () => {
+        timeoutIdRef.current = setTimeout(() => {
+          controls.autoRotate = true;
+        }, 2000);
+      };
+      controls.addEventListener("start", onStartRef.current);
+      controls.addEventListener("end", onEndRef.current);
+    }
+
     const animate = () => {
       controls.update();
       renderer.render(scene, camera);
       animationFrameId = requestAnimationFrame(animate);
     };
     animate();
+
     const onWindowResize = () => {
       if (!containerRef.current) return;
       const newCubeSize = Math.min(containerRef.current.offsetWidth, containerRef.current.offsetHeight) / 10;
@@ -126,8 +156,12 @@ const TestimonialPolygon = () => {
       camera.aspect = containerRef.current.offsetWidth / containerRef.current.offsetHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(containerRef.current.offsetWidth, containerRef.current.offsetHeight);
+      const newD = newCubeSize * 1.2;
+      camera.position.set(0, 0, newD);
+      camera.lookAt(0, 0, 0);
     };
     window.addEventListener("resize", onWindowResize);
+
     return () => {
       window.removeEventListener("resize", onWindowResize);
       cancelAnimationFrame(animationFrameId);
@@ -135,8 +169,17 @@ const TestimonialPolygon = () => {
         containerRef.current.removeChild(renderer.domElement);
       }
       geometry.dispose();
-      cubeMaterials.forEach((material) => material.dispose());
+      cubeMaterials.forEach((material) => {
+        if (material.map) material.map.dispose();
+        material.dispose();
+      });
       renderer.dispose();
+      if (hdrTexture) hdrTexture.dispose();
+      if (!isLowEnd) {
+        controls.removeEventListener("start", onStartRef.current);
+        controls.removeEventListener("end", onEndRef.current);
+        if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+      }
     };
   }, [isLowEnd]);
 
@@ -149,17 +192,17 @@ const TestimonialPolygon = () => {
     context.fillStyle = "rgba(26, 26, 26, 1)";
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = "#FFC857";
-    context.font = isLowQuality ? "bold 14px 'Playfair Display', serif" : "bold 18px 'Playfair Display', serif";
+    context.font = isLowQuality ? " 12px 'Playfair Display', serif" : "bold 18px 'Playfair Display', serif";
     context.textAlign = "center";
     const paddingTop = isLowQuality ? 30 : 40;
     const quoteX = canvas.width / 2;
     const quoteY = paddingTop;
     const maxWidth = canvas.width * 0.8;
-    const lineHeight = isLowQuality ? 18 : 22;
+    const lineHeight = isLowQuality ? 10 : 22;
     wrapText(context, testimonial.quote, quoteX, quoteY, maxWidth, lineHeight);
     context.fillStyle = "#FFC857";
-    context.font = isLowQuality ? "italic 12px 'Roboto', sans-serif" : "italic 14px 'Roboto', sans-serif";
-    const nameY = quoteY + maxWidth * 0.8;
+    context.font = isLowQuality ? "italic 9px 'Roboto', sans-serif" : "italic 14px 'Roboto', sans-serif";
+    const nameY = quoteY + maxWidth * 0.9;
     context.fillText(testimonial.name, canvas.width / 2, nameY);
     const designationSpacing = isLowQuality ? 25 : 35;
     const designationY = nameY + designationSpacing;
@@ -184,15 +227,17 @@ const TestimonialPolygon = () => {
     context.fillText(line, x, y);
   };
 
-  const setupLighting = (scene) => {
+  const setupLighting = (scene, isLowEnd) => {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
     directionalLight.position.set(10, 20, 10);
     scene.add(directionalLight);
-    const spotLight = new THREE.SpotLight(0xffffff, 1);
-    spotLight.position.set(5, 10, 0);
-    scene.add(spotLight);
+    if (!isLowEnd) {
+      const spotLight = new THREE.SpotLight(0xffffff, 1);
+      spotLight.position.set(5, 10, 0);
+      scene.add(spotLight);
+    }
   };
 
   return (
@@ -228,7 +273,7 @@ const TestimonialPolygon = () => {
             <br />
           </motion.h1>
           <p className="text-lg font-description leading-relaxed tracking-wide text-lemon_chiffon">
-          Highlighting my journey, character, and achievements.
+            Highlighting my journey, character, and achievements.
           </p>
         </motion.div>
       )}

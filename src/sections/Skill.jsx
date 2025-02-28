@@ -33,8 +33,11 @@ import {
   GiPaintBrush,
   GiCrafting,
   GiAtomicSlashes,
+  GiPencil,
+  GiRock,
 } from "react-icons/gi";
 import skill from "../assets/skill.png";
+import { GiftColor } from "@fluentui/react-icons";
 
 const skillsData = [
   {
@@ -88,9 +91,9 @@ const skillsData = [
   {
     category: "Art & Craft",
     items: [
-      { name: "Acrylic Painting", icon: <GiPaintBrush /> },
-      { name: "Sketching", icon: <GiPaintBrush /> },
-      { name: "Sculpting", icon: <GiPaintBrush /> },
+      { name: "Acrylic Painting", icon: <GiftColor /> },
+      { name: "Sketching", icon: <GiPencil /> },
+      { name: "Sculpting", icon: <GiRock /> },
       { name: "Crafting", icon: <GiCrafting /> },
     ],
   },
@@ -130,27 +133,12 @@ const categoryIcons = {
 
 const SkillCard = ({ skillCategory }) => {
   const innerRef = useRef(null);
-  const frontRef = useRef(null);
   const [flipped, setFlipped] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (window.matchMedia("(hover: none)").matches) {
       setIsMobile(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (frontRef.current) {
-      Splitting({ target: frontRef.current, by: "chars" });
-      const chars = frontRef.current.querySelectorAll(".char");
-      gsap.from(chars, {
-        duration: 0.8,
-        opacity: 0,
-        y: 30,
-        ease: "power4.out",
-        stagger: 0.05,
-      });
     }
   }, []);
 
@@ -173,21 +161,25 @@ const SkillCard = ({ skillCategory }) => {
   }, [flipped]);
 
   const handleMouseEnter = () => {
-    gsap.to(innerRef.current, {
-      duration: 0.6,
-      rotationY: 180,
-      scale: 1.05,
-      ease: "power3.out",
-    });
+    if (!isMobile) {
+      gsap.to(innerRef.current, {
+        duration: 0.6,
+        rotationY: 180,
+        scale: 1.05,
+        ease: "power3.out",
+      });
+    }
   };
 
   const handleMouseLeave = () => {
-    gsap.to(innerRef.current, {
-      duration: 0.6,
-      rotationY: 0,
-      scale: 1,
-      ease: "power3.out",
-    });
+    if (!isMobile) {
+      gsap.to(innerRef.current, {
+        duration: 0.6,
+        rotationY: 0,
+        scale: 1,
+        ease: "power3.out",
+      });
+    }
   };
 
   const toggleFlip = () => {
@@ -201,12 +193,12 @@ const SkillCard = ({ skillCategory }) => {
       whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       viewport={{ once: true }}
-      {...(isMobile
-        ? { onClick: toggleFlip }
-        : { onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave })}
+      onClick={isMobile ? toggleFlip : undefined}
+      onMouseEnter={isMobile ? undefined : handleMouseEnter}
+      onMouseLeave={isMobile ? undefined : handleMouseLeave}
     >
       <div className="flip-card-inner" ref={innerRef}>
-        <div className="flip-card-front" ref={frontRef}>
+        <div className="flip-card-front">
           <div className="category-icon">
             {categoryIcons[skillCategory.category]}
           </div>
@@ -214,15 +206,15 @@ const SkillCard = ({ skillCategory }) => {
         <div className="flip-card-back">
           <div className="card-items">
             {skillCategory.items.map((item, idx) => (
-              <motion.div
+                <motion.div
                 key={idx}
-                className="card-item-inner"
+                  className="card-item-inner"
                 whileHover={{ scale: 1.3, rotate: 3 }}
                 transition={{ type: "spring", stiffness: 300, damping: 15 }}
-              >
-                <span className="icon">{item.icon}</span>
-                <p>{item.name}</p>
-              </motion.div>
+                >
+                  <span className="icon">{item.icon}</span>
+                  <p>{item.name}</p>
+                </motion.div>
             ))}
           </div>
         </div>
@@ -239,6 +231,35 @@ const Skill = () => {
       ? skillsData
       : skillsData.filter((s) => s.category === activeCategory);
   const bgImageUrl = skill;
+
+  useEffect(() => {
+    Splitting();
+    const chars = document.querySelectorAll(".split-text .char");
+    const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+    tl.from(chars, {
+      duration: 1,
+      y: 50,
+      rotateX: 90,
+      stagger: 0.05
+    })
+    .to(chars, {
+      duration: 0.8,
+      y: -10,
+      rotateX: -10,
+      scale: 1.1,
+      ease: "back.out(1.7)",
+      stagger: { each: 0.05 }
+    }, "-=0.5")
+    .to(chars, {
+      duration: 0.8,
+      y: 0,
+      rotateX: 0,
+      scale: 1,
+      ease: "elastic.out(1, 0.3)",
+      stagger: { each: 0.05 }
+    });
+  }, []);
+
   useEffect(() => {
     const container = sectionRef.current;
     const magnifier = container.querySelector(".section-magnifying-glass");
@@ -251,7 +272,7 @@ const Skill = () => {
       naturalWidth = img.naturalWidth;
       naturalHeight = img.naturalHeight;
     };
-    const zoom = 3.5;
+    const zoom = 2.5;
     const updateMagnifier = (x, y, rect) => {
       const mgWidth = magnifier.offsetWidth;
       const mgHeight = magnifier.offsetHeight;
@@ -260,11 +281,10 @@ const Skill = () => {
       magnifier.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
       const ratioX = x / rect.width;
       const ratioY = y / rect.height;
-      const bgPosX = -(ratioX * bgWidth) + mgWidth / 2;
-      const bgPosY = -(ratioY * bgHeight) + mgHeight / 2;
+      const bgPosX = -(ratioX * bgWidth - mgWidth / 2);
+      const bgPosY = -(ratioY * bgHeight - mgHeight / 2);
       gsap.to(magnifier, {
         duration: 0.3,
-        overwrite: "auto",
         left: `${x - mgWidth / 2}px`,
         top: `${y - mgHeight / 2}px`,
         backgroundPosition: `${bgPosX}px ${bgPosY}px`,
@@ -284,7 +304,6 @@ const Skill = () => {
       if (x >= 0 && y >= 0 && x <= rect.width && y <= rect.height) {
         gsap.to(magnifier, {
           duration: 0.3,
-          overwrite: "auto",
           opacity: 1,
           ease: "power3.out",
         });
@@ -292,7 +311,6 @@ const Skill = () => {
       } else {
         gsap.to(magnifier, {
           duration: 0.3,
-          overwrite: "auto",
           opacity: 0,
           ease: "power3.out",
         });
@@ -301,7 +319,6 @@ const Skill = () => {
     const handleLeave = () => {
       gsap.to(magnifier, {
         duration: 0.3,
-        overwrite: "auto",
         opacity: 0,
         ease: "power3.out",
       });
@@ -317,6 +334,7 @@ const Skill = () => {
       container.removeEventListener("touchend", handleLeave);
     };
   }, [bgImageUrl]);
+
   return (
     <>
       <style>{`
@@ -359,6 +377,7 @@ const Skill = () => {
           pointer-events: none;
           box-shadow: 0 0 30px rgba(0,0,0,0.7);
           border: 2px solid var(--primary-color);
+          transition: opacity 0.3s ease, transform 0.3s ease;
         }
         .content {
           position: relative;
@@ -372,6 +391,16 @@ const Skill = () => {
           margin-bottom: 2rem;
           color: var(--primary-color);
           text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+        }
+        @media (max-width: 768px) {
+          .content h1 {
+            font-size: 2.5rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .content h1 {
+            font-size: 2rem;
+          }
         }
         .btn-group {
           margin-bottom: 2rem;
@@ -397,12 +426,36 @@ const Skill = () => {
           color: var(--accent-color);
           transform: translateY(-3px);
         }
+        @media (max-width: 768px) {
+          .btn-group button {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .btn-group button {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+          }
+        }
         .grid {
           display: grid;
           gap: 2rem;
           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
           width: 100%;
           margin: 2rem auto 0;
+        }
+        @media (max-width: 768px) {
+          .grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .grid {
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1rem;
+          }
         }
         .flip-card {
           perspective: 1500px;
@@ -411,6 +464,18 @@ const Skill = () => {
           height: 320px;
           margin: 0 auto;
           cursor: pointer;
+        }
+        @media (max-width: 768px) {
+          .flip-card {
+            max-width: 100%;
+            height: 300px;
+          }
+        }
+        @media (max-width: 480px) {
+          .flip-card {
+            max-width: 100%;
+            height: 350px;
+          }
         }
         .flip-card-inner {
           position: relative;
@@ -441,7 +506,7 @@ const Skill = () => {
           background: linear-gradient(135deg, rgba(0,0,0,0.25), rgba(0,0,0,0.1));
           border: 2px solid var(--border-color);
           transform: rotateY(180deg);
-          overflow: hidden;
+          overflow: auto;
         }
         .category-icon {
           font-size: 3rem;
@@ -449,16 +514,26 @@ const Skill = () => {
           color: var(--primary-color);
           transition: transform 0.3s ease;
         }
+        @media (max-width: 768px) {
+          .category-icon {
+            font-size: 2.5rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .category-icon {
+            font-size: 2rem;
+          }
+        }
         .flip-card:hover .category-icon {
           transform: scale(1.1);
         }
         .card-items {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 1rem;
-          width: 100%;
-          justify-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
           align-items: center;
+          gap: .5rem;
+          width: 100%;
         }
         .card-item-inner {
           background: rgba(255, 255, 255, 0.15);
@@ -468,59 +543,43 @@ const Skill = () => {
           text-align: center;
           color: var(--accent-color);
           font-family: 'Source Code Pro', monospace;
-          width: 100%;
-          transition: transform 0.3s;
+          width: calc(50% - 0.5rem);
+          transition: transform 0.3s, background 0.3s;
+        }
+        @media (max-width: 768px) {
+          .flip-card-back .card-items {
+            flex-direction: column;
+            gap: 0.5rem;
+          }
+          .flip-card-back .card-item-inner {
+            width: 100%;
+            padding: 0.5rem;
+            box-sizing: border-box;
+          }
+          .flip-card-back .card-item-inner p {
+            font-size: 0.9rem;
+          }
+          .flip-card-back .card-item-inner .icon {
+            font-size: 1.2rem;
+          }
         }
         .card-item-inner .icon {
           display: block;
-          font-size: 2rem;
+          font-size: 1.5rem;
           margin-bottom: 0.5rem;
           color: var(--accent-color);
         }
         .card-item-inner p {
-          font-size: 0.9rem;
-        }
-        @media (max-width: 1024px) {
-          .content h1 {
-            font-size: 3rem;
-          }
-          .grid {
-            gap: 1.5rem;
-          }
+          font-size: 0.8rem;
         }
         @media (max-width: 768px) {
-          .content h1 {
-            font-size: 2.5rem;
-          }
-          .btn-group button {
-            font-size: 0.9rem;
-            padding: 0.5rem 1rem;
-          }
-          .flip-card {
-            max-width: 240px;
-            height: 280px;
-          }
-          .category-icon {
-            font-size: 2.5rem;
-          }
-          .card-item-inner .icon {
-            font-size: 1.75rem;
+          .skill-section {
+            padding: 2rem 1rem;
           }
         }
         @media (max-width: 480px) {
-          .content h1 {
-            font-size: 2rem;
-          }
-          .btn-group button {
-            font-size: 0.8rem;
-            padding: 0.4rem 0.8rem;
-          }
-          .grid {
-            gap: 1rem;
-          }
-          .flip-card {
-            max-width: 220px;
-            height: 260px;
+          .skill-section {
+            padding: 1.5rem 0.5rem;
           }
         }
       `}</style>
@@ -542,9 +601,9 @@ const Skill = () => {
             ))}
           </div>
           <div className="grid">
-            {filteredSkills.map((skill, idx) => (
+              {filteredSkills.map((skill, idx) => (
               <SkillCard key={idx} skillCategory={skill} />
-            ))}
+              ))}
           </div>
         </div>
       </div>

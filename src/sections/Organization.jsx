@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import Lottie from "react-lottie";
@@ -28,48 +28,58 @@ function IconButton({ href, children }) {
 }
 
 export default function OrganizationGallery() {
-  const [isMobile, setIsMobile] = useState(false);
-  const items = [
-    {
-      img: AntiSmoking,
-      title: "Anti Smoking Campaign",
-      subtitle: "🚭 Smoking Ages You Faster! 🚭",
-      description:
-        "Smoking speeds up the aging process, causing wrinkles, dull skin, and premature aging. Quit today to look and feel younger!",
-    },
-    {
-      img: EcoFriendly,
-      title: "Eco-Friendly Campaign",
-      subtitle: "Mycorrhizal fungi: The unseen warriors of our planet 🌍",
-      description:
-        "Mycorrhizal fungi make partnerships with about 90% of all plant species. They form complex networks underground. Plants feed them carbon in the form of sugars and fats, and in return, the fungi forage in the soil and provide nitrogen and phosphorus. It's an underground economy that's been around for millions of years.",
-    },
-    {
-      img: Health,
-      title: "Mental Well Being",
-      subtitle: "Water can keep you well",
-      description:
-        "Feeling stressed? 😟 Anxious? 😰 Depressed? 😞 Sometimes, all you need is a glass of water. 💧 Stay hydrated, refresh your mind, and keep going! 💪✨",
-    },
-  ];
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const containerRef = useRef(null);
   const groupRef = useRef(null);
   const headingRef = useRef(null);
   const counterSectionRef = useRef(null);
   const counters = useRef([]);
-
+  const pythonCounterRef = useRef(null);
+  const items = useMemo(
+    () => [
+      {
+        img: AntiSmoking,
+        title: "Anti Smoking Campaign",
+        subtitle: "🚭 Smoking Ages You Faster! 🚭",
+        description:
+          "Smoking speeds up the aging process, causing wrinkles, dull skin, and premature aging. Quit today to look and feel younger!"
+      },
+      {
+        img: EcoFriendly,
+        title: "Eco-Friendly Campaign",
+        subtitle: "Mycorrhizal fungi: The unseen warriors of our planet 🌍",
+        description:
+          "Mycorrhizal fungi make partnerships with about 90% of all plant species. They form complex networks underground. Plants feed them carbon in the form of sugars and fats, and in return, the fungi forage in the soil and provide nitrogen and phosphorus. It's an underground economy that's been around for millions of years."
+      },
+      {
+        img: Health,
+        title: "Mental Well Being",
+        subtitle: "Water can keep you well",
+        description:
+          "Feeling stressed? 😟 Anxious? 😰 Depressed? 😞 Sometimes, all you need is a glass of water. 💧 Stay hydrated, refresh your mind, and keep going! 💪✨"
+      }
+    ],
+    []
+  );
+  const lottieOptions = useMemo(
+    () => ({
+      animationData: color,
+      loop: true,
+      autoplay: true
+    }),
+    []
+  );
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    
-    if (!isMobile) {
+    const updateMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    updateMobile();
+    window.addEventListener("resize", updateMobile);
+    if (!isMobile && groupRef.current && containerRef.current) {
       const totalScrollWidth = groupRef.current.scrollWidth;
       const viewportWidth = containerRef.current.clientWidth;
       const scrollDistance = totalScrollWidth - viewportWidth;
-      
       gsap.to(groupRef.current, {
         x: -scrollDistance,
         ease: "none",
@@ -79,8 +89,8 @@ export default function OrganizationGallery() {
           end: "+=" + scrollDistance,
           scrub: true,
           pin: true,
-          anticipatePin: 1,
-        },
+          anticipatePin: 1
+        }
       });
     }
     gsap.fromTo(
@@ -94,14 +104,14 @@ export default function OrganizationGallery() {
       ease: "power1.out",
       scrollTrigger: {
         trigger: counterSectionRef.current,
-        start: "top center",
+        start: "top center"
       },
       onUpdate: function() {
-        pythonCounterRef.current.innerText = Math.floor(this.targets()[0].val);
-      },
+        if (pythonCounterRef.current) {
+          pythonCounterRef.current.innerText = Math.floor(this.targets()[0].val);
+        }
+      }
     });
-    
-
     const counterValues = [11, 226, 100, 3130];
     counters.current.forEach((counter, index) => {
       gsap.to(counter, {
@@ -111,24 +121,16 @@ export default function OrganizationGallery() {
         scrollTrigger: {
           trigger: counterSectionRef.current,
           start: "top center",
-          toggleActions: "play none none reverse",
+          toggleActions: "play none none reverse"
         },
         snap: { textContent: 1 }
       });
     });
-
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      window.removeEventListener("resize", checkMobile);
+      window.removeEventListener("resize", updateMobile);
     };
   }, [isMobile]);
-
-  const lottieOptions = {
-    animationData: color,
-    loop: true,
-    autoplay: true,
-  };
-
   return (
     <article id="organization" className="w-full bg-lemon_chiffon">
       <header className="relative h-auto flex flex-col justify-center items-center bg-gradient-to-r from-electric_blue to-aquamarine overflow-hidden px-4 sm:px-6 lg:px-8">
@@ -176,13 +178,12 @@ export default function OrganizationGallery() {
           </IconButton>
         </div>
       </header>
-
-      <section className="img-group-container relative " ref={containerRef}>
-        <div className="sticky top-0 overflow-hidden  h-auto w-full">
+      <section className="img-group-container relative" ref={containerRef}>
+        <div className="sticky top-0 overflow-hidden h-auto w-full">
           <ul className={`flex ${isMobile ? "flex-col" : "flex-row mt-20"}`} ref={groupRef}>
             {items.map((item, index) => (
-              <li key={index} className={`${isMobile ? "w-full h-auto py-20  " : "w-full h-[100vh] "} flex-none  flex-col items-center justify-center bg-lemon_chiffon`}>
-                <motion.div 
+              <li key={index} className={`${isMobile ? "w-full h-auto py-20" : "w-full h-[100vh]"} flex-none flex-col items-center justify-center bg-lemon_chiffon`}>
+                <motion.div
                   className="flex flex-col items-center"
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -192,7 +193,7 @@ export default function OrganizationGallery() {
                   <img
                     src={item.img}
                     alt={item.title}
-                    className="w-[280px] sm:w-[350px] h-[350px] sm:h-[450px] object-cover rounded-xl shadow-lg hover:scale-105 transition-transform ease-out duration-300 "
+                    className="w-[280px] sm:w-[350px] h-[350px] sm:h-[450px] object-cover rounded-xl shadow-lg hover:scale-105 transition-transform ease-out duration-300"
                   />
                   <h3 className="text-[30px] sm:text-[50px] font-heading font-semibold tracking-tight leading-[1.2] mt-6 text-dark_teal">
                     {item.title}
@@ -209,9 +210,11 @@ export default function OrganizationGallery() {
           </ul>
         </div>
       </section>
-
-      <section ref={counterSectionRef} className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-gradient-to-b from-lemon_chiffon via-tea_rose to-deep_indigo">
-        <motion.h2 
+      <section
+        ref={counterSectionRef}
+        className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-gradient-to-b from-lemon_chiffon via-tea_rose to-deep_indigo"
+      >
+        <motion.h2
           className="text-3xl sm:text-6xl font-heading font-semibold text-deep_indigo text-center mb-8"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -220,9 +223,12 @@ export default function OrganizationGallery() {
         >
           I solved various coding problems in URI
         </motion.h2>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-6xl px-4">
-          {[['Python', SiPython, 11], ['C++', SiCplusplus, 226], ['C', SiC, 100]].map(([lang, Icon, value], index) => (
+          {[
+            ["Python", SiPython, 11],
+            ["C++", SiCplusplus, 226],
+            ["C", SiC, 100]
+          ].map(([lang, Icon, value], index) => (
             <motion.div
               key={lang}
               className="flex flex-col items-center p-6 bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl"
@@ -233,7 +239,15 @@ export default function OrganizationGallery() {
             >
               <div className="flex items-center gap-3 mb-4">
                 <Icon className="text-4xl text-dark_teal" />
-                <span ref={el => counters.current[index] = el} className="text-5xl font-bold text-dark_teal">0</span>
+                <span
+                  ref={(el) => {
+                    counters.current[index] = el;
+                    if (index === 0) pythonCounterRef.current = el;
+                  }}
+                  className="text-5xl font-bold text-dark_teal"
+                >
+                  0
+                </span>
               </div>
               <a
                 href={`https://github.com/Bushraabir/uri_beecrowd_${lang.toLowerCase()}`}
@@ -243,7 +257,6 @@ export default function OrganizationGallery() {
               </a>
             </motion.div>
           ))}
-
           <motion.div
             className="flex flex-col items-center p-6 bg-dark_teal/80 backdrop-blur-lg rounded-2xl shadow-xl"
             initial={{ scale: 0.8, opacity: 0 }}
@@ -253,7 +266,9 @@ export default function OrganizationGallery() {
           >
             <div className="flex items-center gap-3 mb-4">
               <FaTrophy className="text-4xl text-lemon_chiffon" />
-              <span ref={el => counters.current[3] = el} className="text-5xl font-bold text-lemon_chiffon">0</span>
+              <span ref={el => (counters.current[3] = el)} className="text-5xl font-bold text-lemon_chiffon">
+                0
+              </span>
             </div>
             <span className="text-lg text-lemon_chiffon">
               Ranking: 3130 (Top 1%)

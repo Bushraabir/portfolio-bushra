@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, memo, useRef, useCallback, lazy } from "react";
+import React, { useState, useEffect, useRef, useCallback, memo, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,10 +10,10 @@ import { FaCheck, FaChevronDown } from "react-icons/fa";
 const Ball = lazy(() => import("../assets/3d_model/Ball"));
 import Star from "../components/Stars";
 
-
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
+
 const achievements = [
   {
     title: "Academic Excellence & Scholarships",
@@ -44,9 +44,11 @@ const achievements = [
     title: "STEM Competitions & Olympiads",
     description: "Excelled in national Olympiads and science fairs, pushing my intellectual boundaries.",
     points: [
+      "International Youth Math Challenge (IYMC) – Qualification Round Winner (2024)",
       "Bangladesh Math Olympiad – Regional Winner, National Round Participant (2020)",
       "Bangladesh Physics Olympiad (BdPhO) – 1st place in the regional round (Jessore), National Round Participant (2023)",
       "Interhouse Astro Olympiad – 3rd place (2022)",
+      "Developed Gusto, a specialized virtual assistant designed for various activities at Bir Protik Dr. Captain Sitara Begum House (CSBH), featuring advanced face recognition and data analysis capabilities. Recognized as the Best Project at the Interhouse Science Fair Competition, MCSK (2022).",
       "Interhouse Astrophysics Olympiad – 1st place in the junior group (2019)",
       "Biggan Uthsob (National) – Regional Winner, National Round Participant with a project on Biodegradable Polythene (2019)"
     ]
@@ -91,13 +93,15 @@ const achievements = [
     ]
   },
   {
-    title: "NPO Volunteering",
-    description: "Volunteered with EmpowerEd, supporting its mission to provide education and opportunities.",
+    title: "Non-Profit & Community Engagement",
+    description: "Engaged in a diverse range of non-profit and community initiatives, including founding and holding leadership roles at EmpowerEd, a non-profit dedicated to enhancing educational opportunities, as well as providing design and digital expertise to support local businesses and creative platforms.",
     points: [
-      "Founded EmpowerEd, a non-profit organization.",
-      "Vice President of EmpowerEd.",
+      "Founded EmpowerEd, a non-profit focused on educational opportunities.",
+      "Served as Vice President, shaping strategy and leadership at EmpowerEd.",
       "STEM Innovation Advisor at EmpowerEd.",
-      "Fundraising Coordinator at EmpowerEd."
+      "Led fundraising to support EmpowerEd’s mission-driven initiatives.",
+      "Feather Clothing Brand: Assisted in transitioning a physical clothing brand to online during lockdown by creating logos and digital marketing content.",
+      "Eyes on Talent: Served as Vice Graphic Designer for an online talent platform, designing posters and cover photos to inspire creativity during the pandemic."
     ]
   },
   {
@@ -172,16 +176,31 @@ const AnimatedModel = memo(() => (
   </WebGLErrorBoundary>
 ));
 
+const listVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+};
+
 const AchievementCard = memo(({ achievement, isMobile }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const headingRef = useRef(null);
   const cardRef = useRef(null);
+  const headingRef = useRef(null);
 
   const toggleCard = useCallback(() => setIsExpanded(p => !p), []);
 
   useEffect(() => {
     if (!headingRef.current) return;
-    
+
     const ctx = gsap.context(() => {
       gsap.from(headingRef.current, {
         y: 50,
@@ -254,18 +273,22 @@ const AchievementCard = memo(({ achievement, isMobile }) => {
           height: isExpanded ? "auto" : 0, 
           opacity: isExpanded ? 1 : 0 
         }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
         className="overflow-hidden mt-4"
       >
-        <ul className="space-y-3">
+        <motion.ul
+          variants={listVariants}
+          initial="hidden"
+          animate={isExpanded ? "visible" : "hidden"}
+          className="space-y-3"
+        >
           {achievement.points.map((point, index) => (
             <motion.li 
               key={index}
-              className={`flex items-start space-x-3 font-serif text-champagne_pink opacity-90 ${
+              variants={itemVariants}
+              className={`flex items-start space-x-3 font-serif text-champagne_pink ${
                 isMobile ? "text-sm" : "text-base sm:text-lg"
               }`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: index * 0.05 }}
             >
               <div className="flex items-center justify-center w-6 h-6 text-white rounded-full bg-gradient-to-r from-tea_rose to-pink_lavender shadow-md">
                 <FaCheck className="text-lg" />
@@ -273,7 +296,7 @@ const AchievementCard = memo(({ achievement, isMobile }) => {
               <span className="tracking-wide">{point}</span>
             </motion.li>
           ))}
-        </ul>
+        </motion.ul>
       </motion.div>
     </VerticalTimelineElement>
   );
@@ -360,7 +383,7 @@ const Achievements = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-           From the first day of school until now, everything I've done has been driven by my curiosity. This curiosity has not only allowed me to explore my purpose and interests but has also been the catalyst for my continuous personal development. Each step has been a part of a greater journey toward growth.
+          From the first day of school until now, everything I've done has been driven by my curiosity. This curiosity has not only allowed me to explore my purpose and interests but has also been the catalyst for my continuous personal development. Each step has been a part of a greater journey toward growth.
         </motion.p>
       </motion.div>
 

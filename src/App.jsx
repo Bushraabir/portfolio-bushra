@@ -145,33 +145,30 @@ const App = () => {
   }, []);
   if (!isLoaded) return <Loader1 />;
   return (
+    <Suspense fallback={<Loader1 />}>
     <div className="bg-deep_indigo text-deep_indigo min-h-screen font-description overflow-hidden">
       <NavbarComponent />
       <div className="absolute top-0 left-0 w-full h-full">
-        <Suspense fallback={<Loader1 />}>
-          <ErrorBoundary>
-            <ParticleScene />
-          </ErrorBoundary>
-        </Suspense>
+        <ErrorBoundary>
+          <ParticleScene />
+        </ErrorBoundary>
       </div>
       <main className="min-h-screen overflow-hidden">
-        <Suspense fallback={<Loader1 />}>
-          <Hero id="hero" />
-          <AboutMe id="about" />
-          <Achievements />
-          <Skill />
-          <Gallery id="gallery" />
-          <Websites id="websites" />
-          <Artworks id="artworks" />
-          <Art id="digital" />
-          <Research id="research" />
-          <Organization id="organization" className="bg-lemon_chiffon" />
-          <Testimonials id="testimonials" />
-          <Footer />
-        </Suspense>
+        <Hero id="hero" />
+        <AboutMe id="about" />
+        <Achievements />
+        <Skill />
+        <Gallery id="gallery" />
+        <Websites id="websites" />
+        <Artworks id="artworks" />
+        <Art id="digital" />
+        <Research id="research" />
+        <Organization id="organization" className="bg-lemon_chiffon" />
+        <Testimonials id="testimonials" />
+        <Footer />
       </main>
     </div>
-  );
+  </Suspense>  );
 };
 
 export default App;
