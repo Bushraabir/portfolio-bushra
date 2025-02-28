@@ -276,7 +276,7 @@ const Research = () => {
   );
 
   return (
-    <div className="bg-yellow-100 text-purple-900 min-h-screen">
+    <div id="research" className=" bg-yellow-100 text-purple-900 min-h-screen">
       <div className="max-w-7xl mx-auto p-8 flex flex-col md:flex-row">
         {isMobile && (
           <button

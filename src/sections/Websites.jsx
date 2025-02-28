@@ -404,7 +404,7 @@ const Website = () => {
           border: transparent;
         }
       `}</style>
-      <section id="research" className="py-16 lg:py-24 bg-deep_indigo text-lemon_chiffon">
+      <section id="websites" className="py-16 lg:py-24 bg-deep_indigo text-lemon_chiffon">
         <div className="container mx-auto px-6 lg:px-20">
           <div ref={initialMessageRef} className="flex flex-col items-center justify-center min-h-screen mt-55">
             <div className="flex items-center">

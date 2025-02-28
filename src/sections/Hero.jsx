@@ -52,7 +52,6 @@ const Hero = () => {
     );
   }, []);
 
-
   const textParagraphClass = isMobile
     ? "text-sm text-glow text-lemon_chiffon font-description tracking-wider leading-relaxed"
     : "text-lg sm:text-xl md:text-2xl text-glow text-lemon_chiffon font-description tracking-wider leading-relaxed";
@@ -65,11 +64,9 @@ const Hero = () => {
     ? "text-sm text-glow text-mauve font-subheading tracking-wide leading-relaxed"
     : "text-lg sm:text-2xl md:text-2xl text-glow text-mauve font-subheading tracking-wide leading-relaxed";
 
-
   const profileImgClass = isMobile
     ? "w-40 h-40 transition-transform duration-300 transform shadow-2xl hover:scale-105"
     : "w-11 h-11 sm:w-40 sm:h-40 md:w-60 md:h-60 lg:w-96 lg:h-96 transition-transform duration-300 transform shadow-2xl hover:scale-105";
-
 
   const buttonClass = isMobile
     ? "relative px-2 py-1 text-sm font-semibold text-white tracking-wider transition-all transform border-2 border-lemon_chiffon rounded-lg bg-gradient-to-r from-non_photo_blue to-pink_lavender hover:bg-transparent hover:border-non_photo_blue hover:scale-110 focus:outline-none focus:ring-2 focus:ring-non_photo_blue"
@@ -78,7 +75,6 @@ const Hero = () => {
   const buttonCVClass = isMobile
     ? "relative px-2 py-1 text-sm font-semibold text-white tracking-wider transition-all transform border-2 border-lemon_chiffon rounded-lg bg-gradient-to-r from-jordy_blue to-mauve hover:bg-transparent hover:border-jordy_blue hover:scale-110 focus:outline-none focus:ring-2 focus:ring-jordy_blue"
     : "relative px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 text-base sm:text-lg md:text-xl font-semibold text-white tracking-wider transition-all transform border-4 border-lemon_chiffon rounded-2xl bg-gradient-to-r from-jordy_blue to-mauve hover:bg-transparent hover:border-jordy_blue hover:scale-110 focus:outline-none focus:ring-4 focus:ring-jordy_blue";
-
 
   const descriptionClass = isMobile
     ? "text-xs text-glow text-jordy_blue tracking-wide leading-relaxed"

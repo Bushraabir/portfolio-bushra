@@ -85,11 +85,11 @@ const NavbarComponent = () => {
   const navLinks = [
     { id: "about", name: "About Me" },
     { id: "achievements", name: "Achievements" },
-    { id: "websites", name: "Websites" },
+    { id: "websites", name: "STEM Projects" },
     { id: "artworks", name: "Artworks" },
     { id: "research", name: "Research" },
-    { id: "organization", name: "Organization" },
-    { id: "testimonials", name: "Testimonials" },
+    { id: "organization", name: "Volunteering & Technical Rankings" },
+    { id: "testimonials", name: "Appreciations" },
   ];
   return (
     <div className="fixed top-0 left-0 z-50">
