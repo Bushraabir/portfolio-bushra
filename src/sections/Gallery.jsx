@@ -4,18 +4,13 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lottie from "react-lottie";
 import animationData from "../assets/animation/myself.json";
-import color from "../assets/animation/gradient.json";
 import atheletics from "../assets/gallery/2022_atheletics.jpg";
-import house_champion from "../assets/gallery/2022_house_champion.jpg";
 import house_champion_2 from "../assets/gallery/2022_house_compitition_2.jpeg";
 import house_champion_3 from "../assets/gallery/2022_house_compitition_3.jpg";
 import oath from "../assets/gallery/2022_oath.jpg";
-import interhouse_drill_compitition from "../assets/gallery/2023_interhouse_drill_compitition.jpg";
 import house from "../assets/gallery/house.jpg";
 import prefectship from "../assets/gallery/prefectship.png";
 import cadetship from "../assets/gallery/2023_cadetship.jpg";
-import painting from "../assets/gallery/2022_painting_compitition.jpg";
-import HSC from "../assets/gallery/2023_HSC.jpg";
 import physics_olympiad from "../assets/gallery/2023_physics_olympiad.jpg";
 import science_fair1 from "../assets/gallery/science_fair.jpg";
 import children from "../assets/gallery/2022_children.jpg";
@@ -163,187 +158,187 @@ const Gallery = () => {
   return (
     <>
       <style>{`
-.banner {
-  width: 100%;
-  height: 150vh;
-  text-align: center;
-  overflow: visible;
-  position: relative;
-}
-.banner .slider {
-  position: absolute;
-  width: 200px;
-  height: 150px;
-  top: 10%;
-  left: calc(50% - 150px);
-  z-index: 2;
-}
-.banner .slider .item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.row {
-  display: flex;
-  justify-content: center;
-  gap: 1px;
-  margin-bottom: 1px;
-}
-.row .item {
-  position: relative;
-  transform: none;
-}
-.row .item img {
-  width: 100%;
-  height: auto;
-  max-width: none;
-}
-.image-description {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  font-family: 'Jura', sans-serif;
-  font-size: 0.8em;
-  color: #2a1b3d;
-  opacity: 0;
-  pointer-events: none;
-  background: rgba(173, 167, 201, 0.7);
-  padding: 10px;
-  border-radius: 8px;
-  border: 2px solid #E6B800;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-.image-description:hover {
-  opacity: 1;
-  color: #E6B800;
-  background: rgba(90, 4, 71, 0.1);
-}
-.banner .content {
-  margin-top: 200px;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(1500px, 100vw);
-  padding-bottom: 100px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1;
-}
-.banner .content h1 {
-  margin-top: 200px;
-  font-family: 'Playfair Display', serif;
-  font-size: 15em;
-  line-height: 1;
-  color: #fde4cf;
-  position: relative;
-  letter-spacing: -0.05em;
-}
-.banner .content h1::after {
-  position: absolute;
-  inset: 0;
-  content: attr(data-content);
-  z-index: 2;
-  -webkit-text-stroke: 2px #2a1b3d;
-  color: transparent;
-}
-.banner .content h2 {
-  font-size: 3.5rem;
-  font-weight: bold;
-  color: #f1c0e8;
-  margin-bottom: 10px;
-  letter-spacing: 0.05em;
-  text-shadow: 2px 2px 5px rgba(223, 206, 206, 0.3);
-  text-align: right;
-  font-family: 'Cormorant Garamond', serif;
-}
-.banner .content p {
-  text-align: right;
-  font-family: 'Jura', sans-serif;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #a3c4f3;
-  margin-bottom: 10px;
-  letter-spacing: 0.05em;
-  text-shadow: 2px 2px 5px rgba(223, 206, 206, 0.3);
-}
-.banner .content .model {
-  width: 100%;
-  height: 75vh;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background-size: auto 130%;
-  background-repeat: no-repeat;
-  background-position: top center;
-  z-index: 1;
-}
-@media screen and (max-width: 1023px) {
-  .banner .slider {
-    width: 240px;
-    height: 280px;
-    left: calc(50% - 120px);
-  }
-  .banner .content h1 {
-    font-size: 10em;
-  }
-}
-@media screen and (max-width: 767px) {
-  .banner .slider {
-    width: 220px;
-    height: 260px;
-    left: calc(50% - 110px);
-    animation: autoRun 40s ease-in-out infinite;
-  }
-  .banner .content h1 {
-    font-size: 5em;
-    text-align: center;
-  }
-  .banner .content h2 {
-    font-size: 2.5rem;
-    text-align: center;
-  }
-  .mobile-gallery {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-    padding: 5px;
-  }
-  .mobile-gallery .card img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
-  .mobile-gallery .image-description {
-    font-family: 'Jura', sans-serif;
-    font-size: 0.8em;
-    color: #2a1b3d;
-    opacity: 0;
-    pointer-events: none;
-    background: rgba(173, 167, 201, 0.7);
-    padding: 10px;
-    border-radius: 8px;
-    border: 2px solid #E6B800;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-  .mobile-gallery .card:hover .image-description {
-    opacity: 1;
-    color: #E6B800;
-    background: rgba(90, 4, 71, 0.1);
-  }
-}
+        .banner {
+          width: 100%;
+          height: 150vh;
+          text-align: center;
+          overflow: visible;
+          position: relative;
+        }
+        .banner .slider {
+          position: absolute;
+          width: 200px;
+          height: 150px;
+          top: 10%;
+          left: calc(50% - 150px);
+          z-index: 2;
+        }
+        .banner .slider .item img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .row {
+          display: flex;
+          justify-content: center;
+          gap: 1px;
+          margin-bottom: 1px;
+        }
+        .row .item {
+          position: relative;
+          transform: none;
+        }
+        .row .item img {
+          width: 100%;
+          height: auto;
+          max-width: none;
+        }
+        .image-description {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          font-family: 'Jura', sans-serif;
+          font-size: 0.8em;
+          color: #2a1b3d;
+          opacity: 0;
+          pointer-events: none;
+          background: rgba(173, 167, 201, 0.7);
+          padding: 10px;
+          border-radius: 8px;
+          border: 2px solid #E6B800;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .image-description:hover {
+          opacity: 1;
+          color: #E6B800;
+          background: rgba(90, 4, 71, 0.1);
+        }
+        .banner .content {
+          margin-top: 200px;
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: min(1500px, 100vw);
+          padding-bottom: 100px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          align-items: center;
+          z-index: 1;
+        }
+        .banner .content h1 {
+          margin-top: 200px;
+          font-family: 'Playfair Display', serif;
+          font-size: 15em;
+          line-height: 1;
+          color: #fde4cf;
+          position: relative;
+          letter-spacing: -0.05em;
+        }
+        .banner .content h1::after {
+          position: absolute;
+          inset: 0;
+          content: attr(data-content);
+          z-index: 2;
+          -webkit-text-stroke: 2px #2a1b3d;
+          color: transparent;
+        }
+        .banner .content h2 {
+          font-size: 3.5rem;
+          font-weight: bold;
+          color: #f1c0e8;
+          margin-bottom: 10px;
+          letter-spacing: 0.05em;
+          text-shadow: 2px 2px 5px rgba(223, 206, 206, 0.3);
+          text-align: right;
+          font-family: 'Cormorant Garamond', serif;
+        }
+        .banner .content p {
+          text-align: right;
+          font-family: 'Jura', sans-serif;
+          font-size: 1rem;
+          font-weight: bold;
+          color: #a3c4f3;
+          margin-bottom: 10px;
+          letter-spacing: 0.05em;
+          text-shadow: 2px 2px 5px rgba(223, 206, 206, 0.3);
+        }
+        .banner .content .model {
+          width: 100%;
+          height: 75vh;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          background-size: auto 130%;
+          background-repeat: no-repeat;
+          background-position: top center;
+          z-index: 1;
+        }
+        @media screen and (max-width: 1023px) {
+          .banner .slider {
+            width: 240px;
+            height: 280px;
+            left: calc(50% - 120px);
+          }
+          .banner .content h1 {
+            font-size: 10em;
+          }
+        }
+        @media screen and (max-width: 767px) {
+          .banner .slider {
+            width: 220px;
+            height: 260px;
+            left: calc(50% - 110px);
+            animation: autoRun 40s ease-in-out infinite;
+          }
+          .banner .content h1 {
+            font-size: 5em;
+            text-align: center;
+          }
+          .banner .content h2 {
+            font-size: 2.5rem;
+            text-align: center;
+          }
+          .mobile-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            padding: 5px;
+          }
+          .mobile-gallery .card img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+          }
+          .mobile-gallery .image-description {
+            font-family: 'Jura', sans-serif;
+            font-size: 0.8em;
+            color: #2a1b3d;
+            opacity: 0;
+            pointer-events: none;
+            background: rgba(173, 167, 201, 0.7);
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #E6B800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+          }
+          .mobile-gallery .card:hover .image-description {
+            opacity: 1;
+            color: #E6B800;
+            background: rgba(90, 4, 71, 0.1);
+          }
+        }
       `}</style>
       <div className="relative py-16 banner bg-lemon_chiffon h-[200vh] main">
         <div className="font-sans text-lg text-right text-center text-dark_teal">

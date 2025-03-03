@@ -150,17 +150,17 @@ const App = () => {
       <NavbarComponent />
       <div className="absolute top-0 left-0 w-full h-full">
         <ErrorBoundary>
-          <ParticleScene />
+          <ParticleScene className="min-h-screen overflow-hidden -z-10"  />
         </ErrorBoundary>
       </div>
       <main className="min-h-screen overflow-hidden">
-        <Hero id="hero" />
+        <Hero id="hero z-10" />
         <AboutMe id="about" />
         <Achievements />
         <Skill />
         <Gallery id="gallery" />
         <Websites id="websites" />
-        <Artworks id="artworks" />
+
         <Art id="digital" />
         <Research id="research" />
         <Organization id="organization" className="bg-lemon_chiffon" />

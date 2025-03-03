@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion } from "framer-motion";
-import { Tilt } from "react-tilt";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, EffectCoverflow } from "swiper/modules";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/effect-coverflow";
+import Tilt from "react-parallax-tilt";
 
 import BlueMosque from "../assets/acrylic/1.jpg";
 import Nature from "../assets/acrylic/2.jpg";
@@ -15,51 +19,49 @@ import Imagination from "../assets/acrylic/6.jpg";
 import Vase from "../assets/acrylic/7.jpg";
 import Bridge from "../assets/acrylic/8.jpg";
 import Sunset from "../assets/acrylic/9.jpg";
-
 import China from "../assets/WaterColor/1.jpg";
 import flower1 from "../assets/WaterColor/2.jpg";
 import lamp from "../assets/WaterColor/4.jpg";
 import flower3 from "../assets/WaterColor/5.jpg";
 import sunsetWater from "../assets/WaterColor/6.jpg";
 import magic from "../assets/WaterColor/9.jpg";
-
 import nature from "../assets/PencilSketch/1.jpg";
 import rope from "../assets/PencilSketch/2.jpg";
 import flower from "../assets/PencilSketch/3.jpg";
 import chess from "../assets/PencilSketch/4.jpg";
 import lion from "../assets/PencilSketch/5.jpg";
 import hand from "../assets/PencilSketch/6.jpg";
-import glass from "../assets/PencilSketch/7.jpg";
 import still from "../assets/PencilSketch/8.jpg";
 import still_1 from "../assets/PencilSketch/9.jpg";
 import interior from "../assets/PencilSketch/10.jpg";
-import perspective from "../assets/PencilSketch/11.jpg";
-import nature_1 from "../assets/PencilSketch/12.jpg";
 import architecture from "../assets/PencilSketch/13.jpg";
 import daffodils from "../assets/PencilSketch/14.jpg";
 import life from "../assets/PencilSketch/15.jpg";
 import tulip from "../assets/PencilSketch/17.jpg";
-import composition from "../assets/PencilSketch/18.jpg";
-import lyrics from "../assets/PencilSketch/19.jpg";
 import captive from "../assets/PencilSketch/21.png";
-
-import line from "../assets/crafts/1.jpg";
 import line_1 from "../assets/crafts/3.jpg";
 import dot from "../assets/crafts/4.jpg";
 import emotion from "../assets/crafts/5.jpg";
 import brain from "../assets/crafts/6.jpg";
-import notebook from "../assets/crafts/7.jpg";
 import penholder from "../assets/crafts/8.jpg";
-import penholder_1 from "../assets/crafts/9.jpg";
 import chess_1 from "../assets/crafts/10.jpg";
-
-gsap.registerPlugin(ScrollTrigger);
+import kingdom from "../assets/illustration/1.jpg";
+import warrior from "../assets/illustration/2.jpg";
+import logo from "../assets/illustration/3.png";
+import birth from "../assets/illustration/4.png";
+import independence from "../assets/illustration/5.png";
+import can from "../assets/modeling/can.png";
+import ship from "../assets/modeling/space_ship.png";
+import buet from "../assets/illustration/buet.jpg";
+import laran from "../assets/illustration/kodom.jpg";
 
 const tabs = [
   { id: "sketch", title: "Sketch", description: "Detailed and intricate pencil sketches." },
-  { id: "acrylic", title: "Acrylic", description: "Explore vibrant and textured acrylic art pieces." },
-  { id: "watercolor", title: "Watercolor", description: "Soft, flowing, and colorful watercolor creations." },
-  { id: "crafts and models", title: "Crafts & Models", description: "Handmade crafts and intricate models." }
+  { id: "acrylic", title: "Acrylic", description: "Vibrant and textured acrylic art pieces." },
+  { id: "watercolor", title: "Watercolor", description: "Soft, flowing watercolor creations." },
+  { id: "crafts and models", title: "Crafts & Models", description: "Handmade crafts and models." },
+  { id: "modeling", title: "Modeling", description: "Digital and physical models." },
+  { id: "illustration", title: "Illustration", description: "Creative illustrations." },
 ];
 
 const artworksData = {
@@ -271,6 +273,7 @@ const artworksData = {
       title: "Luminescence in Stillness",
       date: "2023"
     }
+  
   ],
   "crafts and models": [
     {
@@ -315,292 +318,388 @@ const artworksData = {
       title: "Terra’s Gambit: A Symphony in Clay",
       date: "2025"
     }
-  ]
+  
+  
+  ],
+  modeling: [
+        {
+          src: can,
+          title: "A Digital Rhapsody",
+          description:
+            "A visionary exploration that fuses the precision of digital rendering with the soul of handcrafted narrative. Developed in Blender and enriched by meticulously crafted labels in Illustrator, the artwork presents a harmonious still life where industrial elements—weathered cans, rustic wooden blocks, and textured stone—are bathed in soft, ambient light. The overlaid annotations serve as poetic whispers, inviting the viewer to unravel hidden layers of meaning and engage in a dialogue between form and sentiment. This piece is a celebration of the convergence between modern technology and traditional artistic expression, offering a dynamic interplay of structure and spontaneity that captures the ephemeral essence of creative thought.",
+          medium: "Blender, Adobe Illustrator",
+          date: "2023"
+        },
+        {
+          src: ship,
+          title: "Nebular Vessel: Beacon of Life",
+          description:
+            "A visionary sci‑fi creation rendered in Blender, where art meets cosmic aspiration. The spaceship’s transparent, glass-like hull houses a series of delicate glass containers, each cradling a luminous core that symbolizes the spark of life. This radiant element is portrayed as the essence of human hope—a beacon destined to ignite new worlds. The interplay of reflective surfaces and ethereal light creates an atmosphere of wonder and possibility, embodying the belief that humanity will one day venture into the unknown, carrying the seeds of life across the cosmos. This piece not only celebrates technical mastery and innovative design but also encapsulates a profound narrative of exploration, renewal, and the infinite potential of life beyond Earth.",
+          medium: "Blender",
+          date: "2023"
+        }
+  ],
+  illustration: [
+        {
+          src: kingdom,
+          title: "Abyssal Dominion",
+          description:
+            "In the shadowy depths where the ocean conceals forgotten legends, Abyssal Dominion emerges as a surreal kingdom shrouded in mystery. This illustration invites viewers into an underworld where ethereal blues and haunting pinks converge to reveal a realm of lost majesty. Amid the silent sway of submerged ruins and the ghostly luminescence of hidden treasures, the artwork tells a story of decay interwoven with regal splendor. Every brushstroke hints at ancient secrets and the enigmatic power of a kingdom that thrives beneath the crushing weight of the deep ocean. These ideas were inspired by themes found in modern reinterpretations of mythic underwater worlds, blending the allure of the unknown with a narrative of regality and mystery.",
+          medium: "Photoshop, Illustrator",
+          date: "2023"
+        },
+        {
+          src: warrior,
+          title: "Crimson Valor: The Spirit of Liberation",
+          description:
+            "This Adobe Illustrator artwork stands as a vivid tribute to the bravery of Bengali freedom fighters during the Liberation War. By reimagining the Bangladesh flag as a resolute, character-like emblem armed with a rifle, the piece powerfully blends modern digital aesthetics with profound national symbolism. The bold incorporation of the nation's map within a red circle further evokes an enduring spirit of sacrifice and unity, celebrating a pivotal moment in history.",
+          medium: "Adobe Illustrator",
+          date: "2023"
+        },
+        {
+          src: buet,
+          title: "Serenity In Structure",
+          description:
+            "This Adobe Illustrator artwork beautifully captures the iconic BUET Architecture Building and the serene bench in front of it. The organic, free-flowing frame blends nature with structural elements, reflecting the harmony between design and environment. The textured rocks, lush greenery, and modern facade create a visual balance, symbolizing the fusion of tradition and innovation in architectural education. The stylized approach adds an artistic depth, making this piece not just a depiction but a tribute to BUET’s architectural legacy.",
+          medium: "Adobe Illustrator",
+          date: "2023"
+        },
+        {
+          src: laran,
+          title: "Monsoon Whisper: The Kadam Bloom",
+          description:
+            "Inspired by the timeless allure of the Kadam flower—a cherished symbol in Bengali culture—this digital creation celebrates nature’s ephemeral poetry amid the monsoon. In this work, soft luminescence meets the rhythmic pulse of rain. The Kadam bloom unfurls gracefully as if in whispered dialogue with the monsoon’s gentle cascade. Rich, luminous hues mingle with delicate misty textures, evoking a serene dreamscape where tradition and modern digital technique coexist. Every petal and droplet hints at the fleeting beauty of life—a visual hymn of renewal and nostalgic longing for rain-soaked afternoons. The piece invites viewers to pause, reflect, and lose themselves in a moment of natural wonder and cultural reverie.",
+          medium: "Digital",
+          date: "2022"
+        },
+        {
+          src: logo,
+          title: "Symphony of Imagination",
+          description:
+            "A vibrant fusion of creativity and self-expression, this is the official logo for the 'Eyes on Talent' Facebook page and group. It seamlessly intertwines the fluid brushstrokes of painting, the captivating lens of photography, and the melodic curves of music. Designed to embody the spirit of a community where students and individuals of all ages showcase their talents and creativity, this logo invites everyone to join a celebration of artistic exploration and innovation.",
+          medium: "Adobe Photoshop",
+          date: "2021"
+        },
+        {
+          src: birth,
+          title: "Eternal Flame of Independence",
+          description:
+            "A heartfelt tribute crafted to celebrate the birthday of the Father of the Nation, Bangabandhu Sheikh Mujibur Rahman. This piece merges a dignified portrait with a mosaic of smaller images, symbolizing the collective memory and unity he ignited in Bangladesh. Warm hues and overlapping visuals highlight his enduring legacy, capturing the spirit of resilience, liberation, and hope that continues to guide the nation forward.",
+          medium: "Adobe Photoshop",
+          date: "2021"
+        },
+        {
+          src: independence,
+          title: "Crimson Echoes of Sacrifice",
+          description:
+            "A dynamic tribute honoring the blood and sacrifice of countless Bangalees who paved the path to freedom. Bold splashes of red and green evoke the national spirit, while powerful imagery and dramatic textures capture the relentless courage and resilience of a people united in their quest for independence. This artwork stands as a heartfelt homage to the enduring legacy of sacrifice and valor that continues to inspire.",
+          medium: "Adobe Illustrator",
+          date: "2021"
+        }
+  ],
+};
+
+const tabColors = {
+  sketch: { from: "#1d3557", to: "#a3c4f3" },
+  acrylic: { from: "#2a1b3d", to: "#cfbaf0" },
+  watercolor: { from: "#f1c0e8", to: "#ffcfd2" },
+  "crafts and models": { from: "#fde4cf", to: "#fbf8cc" },
+  modeling: { from: "#1d3557", to: "#90dbf4" },
+  illustration: { from: "#2a1b3d", to: "#f1c0e8" },
 };
 
 const Art = () => {
   const [activeTab, setActiveTab] = useState("sketch");
   const [selectedArtwork, setSelectedArtwork] = useState(null);
-  const containerRef = useRef(null);
   const modalRef = useRef(null);
-  const touchStartY = useRef(0);
-  const touchCurrentY = useRef(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
-
-  useEffect(() => {
-    gsap.fromTo(
-      containerRef.current,
-      { opacity: 0, y: 100 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.8,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 85%",
-          end: "bottom 20%",
-          scrub: 0.5
-        }
-      }
-    );
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const currentArtworks = useMemo(() => {
-    const indexOfLast = currentPage * itemsPerPage;
-    const indexOfFirst = indexOfLast - itemsPerPage;
-    return artworksData[activeTab]?.slice(indexOfFirst, indexOfLast) || [];
-  }, [activeTab, currentPage]);
-
-  const totalPages = useMemo(
-    () => Math.ceil((artworksData[activeTab]?.length || 0) / itemsPerPage),
-    [activeTab]
-  );
+  const closeButtonRef = useRef(null);
 
   const handleTabChange = useCallback((tabId) => {
     setActiveTab(tabId);
-    setCurrentPage(1);
-    artworksData[tabId].forEach((art) => {
-      const img = new Image();
-      img.src = art.src;
-    });
-    gsap.fromTo(
-      ".artwork",
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out" }
-    );
-  }, []);
-
-  const artworkHover = useCallback((e) => {
-    const art = e.target.closest(".artwork");
-    gsap.to(art, {
-      scale: 1.15,
-      rotation: 8,
-      boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)",
-      duration: 0.4,
-      ease: "elastic.out(1, 0.5)"
-    });
-  }, []);
-
-  const artworkHoverOut = useCallback((e) => {
-    const art = e.target.closest(".artwork");
-    gsap.to(art, {
-      scale: 1,
-      rotation: 0,
-      boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
-      duration: 0.4,
-      ease: "elastic.out(1, 0.5)"
-    });
+    setSelectedArtwork(null);
   }, []);
 
   const openModal = useCallback((art) => {
     setSelectedArtwork(art);
-    gsap.fromTo(
-      modalRef.current,
-      { opacity: 0, scale: 0.7, y: -100, rotationX: 10 },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        rotationX: 0,
-        duration: 0.8,
-        ease: "back.out(1.4)"
-      }
-    );
   }, []);
 
   const closeModal = useCallback(() => {
-    gsap.to(modalRef.current, {
-      opacity: 0,
-      scale: 0.7,
-      y: 100,
-      rotationX: -10,
-      duration: 0.5,
-      ease: "back.in(1.4)",
-      onComplete: () => setSelectedArtwork(null)
-    });
+    setSelectedArtwork(null);
   }, []);
 
-  const handleTouchStart = useCallback((e) => {
-    touchStartY.current = e.touches[0].clientY;
-  }, []);
+  const overlayVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { when: "beforeChildren", staggerChildren: 0.1 } },
+    exit: { opacity: 0, transition: { staggerChildren: 0.05, staggerDirection: -1 } },
+  };
 
-  const handleTouchMove = useCallback((e) => {
-    touchCurrentY.current = e.touches[0].clientY;
-    const deltaY = touchCurrentY.current - touchStartY.current;
-    if (deltaY > 0) {
-      gsap.to(modalRef.current, { y: deltaY, duration: 0 });
-    }
-  }, []);
+  const modalVariants = {
+    hidden: { scale: 0.5, opacity: 0, y: -30 },
+    visible: { scale: 1, opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 25 } },
+    exit: { scale: 0.5, opacity: 0, y: 30, transition: { duration: 0.2 } },
+  };
 
-  const handleTouchEnd = useCallback(() => {
-    const deltaY = touchCurrentY.current - touchStartY.current;
-    if (deltaY > 120) {
-      closeModal();
-    } else {
-      gsap.to(modalRef.current, {
-        y: 0,
-        duration: 0.5,
-        ease: "back.out(1.4)"
-      });
-    }
-  }, [closeModal]);
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  };
+
+  const handleNext = useCallback(() => {
+    const currentIndex = artworksData[activeTab].findIndex((art) => art.src === selectedArtwork.src);
+    const nextIndex = (currentIndex + 1) % artworksData[activeTab].length;
+    setSelectedArtwork(artworksData[activeTab][nextIndex]);
+  }, [activeTab, selectedArtwork]);
+
+  const handlePrev = useCallback(() => {
+    const currentIndex = artworksData[activeTab].findIndex((art) => art.src === selectedArtwork.src);
+    const prevIndex = (currentIndex - 1 + artworksData[activeTab].length) % artworksData[activeTab].length;
+    setSelectedArtwork(artworksData[activeTab][prevIndex]);
+  }, [activeTab, selectedArtwork]);
 
   useEffect(() => {
-    gsap.fromTo(
-      ".artwork",
-      { opacity: 0, y: 80, scale: 0.9 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1.2,
-        ease: "power3.out",
-        stagger: 0.25,
-        scrollTrigger: {
-          trigger: ".artwork",
-          start: "top 90%",
-          end: "bottom 20%",
-          toggleActions: "play none none none"
-        }
-      }
-    );
-  }, [currentArtworks]);
+    const handleKeyDown = (e) => {
+      if (!selectedArtwork) return;
+      if (e.key === "ArrowRight") handleNext();
+      else if (e.key === "ArrowLeft") handlePrev();
+      else if (e.key === "Escape") closeModal();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedArtwork, handleNext, handlePrev, closeModal]);
 
-  const paginate = useCallback((pageNumber) => {
-    setCurrentPage(pageNumber);
-    gsap.fromTo(
-      ".artwork",
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out" }
-    );
-  }, []);
+  useEffect(() => {
+    if (selectedArtwork && closeButtonRef.current) {
+      closeButtonRef.current.focus();
+    }
+  }, [selectedArtwork]);
 
   return (
-    <section className="relative bg-gradient-to-br from-[#1D3557] via-[#2A1B3D] to-[#F5F8CC] p-6 sm:p-10 md:p-14 lg:p-20 overflow-hidden min-h-screen">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1D3557]/80 via-[#2A1B3D]/80 to-[#F5F8CC]/80 opacity-60 backdrop-blur-md shadow-2xl"></div>
-      <div className="container relative z-10 px-4 sm:px-8 lg:px-16 xl:px-24 mx-auto" ref={containerRef}>
-        <div className="mb-10 sm:mb-16 md:mb-24 text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-[#F5F8CC] tracking-wider drop-shadow-2xl">
+    <section className="relative p-6 sm:p-10 md:p-14 lg:p-20 min-h-screen overflow-hidden">
+      <motion.div
+        className="absolute inset-0 opacity-75 backdrop-blur-lg"
+        animate={{ background: `linear-gradient(135deg, ${tabColors[activeTab].from} 0%, ${tabColors[activeTab].to} 100%)` }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+      />
+      <div className="container relative z-10 px-4 sm:px-8 lg:px-16 xl:px-24 mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="mb-10 sm:mb-16 md:mb-24 text-center"
+        >
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white tracking-wider drop-shadow-2xl text-stroke">
             Exquisite Artistry
           </h1>
-          <p className="mt-3 sm:mt-5 md:mt-7 text-base sm:text-lg md:text-xl lg:text-2xl text-[#F1C0E8] font-description opacity-85 leading-relaxed">
-            A curated collection of artworks, meticulously crafted to inspire and engage through emotion and creativity.
+          <p className="mt-3 sm:mt-5 md:mt-7 text-base sm:text-lg md:text-xl lg:text-2xl text-white font-description opacity-90 leading-relaxed">
+            A curated collection of artworks, crafted to inspire and engage.
           </p>
-        </div>
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-6 md:gap-8 mb-10 sm:mb-14 md:mb-20">
+        </motion.div>
+
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-6 md:gap-8 mb-10 sm:mb-14 md:mb-20" role="tablist">
           {tabs.map((tab) => (
-            <button
+            <motion.button
               key={tab.id}
-              className={`py-2 px-5 sm:py-3 sm:px-8 md:py-4 md:px-12 text-sm sm:text-base md:text-lg lg:text-xl font-heading rounded-full border-2 sm:border-3 md:border-4 transition-all duration-400 ease-in-out transform hover:scale-110 hover:shadow-lg hover:border-[#F5F8CC] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-[#F5F8CC]/50 ${
-                activeTab === tab.id
-                  ? "bg-gradient-to-r from-[#F5F8CC] to-[#FDE4CF] text-[#2A1B3D] border-[#F5F8CC] shadow-md"
-                  : "bg-transparent text-[#F5F8CC] border-[#F5F8CC]/70"
-              }`}
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              aria-controls={`panel-${tab.id}`}
               onClick={() => handleTabChange(tab.id)}
+              whileHover={{ scale: 1.05, boxShadow: "0px 8px 15px rgba(0,0,0,0.2)" }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className={`relative py-2 px-5 sm:py-3 sm:px-8 md:py-4 md:px-12 text-sm sm:text-base md:text-lg lg:text-xl font-heading rounded-full overflow-hidden focus:outline-none focus:ring-4 focus:ring-offset-2 ${
+                activeTab === tab.id
+                  ? "text-white shadow-xl"
+                  : "bg-transparent text-white border-2 border-white hover:border-lemon_chiffon hover:text-lemon_chiffon"
+              }`}
+              style={{
+                background: activeTab === tab.id
+                  ? `linear-gradient(to right, ${tabColors[tab.id].from}, ${tabColors[tab.id].to})`
+                  : "transparent",
+              }}
             >
-              {tab.title}
-            </button>
+              <motion.span
+                className="absolute inset-0"
+                initial={{ x: "-100%" }}
+                animate={{ x: activeTab === tab.id ? 0 : "-100%" }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                style={{
+                  background: `linear-gradient(to right, ${tabColors[tab.id].from}80, ${tabColors[tab.id].to}80)`,
+                  opacity: 0.3,
+                }}
+              />
+              <span className="relative z-10">{tab.title}</span>
+            </motion.button>
           ))}
         </div>
-        <div className="text-center text-[#F5F8CC] mb-8 sm:mb-12 md:mb-16 text-sm sm:text-base md:text-lg lg:text-xl font-description opacity-90">
-          {tabs.find((tab) => tab.id === activeTab)?.description}
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10 md:gap-14">
-          {isLoading ? (
-            Array.from({ length: itemsPerPage }).map((_, index) => (
-              <div key={index} className="artwork w-full h-[280px] sm:h-[360px] md:h-[420px] bg-gray-200/20 rounded-3xl animate-pulse"></div>
-            ))
-          ) : (
-            currentArtworks.map((art, index) => (
-              <motion.div
-                key={index}
-                className="artwork group relative w-full h-[280px] sm:h-[360px] md:h-[420px] rounded-3xl overflow-hidden shadow-lg"
-                onClick={() => openModal(art)}
-                onMouseEnter={artworkHover}
-                onMouseLeave={artworkHoverOut}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Tilt options={{ max: 20, scale: 1.05, speed: 1000, perspective: 1000 }} className="w-full h-full">
-                  <LazyLoadImage
-                    src={art.src}
-                    alt={art.description}
-                    className="object-cover w-full h-full transition-all duration-600 transform rounded-3xl group-hover:scale-115 group-hover:rotate-4"
-                    loading="lazy"
-                    effect="blur"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
-                  <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white">
-                    <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-heading font-semibold tracking-tight">{art.title}</h3>
-                    <p className="text-xs sm:text-sm md:text-base lg:text-lg font-description opacity-80">{art.date}</p>
-                  </div>
-                </Tilt>
-              </motion.div>
-            ))
-          )}
-        </div>
-        <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
-          <div className="flex items-center gap-3 sm:gap-5 md:gap-7">
-            {Array.from({ length: totalPages }).map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => paginate(idx + 1)}
-                className={`text-xs sm:text-sm md:text-base lg:text-lg font-medium font-description px-3 sm:px-4 md:px-5 py-1 sm:py-2 md:py-3 rounded-full transition-all duration-300 ease-in-out hover:bg-[#F5F8CC] hover:text-[#2A1B3D] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5F8CC]/50 ${
-                  currentPage === idx + 1 ? "bg-[#F5F8CC] text-[#2A1B3D] shadow-sm" : "bg-transparent text-[#F5F8CC]"
-                }`}
-              >
-                {idx + 1}
-              </button>
-            ))}
-          </div>
-        </div>
-        {selectedArtwork && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 sm:p-6 md:p-8"
-            onClick={closeModal}
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            id={`panel-${activeTab}`}
+            role="tabpanel"
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 100 }}
+            transition={{ duration: 0.5 }}
           >
-            <motion.div
-              ref={modalRef}
-              className="bg-gradient-to-br from-[#F5F8CC] to-[#FDE4CF] p-4 sm:p-6 md:p-8 lg:p-12 rounded-3xl relative w-full max-w-[90vw] sm:max-w-[85vw] md:max-w-[75vw] lg:max-w-[65vw] max-h-[90vh] overflow-y-auto shadow-3xl"
-              onClick={(e) => e.stopPropagation()}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
+            <Swiper
+              modules={[Navigation, EffectCoverflow]}
+              effect="coverflow"
+              grabCursor
+              centeredSlides
+              slidesPerView={1}
+              coverflowEffect={{
+                rotate: 0,
+                stretch: 20,
+                depth: 400,
+                modifier: 1,
+                slideShadows: false,
+              }}
+              navigation
+              pagination={{ clickable: true }}
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                768: { slidesPerView: 3 },
+                1024: { slidesPerView: 4 },
+              }}
+              className="mySwiper"
             >
-              <button
-                className="absolute top-3 right-3 sm:top-4 sm:right-4 md:top-6 md:right-6 text-2xl sm:text-3xl md:text-4xl font-heading font-extrabold text-[#2A1B3D] hover:text-[#1D3557] hover:scale-110 transition-all duration-300 focus:outline-none"
-                onClick={closeModal}
+              {artworksData[activeTab].map((art) => (
+                <SwiperSlide key={art.src}>
+                  <div
+                    className="relative w-[400px] h-auto sm:h-[300px] md:h-[400px] rounded-3xl cursor-pointer border-4 border-white shadow-lg"
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`View ${art.title}`}
+                    onClick={() => openModal(art)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") openModal(art);
+                    }}
+                  >
+                    <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} perspective={2000}>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="w-full h-full"
+                      >
+                        <LazyLoadImage
+                          src={art.src}
+                          alt={art.title}
+                          className="object-contain w-full h-full rounded-3xl"
+                          loading="lazy"
+                          effect="blur"
+                        />
+                      </motion.div>
+                    </Tilt>
+                    <div className="absolute bottom-4 left-4 right-4 bg-deep_indigo bg-opacity-70 p-2 rounded-lg text-lemon_chiffon">
+                      <h3 className="text-base sm:text-lg md:text-xl font-subheading font-semibold">
+                        {art.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm md:text-base font-description">{art.date}</p>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </motion.div>
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {selectedArtwork && (
+            <motion.div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 p-4 sm:p-6 md:p-8"
+              variants={overlayVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              onClick={closeModal}
+            >
+              <motion.div
+                ref={modalRef}
+                role="dialog"
+                aria-modal="true"
+                className="relative bg-gradient-to-br from-lemon_chiffon to-champagne_pink p-6 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl"
+                variants={modalVariants}
+                drag="y"
+                dragConstraints={{ top: 0, bottom: 0 }}
+                onDragEnd={(e, { offset, velocity }) => {
+                  if (offset.y > 150 || velocity.y > 500) closeModal();
+                }}
+                onClick={(e) => e.stopPropagation()}
               >
-                ×
-              </button>
-              <LazyLoadImage
-                src={selectedArtwork.src}
-                alt={selectedArtwork.description}
-                className="object-contain w-full h-auto max-h-[35vh] sm:max-h-[45vh] md:max-h-[50vh] mb-4 sm:mb-6 md:mb-8 rounded-xl border-4 border-[#F5F8CC]/50"
-                loading="lazy"
-                effect="blur"
-              />
-              <div className="text-center">
-                <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-extrabold text-[#2A1B3D] mb-2 sm:mb-3 md:mb-4 tracking-wide">
-                  {selectedArtwork.title}
-                </h2>
-                <p className="max-w-full sm:max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto mb-3 sm:mb-4 md:mb-6 text-sm sm:text-base md:text-lg lg:text-xl font-medium font-description leading-relaxed text-[#2A1B3D]/90">
-                  {selectedArtwork.description}
-                </p>
-                <p className="text-xs sm:text-sm md:text-base lg:text-lg font-medium font-description text-[#A7A6B0] uppercase tracking-widest">
-                  {selectedArtwork.date}
-                </p>
-              </div>
+                <motion.button
+                  ref={closeButtonRef}
+                  className="absolute top-4 right-4 w-10 h-10 rounded-full bg-deep_indigo text-white flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300 focus:outline-none"
+                  onClick={closeModal}
+                  aria-label="Close modal"
+                  variants={itemVariants}
+                >
+                  ×
+                </motion.button>
+
+                <motion.div className="flex flex-col items-center" variants={itemVariants}>
+                  <motion.div className="mb-6 w-full" variants={itemVariants}>
+                    <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ duration: 0.5 }}>
+                      <LazyLoadImage
+                        src={selectedArtwork.src}
+                        alt={selectedArtwork.title}
+                        className="object-contain w-full h-auto max-h-[50vh] rounded-xl border-4 border-deep_indigo"
+                        loading="lazy"
+                        effect="blur"
+                      />
+                    </motion.div>
+                  </motion.div>
+
+                  <motion.div className="text-center" variants={itemVariants}>
+                    <motion.h2
+                      className="font-heading text-3xl md:text-4xl font-extrabold text-deep_indigo mb-3 tracking-wide"
+                      variants={itemVariants}
+                    >
+                      {selectedArtwork.title}
+                    </motion.h2>
+                    <motion.p
+                      className="max-w-2xl mx-auto mb-4 text-base md:text-lg font-medium font-description leading-relaxed text-deep_indigo opacity-90"
+                      variants={itemVariants}
+                    >
+                      {selectedArtwork.description}
+                    </motion.p>
+                    <motion.p
+                      className="text-sm md:text-base font-medium font-description text-jordy_blue uppercase tracking-widest"
+                      variants={itemVariants}
+                    >
+                      {selectedArtwork.date}
+                    </motion.p>
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+
+              <motion.button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePrev();
+                }}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-deep_indigo bg-opacity-50 hover:bg-opacity-70 text-white flex items-center justify-center text-2xl transition-transform duration-300 focus:outline-none"
+                aria-label="Previous artwork"
+                variants={itemVariants}
+              >
+                ←
+              </motion.button>
+              <motion.button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleNext();
+                }}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-deep_indigo bg-opacity-50 hover:bg-opacity-70 text-white flex items-center justify-center text-2xl transition-transform duration-300 focus:outline-none"
+                aria-label="Next artwork"
+                variants={itemVariants}
+              >
+                →
+              </motion.button>
             </motion.div>
-          </div>
-        )}
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

@@ -4,8 +4,8 @@ import { FaFacebookF, FaInstagram, FaWhatsapp, FaPhoneAlt } from "react-icons/fa
 
 export default function Footer() {
   return (
-    <footer className="bg-deep_indigo text-lemon_chiffon relative overflow-hidden opacity-60">
-      <div className="absolute inset-0 bg-gradient-to-r from-electric_blue to-aquamarine opacity-20 animate-gradient-move" />
+    <footer className="bg-gradient-to-b from-gray-900 to-gray-800 text-gray-200 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-teal-500 to-blue-500 opacity-20 animate-gradient-move" />
       <div className="relative z-10 container mx-auto px-6 py-12 md:py-16 flex flex-col md:flex-row justify-between items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -14,9 +14,11 @@ export default function Footer() {
           viewport={{ once: true }}
           className="mb-8 md:mb-0 text-center md:text-left"
         >
-          <h2 className="font-heading text-left  text-4xl md:text-5xl">Bushra Khandoker</h2>
-          <p className="font-description text-left text-xl md:text-2xl mt-2">
-          A dreamer, a trailblazing innovator and a renaissance thinker, passionately committed to explore the world
+          <h2 className="font-heading text-4xl md:text-5xl tracking-tight">
+            Bushra Khandoker
+          </h2>
+          <p className="font-description text-xl md:text-2xl mt-2 max-w-md leading-relaxed">
+            A dreamer, a trailblazing innovator, and a renaissance thinker, passionately committed to exploring the world.
           </p>
         </motion.div>
         <motion.div
@@ -24,41 +26,45 @@ export default function Footer() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
           viewport={{ once: true }}
-          className="flex space-x-6"
+          className="flex space-x-8"
         >
           <a
             href="https://www.facebook.com/bushra.708"
             target="_blank"
             rel="noopener noreferrer"
-            className="transform transition-transform hover:scale-110"
+            className="transform transition-all duration-300 hover:scale-110 hover:text-teal-300"
+            aria-label="Facebook"
           >
-            <FaFacebookF size={24} />
+            <FaFacebookF size={26} />
           </a>
           <a
             href="https://www.instagram.com/bushra._.708"
             target="_blank"
             rel="noopener noreferrer"
-            className="transform transition-transform hover:scale-110"
+            className="transform transition-all duration-300 hover:scale-110 hover:text-teal-300"
+            aria-label="Instagram"
           >
-            <FaInstagram size={24} />
+            <FaInstagram size={26} />
           </a>
           <a
             href="https://wa.me/8801334798878"
             target="_blank"
             rel="noopener noreferrer"
-            className="transform transition-transform hover:scale-110"
+            className="transform transition-all duration-300 hover:scale-110 hover:text-teal-300"
+            aria-label="WhatsApp"
           >
-            <FaWhatsapp size={24} />
+            <FaWhatsapp size={26} />
           </a>
           <a
             href="tel:+8801334798878"
-            className="transform transition-transform hover:scale-110"
+            className="transform transition-all duration-300 hover:scale-110 hover:text-teal-300"
+            aria-label="Phone"
           >
-            <FaPhoneAlt size={24} />
+            <FaPhoneAlt size={26} />
           </a>
         </motion.div>
       </div>
-      <div className="relative z-10 container mx-auto px-6 py-8 border-t border-champagne_pink-500 flex flex-col md:flex-row justify-between items-center">
+      <div className="relative z-10 container mx-auto px-6 py-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -66,7 +72,7 @@ export default function Footer() {
           viewport={{ once: true }}
           className="font-description text-lg"
         >
-          &copy; {new Date().getFullYear()} Bushra. All rights reserved.
+          © {new Date().getFullYear()} Bushra. All rights reserved.
         </motion.div>
         <motion.div
           initial={{ opacity: 0 }}
@@ -77,13 +83,12 @@ export default function Footer() {
         >
           <a
             href="tel:+8801334798878"
-            className="transition-colors hover:text-tea_rose"
+            className="transition-colors duration-300 hover:text-teal-300"
           >
             +8801334798878
           </a>
         </motion.div>
       </div>
-      
     </footer>
   );
 }

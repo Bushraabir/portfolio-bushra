@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import Splitting from "splitting";
 import "splitting/dist/splitting.css";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FaPython,
   FaReact,
@@ -133,7 +133,7 @@ const categoryIcons = {
 
 const SkillCard = ({ skillCategory }) => {
   const innerRef = useRef(null);
-  const [flipped, setFlipped] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -143,78 +143,86 @@ const SkillCard = ({ skillCategory }) => {
   }, []);
 
   useEffect(() => {
-    if (flipped) {
-      gsap.to(innerRef.current, {
-        duration: 0.6,
-        rotationY: 180,
-        scale: 1.2,
-        ease: "power3.out",
-      });
-    } else {
-      gsap.to(innerRef.current, {
-        duration: 0.6,
-        rotationY: 0,
-        scale: 1,
-        ease: "power3.out",
-      });
-    }
-  }, [flipped]);
-
-  const handleMouseEnter = () => {
-    if (!isMobile) {
-      gsap.to(innerRef.current, {
+    const tl = gsap.timeline();
+    if (isFlipped) {
+      tl.to(innerRef.current, {
         duration: 0.6,
         rotationY: 180,
         scale: 1.05,
         ease: "power3.out",
+      }).then(() => {
+        const items = innerRef.current.querySelectorAll(".skill-item");
+        gsap.fromTo(
+          items,
+          {
+            opacity: 0,
+            y: 20,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.1,
+            duration: 0.5,
+            ease: "power3.out",
+          }
+        );
       });
+    } else {
+      const items = innerRef.current.querySelectorAll(".skill-item");
+      tl.to(items, {
+        opacity: 0,
+        y: -20,
+        stagger: 0.05,
+        duration: 0.3,
+      }).to(
+        innerRef.current,
+        {
+          duration: 0.6,
+          rotationY: 0,
+          scale: 1,
+          ease: "power3.out",
+        },
+        "-=0.3"
+      );
     }
-  };
+  }, [isFlipped]);
 
-  const handleMouseLeave = () => {
-    if (!isMobile) {
-      gsap.to(innerRef.current, {
-        duration: 0.6,
-        rotationY: 0,
-        scale: 1,
-        ease: "power3.out",
-      });
-    }
-  };
-
-  const toggleFlip = () => {
-    setFlipped((prev) => !prev);
+  const handleFlip = () => {
+    setIsFlipped((prev) => !prev);
   };
 
   return (
     <motion.div
-      className="flip-card"
+      className={`flip-card ${isFlipped ? "flipped" : ""}`}
       initial={{ opacity: 0, y: 50, rotateY: 10 }}
-      whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+      animate={{ opacity: 1, y: 0, rotateY: 0 }}
+      exit={{ opacity: 0, y: -50, rotateY: -10 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       viewport={{ once: true }}
-      onClick={isMobile ? toggleFlip : undefined}
-      onMouseEnter={isMobile ? undefined : handleMouseEnter}
-      onMouseLeave={isMobile ? undefined : handleMouseLeave}
+      onClick={isMobile ? handleFlip : undefined}
+      onMouseEnter={isMobile ? undefined : () => setIsFlipped(true)}
+      onMouseLeave={isMobile ? undefined : () => setIsFlipped(false)}
     >
+      <div className="glow"></div>
       <div className="flip-card-inner" ref={innerRef}>
         <div className="flip-card-front">
           <div className="category-icon">
             {categoryIcons[skillCategory.category]}
           </div>
+          <p className="category-name">{skillCategory.category}</p>
         </div>
         <div className="flip-card-back">
           <div className="card-items">
             {skillCategory.items.map((item, idx) => (
-                <motion.div
+              <motion.div
                 key={idx}
-                  className="card-item-inner"
+                className="card-item-inner skill-item"
                 whileHover={{ scale: 1.3, rotate: 3 }}
                 transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                >
-                  <span className="icon">{item.icon}</span>
-                  <p>{item.name}</p>
-                </motion.div>
+              >
+                <span className="icon">{item.icon}</span>
+                <p>{item.name}</p>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -240,24 +248,28 @@ const Skill = () => {
       duration: 1,
       y: 50,
       rotateX: 90,
-      stagger: 0.05
+      stagger: 0.05,
     })
-    .to(chars, {
-      duration: 0.8,
-      y: -10,
-      rotateX: -10,
-      scale: 1.1,
-      ease: "back.out(1.7)",
-      stagger: { each: 0.05 }
-    }, "-=0.5")
-    .to(chars, {
-      duration: 0.8,
-      y: 0,
-      rotateX: 0,
-      scale: 1,
-      ease: "elastic.out(1, 0.3)",
-      stagger: { each: 0.05 }
-    });
+      .to(
+        chars,
+        {
+          duration: 0.8,
+          y: -10,
+          rotateX: -10,
+          scale: 1.1,
+          ease: "back.out(1.7)",
+          stagger: { each: 0.05 },
+        },
+        "-=0.5"
+      )
+      .to(chars, {
+        duration: 0.8,
+        y: 0,
+        rotateX: 0,
+        scale: 1,
+        ease: "elastic.out(1, 0.3)",
+        stagger: { each: 0.05 },
+      });
   }, []);
 
   useEffect(() => {
@@ -277,7 +289,9 @@ const Skill = () => {
       const mgWidth = magnifier.offsetWidth;
       const mgHeight = magnifier.offsetHeight;
       const bgWidth = naturalWidth ? naturalWidth * zoom : rect.width * zoom;
-      const bgHeight = naturalHeight ? naturalHeight * zoom : rect.height * zoom;
+      const bgHeight = naturalHeight
+        ? naturalHeight * zoom
+        : rect.height * zoom;
       magnifier.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
       const ratioX = x / rect.width;
       const ratioY = y / rect.height;
@@ -418,13 +432,14 @@ const Skill = () => {
           background: transparent;
           color: var(--primary-color);
           cursor: pointer;
-          transition: background 0.3s, color 0.3s, transform 0.3s;
+          transition: background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
         }
         .btn-group button.active,
         .btn-group button:hover {
           background: var(--primary-color);
           color: var(--accent-color);
-          transform: translateY(-3px);
+          transform: translateY(-3px) scale(1.05);
+          box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         @media (max-width: 768px) {
           .btn-group button {
@@ -464,6 +479,7 @@ const Skill = () => {
           height: 320px;
           margin: 0 auto;
           cursor: pointer;
+          position: relative;
         }
         @media (max-width: 768px) {
           .flip-card {
@@ -510,29 +526,38 @@ const Skill = () => {
         }
         .category-icon {
           font-size: 3rem;
-          margin-bottom: 0.5rem;
+          animation: pulse 3s infinite ease-in-out;
+        }
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+        }
+        .category-name {
+          font-size: 1.2rem;
           color: var(--primary-color);
-          transition: transform 0.3s ease;
+          text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+          margin-top: 0.5rem;
         }
-        @media (max-width: 768px) {
-          .category-icon {
-            font-size: 2.5rem;
-          }
+        .glow {
+          position: absolute;
+          top: -20px;
+          left: -20px;
+          right: -20px;
+          bottom: -20px;
+          background: radial-gradient(circle, rgba(255,255,255,0.15), transparent);
+          opacity: 0;
+          transition: opacity 0.5s;
+          z-index: -1;
         }
-        @media (max-width: 480px) {
-          .category-icon {
-            font-size: 2rem;
-          }
-        }
-        .flip-card:hover .category-icon {
-          transform: scale(1.1);
+        .flip-card.flipped .glow {
+          opacity: 1;
         }
         .card-items {
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
           align-items: center;
-          gap: .5rem;
+          gap: 0.5rem;
           width: 100%;
         }
         .card-item-inner {
@@ -601,9 +626,11 @@ const Skill = () => {
             ))}
           </div>
           <div className="grid">
-              {filteredSkills.map((skill, idx) => (
-              <SkillCard key={idx} skillCategory={skill} />
+            <AnimatePresence>
+              {filteredSkills.map((skill) => (
+                <SkillCard key={skill.category} skillCategory={skill} />
               ))}
+            </AnimatePresence>
           </div>
         </div>
       </div>

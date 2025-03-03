@@ -213,50 +213,47 @@ const Research = () => {
   const ToggleButton = ({ children, active, onClick }) => (
     <button
       onClick={onClick}
-      className={`px-4 py-2 rounded transition-colors duration-300 ${
-        active ? "bg-gradient-to-r from-cyan-400 to-teal-400 text-white" 
-        : "bg-pink-200 text-purple-900 hover:bg-pink-300"
-      }`}
+      className={`px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 active:scale-95 ${active ? "bg-gradient-to-r from-cyan-400 to-teal-400 text-white shadow-lg shadow-cyan-400/50" : "bg-champagne_pink text-deep_indigo hover:bg-tea_rose hover:text-deep_indigo"}`}
     >
       {children}
     </button>
   );
 
   const ResearchItem = ({ item }) => (
-    <div className="bg-pink-100 rounded-xl shadow-xl overflow-hidden flex flex-col md:flex-row transition-shadow duration-300 hover:shadow-2xl">
+    <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
       {filter === "books" || filter === "research" ? (
-        <>
+        <div className="flex flex-col md:flex-row">
           <div className="md:w-1/3">
-            <img
-              src={item.img}
-              alt={item.title}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </div>
-          <div className="p-8 md:w-2/3 flex flex-col justify-center">
-            <h3 className="text-3xl font-bold mb-3">{item.title}</h3>
-            <p className="mb-4">{item.year}</p>
-            <p className="text-lg">{item.description}</p>
-          </div>
-        </>
-      ) : (
-        <div className="flex flex-col md:flex-row w-full">
-          <div className="md:w-1/3 flex justify-center items-center p-6">
             <LazyLoadImage
               src={item.img}
               alt={item.title}
               effect="blur"
-              className="w-32 h-32 rounded-full border-4 border-purple-900"
+              className="w-full h-full object-cover"
             />
           </div>
-          <div className="p-8 md:w-2/3 flex flex-col justify-center">
-            <h3 className="text-3xl font-bold mb-3">{item.title}</h3>
-            <p className="mb-2 text-lg">Platform: {item.platform}</p>
-            <p className="mb-4 text-lg">{item.description}</p>
+          <div className="p-6 md:w-2/3">
+            <h3 className="text-2xl font-heading font-bold mb-2 text-deep_indigo">{item.title}</h3>
+            <p className="text-gray-600 mb-4">{item.year}</p>
+            <p className="text-lg text-gray-700">{item.description}</p>
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col md:flex-row">
+          <div className="md:w-1/4 flex justify-center items-center p-6">
+            <LazyLoadImage
+              src={item.img}
+              alt={item.title}
+              effect="blur"
+              className="w-32 h-32 rounded-full border-4 border-tea_rose"
+            />
+          </div>
+          <div className="p-6 md:w-3/4">
+            <h3 className="text-2xl font-heading font-bold mb-2 text-deep_indigo">{item.title}</h3>
+            <p className="text-gray-600 mb-2">Platform: {item.platform}</p>
+            <p className="text-lg text-gray-700 mb-4">{item.description}</p>
             <div className="flex flex-wrap gap-2 mb-4">
               {item.tags.map((tag) => (
-                <span key={tag} className="px-3 py-1 text-xs bg-white bg-opacity-80 rounded-full shadow font-medium">
+                <span key={tag} className="px-3 py-1 text-sm bg-mauve text-white rounded-full">
                   {tag}
                 </span>
               ))}
@@ -265,7 +262,7 @@ const Research = () => {
               href={item.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block mt-2 px-6 py-2 bg-gradient-to-r from-cyan-400 to-teal-400 text-white rounded transition-colors duration-300 hover:bg-pink-300"
+              className="inline-block px-6 py-3 bg-gradient-to-r from-cyan-400 to-teal-400 text-white rounded-full transition-all duration-300 hover:from-teal-400 hover:to-cyan-400 hover:shadow-lg"
             >
               Read More
             </a>
@@ -276,20 +273,19 @@ const Research = () => {
   );
 
   return (
-    <div id="research" className=" bg-yellow-100 text-purple-900 min-h-screen">
+    <div id="research" className="bg-gradient-to-br from-lemon_chiffon to-pink_lavender text-deep_indigo min-h-screen">
       <div className="max-w-7xl mx-auto p-8 flex flex-col md:flex-row">
         {isMobile && (
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="mb-4 px-4 py-2 bg-gradient-to-r from-cyan-400 to-teal-400 text-white rounded transition-colors duration-300 hover:bg-pink-300"
+            className="mb-4 px-6 py-3 bg-gradient-to-r from-cyan-400 to-teal-400 text-white rounded-full transition-all duration-300 hover:from-teal-400 hover:to-cyan-400"
           >
             {showFilters ? "Hide Filters" : "Show Filters"}
           </button>
         )}
-
         {(!isMobile || showFilters) && (
           <aside className="md:w-1/4 mb-8 md:mb-0 md:mr-8">
-            <h2 className="text-3xl font-bold mb-6">Filters</h2>
+            <h2 className="text-3xl font-heading font-bold mb-6 text-deep_indigo">Filters</h2>
             <div className="flex flex-col space-y-4">
               <ToggleButton active={filter === "books"} onClick={() => handleFilterChange("books")}>
                 Books
@@ -301,7 +297,7 @@ const Research = () => {
                 Research Paper
               </ToggleButton>
             </div>
-            <div className="mt-8">
+            <div className="relative mt-8">
               <input
                 type="text"
                 placeholder="Search..."
@@ -310,49 +306,47 @@ const Research = () => {
                   setSearch(e.target.value);
                   handleSearch(e.target.value);
                 }}
-                className="w-full px-4 py-2 border-2 border-purple-900 rounded focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                className="w-full px-4 py-3 pl-10 border-2 border-tea_rose rounded-full focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400"
               />
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-deep_indigo">🔍</span>
             </div>
           </aside>
         )}
-
         <main className="md:w-3/4">
           <header className="mb-10">
-            <h1 className="text-5xl font-extrabold mb-4">My Research & Publications</h1>
-            <p className="text-xl leading-relaxed">
+            <h1 className="text-5xl font-heading font-extrabold mb-4 text-deep_indigo">My Research & Publications</h1>
+            <p className="text-xl leading-relaxed text-gray-700">
               I've explored a range of engineering fields and advanced scientific topics, including nuclear, aerospace, astronautical, and electronics engineering, along with in-depth work on astronomy, astrophysics, and quantum mechanics.
             </p>
           </header>
-
           <section className="space-y-8">
             {paginatedData.length > 0 ? (
               paginatedData.map((item, index) => (
                 <ResearchItem key={`${filter}-${index}`} item={item} />
               ))
             ) : (
-              <p className="text-center text-xl">No items found for the current filter and search.</p>
+              <p className="text-center text-xl text-gray-600">No items found for the current filter and search.</p>
             )}
           </section>
-
           <div className="flex justify-between items-center mt-10">
-            <p className="text-xl font-semibold">
+            <p className="text-xl font-semibold text-deep_indigo">
               Page {page[filter]} of {totalPages}
             </p>
             <div className="space-x-4">
               {page[filter] > 1 && (
                 <button
                   onClick={() => changePage(-1)}
-                  className="px-6 py-2 bg-gradient-to-r from-cyan-400 to-teal-400 text-white rounded transition-colors duration-300 hover:bg-pink-300"
+                  className="px-6 py-3 bg-gradient-to-r from-cyan-400 to-teal-400 text-white rounded-full transition-all duration-300 hover:from-teal-400 hover:to-cyan-400"
                 >
-                  Previous
+                  ← Previous
                 </button>
               )}
               {page[filter] < totalPages && (
                 <button
                   onClick={() => changePage(1)}
-                  className="px-6 py-2 bg-gradient-to-r from-cyan-400 to-teal-400 text-white rounded transition-colors duration-300 hover:bg-pink-300"
+                  className="px-6 py-3 bg-gradient-to-r from-cyan-400 to-teal-400 text-white rounded-full transition-all duration-300 hover:from-teal-400 hover:to-cyan-400"
                 >
-                  Next
+                  Next →
                 </button>
               )}
             </div>

@@ -204,7 +204,8 @@ const ParticleScene = () => {
       <Suspense fallback={<Loader />}>
         <PerspectiveCamera makeDefault ref={cameraRef} position={[0, 5, 15]} fov={50} near={0.1} far={1000} />
         <BackgroundScene quality={quality} />
-        {quality === 'high' ? <Environment files={spaceBackground} background /> : <color attach="background" args={['#000']} />}
+        <Environment files={spaceBackground} background />
+
         <ambientLight intensity={0.2} color="#404040" />
         <directionalLight position={[15, 20, 10]} intensity={1.2} castShadow shadow-mapSize-width={2048} shadow-mapSize-height={2048} />
         <spotLight position={[-15, 25, -10]} angle={Math.PI / 6} penumbra={0.5} intensity={1.5} castShadow />

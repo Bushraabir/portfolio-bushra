@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
 import kingdom from "../assets/illustration/1.jpg";
 import warrior from "../assets/illustration/2.jpg";
 import logo from "../assets/illustration/3.png";
@@ -11,8 +9,6 @@ import can from "../assets/modeling/can.png";
 import ship from "../assets/modeling/space_ship.png";
 import buet from "../assets/illustration/buet.jpg";
 import laran from "../assets/illustration/kodom.jpg";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const useNetworkStatus = () => {
   const [isSlow, setIsSlow] = useState(false);
@@ -121,75 +117,6 @@ const Artworks = React.memo(() => {
   }, []);
 
   useEffect(() => {
-    if (!isSlowConnection) {
-      gsap.to(".artwork-gallery", {
-        scrollTrigger: {
-          trigger: ".artwork-gallery",
-          start: "top 85%",
-          end: "bottom 15%",
-          scrub: 1.5
-        },
-        opacity: 1,
-        y: 0,
-        ease: "power4.out"
-      });
-
-      gsap.utils.toArray(".artwork-card").forEach((card, index) => {
-        gsap.fromTo(
-          card,
-          { y: 80, opacity: 0, scale: 0.9 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 1.2,
-            delay: index * 0.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 90%",
-              end: "bottom 10%",
-              scrub: 1,
-              toggleActions: "play none none reverse"
-            }
-          }
-        );
-      });
-      if (!isMobile) {
-        gsap.to(".artwork-card", {
-          scrollTrigger: {
-            trigger: ".artwork-gallery",
-            start: "top center",
-            end: "bottom center",
-            scrub: 2,
-            onUpdate: (self) => {
-              const progress = self.progress;
-              const scale = 1 - progress * 0.2;
-              const y = progress * 200;
-              const x = progress * 50;
-              const opacity = 1 - progress * 0.3;
-              gsap.to(".artwork-card", {
-                scale,
-                y,
-                x,
-                opacity,
-                rotateX: progress * 10,
-                rotateY: progress * 10,
-                ease: "power3.out"
-              });
-            }
-          }
-        });
-      }
-    } else {
-      document.querySelectorAll(".artwork-gallery").forEach((el) => {
-        el.style.opacity = 1;
-        el.style.transform = "translateY(0)";
-      });
-    }
-  }, [isMobile, isSlowConnection]);
-
-  useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);
@@ -200,12 +127,12 @@ const Artworks = React.memo(() => {
         <motion.button
           key={tab}
           onClick={() => handleTabChange(tab)}
-          className={`text-base sm:text-lg md:text-xl font-semibold font-heading transition-all duration-500 transform hover:text-[#FFC857] hover:scale-110 ${
+          className={`text-base sm:text-lg md:text-xl font-semibold font-heading transition-all duration-300 transform hover:text-[#FFC857] hover:scale-110 ${
             activeTab === tab
               ? "text-[#FFC857] text-lg sm:text-xl md:text-2xl font-extrabold"
               : "text-[#cfbaf0]"
           }`}
-          whileHover={{ scale: 1.15, rotate: 2 }}
+          whileHover={{ scale: 1.1, rotate: 1 }}
           whileTap={{ scale: 0.95 }}
         >
           {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -221,9 +148,13 @@ const Artworks = React.memo(() => {
       ) : (
         artworks[activeTab].map((artwork, index) => (
           <motion.div
-            key={index}
+            key={artwork.title}
+            initial={{ opacity: 0, y: 80, scale: 0.9 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: index * 0.05 }}
             className="artwork-card relative overflow-hidden transition-all duration-600 ease-in-out transform hover:scale-105 hover:shadow-2xl hover:rotate-2 rounded-2xl shadow-lg cursor-pointer"
-            whileHover={{ scale: 1.08, rotate: 3 }}
+            whileHover={{ scale: 1.05, rotate: 1 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setSelectedArtwork(artwork)}
           >
@@ -232,9 +163,6 @@ const Artworks = React.memo(() => {
               alt={artwork.title}
               className="object-cover w-full h-[280px] sm:h-[350px] md:h-[400px] rounded-2xl shadow-md transition-all duration-800 ease-in-out"
               loading="lazy"
-              initial={{ opacity: 0, scale: 1.2 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.12, duration: 0.8 }}
             />
             <motion.div
               className="absolute inset-0 flex flex-col items-center justify-end p-4 sm:p-6 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 transition-opacity duration-400"
@@ -277,7 +205,13 @@ const Artworks = React.memo(() => {
         <div className="flex justify-center mt-6 sm:mt-8 md:mt-10 mb-10 sm:mb-12 md:mb-16 space-x-6 sm:space-x-8 md:space-x-10">
           {renderTabs()}
         </div>
-        <motion.div className="artwork-gallery grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="artwork-gallery grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12"
+        >
           {renderArtworks()}
         </motion.div>
       </div>

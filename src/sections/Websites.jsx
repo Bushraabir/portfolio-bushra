@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, memo } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Tilt as ReactTilt } from "react-tilt";
 import Lottie from "react-lottie";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import animationData from "../assets/animation/coding1.json";
 import { FiGithub } from "react-icons/fi";
-
+import { FaEye } from "react-icons/fa";
 import emp1 from "../assets/Website/EmpEd/1.png";
 import emp2 from "../assets/Website/EmpEd/2.png";
 import emp3 from "../assets/Website/EmpEd/3.png";
@@ -32,7 +32,6 @@ import Sustainibility2 from "../assets/Website/Sustainibility/2.png";
 import Sustainibility3 from "../assets/Website/Sustainibility/3.png";
 import Sustainibility4 from "../assets/Website/Sustainibility/4.png";
 import Sustainibility5 from "../assets/Website/Sustainibility/5.png";
-
 import Satellite from "../assets/Projects/Satellite.png";
 import Rocket from "../assets/Projects/Rocket.png";
 import Nuclear from "../assets/Projects/Nuclear.png";
@@ -43,14 +42,16 @@ import Drone from "../assets/Projects/Drone.png";
 import Bio from "../assets/Projects/Bio.png";
 import Telescope from "../assets/Projects/Telescope.png";
 import Biogas from "../assets/Projects/Biogas.png";
-import { FaEye } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Website = () => {
+  // **State Declarations**
   const [activeTab, setActiveTab] = useState("websites");
   const [selectedProject, setSelectedProject] = useState(null);
   const [isDesktop, setIsDesktop] = useState(typeof window !== "undefined" ? window.innerWidth > 768 : true);
+
+  // **Ref Declarations**
   const initialMessageRef = useRef(null);
   const stemRef = useRef(null);
   const collabRef = useRef(null);
@@ -59,83 +60,91 @@ const Website = () => {
   const buttonsRef = useRef(null);
   const cardsRef = useRef(null);
 
+  // **Effect for Handling Window Resize**
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // **Effect for GSAP Scroll Animations**
   useEffect(() => {
     if (isDesktop) {
-      const durationVal = 999000050;
-      let tl = gsap.timeline({
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: initialMessageRef.current,
           start: "top top",
           end: "bottom top",
-          scrub: true
-        }
+          scrub: 1.5,
+          pin: true,
+        },
       });
-      tl.to(stemRef.current, { x: -2500, scale: 5.5, ease: "expo.out", duration: durationVal }, 0)
-        .to(collabRef.current, { x: 3500, scale: 5.5, ease: "expo.out", duration: durationVal }, 0)
-        .to(lottieContainerRef.current, { scale: 65, ease: "expo.out", duration: durationVal }, 0)
-        .to(lottieContainerRef.current, { opacity: 0, ease: "expo.out", duration: durationVal }, 0.01);
+      tl.to(stemRef.current, { x: -1500, scale: 4, ease: "power4.out" }, 0)
+        .to(collabRef.current, { x: 1900, scale: 4, ease: "power4.out" }, 0)
+        .to(lottieContainerRef.current, { scale: 50, ease: "power4.out" }, 0)
+        .to(lottieContainerRef.current, { opacity: 0, ease: "power4.out" }, 0.1);
+
       gsap.fromTo(
         descriptionRef.current,
-        { opacity: 0, y: 50 },
+        { opacity: 0, y: 100 },
         {
           opacity: 1,
           y: 0,
           ease: "expo.out",
-          duration: 1.2,
+          duration: 1.5,
           scrollTrigger: {
             trigger: descriptionRef.current,
-            start: "top 90%",
-            toggleActions: "play none none reverse"
-          }
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
         }
       );
+
       gsap.fromTo(
         buttonsRef.current,
-        { opacity: 0, y: 50 },
+        { opacity: 0, y: 100 },
         {
           opacity: 1,
           y: 0,
           ease: "expo.out",
-          duration: 1.2,
-          delay: 0.4,
+          duration: 1.5,
+          delay: 0.3,
           scrollTrigger: {
             trigger: buttonsRef.current,
-            start: "top 90%",
-            toggleActions: "play none none reverse"
-          }
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
         }
       );
+
       gsap.fromTo(
-        cardsRef.current,
-        { opacity: 0 },
+        cardsRef.current.children,
+        { opacity: 0, y: 150 },
         {
           opacity: 1,
+          y: 0,
           ease: "expo.out",
-          duration: 1.2,
-          delay: 0.6,
+          duration: 1.5,
+          stagger: 0.2,
           scrollTrigger: {
             trigger: cardsRef.current,
             start: "top 80%",
-            toggleActions: "play none none reverse"
-          }
+            toggleActions: "play none none reverse",
+          },
         }
       );
     }
   }, [isDesktop]);
 
+  // **Lottie Animation Options**
   const lottieOptions = {
     loop: true,
     autoplay: true,
     animationData: animationData,
-    rendererSettings: { preserveAspectRatio: "xMidYMid slice" }
+    rendererSettings: { preserveAspectRatio: "xMidYMid slice" },
   };
 
+  // **Data Arrays**
   const courses = [
     {
       type: "course",
@@ -146,11 +155,11 @@ const Website = () => {
         { name: "Space Tech", color: "text-pink-400" },
         { name: "STEM Education", color: "text-pink-400" },
         { name: "Satellite System", color: "text-pink-400" },
-        { name: "Space Exploration", color: "text-pink-400" }
+        { name: "Space Exploration", color: "text-pink-400" },
       ],
       images: [Satellite],
       detailedDescription: "An introductory course on satellite systems and engineering, covering the basics of satellite design, operations, and technologies used in modern space exploration.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation"
+      source_code_link: "https://github.com/Bushraabir/empowereducation",
     },
     {
       type: "course",
@@ -162,11 +171,11 @@ const Website = () => {
         { name: "Space Engineering", color: "text-pink-400" },
         { name: "STEM", color: "text-pink-400" },
         { name: "Thrust", color: "text-pink-400" },
-        { name: "Aerospace Tech", color: "text-pink-400" }
+        { name: "Aerospace Tech", color: "text-pink-400" },
       ],
       images: [Rocket],
       detailedDescription: "An introductory course on rocket propulsion, focusing on the principles of thrust, engine design, and the technologies driving modern rocketry.",
-      source_code_link: "https://github.com/project-two"
+      source_code_link: "https://github.com/project-two",
     },
     {
       type: "course",
@@ -177,11 +186,11 @@ const Website = () => {
         { name: "Aircraft Design", color: "text-pink-400" },
         { name: "Aerodynamics", color: "text-pink-400" },
         { name: "Space Tech", color: "text-pink-400" },
-        { name: "Spacecraft Design", color: "text-pink-400" }
+        { name: "Spacecraft Design", color: "text-pink-400" },
       ],
       images: [AeroSpace],
       detailedDescription: "An introductory course on aerospace engineering, focusing on the principles of aircraft and spacecraft design, aerodynamics, and propulsion systems.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation"
+      source_code_link: "https://github.com/Bushraabir/empowereducation",
     },
     {
       type: "course",
@@ -192,12 +201,12 @@ const Website = () => {
         { name: "Nuclear Engineering", color: "text-pink-400" },
         { name: "Energy Tech", color: "text-pink-400" },
         { name: "Reactor Design", color: "text-pink-400" },
-        { name: "Atomic Energy", color: "text-pink-400" }
+        { name: "Atomic Energy", color: "text-pink-400" },
       ],
       images: [Nuclear],
       detailedDescription: "An introductory course on nuclear science, covering the fundamentals of nuclear reactions, reactor design, and applications in energy production and medical technology.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation"
-    }
+      source_code_link: "https://github.com/Bushraabir/empowereducation",
+    },
   ];
 
   const websites = [
@@ -214,11 +223,11 @@ const Website = () => {
         { name: "EmailJS", color: "text-pink-400" },
         { name: "Vite", color: "text-pink-400" },
         { name: "CSS & Media Queries", color: "text-pink-400" },
-        { name: "React Router", color: "text-pink-400" }
+        { name: "React Router", color: "text-pink-400" },
       ],
       images: [emp3, emp1, emp2, emp3, emp4, emp5, emp6],
       detailedDescription: "EmpowerEd is a non-profit educational platform designed to provide students with mentorship, mental health support, research funding, scholarship opportunities, and study abroad guidance. It features immersive animations and real-time communication tools, built with React.js, GSAP, Framer Motion, and EmailJS.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation"
+      source_code_link: "https://github.com/Bushraabir/empowereducation",
     },
     {
       type: "website",
@@ -229,11 +238,11 @@ const Website = () => {
         { name: "Streamlit", color: "text-red-400" },
         { name: "Plotly", color: "text-blue-500" },
         { name: "Pandas", color: "text-green-400" },
-        { name: "Data Visualization", color: "text-purple-500" }
+        { name: "Data Visualization", color: "text-purple-500" },
       ],
       images: [PeriodicTableVisualiser2, PeriodicTableVisualiser1, PeriodicTableVisualiser3, PeriodicTableVisualiser4, PeriodicTableVisualiser5, PeriodicTableVisualiser6],
       detailedDescription: "The Advanced Periodic Table Visualizer is a web tool built with Python, Streamlit, Plotly, and Pandas. It offers interactive data visualizations, filtering options, and insights into periodic trends through charts and 3D visualizations.",
-      source_code_link: "https://github.com/Bushraabir/periodic_table_visualizer"
+      source_code_link: "https://github.com/Bushraabir/periodic_table_visualizer",
     },
     {
       type: "website",
@@ -250,11 +259,11 @@ const Website = () => {
         { name: "Formik & Yup", color: "text-teal-400" },
         { name: "ReactQuill", color: "text-pink-400" },
         { name: "Plotly.js", color: "text-cyan-400" },
-        { name: "Math.js", color: "text-emerald-400" }
+        { name: "Math.js", color: "text-emerald-400" },
       ],
       images: [StudyBuddy2, StudyBuddy1, StudyBuddy3, StudyBuddy4, StudyBuddy5, StudyBuddy6, StudyBuddy7, StudyBuddy8],
       detailedDescription: "Study Buddy is an advanced educational application that enhances study efficiency with interactive flashcards (including quiz mode), a Pomodoro-based session manager, a versatile graphing calculator for multiple equation types, and a smart note-taking system synced in real time via Firebase. Built using React.js, GSAP, Framer Motion, and Plotly.js, it delivers a modern, engaging, and responsive study experience.",
-      source_code_link: "https://github.com/Bushraabir/sustainibility"
+      source_code_link: "https://github.com/Bushraabir/sustainibility",
     },
     {
       type: "website",
@@ -268,12 +277,12 @@ const Website = () => {
         { name: "Jinja2", color: "text-purple-400" },
         { name: "HTML", color: "text-pink-400" },
         { name: "CSS", color: "text-indigo-400" },
-        { name: "JavaScript", color: "text-yellow-300" }
+        { name: "JavaScript", color: "text-yellow-300" },
       ],
       images: [Sustainibility1, Sustainibility2, Sustainibility3, Sustainibility4, Sustainibility5],
       detailedDescription: "Sustainability Adventure is a dynamic Flask-based application that encourages eco-friendly living through community events, user engagement, and curated sustainability tips. With secure authentication, event management, and an admin dashboard, it provides a responsive and modern interface built with Flask, SQLAlchemy, and Flask-Login.",
-      source_code_link: "https://github.com/your-username/sustainability-adventure"
-    }
+      source_code_link: "https://github.com/your-username/sustainability-adventure",
+    },
   ];
 
   const projects = [
@@ -284,7 +293,7 @@ const Website = () => {
       tags: [],
       images: [Satellite1],
       detailedDescription: "This project involves designing and building a satellite along with a custom rocket, powered by hydrogen and oxygen fuel that is processed by us. The satellite will include a transmitter to send its location back to us. The ultimate goal is to launch the satellite into Low Earth Orbit (LEO), aiming to reach the Kármán Line.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation"
+      source_code_link: "https://github.com/Bushraabir/empowereducation",
     },
     {
       type: "project",
@@ -293,7 +302,7 @@ const Website = () => {
       tags: [],
       images: [Aquarium],
       detailedDescription: "This project involves designing and building a custom aquarium water purifier equipped with a 12V water pump. The system will reduce ammonia levels, remove fish waste, and promote the growth of beneficial plankton while maintaining balanced oxygen levels in the water. The purifier will include a filtration mechanism to ensure clean and healthy water for aquatic life. The ultimate goal is to create a self-sustaining ecosystem within the aquarium, ensuring optimal water quality and supporting the well-being of the fish and other aquatic organisms.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation"
+      source_code_link: "https://github.com/Bushraabir/empowereducation",
     },
     {
       type: "project",
@@ -302,7 +311,7 @@ const Website = () => {
       tags: [],
       images: [Drone],
       detailedDescription: "This project involves designing and assembling a customizable quadcopter drone using off-the-shelf components. The drone will be equipped with a camera for aerial photography, basic flight stabilization, and remote-control capabilities. The ultimate goal is to create a cost-effective, modular drone for hobbyist aerial imaging, environmental monitoring, or educational purposes, while learning principles of aerodynamics, electronics, and robotics.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation"
+      source_code_link: "https://github.com/Bushraabir/empowereducation",
     },
     {
       type: "project",
@@ -311,7 +320,7 @@ const Website = () => {
       tags: [],
       images: [Bio],
       detailedDescription: "This project involves designing and constructing a small-scale bio diesel reactor that converts waste cooking oil, vegetable oil, or animal fats into usable bio diesel fuel. The system will use a chemical process called transesterification to break down triglycerides into fatty acid methyl esters (FAME), producing clean-burning bio diesel. The ultimate goal is to create a sustainable, low-cost method to recycle waste oils into renewable fuel for vehicles, generators, or heating systems, reducing reliance on fossil fuels and lowering carbon emissions.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation"
+      source_code_link: "https://github.com/Bushraabir/empowereducation",
     },
     {
       type: "project",
@@ -320,7 +329,7 @@ const Website = () => {
       tags: [],
       images: [Telescope],
       detailedDescription: "This project involves designing and constructing a simple, low-cost refracting telescope using affordable, off-the-shelf components. The telescope will use optical lenses to collect and focus light, enabling observation of celestial objects like the Moon, planets, and bright star clusters. The ultimate goal is to create a functional, portable telescope for educational purposes learning fundamental principles of optics and astronomy.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation"
+      source_code_link: "https://github.com/Bushraabir/empowereducation",
     },
     {
       type: "project",
@@ -329,37 +338,57 @@ const Website = () => {
       tags: [],
       images: [Biogas],
       detailedDescription: "This project involves designing and constructing a small-scale bio gas system that converts organic household waste (e.g., kitchen scraps, garden waste, or livestock manure) into methane gas and organic fertilizer. The main goal is to use human feces as it is cost-free and challenging to manage as waste. The system will use anaerobic digestion to break down waste, capture methane for cooking or heating, and produce nutrient-rich slurry for gardening and farming. The ultimate goal is to create a sustainable, closed-loop energy solution that reduces waste, lowers reliance on fossil fuels, and supports eco-friendly agriculture.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation"
-    }
+      source_code_link: "https://github.com/Bushraabir/empowereducation",
+    },
   ];
 
+  // **Active Data and Grouping**
   const activeData = activeTab === "websites" ? websites : activeTab === "projects" ? projects : courses;
   const groupedData = activeData.reduce((acc, cur, i) => {
     if (i % 2 === 0) acc.push(activeData.slice(i, i + 2));
     return acc;
   }, []);
 
+  // **Card Component**
   const Card = memo(({ data, onClick }) => {
     const title = data.title || data.name;
     const { description, tags, images, source_code_link, type } = data;
-    const icon = type === "website" ? <FiGithub size={28} color="white" /> : <FaEye   size={28} color="white" />;
+    const icon = type === "website" ? <FiGithub size={28} color="white" /> : <FaEye size={28} color="white" />;
     return (
       <motion.div
         onClick={() => onClick(data)}
-        className="mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-deep_indigo cursor-pointer"
-        whileHover={isDesktop ? { scale: 1.05 } : {}}
-        whileTap={{ scale: 0.95 }}
+        className="mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-dark_teal cursor-pointer overflow-hidden"
+        whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)" }}
+        whileTap={{ scale: 0.98 }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
         {isDesktop ? (
-          <ReactTilt options={{ max: 25, scale: 1.1, speed: 450 }} className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
-            <motion.img src={images[0]} alt={title} className="object-cover w-full h-full rounded-xl transition-transform duration-500 ease-in-out hover:scale-110 hover:rotate-2" />
+          <ReactTilt options={{ max: 20, scale: 1.05, speed: 400 }} className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
+            <motion.img
+              src={images[0]}
+              alt={title}
+              className="object-cover w-full h-full rounded-xl"
+              loading="lazy"
+              initial={{ scale: 1.1 }}
+              whileHover={{ scale: 1.15, rotate: 1 }}
+              transition={{ duration: 0.5 }}
+            />
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0"
+              whileHover={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            />
             <div className="absolute inset-0 flex justify-end m-4">
               <motion.div
                 onClick={(e) => {
                   e.stopPropagation();
                   window.open(source_code_link, "_blank");
                 }}
-                className="flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer transition-transform duration-500 hover:scale-110"
+                className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer"
+                whileHover={{ scale: 1.2, rotate: 10 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
                 {icon}
               </motion.div>
@@ -367,256 +396,290 @@ const Website = () => {
           </ReactTilt>
         ) : (
           <div className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
-            <img src={images[0]} alt={title} className="object-cover w-full h-full rounded-xl" />
+            <motion.img
+              src={images[0]}
+              alt={title}
+              className="object-cover w-full h-full rounded-xl"
+              loading="lazy"
+              whileTap={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            />
             <div className="absolute inset-0 flex justify-end m-4">
-              <div
+              <motion.div
                 onClick={(e) => {
                   e.stopPropagation();
                   window.open(source_code_link, "_blank");
                 }}
-                className="flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer"
+                className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer"
+                whileTap={{ scale: 0.9 }}
+                transition={{ duration: 0.3 }}
               >
                 {icon}
-              </div>
+              </motion.div>
             </div>
           </div>
         )}
-        <div className="mt-6">
-          <h6 className="sm:text-4xl text-2xl font-heading text-aquamarine">{title}</h6>
-          <p className="mt-3 font-description text-lemon_chiffon">{description}</p>
-        </div>
-        <div className="flex flex-wrap gap-3 mt-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-6"
+        >
+          <h6 className="sm:text-4xl text-2xl font-heading text-aquamarine font-extrabold tracking-tight">{title}</h6>
+          <p className="mt-3 font-description text-lemon_chiffon text-sm sm:text-base leading-relaxed">{description}</p>
+        </motion.div>
+        <motion.div
+          className="flex flex-wrap gap-3 mt-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           {tags.slice(0, 3).map((tag, index) => (
-            <span key={index} className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg`}>
+            <motion.span
+              key={index}
+              className={`text-xs sm:text-sm font-semibold font-description ${tag.color} px-4 py-2 rounded-full shadow-md bg-dark_teal/20`}
+              whileHover={{ scale: 1.1, backgroundColor: "#26C6DA" }}
+              transition={{ type: "spring", stiffness: 400 }}
+            >
               #{tag.name}
-            </span>
+            </motion.span>
           ))}
-        </div>
+        </motion.div>
       </motion.div>
     );
   });
+
+  // **JSX Structure**
   return (
     <>
       <style>{`
-        .card { 
-          will-change: transform;
-          background: transparent;
-          border: transparent;
+        .website-section {
+          background: linear-gradient(135deg, #1E1B4B 0%, #134E5E 50%, #1E1B4B 100%);
+          position: relative;
+          overflow: hidden;
+        }
+        .website-section::before {
+          content: '';
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%);
+          animation: rotateGlow 20s linear infinite;
+        }
+        @keyframes rotateGlow {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
       `}</style>
-      <section id="websites" className="py-16 lg:py-24 bg-deep_indigo text-lemon_chiffon">
-        <div className="container mx-auto px-6 lg:px-20">
-          <div ref={initialMessageRef} className="flex flex-col items-center justify-center min-h-screen mt-55">
-            <div className="flex items-center">
-              {isDesktop ? (
-                <motion.h1 ref={stemRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
-                  STEM
-                </motion.h1>
-              ) : (
-                <h1 ref={stemRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
-                  STEM
-                </h1>
-              )}
-              <div ref={lottieContainerRef} className="-mx-3 mt-4">
-                <Lottie options={lottieOptions} height={isDesktop ? 80 : 30} width={isDesktop ? 80 : 30} />
-              </div>
-              {isDesktop ? (
-                <motion.h1 ref={collabRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
-                  Collabolation
-                </motion.h1>
-              ) : (
-                <h1 ref={collabRef} className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink">
-                  Collabolation
-                </h1>
-              )}
-            </div>
+      <section id="websites" className="py-16 lg:py-24 website-section text-lemon_chiffon">
+        <div className="container mx-auto px-6 lg:px-20 relative z-10">
+          {/* Initial Message Section */}
+          <div ref={initialMessageRef} className="flex flex-col items-center justify-center min-h-screen mt-20">
+            <motion.div
+              className="flex items-center relative"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+            >
+              <motion.h1
+                ref={stemRef}
+                className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink drop-shadow-lg"
+                initial={{ x: -10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+              >
+                STEM
+              </motion.h1>
+              <motion.div
+                ref={lottieContainerRef}
+                className="-mx-3 mt-4"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+              >
+                <Lottie options={lottieOptions} height={isDesktop ? 80 : 40} width={isDesktop ? 80 : 40} />
+              </motion.div>
+              <motion.h1
+                ref={collabRef}
+                className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink drop-shadow-lg"
+                initial={{ x: 10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+              >
+                Collaboration
+              </motion.h1>
+            </motion.div>
           </div>
-          {isDesktop ? (
-            <motion.div ref={descriptionRef} className="text-center mb-12 mt-32">
-              <p className="text-lg font-description">
-                Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
-              </p>
-            </motion.div>
-          ) : (
-            <div ref={descriptionRef} className="text-center mb-12 mt-32">
-              <p className="text-lg font-description">
-                Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
-              </p>
-            </div>
-          )}
-          {isDesktop ? (
-            <motion.div ref={buttonsRef} className="flex justify-center mb-8 space-x-4 sm:space-x-6">
-              <button
-                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${
-                  activeTab === "websites"
+
+          {/* Description Section */}
+          <motion.div
+            ref={descriptionRef}
+            className="text-center mb-12 mt-32 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
+            <p className="text-lg sm:text-xl font-description text-lemon_chiffon leading-relaxed">
+              Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
+            </p>
+          </motion.div>
+
+          {/* Tab Buttons */}
+          <motion.div
+            ref={buttonsRef}
+            className="flex justify-center mb-12 space-x-4 sm:space-x-6 relative"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.7 }}
+          >
+            {["websites", "projects", "courses"].map((tab) => (
+              <motion.button
+                key={tab}
+                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-4 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-xl transition-all duration-300 ${
+                  activeTab === tab
                     ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                    : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
+                    : "bg-dark_teal/20 text-champagne_pink border border-champagne_pink/50 hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
                 }`}
-                onClick={() => setActiveTab("websites")}
+                onClick={() => setActiveTab(tab)}
+                whileHover={{ scale: 1.1, boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)" }}
+                whileTap={{ scale: 0.95 }}
               >
-                Websites
-              </button>
-              <button
-                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${
-                  activeTab === "projects"
-                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                    : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
-                }`}
-                onClick={() => setActiveTab("projects")}
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </motion.button>
+            ))}
+            <motion.div
+              className="absolute -bottom-2 h-1 bg-champagne_pink rounded-full"
+              initial={false}
+              animate={{
+                left: `${["websites", "projects", "courses"].indexOf(activeTab) * 33.33}%`,
+                width: "33.33%",
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              style={{ width: "33.33%" }}
+            />
+          </motion.div>
+
+          {/* Cards Section */}
+          <div ref={cardsRef}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
               >
-                Projects
-              </button>
-              <button
-                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${
-                  activeTab === "courses"
-                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                    : "bg-transparent text-champagne_pink border border-champagne_pink hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
-                }`}
-                onClick={() => setActiveTab("courses")}
-              >
-                Courses
-              </button>
-            </motion.div>
-          ) : (
-            <div ref={buttonsRef} className="flex justify-center mb-8 space-x-4 sm:space-x-6">
-              <button
-                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg ${
-                  activeTab === "websites"
-                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                    : "bg-transparent text-champagne_pink border border-champagne_pink"
-                }`}
-                onClick={() => setActiveTab("websites")}
-              >
-                Websites
-              </button>
-              <button
-                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg ${
-                  activeTab === "projects"
-                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                    : "bg-transparent text-champagne_pink border border-champagne_pink"
-                }`}
-                onClick={() => setActiveTab("projects")}
-              >
-                Projects
-              </button>
-              <button
-                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-3 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-lg ${
-                  activeTab === "courses"
-                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                    : "bg-transparent text-champagne_pink border border-champagne_pink"
-                }`}
-                onClick={() => setActiveTab("courses")}
-              >
-                Courses
-              </button>
-            </div>
-          )}
-          {isDesktop ? (
-            <motion.div ref={cardsRef}>
-              {groupedData.map((group, rowIndex) => (
-                <div key={rowIndex} className="grid grid-cols-1 sm:grid-cols-2 gap-8 px-4 sm:px-8 mb-8">
-                  {group.map((item, cardIndex) => (
-                    <Card key={cardIndex} data={item} onClick={setSelectedProject} />
-                  ))}
-                </div>
-              ))}
-            </motion.div>
-          ) : (
-            <div ref={cardsRef}>
-              {groupedData.map((group, rowIndex) => (
-                <div key={rowIndex} className="grid grid-cols-1 sm:grid-cols-2 gap-8 px-4 sm:px-8 mb-8">
-                  {group.map((item, cardIndex) => (
-                    <Card key={cardIndex} data={item} onClick={setSelectedProject} />
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
+                {groupedData.map((group, rowIndex) => (
+                  <div key={rowIndex} className="grid grid-cols-1 sm:grid-cols-2 gap-8 px-4 sm:px-8 mb-12">
+                    {group.map((item, cardIndex) => (
+                      <Card key={cardIndex} data={item} onClick={setSelectedProject} />
+                    ))}
+                  </div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
+
+        {/* Modal */}
         {selectedProject && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-70"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-80 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
           >
             <motion.div
-              className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-8 rounded-2xl w-11/12 sm:w-3/4 md:w-1/2 max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-md border-4 border-lemon_chiffon border-opacity-80 relative"
-              initial={{ scale: 0.85 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.85 }}
-              transition={{ type: "spring", stiffness: 320, damping: 35 }}
+              className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-6 sm:p-8 rounded-3xl w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[85vh] overflow-y-auto shadow-2xl border-2 border-lemon_chiffon/50 relative"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
             >
               <motion.button
                 onClick={() => setSelectedProject(null)}
-                className="absolute p-2 top-4 right-4 rounded-full shadow-xl text-lemon_chiffon bg-aquamarine transition-transform hover:scale-110 hover:shadow-2xl"
-                whileHover={{ scale: 1.1, rotate: 15, transition: { type: "spring", stiffness: 400 } }}
+                className="absolute top-4 right-4 p-2 rounded-full shadow-lg bg-aquamarine text-lemon_chiffon"
+                whileHover={{ scale: 1.2, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 400 }}
               >
                 ✕
               </motion.button>
               <motion.h2
-                className="mb-6 font-heading text-4xl font-extrabold text-dark_teal"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
+                className="mb-6 font-heading text-3xl sm:text-4xl font-extrabold text-dark_teal tracking-tight"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
               >
                 {selectedProject.title || selectedProject.name}
               </motion.h2>
               <motion.p
                 className="mb-8 text-lg font-description leading-relaxed text-deep_indigo"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
               >
                 {selectedProject.detailedDescription}
               </motion.p>
               <motion.div
-                className="flex flex-wrap gap-3 mb-4"
+                className="flex flex-wrap gap-3 mb-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.6, duration: 0.6 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
               >
                 {selectedProject.tags.map((tag, idx) => (
                   <motion.span
                     key={idx}
-                    className={`text-sm font-semibold font-description ${tag.color} px-5 py-2 rounded-full shadow-lg transition-colors duration-300 hover:bg-aquamarine hover:text-jordy_blue`}
+                    className={`text-sm font-semibold font-description ${tag.color} px-4 py-2 rounded-full shadow-md bg-dark_teal/20`}
+                    whileHover={{ scale: 1.1, backgroundColor: "#26C6DA" }}
+                    transition={{ type: "spring", stiffness: 400 }}
                   >
                     #{tag.name}
                   </motion.span>
                 ))}
               </motion.div>
               <motion.div
-                className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+                className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.7, duration: 0.6 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
               >
                 {selectedProject.images.map((image, idx) => (
                   <motion.img
                     key={idx}
                     src={image}
                     alt={`Image ${idx}`}
-                    className="object-cover w-full h-32 rounded-xl transition-transform hover:scale-105 hover:shadow-xl"
-                    initial={{ scale: 0.9 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: idx * 0.2, duration: 0.4 }}
+                    className="object-cover w-full h-32 rounded-xl shadow-md"
+                    loading="lazy"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    whileHover={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)" }}
+                    transition={{ duration: 0.4, delay: 0.5 + idx * 0.1 }}
                   />
                 ))}
               </motion.div>
               <motion.div
-                className="flex justify-center mt-8"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 0.6 }}
+                className="flex justify-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
               >
                 <a
                   href={selectedProject.source_code_link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 text-lg font-medium font-cta rounded-full shadow-2xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue transition-transform hover:scale-110 hover:opacity-90"
+                  className="px-6 py-3 text-lg font-medium font-cta rounded-full shadow-xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue transition-all hover:shadow-2xl"
                 >
-                  {selectedProject.type === "website" ? "View Source Code" : selectedProject.type === "project" ? "View Project" : "View Course"}
+                  <motion.span
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    {selectedProject.type === "website" ? "View Source Code" : selectedProject.type === "project" ? "View Project" : "View Course"}
+                  </motion.span>
                 </a>
               </motion.div>
             </motion.div>

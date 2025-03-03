@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
@@ -43,72 +44,60 @@ const testimonials = [
   },
 ];
 
-const TestimonialPolygon = () => {
+const Testimonial = () => {
+
   const containerRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isLowEnd, setIsLowEnd] = useState(false);
   const timeoutIdRef = useRef(null);
   const onStartRef = useRef(null);
   const onEndRef = useRef(null);
 
-  useEffect(() => {
-    if (window.navigator.connection && window.navigator.connection.downlink < 2.5) {
-      setIsLowEnd(true);
-    }
-  }, []);
-
-  useEffect(() => {
+ useEffect(() => {
     if (!containerRef.current) return;
 
     let animationFrameId;
     const scene = new THREE.Scene();
     const aspectRatio = containerRef.current.offsetWidth / containerRef.current.offsetHeight;
     const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: !isLowEnd, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(containerRef.current.offsetWidth, containerRef.current.offsetHeight);
-    renderer.setPixelRatio(isLowEnd ? 1 : window.devicePixelRatio);
+    renderer.setPixelRatio(window.devicePixelRatio);
     renderer.outputEncoding = THREE.sRGBEncoding;
     containerRef.current.appendChild(renderer.domElement);
 
     let hdrTexture;
-    if (!isLowEnd) {
-      const rgbeLoader = new RGBELoader();
-      rgbeLoader.load(
-        hdr,
-        (texture) => {
-          hdrTexture = texture;
-          texture.mapping = THREE.EquirectangularReflectionMapping;
-          scene.environment = texture;
-          scene.background = texture;
-          setIsLoaded(true);
-        },
-        undefined,
-        () => {
-          scene.environment = new THREE.Color(0x1e1e1e);
-          scene.background = new THREE.Color(0x1e1e1e);
-          setIsLoaded(true);
-        }
-      );
-    } else {
-      scene.environment = new THREE.Color(0x1e1e1e);
-      scene.background = new THREE.Color(0x1e1e1e);
-      setIsLoaded(true);
-    }
+    const rgbeLoader = new RGBELoader();
+    rgbeLoader.load(
+      hdr,
+      (texture) => {
+        hdrTexture = texture;
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.environment = texture;
+        scene.background = texture;
+        setIsLoaded(true);
+      },
+      undefined,
+      () => {
+        scene.environment = new THREE.Color(0x1e1e1e);
+        scene.background = new THREE.Color(0x1e1e1e);
+        setIsLoaded(true);
+      }
+    );
 
     const cubeSize = Math.min(containerRef.current.offsetWidth, containerRef.current.offsetHeight) / 10;
     const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
     const cubeMaterials = testimonials.map((testimonial) => {
-      const texture = generateCanvasTexture(testimonial, isLowEnd);
+      const texture = generateCanvasTexture(testimonial, false);
       texture.needsUpdate = true;
       return new THREE.MeshPhysicalMaterial({
         map: texture,
         color: 0xffffff,
         roughness: 0.2,
         metalness: 0.8,
-        clearcoat: isLowEnd ? 0 : 1,
+        clearcoat: 1,
         clearcoatRoughness: 0.1,
         reflectivity: 0.8,
-        envMapIntensity: isLowEnd ? 0 : 1.2,
+        envMapIntensity: 1.2,
       });
     });
     const cube = new THREE.Mesh(geometry, cubeMaterials);
@@ -118,28 +107,26 @@ const TestimonialPolygon = () => {
     camera.position.set(0, 0, d);
     camera.lookAt(0, 0, 0);
 
-    setupLighting(scene, isLowEnd);
+    setupLighting(scene);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
-    controls.enableZoom = !isLowEnd;
+    controls.enableZoom = true;
 
-    if (!isLowEnd) {
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 0.5;
-      onStartRef.current = () => {
-        controls.autoRotate = false;
-        if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
-      };
-      onEndRef.current = () => {
-        timeoutIdRef.current = setTimeout(() => {
-          controls.autoRotate = true;
-        }, 2000);
-      };
-      controls.addEventListener("start", onStartRef.current);
-      controls.addEventListener("end", onEndRef.current);
-    }
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.5;
+    onStartRef.current = () => {
+      controls.autoRotate = false;
+      if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+    };
+    onEndRef.current = () => {
+      timeoutIdRef.current = setTimeout(() => {
+        controls.autoRotate = true;
+      }, 2000);
+    };
+    controls.addEventListener("start", onStartRef.current);
+    controls.addEventListener("end", onEndRef.current);
 
     const animate = () => {
       controls.update();
@@ -175,14 +162,13 @@ const TestimonialPolygon = () => {
       });
       renderer.dispose();
       if (hdrTexture) hdrTexture.dispose();
-      if (!isLowEnd) {
-        controls.removeEventListener("start", onStartRef.current);
-        controls.removeEventListener("end", onEndRef.current);
-        if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
-      }
+      controls.removeEventListener("start", onStartRef.current);
+      controls.removeEventListener("end", onEndRef.current);
+      if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
     };
-  }, [isLowEnd]);
+  }, []);
 
+ 
   const generateCanvasTexture = (testimonial, isLowQuality) => {
     const canvasSize = isLowQuality ? 256 : 512;
     const canvas = document.createElement("canvas");
@@ -210,6 +196,7 @@ const TestimonialPolygon = () => {
     return new THREE.CanvasTexture(canvas);
   };
 
+
   const wrapText = (context, text, x, y, maxWidth, lineHeight) => {
     const words = text.split(" ");
     let line = "";
@@ -227,18 +214,18 @@ const TestimonialPolygon = () => {
     context.fillText(line, x, y);
   };
 
-  const setupLighting = (scene, isLowEnd) => {
+
+  const setupLighting = (scene) => {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
     directionalLight.position.set(10, 20, 10);
     scene.add(directionalLight);
-    if (!isLowEnd) {
-      const spotLight = new THREE.SpotLight(0xffffff, 1);
-      spotLight.position.set(5, 10, 0);
-      scene.add(spotLight);
-    }
+    const spotLight = new THREE.SpotLight(0xffffff, 1);
+    spotLight.position.set(5, 10, 0);
+    scene.add(spotLight);
   };
+
 
   return (
     <motion.div
@@ -281,4 +268,4 @@ const TestimonialPolygon = () => {
   );
 };
 
-export default TestimonialPolygon;
+export default Testimonial;

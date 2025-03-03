@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
@@ -68,17 +69,44 @@ const Hero = () => {
     ? "w-40 h-40 transition-transform duration-300 transform shadow-2xl hover:scale-105"
     : "w-11 h-11 sm:w-40 sm:h-40 md:w-60 md:h-60 lg:w-96 lg:h-96 transition-transform duration-300 transform shadow-2xl hover:scale-105";
 
-  const buttonClass = isMobile
-    ? "relative px-2 py-1 text-sm font-semibold text-white tracking-wider transition-all transform border-2 border-lemon_chiffon rounded-lg bg-gradient-to-r from-non_photo_blue to-pink_lavender hover:bg-transparent hover:border-non_photo_blue hover:scale-110 focus:outline-none focus:ring-2 focus:ring-non_photo_blue"
-    : "relative px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 text-base sm:text-lg md:text-xl font-semibold text-white tracking-wider transition-all transform border-4 border-lemon_chiffon rounded-2xl bg-gradient-to-r from-non_photo_blue to-pink_lavender hover:bg-transparent hover:border-non_photo_blue hover:scale-110 focus:outline-none focus:ring-4 focus:ring-non_photo_blue";
-
-  const buttonCVClass = isMobile
-    ? "relative px-2 py-1 text-sm font-semibold text-white tracking-wider transition-all transform border-2 border-lemon_chiffon rounded-lg bg-gradient-to-r from-jordy_blue to-mauve hover:bg-transparent hover:border-jordy_blue hover:scale-110 focus:outline-none focus:ring-2 focus:ring-jordy_blue"
-    : "relative px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 text-base sm:text-lg md:text-xl font-semibold text-white tracking-wider transition-all transform border-4 border-lemon_chiffon rounded-2xl bg-gradient-to-r from-jordy_blue to-mauve hover:bg-transparent hover:border-jordy_blue hover:scale-110 focus:outline-none focus:ring-4 focus:ring-jordy_blue";
-
   const descriptionClass = isMobile
     ? "text-xs text-glow text-jordy_blue tracking-wide leading-relaxed"
     : "text-glow text-jordy_blue tracking-wide leading-relaxed text-sm sm:text-md";
+
+  const buttonBaseClass = isMobile
+    ? "relative px-4 py-2 text-sm font-semibold text-white tracking-wider rounded-full backdrop-blur-lg bg-gradient-to-r border-2 overflow-hidden transition-all duration-300 focus:outline-none focus:ring-2"
+    : "relative px-6 py-3 text-lg font-semibold text-white tracking-wider rounded-full backdrop-blur-lg bg-gradient-to-r border-4 overflow-hidden transition-all duration-300 focus:outline-none focus:ring-4";
+
+  const buttonExploreClass = `${buttonBaseClass} from-non_photo_blue/40 to-blue-500/40 border-lemon_chiffon hover:border-non_photo_blue focus:ring-non_photo_blue`;
+  const buttonCVClass = `${buttonBaseClass} from-jordy_blue/40 to-purple-500/40 border-lemon_chiffon hover:border-jordy_blue focus:ring-jordy_blue`;
+
+  const createRipple = (e, button) => {
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+
+    const ripple = document.createElement("span");
+    ripple.style.position = "absolute";
+    ripple.style.width = ripple.style.height = `${size}px`;
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
+    ripple.style.background = "rgba(255, 255, 255, 0.3)";
+    ripple.style.borderRadius = "50%";
+    ripple.style.pointerEvents = "none";
+    ripple.style.transform = "scale(0)";
+    ripple.style.opacity = "1";
+    ripple.style.transition = "transform 0.6s ease-out, opacity 0.6s ease-out";
+
+    button.appendChild(ripple);
+
+    setTimeout(() => {
+      ripple.style.transform = "scale(2)";
+      ripple.style.opacity = "0";
+    }, 0);
+
+    setTimeout(() => ripple.remove(), 600);
+  };
 
   return (
     <section
@@ -91,8 +119,7 @@ const Hero = () => {
           <motion.p
             className={textParagraphClass}
             initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
           >
             This is my world.
@@ -100,8 +127,7 @@ const Hero = () => {
           <motion.h1
             className={headingClass}
             initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
           >
             Living Stars✨
@@ -109,8 +135,7 @@ const Hero = () => {
           <motion.p
             className={subheadingClass}
             initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
           >
             Every time I look up at the sky and wonder,
@@ -136,31 +161,64 @@ const Hero = () => {
           />
         </motion.div>
       </div>
+
       <div
         ref={buttonRef}
         className="flex flex-row gap-4 font-cta mt-4"
         style={{ pointerEvents: "auto" }}
       >
         <motion.button
-          className={buttonClass}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() =>
-            document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
-          }
+          className={buttonExploreClass}
+          whileHover={{
+            scale: 1.1,
+            boxShadow: "0px 0px 20px 5px rgba(0, 255, 255, 0.6)",
+            rotate: 2,
+            transition: { duration: 0.3 },
+          }}
+          whileTap={{
+            scale: 0.9,
+            rotate: -10,
+            boxShadow: "0px 0px 10px 2px rgba(0, 255, 255, 0.3)",
+          }}
+          animate={{
+            y: [0, -12, 0],
+            rotate: [0, 1, -1, 0],
+            transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
+          }}
+          onClick={(e) => {
+            createRipple(e, e.currentTarget);
+            document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+          }}
         >
           Explore my planet
         </motion.button>
+
         <motion.a
           href={resumePDF}
           download="Bushra_Khandoker_Resume.pdf"
           className={buttonCVClass}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{
+            scale: 1.1,
+            boxShadow: "0px 0px 20px 5px rgba(255, 0, 255, 0.6)",
+            rotate: -2,
+            transition: { duration: 0.3 },
+          }}
+          whileTap={{
+            scale: 0.9,
+            rotate: 10,
+            boxShadow: "0px 0px 10px 2px rgba(255, 0, 255, 0.3)",
+          }}
+          animate={{
+            y: [0, -12, 0],
+            rotate: [0, -1, 1, 0],
+            transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
+          }}
+          onClick={(e) => createRipple(e, e.currentTarget)}
         >
           Download CV
         </motion.a>
       </div>
+
       {isMobile ? (
         <motion.div
           className="px-4 text-center text-white mt-4"

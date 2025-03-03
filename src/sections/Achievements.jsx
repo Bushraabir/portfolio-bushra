@@ -181,14 +181,14 @@ const listVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
+      staggerChildren: 0.05
     }
   }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: { opacity: 1, y: 0, scale: 1 }
 };
 
 const AchievementCard = memo(({ achievement, isMobile }) => {
@@ -225,21 +225,22 @@ const AchievementCard = memo(({ achievement, isMobile }) => {
       className="achievement-card"
       contentStyle={{
         background: "rgba(20,20,40,0.7)",
-        backdropFilter: "blur(1px)",
+        backdropFilter: "blur(10px)",
         borderRadius: "1.5rem",
         padding: isMobile ? "1rem" : "2rem",
-        border: "2px solid rgba(255,255,255,0.3)"
+        border: "1px solid rgba(255,255,255,0.1)",
+        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)"
       }}
-      contentArrowStyle={{ borderRight: "8px solid rgba(20,20,40,0.1)" }}
+      contentArrowStyle={{ borderRight: "8px solid rgba(241, 192, 232, 0.5)" }}
       icon={<AnimatedModel />}
     >
-      <motion.div 
-        onClick={toggleCard} 
-        role="button" 
-        aria-expanded={isExpanded}
+      <motion.div
         className="cursor-pointer"
-        initial={false}
-        animate={{ transition: { duration: 0.3 } }}
+        whileHover={{ y: -5 }}
+        transition={{ duration: 0.2 }}
+        onClick={toggleCard}
+        role="button"
+        aria-expanded={isExpanded}
       >
         <h3 ref={headingRef} className={`
           font-heading font-bold bg-gradient-to-r from-lemon_chiffon to-pink_lavender bg-clip-text
@@ -260,7 +261,8 @@ const AchievementCard = memo(({ achievement, isMobile }) => {
         </p>
 
         <motion.div 
-          animate={{ rotate: isExpanded ? 0 : 180 }} 
+          animate={{ rotate: isExpanded ? 180 : 0 }} 
+          transition={{ type: "spring", stiffness: 200, damping: 20 }}
           className="mt-3 inline-block"
         >
           <FaChevronDown className="text-2xl text-pink_lavender hover:text-white" />
@@ -268,6 +270,7 @@ const AchievementCard = memo(({ achievement, isMobile }) => {
       </motion.div>
 
       <motion.div 
+        layout
         initial={{ height: 0, opacity: 0 }}
         animate={{ 
           height: isExpanded ? "auto" : 0, 
@@ -355,25 +358,28 @@ const Achievements = () => {
       `}
     >
       <motion.div 
-        className="mb-16 text-center relative overflow-hidden"
+        className="mb-16 text-center relative overflow-visible"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
         <motion.h2
           className={`
-            font-heading font-extrabold text-transparent relative z-20 
-            before:content-[attr(data-content)] before:absolute before:inset-0 
-            before:text-transparent before:[-webkit-text-stroke:1px_white]
+            font-heading font-extrabold bg-gradient-to-r from-lemon_chiffon to-tea_rose bg-clip-text text-transparent relative z-20
             ${isMobile.current ? "text-4xl mt-5" : "text-5xl sm:text-6xl md:text-7xl lg:text-8xl mt-5"}
           `}
-          data-content="Accomplishments"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 0.9 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
         >
           Accomplishments
         </motion.h2>
-
+        <motion.div
+          className="mt-8 h-1 bg-gradient-to-r from-tea_rose to-pink_lavender rounded-full"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          style={{ width: "6rem", margin: "0 auto" }}
+        />
         <motion.p
           className={`
             font-serif text-champagne_pink tracking-wide max-w-3xl mx-auto
@@ -389,7 +395,7 @@ const Achievements = () => {
 
       <Star cursorPosition={cursorPosition} />
       
-      <VerticalTimeline lineColor="rgba(255,255,255,0.2)">
+      <VerticalTimeline lineColor="rgba(241, 192, 232, 0.5)">
         {achievements.map((achievement, index) => (
           <AchievementCard 
             key={index} 
