@@ -41,6 +41,7 @@ export default function OrganizationGallery() {
   const containerRef = useRef(null);
   const groupRef = useRef(null);
   const counterSectionRef = useRef(null);
+  const triggers = useRef([]);
 
   const items = useMemo(
     () => [
@@ -81,25 +82,22 @@ export default function OrganizationGallery() {
     []
   );
 
-  const codeString = 
-  `
-  //Binary Search Algorithm to find first occurance of a target value
-
+  const codeString = `
   int findFirstOccurrence(const std::vector<int>& arr, int target) {
-    int start = 0, end = arr.size() - 1; // Initialize search range
-    int result = -1; // If target is not found, it will return -1
+    int start = 0, end = arr.size() - 1;
+    int result = -1;
     
     while (start <= end) {
-        int mid = start + (end - start) / 2; // Middle of array (to prevent overflow)
+        int mid = start + (end - start) / 2;
         
-        if (arr[mid] == target) { // Condition to find target 
+        if (arr[mid] == target) {
             result = mid;
-            end = mid - 1; 
+            end = mid - 1;
         } 
-        else if (arr[mid] < target) { // If target is greater, Pointer is shifter right
+        else if (arr[mid] < target) {
             start = mid + 1;
         } 
-        else {  // If target is smaller, Pointer is shifter left
+        else {
             end = mid - 1;
         }
     }
@@ -121,6 +119,7 @@ export default function OrganizationGallery() {
 
     const updateMobile = () => {
       setIsMobile(window.innerWidth <= 768);
+      ScrollTrigger.refresh();
     };
     updateMobile();
     window.addEventListener("resize", updateMobile);
@@ -129,7 +128,8 @@ export default function OrganizationGallery() {
       const totalScrollWidth = groupRef.current.scrollWidth;
       const viewportWidth = containerRef.current.clientWidth;
       const scrollDistance = totalScrollWidth - viewportWidth;
-      gsap.to(groupRef.current, {
+
+      const tween = gsap.to(groupRef.current, {
         x: -scrollDistance,
         ease: "none",
         scrollTrigger: {
@@ -141,9 +141,10 @@ export default function OrganizationGallery() {
           anticipatePin: 1,
         },
       });
+      triggers.current.push(tween.scrollTrigger);
 
       const listItems = groupRef.current.querySelectorAll("li");
-      ScrollTrigger.create({
+      const st2 = ScrollTrigger.create({
         trigger: containerRef.current,
         start: "top top",
         end: `+=${scrollDistance}`,
@@ -164,6 +165,7 @@ export default function OrganizationGallery() {
           });
         },
       });
+      triggers.current.push(st2);
     }
 
     const handleScroll = () => {
@@ -172,7 +174,8 @@ export default function OrganizationGallery() {
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      triggers.current.forEach(trigger => trigger.kill());
+      triggers.current = [];
       window.removeEventListener("resize", updateMobile);
       window.removeEventListener("scroll", handleScroll);
     };
@@ -429,15 +432,14 @@ export default function OrganizationGallery() {
           </p>
           <div className="w-full max-w-[100vw] mx-auto p-2">
             <SyntaxHighlighter
-              language="cpp" 
+              language="cpp"
               style={dark}
               showLineNumbers={true}
-              codeTagProps={{ style: { whiteSpace: 'pre-wrap' } }}
+              codeTagProps={{ style: { whiteSpace: "pre-wrap" } }}
               className="w-full max-h-[400px] sm:max-h-[300px] overflow-auto rounded-xl border border-mauve-500 p-2 text-sm sm:text-base"
             >
               {codeString}
             </SyntaxHighlighter>
-
           </div>
           <motion.a
             href="https://github.com/Bushraabir/DSA"
