@@ -569,7 +569,7 @@ const Art = () => {
               {artworksData[activeTab].map((art) => (
                 <SwiperSlide key={art.src}>
                   <div
-                    className="relative w-[400px] h-auto sm:h-[300px] md:h-[400px] rounded-3xl cursor-pointer border-4 border-white shadow-lg"
+                    className="relative h-auto sm:h-[300px] md:h-[400px] rounded-3xl cursor-pointer border-4 border-white shadow-lg"
                     tabIndex={0}
                     role="button"
                     aria-label={`View ${art.title}`}

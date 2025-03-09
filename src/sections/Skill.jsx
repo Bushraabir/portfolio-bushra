@@ -234,11 +234,21 @@ const SkillCard = ({ skillCategory }) => {
 const Skill = () => {
   const sectionRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState("All");
-  const filteredSkills =
-    activeCategory === "All"
-      ? skillsData
-      : skillsData.filter((s) => s.category === activeCategory);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const bgImageUrl = skill;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory]);
 
   useEffect(() => {
     Splitting();
@@ -348,6 +358,18 @@ const Skill = () => {
       container.removeEventListener("touchend", handleLeave);
     };
   }, [bgImageUrl]);
+
+  const filteredSkills =
+    activeCategory === "All"
+      ? skillsData
+      : skillsData.filter((s) => s.category === activeCategory);
+
+  const skillsPerPage = isMobile ? 4 : filteredSkills.length;
+  const totalPages = Math.ceil(filteredSkills.length / skillsPerPage);
+  const currentSkills = filteredSkills.slice(
+    (currentPage - 1) * skillsPerPage,
+    currentPage * skillsPerPage
+  );
 
   return (
     <>
@@ -607,6 +629,43 @@ const Skill = () => {
             padding: 1.5rem 0.5rem;
           }
         }
+        .pagination {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 2rem;
+          gap: 1rem;
+        }
+        .pagination button {
+          padding: 0.5rem 1rem;
+          border-radius: 9999px;
+          background: var(--primary-color);
+          color: var(--accent-color);
+          border: none;
+          cursor: pointer;
+          transition: background 0.3s, transform 0.3s;
+        }
+        .pagination button:disabled {
+          background: rgba(255,255,255,0.3);
+          cursor: not-allowed;
+        }
+        .pagination button:not(:disabled):hover {
+          background: var(--secondary-color);
+          transform: translateY(-2px);
+        }
+        .pagination span {
+          font-size: 1rem;
+          color: var(--primary-color);
+        }
+        @media (max-width: 480px) {
+          .pagination button {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+          }
+          .pagination span {
+            font-size: 0.9rem;
+          }
+        }
       `}</style>
       <div ref={sectionRef} className="skill-section">
         <div className="section-magnifying-glass"></div>
@@ -627,11 +686,30 @@ const Skill = () => {
           </div>
           <div className="grid">
             <AnimatePresence>
-              {filteredSkills.map((skill) => (
+              {currentSkills.map((skill) => (
                 <SkillCard key={skill.category} skillCategory={skill} />
               ))}
             </AnimatePresence>
           </div>
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span>Page {currentPage} of {totalPages}</span>
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

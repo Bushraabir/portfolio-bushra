@@ -46,12 +46,10 @@ import Biogas from "../assets/Projects/Biogas.png";
 gsap.registerPlugin(ScrollTrigger);
 
 const Website = () => {
-  // **State Declarations**
   const [activeTab, setActiveTab] = useState("websites");
   const [selectedProject, setSelectedProject] = useState(null);
   const [isDesktop, setIsDesktop] = useState(typeof window !== "undefined" ? window.innerWidth > 768 : true);
 
-  // **Ref Declarations**
   const initialMessageRef = useRef(null);
   const stemRef = useRef(null);
   const collabRef = useRef(null);
@@ -60,14 +58,12 @@ const Website = () => {
   const buttonsRef = useRef(null);
   const cardsRef = useRef(null);
 
-  // **Effect for Handling Window Resize**
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // **Effect for GSAP Scroll Animations**
   useEffect(() => {
     if (isDesktop) {
       const tl = gsap.timeline({
@@ -136,7 +132,17 @@ const Website = () => {
     }
   }, [isDesktop]);
 
-  // **Lottie Animation Options**
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [selectedProject]);
+
   const lottieOptions = {
     loop: true,
     autoplay: true,
@@ -144,7 +150,6 @@ const Website = () => {
     rendererSettings: { preserveAspectRatio: "xMidYMid slice" },
   };
 
-  // **Data Arrays**
   const courses = [
     {
       type: "course",
@@ -342,14 +347,12 @@ const Website = () => {
     },
   ];
 
-  // **Active Data and Grouping**
   const activeData = activeTab === "websites" ? websites : activeTab === "projects" ? projects : courses;
   const groupedData = activeData.reduce((acc, cur, i) => {
     if (i % 2 === 0) acc.push(activeData.slice(i, i + 2));
     return acc;
   }, []);
 
-  // **Card Component**
   const Card = memo(({ data, onClick }) => {
     const title = data.title || data.name;
     const { description, tags, images, source_code_link, type } = data;
@@ -449,7 +452,6 @@ const Website = () => {
     );
   });
 
-  // **JSX Structure**
   return (
     <>
       <style>{`
@@ -475,7 +477,6 @@ const Website = () => {
       `}</style>
       <section id="websites" className="py-16 lg:py-24 website-section text-lemon_chiffon">
         <div className="container mx-auto px-6 lg:px-20 relative z-10">
-          {/* Initial Message Section */}
           <div ref={initialMessageRef} className="flex flex-col items-center justify-center min-h-screen mt-20">
             <motion.div
               className="flex items-center relative"
@@ -513,7 +514,6 @@ const Website = () => {
             </motion.div>
           </div>
 
-          {/* Description Section */}
           <motion.div
             ref={descriptionRef}
             className="text-center mb-12 mt-32 max-w-3xl mx-auto"
@@ -526,7 +526,6 @@ const Website = () => {
             </p>
           </motion.div>
 
-          {/* Tab Buttons */}
           <motion.div
             ref={buttonsRef}
             className="flex justify-center mb-12 space-x-4 sm:space-x-6 relative"
@@ -561,7 +560,6 @@ const Website = () => {
             />
           </motion.div>
 
-          {/* Cards Section */}
           <div ref={cardsRef}>
             <AnimatePresence mode="wait">
               <motion.div
@@ -583,7 +581,6 @@ const Website = () => {
           </div>
         </div>
 
-        {/* Modal */}
         {selectedProject && (
           <motion.div
             className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-80 backdrop-blur-sm"
@@ -591,6 +588,11 @@ const Website = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setSelectedProject(null);
+              }
+            }}
           >
             <motion.div
               className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-6 sm:p-8 rounded-3xl w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[85vh] overflow-y-auto shadow-2xl border-2 border-lemon_chiffon/50 relative"
@@ -642,7 +644,7 @@ const Website = () => {
                 ))}
               </motion.div>
               <motion.div
-                className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-6"
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.5 }}

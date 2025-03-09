@@ -16,36 +16,40 @@ import Quantum from "../assets/articles/Quantum.webp";
 import Material from "../assets/articles/Material.webp";
 import BlackHole from "../assets/ResearchPaper/BlackHole.png";
 import MCU from "../assets/ResearchPaper/MCU.png";
+import Teraform from "../assets/book/teraform.jpg";
+import Physics from "../assets/book/Physics.png";
+import Aerospace from "../assets/book/aerospace.jpg";
+import Atomic from "../assets/book/atomic.jpg";
 
 const books = [
   {
-    title: "Terraforming Our Future: The Evolution of Space Exploration, Technology, and Multiplanetary Civilization",
-    year: "(Currently writing)",
-    img: Bushra,
-    tags: ["Architecture", "Future"],
-    description: "Explore the potential future of human civilization, space exploration, colonization, the path to a Type 7 civilization, and the politics of space."
-  },
-  {
     title: "The Physics Odyssey: Understanding the Forces of Nature",
     year: "(Currently writing)",
-    img: Bushra,
+    img: Physics,
     tags: ["Programming", "Creativity"],
     description: "This work delves into the fundamental forces—gravity, electromagnetism, and nuclear forces—shaping the universe."
   },
   {
     title: "Introduction to Aerospace Engineering: Principles and Practices",
     year: "(Currently writing)",
-    img: Bushra,
+    img: Aerospace,
     tags: ["Design", "Innovation"],
     description: "Delve into the fundamentals of aerospace engineering, covering key principles, design concepts, and applications."
   },
   {
     title: "Atomic Energy and Engineering: A Beginner’s Guide to Nuclear Engineering",
     year: "(Currently writing)",
-    img: Bushra,
+    img: Atomic,
     tags: ["Design", "Innovation"],
     description: "This guide provides an accessible introduction to the world of nuclear engineering."
-  }
+  },
+  {
+    title: "Terraforming Our Future: The Evolution of Space Exploration, Technology, and Multiplanetary Civilization",
+    year: "(Currently writing)",
+    img: Teraform,
+    tags: ["Architecture", "Future"],
+    description: "Explore the potential future of human civilization, space exploration, colonization, the path to a Type 7 civilization, and the politics of space."
+  },
 ];
 
 const articles = [
@@ -213,14 +217,18 @@ const Research = () => {
   const ToggleButton = ({ children, active, onClick }) => (
     <button
       onClick={onClick}
-      className={`px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 active:scale-95 ${active ? "bg-gradient-to-r from-cyan-400 to-teal-400 text-white shadow-lg shadow-cyan-400/50" : "bg-champagne_pink text-deep_indigo hover:bg-tea_rose hover:text-deep_indigo"}`}
+      className={` py-2 text-lg rounded-full transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer ${
+        active
+          ? "bg-gradient-to-r from-jordy_blue to-non_photo_blue text-white shadow-lg shadow-jordy_blue/50"
+          : "bg-champagne_pink text-deep_indigo hover:bg-tea_rose hover:text-deep_indigo hover:shadow-md hover:shadow-jordy_blue/30"
+      }`}
     >
       {children}
     </button>
   );
 
   const ResearchItem = ({ item }) => (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+    <div className="bg-white/30 backdrop-blur-lg rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-white/50">
       {filter === "books" || filter === "research" ? (
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/3">
@@ -232,7 +240,7 @@ const Research = () => {
             />
           </div>
           <div className="p-6 md:w-2/3">
-            <h3 className="text-2xl font-heading font-bold mb-2 text-deep_indigo">{item.title}</h3>
+            <h3 className="text-2xl font-subheading font-bold mb-2 text-deep_indigo">{item.title}</h3>
             <p className="text-gray-600 mb-4">{item.year}</p>
             <p className="text-lg text-gray-700">{item.description}</p>
           </div>
@@ -248,7 +256,7 @@ const Research = () => {
             />
           </div>
           <div className="p-6 md:w-3/4">
-            <h3 className="text-2xl font-heading font-bold mb-2 text-deep_indigo">{item.title}</h3>
+            <h3 className="text-2xl font-subheading font-bold mb-2 text-deep_indigo">{item.title}</h3>
             <p className="text-gray-600 mb-2">Platform: {item.platform}</p>
             <p className="text-lg text-gray-700 mb-4">{item.description}</p>
             <div className="flex flex-wrap gap-2 mb-4">
@@ -262,7 +270,7 @@ const Research = () => {
               href={item.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-6 py-3 bg-gradient-to-r from-cyan-400 to-teal-400 text-white rounded-full transition-all duration-300 hover:from-teal-400 hover:to-cyan-400 hover:shadow-lg"
+              className="inline-block px-4 py-1 text-lg bg-gradient-to-r from-jordy_blue to-non_photo_blue text-white rounded-full transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95 hover:from-non_photo_blue hover:to-jordy_blue hover:shadow-md cursor-pointer"
             >
               Read More
             </a>
@@ -278,7 +286,7 @@ const Research = () => {
         {isMobile && (
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="mb-4 px-6 py-3 bg-gradient-to-r from-cyan-400 to-teal-400 text-white rounded-full transition-all duration-300 hover:from-teal-400 hover:to-cyan-400"
+            className="mb-4 px-4 py-2 text-lg bg-gradient-to-r from-jordy_blue to-non_photo_blue text-white rounded-full transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95 hover:from-non_photo_blue hover:to-jordy_blue hover:shadow-md cursor-pointer"
           >
             {showFilters ? "Hide Filters" : "Show Filters"}
           </button>
@@ -306,7 +314,7 @@ const Research = () => {
                   setSearch(e.target.value);
                   handleSearch(e.target.value);
                 }}
-                className="w-full px-4 py-3 pl-10 border-2 border-tea_rose rounded-full focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400"
+                className="w-full px-4 py-1 pl-10 border-2 border-tea_rose rounded-full focus:outline-none focus:border-jordy_blue focus:ring-2 focus:ring-jordy_blue transition-colors duration-300 focus:shadow-md focus:shadow-jordy_blue/30"
               />
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-deep_indigo">🔍</span>
             </div>
@@ -336,7 +344,7 @@ const Research = () => {
               {page[filter] > 1 && (
                 <button
                   onClick={() => changePage(-1)}
-                  className="px-6 py-3 bg-gradient-to-r from-cyan-400 to-teal-400 text-white rounded-full transition-all duration-300 hover:from-teal-400 hover:to-cyan-400"
+                  className="px-4 py-2 text-lg bg-gradient-to-r from-jordy_blue to-non_photo_blue text-white rounded-full transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95 hover:from-non_photo_blue hover:to-jordy_blue hover:shadow-md cursor-pointer"
                 >
                   ← Previous
                 </button>
@@ -344,7 +352,7 @@ const Research = () => {
               {page[filter] < totalPages && (
                 <button
                   onClick={() => changePage(1)}
-                  className="px-6 py-3 bg-gradient-to-r from-cyan-400 to-teal-400 text-white rounded-full transition-all duration-300 hover:from-teal-400 hover:to-cyan-400"
+                  className="px-4 py-2 text-lg bg-gradient-to-r from-jordy_blue to-non_photo_blue text-white rounded-full transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 active:scale-95 hover:from-non_photo_blue hover:to_jordy_blue hover:shadow-md cursor-pointer"
                 >
                   Next →
                 </button>

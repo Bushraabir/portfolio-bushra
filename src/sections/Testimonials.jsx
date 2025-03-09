@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import hdr from "../assets/industrial_sunset_puresky_1k.hdr";
+import hdr from "../assets/testimonial.hdr";
 
 gsap.registerPlugin(ScrollTrigger);
 

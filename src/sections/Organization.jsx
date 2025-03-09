@@ -81,17 +81,30 @@ export default function OrganizationGallery() {
     []
   );
 
-  const codeString = `def binary_search(arr, target):
-    left, right = 0, len(arr) - 1
-    while left <= right:
-        mid = (left + right) // 2
-        if arr[mid] == target:
-            return mid
-        elif arr[mid] < target:
-            left = mid + 1
-        else:
-            right = mid - 1
-    return -1`;
+  const codeString = 
+  `
+  //Binary Search Algorithm to find first occurance of a target value
+
+  int findFirstOccurrence(const std::vector<int>& arr, int target) {
+    int start = 0, end = arr.size() - 1; // Initialize search range
+    int result = -1; // If target is not found, it will return -1
+    
+    while (start <= end) {
+        int mid = start + (end - start) / 2; // Middle of array (to prevent overflow)
+        
+        if (arr[mid] == target) { // Condition to find target 
+            result = mid;
+            end = mid - 1; 
+        } 
+        else if (arr[mid] < target) { // If target is greater, Pointer is shifter right
+            start = mid + 1;
+        } 
+        else {  // If target is smaller, Pointer is shifter left
+            end = mid - 1;
+        }
+    }
+    return result;
+}`;
 
   const title = ["Founder of EmpowerEd", "Vice President of EmpowerEd", "STEM Innovation Advisor at EmpowerEd"];
 
@@ -311,6 +324,35 @@ export default function OrganizationGallery() {
         </div>
       </section>
 
+      {selectedItem && (
+        <motion.div
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setSelectedItem(null)}
+        >
+          <motion.div
+            className="bg-lemon_chiffon p-8 rounded-xl max-w-2xl w-full mx-4"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img src={selectedItem.img} alt={selectedItem.title} className="w-full h-64 object-cover rounded-xl mb-4" />
+            <h3 className="text-3xl font-heading font-semibold text-deep_indigo">{selectedItem.title}</h3>
+            <h6 className="text-xl font-subheading font-medium text-dark_teal mt-2">{selectedItem.subtitle}</h6>
+            <p className="text-base font-description font-light text-dark_teal mt-4">{selectedItem.description}</p>
+            <button
+              className="mt-6 px-4 py-2 bg-electric_blue text-lemon_chiffon rounded-full"
+              onClick={() => setSelectedItem(null)}
+            >
+              Close
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
+
       <section
         ref={counterSectionRef}
         className="relative min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-champagne_pink via-tea_rose to-deep_indigo py-24"
@@ -385,9 +427,18 @@ export default function OrganizationGallery() {
           <p className="text-lg md:text-xl font-description text-dark_teal mb-6">
             My DSA repository showcases optimized algorithms and practical solutions to enhance my computer science skills.
           </p>
-          <SyntaxHighlighter language="python" style={dark} className="rounded-xl border border-mauve-500">
-            {codeString}
-          </SyntaxHighlighter>
+          <div className="w-full max-w-[100vw] mx-auto p-2">
+            <SyntaxHighlighter
+              language="cpp" 
+              style={dark}
+              showLineNumbers={true}
+              codeTagProps={{ style: { whiteSpace: 'pre-wrap' } }}
+              className="w-full max-h-[400px] sm:max-h-[300px] overflow-auto rounded-xl border border-mauve-500 p-2 text-sm sm:text-base"
+            >
+              {codeString}
+            </SyntaxHighlighter>
+
+          </div>
           <motion.a
             href="https://github.com/Bushraabir/DSA"
             target="_blank"
@@ -406,7 +457,7 @@ export default function OrganizationGallery() {
               initial={{ opacity: 0, x: -10 }}
               whileHover={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3 }}
-              className="ml-2"
+              className="ml-1"
             >
               →
             </motion.span>
