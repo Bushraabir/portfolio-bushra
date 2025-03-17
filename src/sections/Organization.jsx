@@ -371,10 +371,10 @@ export default function OrganizationGallery() {
         </motion.h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 w-full max-w-7xl px-6">
           {[
-            ["Python", SiPython, 11],
-            ["C++", SiCplusplus, 226],
-            ["C", SiC, 100],
-            ["Ranking", FaTrophy, 3130],
+            ["Python", SiPython, 24],
+            ["C++", SiCplusplus, 229],
+            ["C", SiC, 114],
+            ["Ranking", FaTrophy, 2088]
           ].map(([lang, Icon, value], index) => (
             <motion.div
               key={lang}
@@ -402,12 +402,17 @@ export default function OrganizationGallery() {
                 />
               </div>
               {lang !== "Ranking" ? (
-                <a
-                  href={`https://github.com/Bushraabir/uri_beecrowd_${lang.toLowerCase()}`}
-                  className="text-lg text-non_photo_blue font-cta font-medium hover:text-lemon_chiffon transition-colors"
-                >
-                  Solved {value} in {lang}
-                </a>
+                (() => {
+                  const linkSuffix = lang === "C++" ? "cpp" : lang.toLowerCase();
+                  return (
+                    <a
+                      href={`https://github.com/Bushraabir/uri_beecrowd_${linkSuffix}`}
+                      className="text-lg text-non_photo_blue font-cta font-medium hover:text-lemon_chiffon transition-colors"
+                    >
+                      Solved {value} in {lang}
+                    </a>
+                  );
+                })()
               ) : (
                 <span className="text-lg text-jordy_blue font-cta font-medium">
                   Top 1% (3130)
@@ -425,10 +430,13 @@ export default function OrganizationGallery() {
           viewport={{ once: true }}
         >
           <h3 className="text-3xl md:text-4xl font-heading font-extrabold text-deep_indigo mb-6">
-            DSA Practice
+            Data Structure and Algorithm Practice
           </h3>
           <p className="text-lg md:text-xl font-description text-dark_teal mb-6">
-            My DSA repository showcases optimized algorithms and practical solutions to enhance my computer science skills.
+          Currently, I am learning Data Structures and Algorithms from various
+          online resources and practicing in C++. Together with Muzahidul Islam Abir, 
+          we are creating a repository where we practice different algorithms and problems, 
+          which further enhances our understanding. Here is a demo of our repository:
           </p>
           <div className="w-full max-w-[100vw] mx-auto p-2">
             <SyntaxHighlighter
@@ -445,7 +453,7 @@ export default function OrganizationGallery() {
             href="https://github.com/Bushraabir/DSA"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center px-10 py-4 bg-gradient-to-r from-electric_blue to-aquamarine text-lemon_chiffon font-cta font-semibold rounded-full mt-6 relative overflow-hidden"
+            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-deep_indigo font-cta font-semibold rounded-full mt-6 relative overflow-hidden"
             whileHover={{ scale: 1.1, boxShadow: "0 0 20px rgba(142, 236, 245, 0.5)" }}
             whileTap={{ scale: 0.95 }}
           >

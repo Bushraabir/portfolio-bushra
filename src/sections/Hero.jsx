@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import profileImage from "../assets/Bushra.png";
-import resumePDF from "../assets/resume/Bushra.png";
+import resumePDF from "../assets/resume/Bushra.pdf";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -74,7 +74,7 @@ const Hero = () => {
     : "text-glow text-jordy_blue tracking-wide leading-relaxed text-sm sm:text-md";
 
   const buttonBaseClass = isMobile
-    ? "relative px-4 py-2 text-sm font-semibold text-white tracking-wider rounded-full backdrop-blur-lg bg-gradient-to-r border-2 overflow-hidden transition-all duration-300 focus:outline-none focus:ring-2"
+    ? "relative px-1 py-2 text-sm font-semibold text-white tracking-wider rounded-full backdrop-blur-lg bg-gradient-to-r border-2 overflow-hidden transition-all duration-300 focus:outline-none focus:ring-2"
     : "relative px-6 py-3 text-lg font-semibold text-white tracking-wider rounded-full backdrop-blur-lg bg-gradient-to-r border-4 overflow-hidden transition-all duration-300 focus:outline-none focus:ring-4";
 
   const buttonExploreClass = `${buttonBaseClass} from-non_photo_blue/40 to-blue-500/40 border-lemon_chiffon hover:border-non_photo_blue focus:ring-non_photo_blue`;
@@ -164,7 +164,7 @@ const Hero = () => {
 
       <div
         ref={buttonRef}
-        className="flex flex-row gap-4 font-cta mt-4"
+        className="flex flex-row gap-2 font-cta mt-4"
         style={{ pointerEvents: "auto" }}
       >
         <motion.button
@@ -215,7 +215,7 @@ const Hero = () => {
           }}
           onClick={(e) => createRipple(e, e.currentTarget)}
         >
-          Download CV
+          Launch My Interstellar Profile
         </motion.a>
       </div>
 

@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { FaFacebookF, FaInstagram, FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaWhatsapp, FaPhoneAlt, FaGithub, FaMedium } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -54,6 +54,24 @@ export default function Footer() {
             aria-label="WhatsApp"
           >
             <FaWhatsapp size={26} />
+          </a>
+          <a
+            href="https://github.com/Bushraabir/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transform transition-all duration-300 hover:scale-110 hover:text-teal-300"
+            aria-label="GitHub"
+          >
+            <FaGithub size={26} />
+          </a>
+          <a
+            href="https://medium.com/@bb3708627/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transform transition-all duration-300 hover:scale-110 hover:text-teal-300"
+            aria-label="Medium"
+          >
+            <FaMedium size={26} />
           </a>
           <a
             href="tel:+8801334798878"

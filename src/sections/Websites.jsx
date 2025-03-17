@@ -32,6 +32,9 @@ import Sustainibility2 from "../assets/Website/Sustainibility/2.png";
 import Sustainibility3 from "../assets/Website/Sustainibility/3.png";
 import Sustainibility4 from "../assets/Website/Sustainibility/4.png";
 import Sustainibility5 from "../assets/Website/Sustainibility/5.png";
+import Tube1 from "../assets/Website/EmpTube/1.png";
+import Tube2 from "../assets/Website/EmpTube/1.png";
+import Tube3 from "../assets/Website/EmpTube/1.png";
 import Satellite from "../assets/Projects/Satellite.png";
 import Rocket from "../assets/Projects/Rocket.png";
 import Nuclear from "../assets/Projects/Nuclear.png";
@@ -164,7 +167,7 @@ const Website = () => {
       ],
       images: [Satellite],
       detailedDescription: "An introductory course on satellite systems and engineering, covering the basics of satellite design, operations, and technologies used in modern space exploration.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation",
+     
     },
     {
       type: "course",
@@ -180,7 +183,7 @@ const Website = () => {
       ],
       images: [Rocket],
       detailedDescription: "An introductory course on rocket propulsion, focusing on the principles of thrust, engine design, and the technologies driving modern rocketry.",
-      source_code_link: "https://github.com/project-two",
+     
     },
     {
       type: "course",
@@ -195,7 +198,7 @@ const Website = () => {
       ],
       images: [AeroSpace],
       detailedDescription: "An introductory course on aerospace engineering, focusing on the principles of aircraft and spacecraft design, aerodynamics, and propulsion systems.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation",
+      
     },
     {
       type: "course",
@@ -210,7 +213,7 @@ const Website = () => {
       ],
       images: [Nuclear],
       detailedDescription: "An introductory course on nuclear science, covering the fundamentals of nuclear reactions, reactor design, and applications in energy production and medical technology.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation",
+     
     },
   ];
 
@@ -233,10 +236,11 @@ const Website = () => {
       images: [emp3, emp1, emp2, emp3, emp4, emp5, emp6],
       detailedDescription: "EmpowerEd is a non-profit educational platform designed to provide students with mentorship, mental health support, research funding, scholarship opportunities, and study abroad guidance. It features immersive animations and real-time communication tools, built with React.js, GSAP, Framer Motion, and EmailJS.",
       source_code_link: "https://github.com/Bushraabir/empowereducation",
+      website_link: "https://bushraabir.github.io/empowereducation/"
     },
     {
       type: "website",
-      title: "Advanced Periodic Table Visualizer",
+      title: "Periodic Table Visualizer",
       description: "An interactive web application for exploring the periodic table with dynamic visualizations.",
       tags: [
         { name: "Python", color: "text-yellow-500" },
@@ -248,6 +252,7 @@ const Website = () => {
       images: [PeriodicTableVisualiser2, PeriodicTableVisualiser1, PeriodicTableVisualiser3, PeriodicTableVisualiser4, PeriodicTableVisualiser5, PeriodicTableVisualiser6],
       detailedDescription: "The Advanced Periodic Table Visualizer is a web tool built with Python, Streamlit, Plotly, and Pandas. It offers interactive data visualizations, filtering options, and insights into periodic trends through charts and 3D visualizations.",
       source_code_link: "https://github.com/Bushraabir/periodic_table_visualizer",
+      website_link: "https://periodictablevisualizer.streamlit.app/"
     },
     {
       type: "website",
@@ -268,8 +273,10 @@ const Website = () => {
       ],
       images: [StudyBuddy2, StudyBuddy1, StudyBuddy3, StudyBuddy4, StudyBuddy5, StudyBuddy6, StudyBuddy7, StudyBuddy8],
       detailedDescription: "Study Buddy is an advanced educational application that enhances study efficiency with interactive flashcards (including quiz mode), a Pomodoro-based session manager, a versatile graphing calculator for multiple equation types, and a smart note-taking system synced in real time via Firebase. Built using React.js, GSAP, Framer Motion, and Plotly.js, it delivers a modern, engaging, and responsive study experience.",
-      source_code_link: "https://github.com/Bushraabir/sustainibility",
+      source_code_link: "https://github.com/Bushraabir/study-buddy",
+      website_link: "https://bushraabir.github.io/study-buddy/"
     },
+
     {
       type: "website",
       title: "Sustainability Adventure",
@@ -286,7 +293,22 @@ const Website = () => {
       ],
       images: [Sustainibility1, Sustainibility2, Sustainibility3, Sustainibility4, Sustainibility5],
       detailedDescription: "Sustainability Adventure is a dynamic Flask-based application that encourages eco-friendly living through community events, user engagement, and curated sustainability tips. With secure authentication, event management, and an admin dashboard, it provides a responsive and modern interface built with Flask, SQLAlchemy, and Flask-Login.",
-      source_code_link: "https://github.com/your-username/sustainability-adventure",
+      source_code_link: "https://github.com/Bushraabir/sustainability",
+      website_link: "https://bushraabir.github.io/sustainibility/"
+    },
+    {
+      type: "website",
+      title: "EmpowerTube - Educational Content Hub",
+      description: "An web application for managing and organizing educational content. Supports videos, PDFs, and articles with advanced filtering, dark mode, and drag-and-drop functionality.",
+      tags: [
+        { name: "HTML", color: "text-green-400" },
+        { name: "CSS", color: "text-blue-400" },
+        { name: "JavaScript", color: "text-yellow-400" },
+      ],
+      images: [Tube1, Tube2, Tube3, ],
+      detailedDescription: "An  web application for managing and organizing educational content. Supports videos, PDFs, and articles with advanced filtering, dark mode, and drag-and-drop functionality.",
+      source_code_link: "https://github.com/Bushraabir/EmpowerTube",
+      website_link: "https://bushraabir.github.io/EmpowerTube/"
     },
   ];
 
@@ -298,7 +320,7 @@ const Website = () => {
       tags: [],
       images: [Satellite1],
       detailedDescription: "This project involves designing and building a satellite along with a custom rocket, powered by hydrogen and oxygen fuel that is processed by us. The satellite will include a transmitter to send its location back to us. The ultimate goal is to launch the satellite into Low Earth Orbit (LEO), aiming to reach the Kármán Line.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation",
+      
     },
     {
       type: "project",
@@ -307,7 +329,7 @@ const Website = () => {
       tags: [],
       images: [Aquarium],
       detailedDescription: "This project involves designing and building a custom aquarium water purifier equipped with a 12V water pump. The system will reduce ammonia levels, remove fish waste, and promote the growth of beneficial plankton while maintaining balanced oxygen levels in the water. The purifier will include a filtration mechanism to ensure clean and healthy water for aquatic life. The ultimate goal is to create a self-sustaining ecosystem within the aquarium, ensuring optimal water quality and supporting the well-being of the fish and other aquatic organisms.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation",
+      
     },
     {
       type: "project",
@@ -316,7 +338,7 @@ const Website = () => {
       tags: [],
       images: [Drone],
       detailedDescription: "This project involves designing and assembling a customizable quadcopter drone using off-the-shelf components. The drone will be equipped with a camera for aerial photography, basic flight stabilization, and remote-control capabilities. The ultimate goal is to create a cost-effective, modular drone for hobbyist aerial imaging, environmental monitoring, or educational purposes, while learning principles of aerodynamics, electronics, and robotics.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation",
+     
     },
     {
       type: "project",
@@ -325,7 +347,7 @@ const Website = () => {
       tags: [],
       images: [Bio],
       detailedDescription: "This project involves designing and constructing a small-scale bio diesel reactor that converts waste cooking oil, vegetable oil, or animal fats into usable bio diesel fuel. The system will use a chemical process called transesterification to break down triglycerides into fatty acid methyl esters (FAME), producing clean-burning bio diesel. The ultimate goal is to create a sustainable, low-cost method to recycle waste oils into renewable fuel for vehicles, generators, or heating systems, reducing reliance on fossil fuels and lowering carbon emissions.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation",
+      
     },
     {
       type: "project",
@@ -334,7 +356,7 @@ const Website = () => {
       tags: [],
       images: [Telescope],
       detailedDescription: "This project involves designing and constructing a simple, low-cost refracting telescope using affordable, off-the-shelf components. The telescope will use optical lenses to collect and focus light, enabling observation of celestial objects like the Moon, planets, and bright star clusters. The ultimate goal is to create a functional, portable telescope for educational purposes learning fundamental principles of optics and astronomy.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation",
+     
     },
     {
       type: "project",
@@ -343,7 +365,7 @@ const Website = () => {
       tags: [],
       images: [Biogas],
       detailedDescription: "This project involves designing and constructing a small-scale bio gas system that converts organic household waste (e.g., kitchen scraps, garden waste, or livestock manure) into methane gas and organic fertilizer. The main goal is to use human feces as it is cost-free and challenging to manage as waste. The system will use anaerobic digestion to break down waste, capture methane for cooking or heating, and produce nutrient-rich slurry for gardening and farming. The ultimate goal is to create a sustainable, closed-loop energy solution that reduces waste, lowers reliance on fossil fuels, and supports eco-friendly agriculture.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation",
+     
     },
   ];
 
@@ -355,8 +377,7 @@ const Website = () => {
 
   const Card = memo(({ data, onClick }) => {
     const title = data.title || data.name;
-    const { description, tags, images, source_code_link, type } = data;
-    const icon = type === "website" ? <FiGithub size={28} color="white" /> : <FaEye size={28} color="white" />;
+    const { description, tags, images, source_code_link, type, website_link } = data;
     return (
       <motion.div
         onClick={() => onClick(data)}
@@ -383,7 +404,20 @@ const Website = () => {
               whileHover={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
             />
-            <div className="absolute inset-0 flex justify-end m-4">
+            <div className="absolute inset-0 flex justify-end m-4 space-x-2">
+              {type === "website" && (
+                <motion.div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(website_link, "_blank");
+                  }}
+                  className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer"
+                  whileHover={{ scale: 1.2, rotate: 10 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <FaEye size={28} color="white" />
+                </motion.div>
+              )}
               <motion.div
                 onClick={(e) => {
                   e.stopPropagation();
@@ -393,7 +427,7 @@ const Website = () => {
                 whileHover={{ scale: 1.2, rotate: 10 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                {icon}
+                {type === "website" ? <FiGithub size={28} color="white" /> : <FaEye size={28} color="white" />}
               </motion.div>
             </div>
           </ReactTilt>
@@ -407,7 +441,20 @@ const Website = () => {
               whileTap={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
             />
-            <div className="absolute inset-0 flex justify-end m-4">
+            <div className="absolute inset-0 flex justify-end m-4 space-x-2">
+              {type === "website" && (
+                <motion.div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(website_link, "_blank");
+                  }}
+                  className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer"
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <FaEye size={28} color="white" />
+                </motion.div>
+              )}
               <motion.div
                 onClick={(e) => {
                   e.stopPropagation();
@@ -417,7 +464,7 @@ const Website = () => {
                 whileTap={{ scale: 0.9 }}
                 transition={{ duration: 0.3 }}
               >
-                {icon}
+                {type === "website" ? <FiGithub size={28} color="white" /> : <FaEye size={28} color="white" />}
               </motion.div>
             </div>
           </div>
@@ -664,11 +711,27 @@ const Website = () => {
                 ))}
               </motion.div>
               <motion.div
-                className="flex justify-center"
+                className="flex justify-center space-x-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
               >
+                {selectedProject.type === "website" && (
+                  <a
+                    href={selectedProject.website_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 text-lg font-medium font-cta rounded-full shadow-xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue transition-all hover:shadow-2xl"
+                  >
+                    <motion.span
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      View Website
+                    </motion.span>
+                  </a>
+                )}
                 <a
                   href={selectedProject.source_code_link}
                   target="_blank"
@@ -680,7 +743,7 @@ const Website = () => {
                     whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 400 }}
                   >
-                    {selectedProject.type === "website" ? "View Source Code" : selectedProject.type === "project" ? "View Project" : "View Course"}
+                    {selectedProject.type === "website" ? "View Source Code" : selectedProject.type === "project" ? "Ongoing" : "Ongoing"}
                   </motion.span>
                 </a>
               </motion.div>

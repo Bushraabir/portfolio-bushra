@@ -399,6 +399,7 @@ const artworksData = {
   ],
 };
 
+
 const tabColors = {
   sketch: { from: "#1d3557", to: "#a3c4f3" },
   acrylic: { from: "#2a1b3d", to: "#cfbaf0" },

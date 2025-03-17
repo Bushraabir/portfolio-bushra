@@ -8,6 +8,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import hdr from "../assets/testimonial.hdr";
+import pdf1 from "../assets/recommendation/1.pdf";
+import pdf2 from "../assets/recommendation/2.pdf";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,14 +47,13 @@ const testimonials = [
 ];
 
 const Testimonial = () => {
-
   const containerRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const timeoutIdRef = useRef(null);
   const onStartRef = useRef(null);
   const onEndRef = useRef(null);
 
- useEffect(() => {
+  useEffect(() => {
     if (!containerRef.current) return;
 
     let animationFrameId;
@@ -168,7 +169,6 @@ const Testimonial = () => {
     };
   }, []);
 
- 
   const generateCanvasTexture = (testimonial, isLowQuality) => {
     const canvasSize = isLowQuality ? 256 : 512;
     const canvas = document.createElement("canvas");
@@ -196,7 +196,6 @@ const Testimonial = () => {
     return new THREE.CanvasTexture(canvas);
   };
 
-
   const wrapText = (context, text, x, y, maxWidth, lineHeight) => {
     const words = text.split(" ");
     let line = "";
@@ -214,7 +213,6 @@ const Testimonial = () => {
     context.fillText(line, x, y);
   };
 
-
   const setupLighting = (scene) => {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
@@ -225,7 +223,6 @@ const Testimonial = () => {
     spotLight.position.set(5, 10, 0);
     scene.add(spotLight);
   };
-
 
   return (
     <motion.div
@@ -262,6 +259,38 @@ const Testimonial = () => {
           <p className="text-lg font-description leading-relaxed tracking-wide text-lemon_chiffon">
             Highlighting my journey, character, and achievements.
           </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mt-6">
+            <motion.a
+              href={pdf1}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative w-full sm:w-auto overflow-hidden rounded-full px-4 py-2 text-deep_indigo font-cta font-semibold text-center bg-gradient-to-r from-aquamarine via-jordy_blue to-tea_rose shadow-xl transition-all duration-500 ease-out hover:bg-gradient-to-l hover:shadow-3xl focus:outline-none focus:ring-4 focus:ring-aquamarine focus:ring-opacity-70"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.1, rotate: 3, boxShadow: "0 15px 30px rgba(0, 255, 200, 0.5)" }}
+              whileTap={{ scale: 0.92, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 hover:opacity-40 transition-opacity duration-500 ease-out transform -skew-x-12" />
+              <span className="relative z-10">View Recommendation Letter 1</span>
+            </motion.a>
+            <motion.a
+              href={pdf2}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative w-full sm:w-auto overflow-hidden rounded-full px-4 py-2 text-deep_indigo font-cta font-semibold text-center bg-gradient-to-r from-aquamarine via-jordy_blue to-tea_rose shadow-xl transition-all duration-500 ease-out hover:bg-gradient-to-l hover:shadow-3xl focus:outline-none focus:ring-4 focus:ring-aquamarine focus:ring-opacity-70"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.1, rotate: -3, boxShadow: "0 15px 30px rgba(0, 255, 200, 0.5)" }}
+              whileTap={{ scale: 0.92, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 hover:opacity-40 transition-opacity duration-500 ease-out transform -skew-x-12" />
+              <span className="relative z-10">View Recommendation Letter 2</span>
+            </motion.a>
+          </div>
         </motion.div>
       )}
     </motion.div>

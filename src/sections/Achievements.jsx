@@ -36,6 +36,7 @@ const achievements = [
     points: [
       "Junior Prefect – Appointed as the Junior Prefect of Bir Protik Dr. Captain Sitara Begum House (2021)",
       "House Prefect – Led 92 cadets as the House Prefect of Bir Protik Dr. Captain Sitara Begum House (2022-2023)",
+      "Class Prefect - Nominated as the Class Prefect to represent the class for cosistenty 5 years (2017-2021) ",
       "Under my leadership, the house won the Overall Championship in the 2023 Annual Athletics based on discipline, academics, and teamwork",
       "Best Cadet Award (2017) – Recognized for outstanding discipline, academics, and co-curricular excellence"
     ]

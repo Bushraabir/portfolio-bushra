@@ -14,6 +14,16 @@ import {
   FaUsers,
   FaStar,
   FaComments,
+  FaUsersCog,
+  FaChalkboardTeacher,
+  FaProjectDiagram,
+  FaPaintBrush,
+  FaPalette,
+  FaBrain,
+  FaPen,
+  FaFlask,
+  FaCog,
+  FaChartBar,
 } from "react-icons/fa";
 import {
   SiCplusplus,
@@ -26,6 +36,11 @@ import {
   SiGreensock,
   SiFramer,
   SiKrita,
+  SiGnu,
+  SiFreecad,
+  SiOpenscad,
+  SiJavascript,
+
 } from "react-icons/si";
 import { DiPhotoshop } from "react-icons/di";
 import {
@@ -53,31 +68,39 @@ const skillsData = [
       { name: "C", icon: <SiCplusplus /> },
       { name: "C++", icon: <SiCplusplus /> },
       { name: "Python", icon: <FaPython /> },
+
     ],
   },
   {
-    category: "Frontend",
+    category: "Web Development",
     items: [
       { name: "React.js", icon: <FaReact /> },
       { name: "Three.js", icon: <SiThreedotjs /> },
-      { name: "GSAP", icon: <SiGreensock /> },
-      { name: "Framer Motion", icon: <SiFramer /> },
-    ],
-  },
-  {
-    category: "HTML & CSS",
-    items: [
+      { name: "JavaScript", icon: <SiJavascript /> },
       { name: "HTML", icon: <SiHtml5 /> },
       { name: "CSS", icon: <SiCss3 /> },
+      { name: "GSAP", icon: <SiGreensock /> },
+      { name: "Framer Motion", icon: <SiFramer /> },
+      { name: "Vite", icon: <SiVite /> },
+    ],
+  },
+
+  {
+    category: "Tools",
+    items: [
+      
+      { name: "Microsoft Excel",  },
+      { name: "PowerPoint",  },
+      { name: "Microsoft Word",  },
     ],
   },
   {
-    category: "Backend",
-    items: [{ name: "Firebase", icon: <SiFirebase /> }],
-  },
-  {
-    category: "Tools",
-    items: [{ name: "Vite", icon: <SiVite /> }],
+    category: "Engineering Tools",
+    items: [
+      { name: "GNU Octave", icon: <SiGnu /> },
+      { name: "FreeCAD", icon: <SiFreecad /> },
+      { name: "OpenSCAD", icon: <SiOpenscad /> },
+    ],
   },
   {
     category: "3D Modeling & Design",
@@ -111,7 +134,9 @@ const skillsData = [
       { name: "Problem Solving", icon: <FaLightbulb /> },
       { name: "Teamwork", icon: <FaUsers /> },
       { name: "Leadership", icon: <FaStar /> },
-      { name: "Communication", icon: <FaComments /> },
+      { name: "Team Management", icon: <FaUsersCog /> },
+      { name: "Mentoring", icon: <FaChalkboardTeacher /> },
+
     ],
   },
 ];
@@ -121,11 +146,12 @@ const categories = ["All", ...skillsData.map((s) => s.category)];
 const categoryIcons = {
   STEM: <GiAtomicSlashes />,
   Programming: <SiCplusplus />,
-  Frontend: <FaReact />,
+  "Web Development": <FaReact />,
   "HTML & CSS": <SiHtml5 />,
-  Backend: <SiFirebase />,
+
   Tools: <SiVite />,
-  "3D Modeling & Design": <FaBlender />,
+  "Engineering Tools": <SiFreecad />,
+  "3D Modeling & Design": <SiAdobeillustrator />,
   "Art & Craft": <GiPaintBrush />,
   "Other Interests": <FaGuitar />,
   "Soft Skills": <FaUsers />,
@@ -193,7 +219,7 @@ const SkillCard = ({ skillCategory }) => {
 
   return (
     <motion.div
-      className={`flip-card ${isFlipped ? "flipped" : ""}`}
+      className={`flip-card ${isFlipped ? "flipped" : ""} sm:w-[300px] w-full`}
       initial={{ opacity: 0, y: 50, rotateY: 10 }}
       animate={{ opacity: 1, y: 0, rotateY: 0 }}
       exit={{ opacity: 0, y: -50, rotateY: -10 }}
@@ -206,10 +232,12 @@ const SkillCard = ({ skillCategory }) => {
       <div className="glow"></div>
       <div className="flip-card-inner" ref={innerRef}>
         <div className="flip-card-front">
-          <div className="category-icon">
+          <div className="category-icon text-6xl sm:text-7xl">
             {categoryIcons[skillCategory.category]}
           </div>
-          <p className="category-name">{skillCategory.category}</p>
+          <p className="category-name mt-4 text-xl font-subheading text-lemon_chiffon">
+            {skillCategory.category}
+          </p>
         </div>
         <div className="flip-card-back">
           <div className="card-items">
@@ -217,11 +245,11 @@ const SkillCard = ({ skillCategory }) => {
               <motion.div
                 key={idx}
                 className="card-item-inner skill-item"
-                whileHover={{ scale: 1.3, rotate: 3 }}
+                whileHover={{ scale: 1.1, rotate: 3 }}
                 transition={{ type: "spring", stiffness: 300, damping: 15 }}
               >
-                <span className="icon">{item.icon}</span>
-                <p>{item.name}</p>
+                <span className="icon text-2xl">{item.icon}</span>
+                <p className="text-sm font-description">{item.name}</p>
               </motion.div>
             ))}
           </div>
@@ -253,33 +281,14 @@ const Skill = () => {
   useEffect(() => {
     Splitting();
     const chars = document.querySelectorAll(".split-text .char");
-    const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-    tl.from(chars, {
+    gsap.from(chars, {
       duration: 1,
-      y: 50,
-      rotateX: 90,
+      opacity: 0,
+      y: 20,
       stagger: 0.05,
-    })
-      .to(
-        chars,
-        {
-          duration: 0.8,
-          y: -10,
-          rotateX: -10,
-          scale: 1.1,
-          ease: "back.out(1.7)",
-          stagger: { each: 0.05 },
-        },
-        "-=0.5"
-      )
-      .to(chars, {
-        duration: 0.8,
-        y: 0,
-        rotateX: 0,
-        scale: 1,
-        ease: "elastic.out(1, 0.3)",
-        stagger: { each: 0.05 },
-      });
+      ease: "power3.out",
+      delay: 0.2,
+    });
   }, []);
 
   useEffect(() => {
@@ -387,12 +396,6 @@ const Skill = () => {
           margin: 0;
           padding: 0;
         }
-        html, body {
-          width: 100%;
-          height: 100%;
-          font-family: 'Playfair Display', serif;
-          background-color: var(--accent-color);
-        }
         .skill-section {
           position: relative;
           min-height: 100vh;
@@ -408,7 +411,7 @@ const Skill = () => {
           position: absolute;
           height: 240px;
           width: 240px;
-          border-radius: 50%;
+          border-radius: 70%;
           opacity: 0;
           pointer-events: none;
           box-shadow: 0 0 30px rgba(0,0,0,0.7);
@@ -478,7 +481,7 @@ const Skill = () => {
         .grid {
           display: grid;
           gap: 2rem;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
           width: 100%;
           margin: 2rem auto 0;
         }
@@ -490,18 +493,19 @@ const Skill = () => {
         }
         @media (max-width: 480px) {
           .grid {
-            grid-template-columns: repeat(1, 1fr);
+            grid-template-columns: 1fr;
             gap: 1rem;
           }
         }
         .flip-card {
           perspective: 1500px;
           width: 100%;
-          max-width: 280px;
-          height: 320px;
+          max-width: 550px;
+          height: 450px;
           margin: 0 auto;
           cursor: pointer;
           position: relative;
+          backface-visibility: hidden;
         }
         @media (max-width: 768px) {
           .flip-card {
@@ -547,7 +551,7 @@ const Skill = () => {
           overflow: auto;
         }
         .category-icon {
-          font-size: 3rem;
+          font-size: 4rem;
           animation: pulse 3s infinite ease-in-out;
         }
         @keyframes pulse {
@@ -555,7 +559,7 @@ const Skill = () => {
           50% { transform: scale(1.05); }
         }
         .category-name {
-          font-size: 1.2rem;
+          font-size: 1.5rem;
           color: var(--primary-color);
           text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
           margin-top: 0.5rem;
@@ -588,10 +592,19 @@ const Skill = () => {
           border-radius: 0.75rem;
           padding: 0.8rem;
           text-align: center;
-          color: var(--accent-color);
+          color: var(--primary-color);
           font-family: 'Source Code Pro', monospace;
           width: calc(50% - 0.5rem);
           transition: transform 0.3s, background 0.3s;
+        }
+        .card-item-inner .icon {
+          display: block;
+          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+          color: var(--primary-color);
+        }
+        .card-item-inner p {
+          font-size: 0.8rem;
         }
         @media (max-width: 768px) {
           .flip-card-back .card-items {
@@ -609,15 +622,6 @@ const Skill = () => {
           .flip-card-back .card-item-inner .icon {
             font-size: 1.2rem;
           }
-        }
-        .card-item-inner .icon {
-          display: block;
-          font-size: 1.5rem;
-          margin-bottom: 0.5rem;
-          color: var(--accent-color);
-        }
-        .card-item-inner p {
-          font-size: 0.8rem;
         }
         @media (max-width: 768px) {
           .skill-section {
@@ -670,14 +674,14 @@ const Skill = () => {
       <div ref={sectionRef} className="skill-section">
         <div className="section-magnifying-glass"></div>
         <div className="content">
-          <h1 className="split-text" data-splitting>
+          <h1 className="split-text font-heading text-4xl sm:text-5xl md:text-6xl" >
             My Skill Set
           </h1>
           <div className="btn-group">
             {categories.map((cat, idx) => (
               <button
                 key={idx}
-                className={activeCategory === cat ? "active" : ""}
+                className={`font-cta ${activeCategory === cat ? "active" : ""}`}
                 onClick={() => setActiveCategory(cat)}
               >
                 {cat}
