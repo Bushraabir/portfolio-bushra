@@ -32,6 +32,9 @@ import Sustainibility2 from "../assets/Website/Sustainibility/2.png";
 import Sustainibility3 from "../assets/Website/Sustainibility/3.png";
 import Sustainibility4 from "../assets/Website/Sustainibility/4.png";
 import Sustainibility5 from "../assets/Website/Sustainibility/5.png";
+import Space1 from "../assets/Website/Space/1.png";
+import Space2 from "../assets/Website/Space/2.png";
+import Space3 from "../assets/Website/Space/3.png";
 import Tube1 from "../assets/Website/EmpTube/1.png";
 import Tube2 from "../assets/Website/EmpTube/1.png";
 import Tube3 from "../assets/Website/EmpTube/1.png";
@@ -234,7 +237,7 @@ const Website = () => {
         { name: "React Router", color: "text-pink-400" },
       ],
       images: [emp3, emp1, emp2, emp3, emp4, emp5, emp6],
-      detailedDescription: "EmpowerEd is a non-profit educational platform designed to provide students with mentorship, mental health support, research funding, scholarship opportunities, and study abroad guidance. It features immersive animations and real-time communication tools, built with React.js, GSAP, Framer Motion, and EmailJS.",
+      detailedDescription: "EmpowerEd is a comprehensive educational platform designed to empower students through various resources and support systems. The website features a clean, modern design with immersive animations and interactive elements that enhance user engagement. Built with React.js, it leverages GSAP for smooth animations, ScrollTrigger for interactive scroll effects, and Framer Motion for additional dynamic movements. The platform includes a contact form integrated with EmailJS for communication, a vertical timeline component to showcase the organization's journey, and responsive design techniques using CSS and media queries to ensure accessibility across devices. React Router manages the navigation between different sections of the platform, creating a seamless user experience. EmpowerEd offers students a range of services including mentorship opportunities, mental health support, research funding, scholarship information, and guidance for studying abroad. The platform's design emphasizes accessibility and usability, making educational resources available to a diverse student population.",
       source_code_link: "https://github.com/Bushraabir/empowereducation",
       website_link: "https://bushraabir.github.io/empowereducation/"
     },
@@ -247,10 +250,10 @@ const Website = () => {
         { name: "Streamlit", color: "text-red-400" },
         { name: "Plotly", color: "text-blue-500" },
         { name: "Pandas", color: "text-green-400" },
-        { name: "Data Visualization", color: "text-purple-500" },
+        { name: "Data Visualization", color: "text-purple-500" }
       ],
       images: [PeriodicTableVisualiser2, PeriodicTableVisualiser1, PeriodicTableVisualiser3, PeriodicTableVisualiser4, PeriodicTableVisualiser5, PeriodicTableVisualiser6],
-      detailedDescription: "The Advanced Periodic Table Visualizer is a web tool built with Python, Streamlit, Plotly, and Pandas. It offers interactive data visualizations, filtering options, and insights into periodic trends through charts and 3D visualizations.",
+      detailedDescription: "The Periodic Table Visualizer is an interactive web application built with Python, Streamlit, Plotly, and Pandas. It offers a comprehensive exploration of chemical elements through various interactive features including an interactive periodic table, data analysis tools, trend visualization, 3D analytics, element gallery, and detailed element information. The application provides users with the ability to filter elements by various properties, visualize trends across atomic numbers, analyze relationships between element properties in 3D space, and view detailed information about each element including physical and chemical properties.",
       source_code_link: "https://github.com/Bushraabir/periodic_table_visualizer",
       website_link: "https://periodictablevisualizer.streamlit.app/"
     },
@@ -259,42 +262,43 @@ const Website = () => {
       title: "Study Buddy",
       description: "An interactive study companion designed to boost student productivity with smart learning tools.",
       tags: [
-        { name: "React", color: "text-blue-400" },
-        { name: "GSAP", color: "text-green-400" },
-        { name: "Framer Motion", color: "text-purple-400" },
-        { name: "Lottie Animation", color: "text-yellow-400" },
-        { name: "React Router", color: "text-indigo-400" },
-        { name: "Firebase Authentication", color: "text-red-400" },
-        { name: "Firebase Firestore", color: "text-orange-400" },
-        { name: "Formik & Yup", color: "text-teal-400" },
-        { name: "ReactQuill", color: "text-pink-400" },
-        { name: "Plotly.js", color: "text-cyan-400" },
-        { name: "Math.js", color: "text-emerald-400" },
+        { "name": "React", "color": "text-blue-400" },
+        { "name": "GSAP", "color": "text-green-400" },
+        { "name": "Framer Motion", "color": "text-purple-400" },
+        { "name": "Lottie Animation", "color": "text-yellow-400" },
+        { "name": "React Router", "color": "text-indigo-400" },
+        { "name": "Firebase Authentication", "color": "text-red-400" },
+        { "name": "Firebase Firestore", "color": "text-orange-400" },
+        { "name": "Formik & Yup", "color": "text-teal-400" },
+        { "name": "ReactQuill", "color": "text-pink-400" },
+        { "name": "Plotly.js", "color": "text-cyan-400" },
+        { "name": "Math.js", "color": "text-emerald-400" }
       ],
       images: [StudyBuddy2, StudyBuddy1, StudyBuddy3, StudyBuddy4, StudyBuddy5, StudyBuddy6, StudyBuddy7, StudyBuddy8],
-      detailedDescription: "Study Buddy is an advanced educational application that enhances study efficiency with interactive flashcards (including quiz mode), a Pomodoro-based session manager, a versatile graphing calculator for multiple equation types, and a smart note-taking system synced in real time via Firebase. Built using React.js, GSAP, Framer Motion, and Plotly.js, it delivers a modern, engaging, and responsive study experience.",
+      detailedDescription: "Study Buddy is an interactive educational application designed to enhance student productivity through a comprehensive suite of study tools. The platform combines interactive flashcards with quiz functionality, a Pomodoro-based session manager for time tracking, an advanced graphing calculator supporting multiple equation types, and a smart note-taking system with real-time synchronization via Firebase. Built using React.js, GSAP, Framer Motion, and Plotly.js, Study Buddy delivers a modern, responsive learning experience with premium animations and intuitive design. The application implements secure user authentication, personalized study tracking, and mathematical computation capabilities through math.js, creating a complete study solution that helps students maximize their academic performance.",
       source_code_link: "https://github.com/Bushraabir/study-buddy",
       website_link: "https://bushraabir.github.io/study-buddy/"
     },
 
     {
       type: "website",
-      title: "Sustainability Adventure",
-      description: "A Flask-based web application promoting sustainable living through community events and eco-friendly tips.",
+      title: "Space Invaders: Nebula Assault",
+      description: "A modern take on the classic Space Invaders game, built with React, Three.js, and Zustand. Navigate your spaceship through a cosmic battlefield, fend off enemy waves, collect power-ups, and survive the nebula onslaught!",
       tags: [
-        { name: "Flask", color: "text-green-400" },
-        { name: "SQLAlchemy", color: "text-blue-400" },
-        { name: "Werkzeug", color: "text-yellow-400" },
-        { name: "Flask-Login", color: "text-red-400" },
-        { name: "Jinja2", color: "text-purple-400" },
-        { name: "HTML", color: "text-pink-400" },
-        { name: "CSS", color: "text-indigo-400" },
-        { name: "JavaScript", color: "text-yellow-300" },
+        { name: "React", color: "text-blue-500" },
+        { name: "Three.js", color: "text-purple-500" },
+        { name: "Zustand", color: "text-green-500" },
+        { name: "TypeScript", color: "text-yellow-500" },
+        { name: "WebGL", color: "text-red-500" },
+        { name: "Game Development", color: "text-pink-500" },
+        { name: "3D Graphics", color: "text-indigo-500" },
+        { name: "Particle Effects", color: "text-orange-500" },
+        { name: "Styled Components", color: "text-teal-500" }
       ],
-      images: [Sustainibility1, Sustainibility2, Sustainibility3, Sustainibility4, Sustainibility5],
-      detailedDescription: "Sustainability Adventure is a dynamic Flask-based application that encourages eco-friendly living through community events, user engagement, and curated sustainability tips. With secure authentication, event management, and an admin dashboard, it provides a responsive and modern interface built with Flask, SQLAlchemy, and Flask-Login.",
-      source_code_link: "https://github.com/Bushraabir/sustainability",
-      website_link: "https://bushraabir.github.io/sustainibility/"
+      images: [Space2, Space1, Space3, ],
+      detailedDescription: "Space Invaders: Nebula Assault is a dynamic space shooter game built with modern web technologies. The game features 3D graphics powered by Three.js, with a dynamic starfield, detailed spaceship models, and enemy ships. Players can control their spaceship using arrow keys and shoot with the spacebar, while fending off waves of enemies with straight or zigzag movement patterns. The game includes collectibles for bonus points, power-ups (speed boost, shield, and multi-shot), and impressive visual effects like explosions and thruster particles. The state management is handled efficiently with Zustand, and the game features post-processing effects like bloom via @react-three/postprocessing. The user interface is styled with styled-components, providing responsive start, game, and game-over screens with a heads-up display (HUD) showing score, lives, and audio toggle.",
+      source_code_link: "https://github.com/Bushraabir/space-invaders",
+      website_link: "https://bushraabir.github.io/space-invaders/"
     },
     {
       type: "website",
@@ -306,7 +310,7 @@ const Website = () => {
         { name: "JavaScript", color: "text-yellow-400" },
       ],
       images: [Tube1, Tube2, Tube3, ],
-      detailedDescription: "An  web application for managing and organizing educational content. Supports videos, PDFs, and articles with advanced filtering, dark mode, and drag-and-drop functionality.",
+      detailedDescription: "EmpowerTube is a comprehensive web application designed to help educators and students organize and manage educational content efficiently. The platform supports multiple content formats including YouTube videos, PDF documents, and articles, allowing users to create, read, update, and delete content with ease. Its intelligent organization system enables drag-and-drop rearrangement of content items, making it simple to structure learning materials logically. Advanced filtering options allow users to search by title or content, filter by category, and identify favorite content quickly. Multiple sorting options (Newest, Oldest, Popular) help users find content based on their specific needs. The application features an automatic dark/light mode that detects system preferences for comfortable viewing in any lighting condition. A favorites system allows users to mark and filter their most important content. The modern, minimalist interface with smooth animations ensures an intuitive user experience across all devices. EmpowerTube utilizes LocalStorage for persistent data storage, ensuring content remains available even when offline. Client-side PDF upload and preview functionality allows for seamless document handling without server dependency. Performance optimizations like lazy loading and efficient rendering ensure smooth operation even with large content libraries. Comprehensive error handling and user feedback mechanisms provide a reliable experience, while the use of vanilla JavaScript (without frameworks) keeps the application lightweight and fast. The implementation of CSS Variables and Modern Layout techniques (Grid/Flexbox) creates a responsive, adaptable interface that works perfectly on desktops, tablets, and mobile devices. Font Awesome 6 icons enhance the visual experience with professional-grade symbols throughout the interface.",
       source_code_link: "https://github.com/Bushraabir/EmpowerTube",
       website_link: "https://bushraabir.github.io/EmpowerTube/"
     },

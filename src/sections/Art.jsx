@@ -178,15 +178,15 @@ const artworksData = {
     {
       src: lion,
       description:
-        "This pencil sketch captures the majestic lion in a moment of contemplative power. The artist’s precise, delicate strokes reveal the subtle interplay of light and shadow that brings the creature’s regal mane and penetrating gaze to life. Each line is imbued with a sense of both raw strength and quiet introspection, inviting the viewer to linger on the noble expression and the inherent dignity of nature’s sovereign. 'Sovereign Silence' is an evocative meditation on the balance between ferocity and calm—a timeless portrait of a king at rest.",
-      title: "Sovereign Silence",
+        "The lion's mane flows like a river of darkness, each strand meticulously rendered to create a tapestry of movement and texture. His eyes burn with ancient intensity, as if they've witnessed the passage of time across the savannah. The open mouth reveals sharp teeth in a roar that seems to echo beyond the page, a declaration of sovereignty over his invisible domain. This is not merely an animal—it's a monarch demanding respect, a warrior claiming his territory, a soul laid bare in black and white. The artist has captured not just the physicality of the lion but the very spirit that has made him a symbol of strength and courage across human civilizations. In this rendering, the lion becomes something more than flesh and blood—he becomes an embodiment of wild dignity, a reminder of the untamed majesty that exists both in nature and within our own human hearts.",
+      title: "Roar of the Wild King",
       date: "2024"
     },
     {
       src: nature,
       description:
-        "Whispers of Growth is an elegant pencil sketch on canvas that captures nature’s quiet dialogue with time. Intricately detailed leaves gently stretch upward, symbolizing resilience and the tender emergence of life. The artist’s delicate shading and nuanced textures create a soft interplay of light and shadow, lending the work a serene, almost ethereal quality. Against a subtle, textured background, the finely rendered foliage speaks of both transient beauty and enduring strength, inviting the viewer to pause and reflect on nature’s silent, graceful evolution.",
-      title: "Whispers of Growth",
+        "The plant stands as a silent sentinel against the textured backdrop, its leaves reaching outward like delicate fingers grasping for light. Each vein in the foliage tells a story of survival and growth, mapping the journey of a life that persists despite the shadows that surround it. The buds, still closed against the world, hold within them the promise of future revelations, like secrets waiting to be shared. This is not merely a plant—it is a philosopher king of the botanical world, contemplative and wise beyond its years. The artist has captured not just the physical form but the very essence of what it means to grow, to reach, and to exist with quiet dignity in a world that often goes unnoticed. In this monochromatic realm, the plant becomes a metaphor for our own human journey—striving for light, carrying the weight of experience in our veins, and holding onto the hope of blossoming even when circumstances remain uncertain.",
+      title: "Veins of Life in Monochrome",
       date: "2023"
     },
     {
@@ -199,7 +199,7 @@ const artworksData = {
     {
       src: hand,
       description:
-        "This pencil sketch exquisitely captures a moment of intimate connection as two hands gently interlace. Every delicate line and nuanced shade brings out the natural curvature of the fingers, symbolizing both vulnerability and strength. The interlocked fingers evoke a universal language of unity and support—an enduring embrace that speaks of shared understanding and quiet resilience. The drawing invites viewers to pause and reflect on the beauty of human connection, where a simple gesture becomes a powerful testament to love and solidarity.",
+        "This evocative pencil sketch transcends mere representation, becoming a profound meditation on human connection. The delicate interlacing of fingers serves as a visual metaphor for the complex dance of relationships—where vulnerability and strength, dependence and independence, gently balance. The artist's masterful rendering of light and shadow breathes life into the hands, transforming them from mere anatomical forms into vessels of emotional truth. Each line whispers stories of shared journeys, silent understandings, and the invisible bonds that tether us to one another. The composition exists in that sacred space between realism and abstraction, where the familiar becomes strangely new, prompting contemplation on how even the simplest gestures can encapsulate the breadth of human experience—love, comfort, solidarity, and the quiet resilience that sustains us through life's journey.",
       title: "Interlocked Heartbeats",
       date: "2024"
     },
