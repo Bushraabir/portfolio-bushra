@@ -6,10 +6,8 @@ import Loader1 from "./components/Loader1";
 
 const Hero = React.lazy(() => import("./sections/Hero"));
 const Websites = React.lazy(() => import("./sections/Websites"));
-const Artworks = React.lazy(() => import("./sections/Artworks"));
 const Research = React.lazy(() => import("./sections/Research"));
 const Organization = React.lazy(() => import("./sections/Organization"));
-const Olympiads = React.lazy(() => import("./sections/Olympiads"));
 const Achievements = React.lazy(() => import("./sections/Achievements"));
 const Testimonials = React.lazy(() => import("./sections/Testimonials"));
 const Footer = React.lazy(() => import("./sections/Footer"));

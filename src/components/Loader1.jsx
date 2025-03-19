@@ -32,12 +32,12 @@ const Loader1 = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-deep_indigo to-dark_teal flex items-center justify-center">
+    <div className="relative h-screen bg-gradient-to-br from-deep_indigo to-dark_teal flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-10">
         <Lottie options={lottieOptions} height="100%" width="100%" />
       </div>
-      <div className="absolute inset-0 flex items-end justify-center z-20 p-4 sm:p-10">
-        <h2 className="text-lemon_chiffon text-2xl sm:text-3xl md:text-4xl font-bold front-description bottom-20">
+      <div className="absolute inset-0 flex items-center justify-center z-20 text-center p-4">
+        <h2 className="text-lemon_chiffon text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold front-description">
           {displayedText}
           <span className="inline-block blinking-cursor">|</span>
         </h2>

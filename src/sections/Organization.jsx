@@ -10,6 +10,7 @@ import AntiSmoking from "../assets/EmpowerEd/antismoking.jpg";
 import EcoFriendly from "../assets/EmpowerEd/ecofriendly.jpg";
 import Health from "../assets/EmpowerEd/mental health.png";
 import logo from "../assets/EmpowerEd/logo.png";
+import rank from "../assets/EmpowerEd/rank.png";
 import color from "../assets/animation/arrow.json";
 import { SiC, SiCplusplus, SiPython } from "react-icons/si";
 import { FaTrophy, FaArrowUp } from "react-icons/fa";
@@ -43,7 +44,7 @@ export default function OrganizationGallery() {
   const counterSectionRef = useRef(null);
   const triggers = useRef([]);
 
-  const items = useMemo(
+  const galleryItems = useMemo(
     () => [
       {
         img: AntiSmoking,
@@ -69,6 +70,13 @@ export default function OrganizationGallery() {
     ],
     []
   );
+
+  const codingItems = [
+    { lang: "Python", icon: SiPython, value: 24, link: "https://github.com/Bushraabir/uri_beecrowd_python" },
+    { lang: "C++", icon: SiCplusplus, value: 229, link: "https://github.com/Bushraabir/uri_beecrowd_cpp" },
+    { lang: "C", icon: SiC, value: 114, link: "https://github.com/Bushraabir/uri_beecrowd_c" },
+    { lang: "Ranking", img: rank, value: 2088, link: "https://judge.beecrowd.com/en/profile/1071447", isRanking: true },
+  ];
 
   const lottieOptions = useMemo(
     () => ({
@@ -300,7 +308,7 @@ export default function OrganizationGallery() {
       <section className="img-group-container relative" ref={containerRef}>
         <div className="sticky top-0 overflow-hidden h-auto w-full">
           <ul className={`flex ${isMobile ? "flex-col snap-y snap-mandatory h-screen overflow-y-scroll" : "flex-row mt-20"}`} ref={groupRef}>
-            {items.map((item, index) => (
+            {galleryItems.map((item, index) => (
               <li
                 key={index}
                 className={`${isMobile ? "w-full h-screen snap-start flex items-center justify-center py-10" : "w-full h-[100vh]"} flex-none`}
@@ -370,14 +378,9 @@ export default function OrganizationGallery() {
           Coding Problems Solved on URI
         </motion.h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 w-full max-w-7xl px-6">
-          {[
-            ["Python", SiPython, 24],
-            ["C++", SiCplusplus, 229],
-            ["C", SiC, 114],
-            ["Ranking", FaTrophy, 2088]
-          ].map(([lang, Icon, value], index) => (
+          {codingItems.map((item, index) => (
             <motion.div
-              key={lang}
+              key={item.lang}
               className="flex flex-col items-center p-8 bg-lemon_chiffon/20 backdrop-blur-xl rounded-3xl shadow-2xl border border-champagne_pink-500"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -387,41 +390,33 @@ export default function OrganizationGallery() {
               whileTap={{ scale: 0.95 }}
             >
               <div className="flex items-center gap-4 mb-6">
-                <motion.div
-                  initial={{ scale: 1 }}
-                  whileInView={{ scale: [1, 1.2, 1], transition: { duration: 0.5, repeat: 2, repeatType: "reverse" } }}
-                  viewport={{ once: true }}
-                >
-                  <Icon className={`text-5xl ${lang === "Ranking" ? "text-jordy_blue" : "text-jordy_blue"}`} />
-                </motion.div>
+                {item.isRanking ? (
+                  <img src={item.img} alt="URI Rank" className="w-12 h-12 object-contain" />
+                ) : (
+                  <motion.div
+                    initial={{ scale: 1 }}
+                    whileInView={{ scale: [1, 1.2, 1], transition: { duration: 0.5, repeat: 2, repeatType: "reverse" } }}
+                    viewport={{ once: true }}
+                  >
+                    <item.icon className="text-5xl text-jordy_blue" />
+                  </motion.div>
+                )}
                 <CountUp
                   start={0}
-                  end={value}
+                  end={item.value}
                   duration={2.5}
-                  className={`text-6xl font-bold ${lang === "Ranking" ? "text-jordy_blue" : "text-electric_blue"}`}
+                  className={`text-6xl font-bold ${item.isRanking ? "text-jordy_blue" : "text-electric_blue"}`}
                 />
               </div>
-              {lang !== "Ranking" ? (
-                (() => {
-                  const linkSuffix = lang === "C++" ? "cpp" : lang.toLowerCase();
-                  return (
-                    <a
-                      href={`https://github.com/Bushraabir/uri_beecrowd_${linkSuffix}`}
-                      className="text-lg text-non_photo_blue font-cta font-medium hover:text-lemon_chiffon transition-colors"
-                    >
-                      Solved {value} in {lang}
-                    </a>
-                  );
-                })()
-              ) : (
-                <span className="text-lg text-jordy_blue font-cta font-medium">
-                  Top 1% (3130)
-                </span>
-              )}
+              <a
+                href={item.link}
+                className="text-lg text-non_photo_blue font-cta font-medium hover:text-lemon_chiffon transition-colors"
+              >
+                {item.isRanking ? "View Profile" : `Solved ${item.value} in ${item.lang}`}
+              </a>
             </motion.div>
           ))}
         </div>
-
         <motion.div
           className="mt-20 p-10 bg-lemon_chiffon/20 backdrop-blur-xl rounded-3xl shadow-3xl max-w-5xl mx-auto border border-champagne_pink-500"
           initial={{ opacity: 0, y: 50 }}
@@ -433,10 +428,10 @@ export default function OrganizationGallery() {
             Data Structure and Algorithm Practice
           </h3>
           <p className="text-lg md:text-xl font-description text-dark_teal mb-6">
-          Currently, I am learning Data Structures and Algorithms from various
-          online resources and practicing in C++. Together with Muzahidul Islam Abir, 
-          we are creating a repository where we practice different algorithms and problems, 
-          which further enhances our understanding. Here is a demo of our repository:
+            Currently, I am learning Data Structures and Algorithms from various
+            online resources and practicing in C++. Together with Muzahidul Islam Abir, 
+            we are creating a repository where we practice different algorithms and problems, 
+            which further enhances our understanding. Here is a demo of our repository:
           </p>
           <div className="w-full max-w-[100vw] mx-auto p-2">
             <SyntaxHighlighter
