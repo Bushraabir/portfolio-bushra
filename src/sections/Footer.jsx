@@ -14,7 +14,7 @@ export default function Footer() {
           viewport={{ once: true }}
           className="mb-8 md:mb-0 text-center md:text-left"
         >
-          <h2 className="font-heading text-4xl md:text-5xl tracking-tight">
+          <h2 className="font-heading text-4xl md:text-5xl tracking-tight text-lemon_chiffon">
             Bushra Khandoker
           </h2>
           <p className="font-description text-xl md:text-2xl mt-2 max-w-md leading-relaxed">
@@ -92,20 +92,7 @@ export default function Footer() {
         >
           © {new Date().getFullYear()} Bushra. All rights reserved.
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.7 }}
-          viewport={{ once: true }}
-          className="mt-4 md:mt-0 font-description text-lg"
-        >
-          <a
-            href="tel:+8801334798878"
-            className="transition-colors duration-300 hover:text-teal-300"
-          >
-            +8801334798878
-          </a>
-        </motion.div>
+
       </div>
     </footer>
   );

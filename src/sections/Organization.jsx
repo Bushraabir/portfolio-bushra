@@ -75,7 +75,7 @@ export default function OrganizationGallery() {
     { lang: "Python", icon: SiPython, value: 24, link: "https://github.com/Bushraabir/uri_beecrowd_python" },
     { lang: "C++", icon: SiCplusplus, value: 229, link: "https://github.com/Bushraabir/uri_beecrowd_cpp" },
     { lang: "C", icon: SiC, value: 114, link: "https://github.com/Bushraabir/uri_beecrowd_c" },
-    { lang: "Ranking", img: rank, value: 2088, link: "https://judge.beecrowd.com/en/profile/1071447", isRanking: true },
+    { lang: "Ranking", icon: FaTrophy, value: 2088, link: "https://judge.beecrowd.com/en/profile/1071447", isRanking: true },
   ];
 
   const lottieOptions = useMemo(
@@ -366,51 +366,72 @@ export default function OrganizationGallery() {
 
       <section
         ref={counterSectionRef}
-        className="relative min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-champagne_pink via-tea_rose to-deep_indigo py-24"
+        className="relative min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-champagne_pink via-tea_rose to-deep_indigo py-16 sm:py-24"
       >
-        <motion.h2
-          className="text-4xl sm:text-5xl md:text-6xl font-heading font-extrabold text-deep_indigo text-center mb-16"
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center mb-12 sm:mb-16"
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 100, damping: 15 }}
           viewport={{ once: true }}
         >
-          Coding Problems Solved on URI
-        </motion.h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 w-full max-w-7xl px-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-deep_indigo text-center">
+            Coding Problems Solved on URI
+          </h2>
+         
+        </motion.div>
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center mb-12 sm:mb-16"
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 100, damping: 15 }}
+          viewport={{ once: true }}
+        >
+          <motion.img
+            src={rank}
+            alt="URI Rank"
+            className="w-[100vw] h-auto sm:w-[70vw] max-w-[500px] mt-4 sm:mt-0 sm:ml-4 
+                       border-4 border-gray-300 rounded-lg shadow-lg 
+                       transition-transform duration-300 ease-in-out hover:scale-105"
+            initial={{ scale: 0.8, rotate: -10, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          />
+        </motion.div>
+
+
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 w-full max-w-[90%] sm:max-w-[85%] lg:max-w-6xl px-4 sm:px-6">
           {codingItems.map((item, index) => (
             <motion.div
               key={item.lang}
-              className="flex flex-col items-center p-8 bg-lemon_chiffon/20 backdrop-blur-xl rounded-3xl shadow-2xl border border-champagne_pink-500"
+              className="flex flex-col items-center p-6 sm:p-8 bg-lemon_chiffon/30 backdrop-blur-md rounded-2xl shadow-xl border border-champagne_pink-600"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
               viewport={{ once: true }}
-              whileHover={{ scale: 1.05, boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)" }}
+              whileHover={{ scale: 1.05, boxShadow: "0 15px 30px rgba(0, 0, 0, 0.2)" }}
               whileTap={{ scale: 0.95 }}
             >
-              <div className="flex items-center gap-4 mb-6">
-                {item.isRanking ? (
-                  <img src={item.img} alt="URI Rank" className="w-12 h-12 object-contain" />
-                ) : (
-                  <motion.div
-                    initial={{ scale: 1 }}
-                    whileInView={{ scale: [1, 1.2, 1], transition: { duration: 0.5, repeat: 2, repeatType: "reverse" } }}
-                    viewport={{ once: true }}
-                  >
-                    <item.icon className="text-5xl text-jordy_blue" />
-                  </motion.div>
-                )}
+              <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                <motion.div
+                  initial={{ scale: 1 }}
+                  whileInView={{ scale: [1, 1.2, 1], transition: { duration: 0.5, repeat: 2, repeatType: "reverse" } }}
+                  viewport={{ once: true }}
+                >
+                  <item.icon className="text-4xl sm:text-5xl text-jordy_blue" />
+                </motion.div>
                 <CountUp
                   start={0}
                   end={item.value}
                   duration={2.5}
-                  className={`text-6xl font-bold ${item.isRanking ? "text-jordy_blue" : "text-electric_blue"}`}
+                  className={`text-5xl sm:text-6xl font-bold ${item.isRanking ? "text-jordy_blue" : "text-electric_blue"}`}
                 />
               </div>
               <a
                 href={item.link}
-                className="text-lg text-non_photo_blue font-cta font-medium hover:text-lemon_chiffon transition-colors"
+                className="text-base sm:text-lg text-dark_teal font-cta font-medium hover:text-lemon_chiffon transition-colors"
               >
                 {item.isRanking ? "View Profile" : `Solved ${item.value} in ${item.lang}`}
               </a>

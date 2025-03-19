@@ -399,7 +399,6 @@ const artworksData = {
   ],
 };
 
-
 const tabColors = {
   sketch: { from: "#1d3557", to: "#a3c4f3" },
   acrylic: { from: "#2a1b3d", to: "#cfbaf0" },
@@ -634,6 +633,7 @@ const Art = () => {
                   ref={closeButtonRef}
                   className="absolute top-4 right-4 w-10 h-10 rounded-full bg-deep_indigo text-white flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300 focus:outline-none"
                   onClick={closeModal}
+                  onPointerDown={(e) => e.stopPropagation()}
                   aria-label="Close modal"
                   variants={itemVariants}
                 >
@@ -681,6 +681,7 @@ const Art = () => {
                   e.stopPropagation();
                   handlePrev();
                 }}
+                onPointerDown={(e) => e.stopPropagation()}
                 className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-deep_indigo bg-opacity-50 hover:bg-opacity-70 text-white flex items-center justify-center text-2xl transition-transform duration-300 focus:outline-none"
                 aria-label="Previous artwork"
                 variants={itemVariants}
@@ -692,6 +693,7 @@ const Art = () => {
                   e.stopPropagation();
                   handleNext();
                 }}
+                onPointerDown={(e) => e.stopPropagation()}
                 className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-deep_indigo bg-opacity-50 hover:bg-opacity-70 text-white flex items-center justify-center text-2xl transition-transform duration-300 focus:outline-none"
                 aria-label="Next artwork"
                 variants={itemVariants}
