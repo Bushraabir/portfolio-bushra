@@ -27,17 +27,27 @@ import StudyBuddy5 from "../assets/Website/StudyBuddy/5.png";
 import StudyBuddy6 from "../assets/Website/StudyBuddy/6.png";
 import StudyBuddy7 from "../assets/Website/StudyBuddy/7.png";
 import StudyBuddy8 from "../assets/Website/StudyBuddy/8.png";
-import Sustainibility1 from "../assets/Website/Sustainibility/1.png";
-import Sustainibility2 from "../assets/Website/Sustainibility/2.png";
-import Sustainibility3 from "../assets/Website/Sustainibility/3.png";
-import Sustainibility4 from "../assets/Website/Sustainibility/4.png";
-import Sustainibility5 from "../assets/Website/Sustainibility/5.png";
+
 import Space1 from "../assets/Website/Space/1.png";
 import Space2 from "../assets/Website/Space/2.png";
 import Space3 from "../assets/Website/Space/3.png";
 import Tube1 from "../assets/Website/EmpTube/1.png";
 import Tube2 from "../assets/Website/EmpTube/1.png";
 import Tube3 from "../assets/Website/EmpTube/1.png";
+
+
+import relevia1 from "../assets/Website/relevia/1.png";
+import relevia2 from "../assets/Website/relevia/2.png";
+import relevia3 from "../assets/Website/relevia/3.png";
+import relevia4 from "../assets/Website/relevia/4.png";
+import relevia5 from "../assets/Website/relevia/5.png";
+import relevia6 from "../assets/Website/relevia/6.png";
+import relevia7   from "../assets/Website/relevia/7.png";
+
+
+
+
+
 import Satellite from "../assets/Projects/Satellite.png";
 import Rocket from "../assets/Projects/Rocket.png";
 import Nuclear from "../assets/Projects/Nuclear.png";
@@ -82,7 +92,7 @@ const Website = () => {
         },
       });
       tl.to(stemRef.current, { x: -1500, scale: 4, ease: "power4.out" }, 0)
-        .to(collabRef.current, { x: 1900, scale: 4, ease: "power4.out" }, 0)
+        .to(collabRef.current, { x: 2500, scale: 4, ease: "power4.out" }, 0)
         .to(lottieContainerRef.current, { scale: 50, ease: "power4.out" }, 0)
         .to(lottieContainerRef.current, { opacity: 0, ease: "power4.out" }, 0.1);
 
@@ -300,6 +310,25 @@ const Website = () => {
       source_code_link: "https://github.com/Bushraabir/space-invaders",
       website_link: "https://bushraabir.github.io/space-invaders/"
     },
+
+    {
+      type: "website",
+      title: "Relevia",
+      description: "An interactive web application designed to help individuals manage and overcome panic attacks through resources, tools, and support.",
+      tags: [
+        { "name": "React", "color": "text-cyan-500" },
+        { "name": "JavaScript", "color": "text-yellow-500" },
+        { "name": "Tailwind CSS", "color": "text-blue-500" },
+        { "name": "Framer Motion", "color": "text-purple-500" },
+        { "name": "Mental Health", "color": "text-green-500" }
+      ],
+      images: [relevia1, relevia2, relevia3, relevia4, relevia5 , relevia6, relevia7],
+      detailedDescription: "Relevia is an interactive web application built with React, Tailwind CSS, and Framer Motion, aimed at assisting individuals in managing and overcoming panic attacks. Developed by EmpowerED Global, it offers a comprehensive set of features including a resource library with articles and guides, interactive tools such as breathing exercises and grounding techniques, and sections for learning about panic attacks, coping strategies, medication information, and contact support. The application features an animated and responsive user interface, ensuring a smooth experience on both mobile and desktop devices. Relevia aims to raise awareness about panic attacks and provide accessible tools for emotional regulation and coping. It includes components like About, Contact, Coping, Home, Medication, and Resources, each designed to be user-friendly and supportive.",
+      source_code_link: "https://github.com/Bushraabir/relevia",
+      website_link: "https://bushraabir.github.io/relevia/"
+    },
+
+
     {
       type: "website",
       title: "EmpowerTube - Educational Content Hub",
@@ -573,7 +602,7 @@ const Website = () => {
             transition={{ duration: 1, delay: 0.5 }}
           >
             <p className="text-lg sm:text-xl font-description text-lemon_chiffon leading-relaxed">
-              Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
+              Collaborated with  Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
             </p>
           </motion.div>
 

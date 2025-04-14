@@ -266,11 +266,22 @@ export default function OrganizationGallery() {
           >
             As the founder of EmpowerEd, I lead a non-profit dedicated to democratizing education, empowering communities, and driving societal change through impactful volunteering initiatives—at no cost to those we serve.
           </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.5 }}
+            className="max-w-3xl mx-auto font-description text-base sm:text-lg lg:text-xl text-dark_teal mt-4"
+          >
+            I organized and led the team by assigning tasks, giving instructions, and deciding what each member would do. I also came up with ideas for different contests and worked closely with my team to successfully organize events like the Idea Hub Contest, Tree Planting Campaign, and Anti-Smoking Campaign. For the anti-smoking campaign, I designed posters that explained the harmful effects of smoking and shared practical ways to quit, reaching a large number of people. We also provided free premium educational software, PDF books, and created solutions for mental health challenges. Many people reached out to us and received free mental health support. To make this service more accessible, we also built a mental health website called Relevia.
+          </motion.p>
+
+
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 120, damping: 12, delay: 0.8 }}
-            className="flex justify-center"
+            className="flex justify-center mb-24"
           >
             <Lottie
               loop
