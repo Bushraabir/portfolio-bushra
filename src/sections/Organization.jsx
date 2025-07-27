@@ -90,28 +90,7 @@ export default function OrganizationGallery() {
     []
   );
 
-  const codeString = `
-/*   
-Recursive Insertion Sort is a variation of the classic insertion sort algorithm  
-where the sorting is performed using recursion instead of iteration.
-
-Working Principle:
-- Recursively sort the first n-1 elements.
-- Insert the nth element into its correct position in the sorted part.
-
-Time Complexity:
-    - Best Case (Already Sorted): O(N)
-    - Average Case: O(N^2)
-    - Worst Case (Reversely Sorted): O(N^2)
-
-Space Complexity:
-    - O(N) due to recursion stack
-
-Stable Sort: Yes
-Adaptive: Yes
-*/
-
-#include <iostream>
+  const codeString = `#include <iostream>
 #include <vector>
 using namespace std;
 
@@ -159,6 +138,28 @@ int main() {
 
     return 0;
 }
+
+
+/*   
+Recursive Insertion Sort is a variation of the classic insertion sort algorithm  
+where the sorting is performed using recursion instead of iteration.
+
+Working Principle:
+- Recursively sort the first n-1 elements.
+- Insert the nth element into its correct position in the sorted part.
+
+Time Complexity:
+    - Best Case (Already Sorted): O(N)
+    - Average Case: O(N^2)
+    - Worst Case (Reversely Sorted): O(N^2)
+
+Space Complexity:
+    - O(N) due to recursion stack
+
+Stable Sort: Yes
+Adaptive: Yes
+*/
+
 `;
 
   const title = ["Founder of EmpowerEd", "Vice President of EmpowerEd", "STEM Innovation Advisor at EmpowerEd"];
