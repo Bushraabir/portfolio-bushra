@@ -227,7 +227,7 @@ const Research = () => {
   );
 
   const ResearchItem = ({ item }) => (
-    <div className="bg-white/30 backdrop-blur-lg rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-white/50">
+    <div className="bg-white/30 backdrop-blur-lg rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-white/50 ">
       {filter === "books" || filter === "research" ? (
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/3">
@@ -280,7 +280,7 @@ const Research = () => {
   );
 
   return (
-    <div id="research" className="bg-gradient-to-br from-lemon_chiffon to-pink_lavender text-deep_indigo min-h-screen">
+    <div id="research" className="bg-gradient-to-br from-lemon_chiffon to-pink_lavender text-deep_indigo min-h-screen -z-100">
       <div className="max-w-7xl mx-auto p-8 flex flex-col md:flex-row">
         {isMobile && (
           <button

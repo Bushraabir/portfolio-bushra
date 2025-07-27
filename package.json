@@ -17,6 +17,7 @@
         "@mantine/form": "^7.15.2",
         "@mantine/hooks": "^7.15.2",
         "@react-hook/window-size": "^3.1.1",
+        "@react-spring/web": "^10.0.1",
         "@react-three/cannon": "^6.6.0",
         "@react-three/drei": "^9.121.4",
         "@react-three/fiber": "^8.17.14",

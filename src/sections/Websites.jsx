@@ -69,7 +69,7 @@ const Website = () => {
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 768);
     window.addEventListener("resize", handleResize);
-    handleResize(); // Initial check
+    handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -84,7 +84,8 @@ const Website = () => {
         scrollTrigger: {
           trigger: initialMessageRef.current,
           start: "top top",
-          end: "bottom top",
+          endTrigger: cardsRef.current, // End pinning before the cards section
+          end: "top 20%", // Adjust end position to prevent overlap
           scrub: 1.5,
           pin: true,
           anticipatePin: 1,
@@ -145,12 +146,12 @@ const Website = () => {
         }
       );
     } else {
-      // Mobile-specific animations (less intense for performance)
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: initialMessageRef.current,
           start: "top top",
-          end: "bottom top",
+          endTrigger: cardsRef.current, // End pinning before the cards section
+          end: "top 30%", // Adjusted for mobile to prevent overlap
           scrub: 1,
           pin: true,
         },
@@ -456,7 +457,7 @@ const Website = () => {
 
   const activeData = activeTab === "websites" ? websites : activeTab === "projects" ? projects : courses;
   const groupedData = activeData.reduce((acc, cur, i) => {
-    if (i % 2 === 0) acc.push(activeData.slice(i, i + 2));
+    if (i % 3 === 0) acc.push(activeData.slice(i, i + 3));
     return acc;
   }, []);
 
@@ -591,7 +592,8 @@ const Website = () => {
           background: linear-gradient(135deg, #1E1B4B 0%, #134E5E 50%, #1E1B4B 100%);
           position: relative;
           overflow: hidden;
-          isolation: isolate; /* Prevents style leakage to other sections */
+          isolation: isolate;
+          min-height: 100vh; /* Ensure minimum height to prevent overlap */
         }
         .website-section::before {
           content: '';
@@ -609,7 +611,13 @@ const Website = () => {
           100% { transform: rotate(360deg); }
         }
         .website-card {
-          z-index: 1; /* Ensures cards stay above background effects */
+          z-index: 1;
+        }
+        .intro-text {
+          max-width: 800px;
+          margin: 0 auto;
+          line-height: 1.8;
+          text-align: center;
         }
         @media (max-width: 768px) {
           .website-section {
@@ -619,11 +627,17 @@ const Website = () => {
           .website-card {
             padding: 1rem;
           }
+          .intro-text {
+            max-width: 100%;
+            padding: 0 1rem;
+          }
         }
       `}</style>
       <section id="websites" className="website-section py-16 lg:py-24 text-lemon_chiffon">
         <div className="container mx-auto px-6 lg:px-20 relative z-10">
-          <div ref={initialMessageRef} className="flex flex-col items-center justify-center min-h-screen mt-20">
+
+
+          <div ref={initialMessageRef} className="flex flex-col items-center justify-center min-h-[60vh] mt-20">
             <motion.div
               className="flex items-center relative"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -656,10 +670,21 @@ const Website = () => {
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 1, ease: "easeOut" }}
               >
-                Collaboration
+                PROJECTS
               </motion.h1>
             </motion.div>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="intro-text mb-12"
+          >
+            <p className="text-xl sm:text-2xl font-description text-lemon_chiffon leading-relaxed">
+              Driven by an insatiable curiosity, I dive headfirst into the unknown, where every challenge is a call to adventure. Each obstacle I encounter isn’t a barrier but a spark that ignites my imagination, leading me to craft innovative solutions and embark on exciting projects. Through hands-on experimentation with code and design, I not only hone my skills but also keep the flame of excitement burning bright, always eager for the next discovery. This journey is a testament to my unwavering commitment to exploration, problem-solving, and pushing the boundaries of what’s possible, where every creation is a chapter in my story of turning curiosity into impactful innovation.
+            </p>
+          </motion.div>
 
           <motion.div
             ref={descriptionRef}
@@ -717,7 +742,7 @@ const Website = () => {
                 transition={{ duration: 0.6, ease: "easeInOut" }}
               >
                 {groupedData.map((group, rowIndex) => (
-                  <div key={rowIndex} className="grid grid-cols-1 sm:grid-cols-2 gap-8 px-4 sm:px-8 mb-12">
+                  <div key={rowIndex} className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 sm:px-8 mb-12">
                     {group.map((item, cardIndex) => (
                       <Card key={cardIndex} data={item} onClick={setSelectedProject} />
                     ))}
@@ -730,58 +755,58 @@ const Website = () => {
 
         {selectedProject && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-dark_teal bg-opacity-80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
             onClick={(e) => {
               if (e.target === e.currentTarget) setSelectedProject(null);
             }}
           >
             <motion.div
-              className="bg-gradient-to-br from-lemon_chiffon via-tea_rose to-champagne_pink p-6 sm:p-8 rounded-3xl w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[85vh] overflow-y-auto shadow-2xl border-2 border-lemon_chiffon/50 relative"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-6 sm:p-10 rounded-3xl w-11/12 sm:w-4/5 md:w-3/4 lg:w-3/5 max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-700/50 relative"
+              initial={{ scale: 0.85, opacity: 0, y: 50 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0, y: 50 }}
+              transition={{ type: "spring", stiffness: 350, damping: 30 }}
             >
               <motion.button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 p-2 rounded-full shadow-lg bg-aquamarine text-lemon_chiffon"
-                whileHover={{ scale: 1.2, rotate: 90 }}
-                whileTap={{ scale: 0.9 }}
-                transition={{ type: "spring", stiffness: 400 }}
+                className="absolute top-4 right-4 p-2 rounded-full bg-gray-700 text-white hover:bg-aquamarine hover:text-gray-900 transition-colors duration-300"
+                whileHover={{ scale: 1.15, rotate: 180 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 500 }}
               >
                 ✕
               </motion.button>
               <motion.h2
-                className="mb-6 font-heading text-3xl sm:text-4xl font-extrabold text-dark_teal tracking-tight"
-                initial={{ opacity: 0, y: -20 }}
+                className="mb-6 font-heading text-3xl sm:text-4xl font-bold text-white tracking-tight"
+                initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
               >
                 {selectedProject.title || selectedProject.name}
               </motion.h2>
               <motion.p
-                className="mb-8 text-lg font-description leading-relaxed text-deep_indigo"
-                initial={{ opacity: 0, y: 20 }}
+                className="mb-8 text-base sm:text-lg font-description leading-relaxed text-gray-300 z-5000"
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
               >
                 {selectedProject.detailedDescription}
               </motion.p>
               <motion.div
-                className="flex flex-wrap gap-3 mb-6"
+                className="flex flex-wrap gap-3 mb-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
+                transition={{ duration: 0.7, delay: 0.4 }}
               >
                 {selectedProject.tags.map((tag, idx) => (
                   <motion.span
                     key={idx}
-                    className={`text-sm font-semibold font-description ${tag.color} px-4 py-2 rounded-full shadow-md bg-dark_teal/20`}
-                    whileHover={{ scale: 1.1, backgroundColor: "#26C6DA" }}
+                    className={`text-sm font-semibold font-description ${tag.color} px-4 py-2 rounded-full bg-gray-700/50 text-gray-200 shadow-lg hover:bg-aquamarine hover:text-gray-900 transition-colors duration-300`}
+                    whileHover={{ scale: 1.15, y: -2 }}
                     transition={{ type: "spring", stiffness: 400 }}
                   >
                     #{tag.name}
@@ -789,44 +814,46 @@ const Website = () => {
                 ))}
               </motion.div>
               <motion.div
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6"
+                className="relative mb-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
+                transition={{ duration: 0.7, delay: 0.5 }}
               >
-                {selectedProject.images.map((image, idx) => (
-                  <motion.img
-                    key={idx}
-                    src={image}
-                    alt={`Image ${idx}`}
-                    className="object-cover w-full h-32 rounded-xl shadow-md"
-                    loading="lazy"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    whileHover={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)" }}
-                    transition={{ duration: 0.4, delay: 0.5 + idx * 0.1 }}
-                  />
-                ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {selectedProject.images.map((image, idx) => (
+                    <motion.img
+                      key={idx}
+                      src={image}
+                      alt={`Project image ${idx + 1}`}
+                      className="object-cover w-full h-48 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                      loading="lazy"
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
+                      transition={{ duration: 0.5, delay: 0.5 + idx * 0.1 }}
+                    />
+                  ))}
+                </div>
               </motion.div>
               <motion.div
-                className="flex justify-center space-x-4"
-                initial={{ opacity: 0, y: 20 }}
+                className="flex justify-center space-x-6"
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
+                transition={{ duration: 0.7, delay: 0.6, ease: "easeOut" }}
               >
                 {selectedProject.type === "website" && (
                   <a
                     href={selectedProject.website_link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-6 py-3 text-lg font-medium font-cta rounded-full shadow-xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue transition-all hover:shadow-2xl"
+                    className="px-6 py-3 text-lg font-medium font-cta rounded-full bg-aquamarine text-gray-900 shadow-lg hover:bg-white hover:shadow-xl transition-all duration-300"
                   >
                     <motion.span
-                      whileHover={{ scale: 1.1 }}
+                      whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 400 }}
                     >
-                      View Website
+                      Visit Website
                     </motion.span>
                   </a>
                 )}
@@ -834,14 +861,14 @@ const Website = () => {
                   href={selectedProject.source_code_link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 text-lg font-medium font-cta rounded-full shadow-xl text-lemon_chiffon bg-gradient-to-r from-aquamarine to-jordy_blue transition-all hover:shadow-2xl"
+                  className="px-6 py-3 text-lg font-medium font-cta rounded-full bg-gray-700 text-white shadow-lg hover:bg-aquamarine hover:text-gray-900 hover:shadow-xl transition-all duration-300"
                 >
                   <motion.span
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 400 }}
                   >
-                    {selectedProject.type === "website" ? "View Source Code" : selectedProject.type === "project" ? "Ongoing" : "Ongoing"}
+                    {selectedProject.type === "website" ? "Source Code" : "View Project"}
                   </motion.span>
                 </a>
               </motion.div>

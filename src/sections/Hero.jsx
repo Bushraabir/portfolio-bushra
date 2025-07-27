@@ -2,7 +2,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Link } from "react-router-dom";
 import profileImage from "../assets/Bushra.png";
 import resumePDF from "../assets/resume/Bushra.pdf";
 
@@ -77,7 +78,8 @@ const Hero = () => {
     ? "relative px-1 py-2 text-sm font-semibold text-white tracking-wider rounded-full backdrop-blur-lg bg-gradient-to-r border-2 overflow-hidden transition-all duration-300 focus:outline-none focus:ring-2"
     : "relative px-6 py-3 text-lg font-semibold text-white tracking-wider rounded-full backdrop-blur-lg bg-gradient-to-r border-4 overflow-hidden transition-all duration-300 focus:outline-none focus:ring-4";
 
-  const buttonExploreClass = `${buttonBaseClass} from-non_photo_blue/40 to-blue-500/40 border-lemon_chiffon hover:border-non_photo_blue focus:ring-non_photo_blue`;
+  const buttonWorksClass = `${buttonBaseClass} from-dark_teal/40 to-blue-600/40 border-lemon_chiffon hover:border-dark_teal focus:ring-dark_teal`;
+  const buttonStoryClass = `${buttonBaseClass} from-mauve/40 to-purple-600/40 border-lemon_chiffon hover:border-mauve focus:ring-mauve`;
   const buttonCVClass = `${buttonBaseClass} from-jordy_blue/40 to-purple-500/40 border-lemon_chiffon hover:border-jordy_blue focus:ring-jordy_blue`;
 
   const createRipple = (e, button) => {
@@ -167,31 +169,59 @@ const Hero = () => {
         className="flex flex-row gap-2 font-cta mt-4"
         style={{ pointerEvents: "auto" }}
       >
-        <motion.button
-          className={buttonExploreClass}
-          whileHover={{
-            scale: 1.1,
-            boxShadow: "0px 0px 20px 5px rgba(0, 255, 255, 0.6)",
-            rotate: 2,
-            transition: { duration: 0.3 },
-          }}
-          whileTap={{
-            scale: 0.9,
-            rotate: -10,
-            boxShadow: "0px 0px 10px 2px rgba(0, 255, 255, 0.3)",
-          }}
-          animate={{
-            y: [0, -12, 0],
-            rotate: [0, 1, -1, 0],
-            transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
-          }}
-          onClick={(e) => {
-            createRipple(e, e.currentTarget);
-            document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
-          }}
-        >
-          Explore my planet
-        </motion.button>
+
+                <Link to="/my-story">
+          <motion.button
+            className={buttonStoryClass}
+            whileHover={{
+              scale: 1.1,
+              boxShadow: "0px 0px 20px 5px rgba(200, 100, 255, 0.6)",
+              rotate: -2,
+              transition: { duration: 0.3 },
+            }}
+            whileTap={{
+              scale: 0.9,
+              rotate: 10,
+              boxShadow: "0px 0px 10px 2px rgba(200, 100, 255, 0.3)",
+            }}
+            animate={{
+              y: [0, -12, 0],
+              rotate: [0, -1, 1, 0],
+              transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
+            }}
+            onClick={(e) => createRipple(e, e.currentTarget)}
+          >
+            My Story
+          </motion.button>
+        </Link>
+
+        
+        <Link to="/my-works">
+          <motion.button
+            className={buttonWorksClass}
+            whileHover={{
+              scale: 1.1,
+              boxShadow: "0px 0px 20px 5px rgba(0, 255, 255, 0.6)",
+              rotate: 2,
+              transition: { duration: 0.3 },
+            }}
+            whileTap={{
+              scale: 0.9,
+              rotate: -10,
+              boxShadow: "0px 0px 10px 2px rgba(0, 255, 255, 0.3)",
+            }}
+            animate={{
+              y: [0, -12, 0],
+              rotate: [0, 1, -1, 0],
+              transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
+            }}
+            onClick={(e) => createRipple(e, e.currentTarget)}
+          >
+            My Works
+          </motion.button>
+        </Link>
+
+
 
         <motion.a
           href={resumePDF}

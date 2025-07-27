@@ -1,11 +1,13 @@
 "use client";
-import { useEffect, useRef, useState, useMemo } from "react";
-import { motion } from "framer-motion";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import { useEffect, useRef, useState, useMemo, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import Lottie from "react-lottie-player";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import Tilt from "react-parallax-tilt";
 import AntiSmoking from "../assets/EmpowerEd/antismoking.jpg";
 import EcoFriendly from "../assets/EmpowerEd/ecofriendly.jpg";
 import Health from "../assets/EmpowerEd/mental health.png";
@@ -39,10 +41,8 @@ export default function OrganizationGallery() {
   const [isMobile, setIsMobile] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [showTopBtn, setShowTopBtn] = useState(false);
-  const containerRef = useRef(null);
-  const groupRef = useRef(null);
+  const sliderRef = useRef(null);
   const counterSectionRef = useRef(null);
-  const triggers = useRef([]);
 
   const galleryItems = useMemo(
     () => [
@@ -122,61 +122,25 @@ export default function OrganizationGallery() {
     visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
   };
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+  const cardVariants = {
+    hidden: { opacity: 0, y: 60, scale: 0.9 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.6, ease: "easeOut", delay: i * 0.2 },
+    }),
+    hover: { scale: 1.08, rotate: 1.5, boxShadow: "0 20px 40px rgba(0, 0, 0, 0.25)", transition: { duration: 0.3 } },
+    tap: { scale: 0.95 },
+  };
 
-    const updateMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-      ScrollTrigger.refresh();
-    };
-    
+  const updateMobile = useCallback(() => {
+    setIsMobile(window.innerWidth <= 768);
+  }, []);
+
+  useEffect(() => {
     updateMobile();
     window.addEventListener("resize", updateMobile);
-
-    if (!isMobile && groupRef.current && containerRef.current) {
-      const totalScrollWidth = groupRef.current.scrollWidth;
-      const viewportWidth = containerRef.current.clientWidth;
-      const scrollDistance = totalScrollWidth - viewportWidth;
-
-      const tween = gsap.to(groupRef.current, {
-        x: -scrollDistance,
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: `+=${scrollDistance}`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-        },
-      });
-      triggers.current.push(tween.scrollTrigger);
-
-      const listItems = groupRef.current.querySelectorAll("li");
-      const st2 = ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top top",
-        end: `+=${scrollDistance}`,
-        scrub: true,
-        onUpdate: (self) => {
-          const viewportWidth = window.innerWidth;
-          const maxDistance = viewportWidth / 2;
-          listItems.forEach((item) => {
-            const rect = item.getBoundingClientRect();
-            const itemCenter = rect.left + rect.width / 2;
-            const viewportCenter = viewportWidth / 2;
-            const distance = Math.abs(itemCenter - viewportCenter);
-            const progress = Math.max(0, 1 - distance / maxDistance);
-            gsap.to(item, {
-              scale: 0.8 + 0.2 * progress,
-              opacity: progress,
-              duration: 0.3,
-            });
-          });
-        },
-      });
-      triggers.current.push(st2);
-    }
 
     const handleScroll = () => {
       setShowTopBtn(window.scrollY > 400);
@@ -184,16 +148,37 @@ export default function OrganizationGallery() {
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      triggers.current.forEach(trigger => trigger.kill());
-      triggers.current = [];
       window.removeEventListener("resize", updateMobile);
       window.removeEventListener("scroll", handleScroll);
-      ScrollTrigger.clearMatchMedia();
     };
-  }, [isMobile]);
+  }, [updateMobile]);
 
   const particlesInit = async (engine) => {
     await loadFull(engine);
+  };
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 700,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    swipeToSlide: true,
+    autoplay: true,
+    autoplaySpeed: 3500,
+    pauseOnHover: true,
+    arrows: false,
+    appendDots: (dots) => (
+      <div className="mt-6">
+        <ul className="flex justify-center gap-3">{dots}</ul>
+      </div>
+    ),
+    customPaging: (i) => (
+      <button
+        className="w-3 h-3 rounded-full bg-dark_teal/50 hover:bg-dark_teal transition-all duration-300"
+        aria-label={`Go to slide ${i + 1}`}
+      />
+    ),
   };
 
   return (
@@ -326,37 +311,137 @@ export default function OrganizationGallery() {
         </motion.div>
       </header>
 
-      <section className="img-group-container relative" ref={containerRef}>
-        <div className="sticky top-0 overflow-hidden h-auto w-full">
-          <ul className={`flex ${isMobile ? "flex-col snap-y snap-mandatory h-screen overflow-y-scroll" : "flex-row mt-20"}`} ref={groupRef}>
-            {galleryItems.map((item, index) => (
-              <li
-                key={index}
-                className={`${isMobile ? "w-full h-screen snap-start flex items-center justify-center py-10" : "w-full h-[100vh]"} flex-none`}
-                onClick={() => setSelectedItem(item)}
-              >
-                <motion.div
-                  className="flex flex-col items-center cursor-pointer p-6"
-                  variants={imageVariants}
-                  initial={isMobile ? "hidden" : "rest"}
-                  whileInView={isMobile ? "visible" : undefined}
-                  whileHover={!isMobile ? "hover" : undefined}
-                  whileTap="tap"
-                  viewport={{ once: false, amount: 0.5 }}
-                >
-                  <img 
-                    src={item.img} 
-                    alt={item.title} 
-                    loading="lazy" 
-                    className="w-[280px] sm:w-[350px] h-[350px] sm:h-[450px] object-cover rounded-xl border border-mauve-500"
-                  />
-                  <h3 className="text-4xl sm:text-6xl font-heading font-semibold text-deep_indigo -mt-10">{item.title}</h3>
-                  <h6 className="text-lg sm:text-xl font-subheading font-medium text-dark_teal mt-2">{item.subtitle}</h6>
-                  <p className="text-sm sm:text-base font-description font-light text-dark_teal max-w-[90%] sm:max-w-[70%] text-center mt-4">{item.description}</p>
-                </motion.div>
-              </li>
-            ))}
-          </ul>
+      <section className="img-group-container relative py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-lemon_chiffon/5 to-champagne_pink/10 overflow-hidden">
+        <Particles
+          id="gallery-particles"
+          init={particlesInit}
+          options={{
+            background: { color: { value: "transparent" } },
+            fpsLimit: 60,
+            particles: {
+              color: { value: "#90dbf4" },
+              links: { enable: false },
+              move: {
+                direction: "top",
+                enable: true,
+                outModes: { default: "out" },
+                speed: 1.5,
+                random: true,
+              },
+              number: { density: { enable: true, area: 1200 }, value: isMobile ? 20 : 40 },
+              opacity: { value: { min: 0.3, max: 0.6 } },
+              shape: { type: "circle" },
+              size: { value: { min: 1, max: 3 } },
+            },
+            detectRetina: true,
+          }}
+          className="absolute inset-0 z-0"
+        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.h2
+            className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-deep_indigo text-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            Our Impactful Initiatives
+          </motion.h2>
+          {isMobile ? (
+            <Slider ref={sliderRef} {...sliderSettings}>
+              {galleryItems.map((item, index) => (
+                <div key={index} className="px-3 focus:outline-none">
+                  <Tilt tiltMaxAngleX={8} tiltMaxAngleY={8} perspective={1000} scale={1.03} transitionSpeed={500} glareEnable={true} glareMaxOpacity={0.15}>
+                    <motion.div
+                      className="relative flex flex-col items-center p-6 bg-lemon_chiffon/95 backdrop-blur-md rounded-2xl shadow-xl border border-gradient-to-r from-electric_blue to-aquamarine"
+                      variants={cardVariants}
+                      initial="hidden"
+                      whileInView="visible"
+                      whileHover="hover"
+                      whileTap="tap"
+                      custom={index}
+                      viewport={{ once: false, amount: 0.3 }}
+                      onClick={() => setSelectedItem(item)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === "Enter" && setSelectedItem(item)}
+                      aria-label={`View details for ${item.title}`}
+                    >
+                      <div className="relative group overflow-hidden rounded-xl">
+                        <motion.img
+                          src={item.img}
+                          alt={item.title}
+                          loading="lazy"
+                          className="w-full max-w-[300px] h-[320px] object-cover rounded-xl border border-mauve-500"
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ duration: 0.4 }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-dark_teal/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </div>
+                      <h3 className="text-2xl sm:text-3xl font-heading font-semibold text-deep_indigo mt-4">{item.title}</h3>
+                      <h6 className="text-base sm:text-lg font-subheading font-medium text-dark_teal mt-2">{item.subtitle}</h6>
+                      <p className="text-sm sm:text-base font-description font-light text-dark_teal max-w-[85%] text-center mt-3">{item.description}</p>
+                      <motion.button
+                        className="mt-4 px-5 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-lemon_chiffon rounded-full font-cta font-medium"
+                        whileHover={{ scale: 1.05, boxShadow: "0 0 12px rgba(142, 236, 245, 0.6)" }}
+                        whileTap={{ scale: 0.95 }}
+                        aria-label={`Learn more about ${item.title}`}
+                      >
+                        Learn More
+                      </motion.button>
+                    </motion.div>
+                  </Tilt>
+                </div>
+              ))}
+            </Slider>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              <AnimatePresence>
+                {galleryItems.map((item, index) => (
+                  <Tilt key={index} tiltMaxAngleX={10} tiltMaxAngleY={10} perspective={1000} scale={1.03} transitionSpeed={500} glareEnable={true} glareMaxOpacity={0.15}>
+                    <motion.div
+                      className="relative flex flex-col items-center p-6 bg-lemon_chiffon/95 backdrop-blur-md rounded-2xl shadow-xl border border-gradient-to-r from-electric_blue to-aquamarine"
+                      variants={cardVariants}
+                      initial="hidden"
+                      whileInView="visible"
+                      whileHover="hover"
+                      whileTap="tap"
+                      custom={index}
+                      viewport={{ once: false, amount: 0.3 }}
+                      onClick={() => setSelectedItem(item)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === "Enter" && setSelectedItem(item)}
+                      aria-label={`View details for ${item.title}`}
+                    >
+                      <div className="relative group overflow-hidden rounded-xl">
+                        <motion.img
+                          src={item.img}
+                          alt={item.title}
+                          loading="lazy"
+                          className="w-full max-w-[360px] h-[400px] object-cover rounded-xl border border-mauve-500"
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ duration: 0.4 }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-dark_teal/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </div>
+                      <h3 className="text-2xl sm:text-3xl font-heading font-semibold text-deep_indigo mt-4">{item.title}</h3>
+                      <h6 className="text-base sm:text-lg font-subheading font-medium text-dark_teal mt-2">{item.subtitle}</h6>
+                      <p className="text-sm sm:text-base font-description font-light text-dark_teal max-w-[85%] text-center mt-3">{item.description}</p>
+                      <motion.button
+                        className="mt-4 px-5 py-2 bg-gradient-to-r from-electric_blue to-aquamarine text-lemon_chiffon rounded-full font-cta font-medium"
+                        whileHover={{ scale: 1.05, boxShadow: "0 0 12px rgba(142, 236, 245, 0.6)" }}
+                        whileTap={{ scale: 0.95 }}
+                        aria-label={`Learn more about ${item.title}`}
+                      >
+                        Learn More
+                      </motion.button>
+                    </motion.div>
+                  </Tilt>
+                ))}
+              </AnimatePresence>
+            </div>
+          )}
         </div>
       </section>
 
@@ -381,7 +466,7 @@ export default function OrganizationGallery() {
               alt={selectedItem.title} 
               className="w-full h-64 object-cover rounded-xl mb-4"
             />
-            <h3 className="text-3xl font-heading font-semibold text-deep_indigo">{selectedItem.title}</h3>
+            <h3 className="text-2xl font-heading font-semibold text-deep_indigo">{selectedItem.title}</h3>
             <h6 className="text-xl font-subheading font-medium text-dark_teal mt-2">{selectedItem.subtitle}</h6>
             <p className="text-base font-description font-light text-dark_teal mt-4">{selectedItem.description}</p>
             <motion.button

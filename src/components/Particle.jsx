@@ -57,7 +57,7 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality }) =>
 
 const GroundPlane = React.memo(() => {
   const [ref] = usePlane(() => ({
-    position: [0, -2.5, 0],
+    position: [0, -1, 0],
     rotation: [-Math.PI / 2, 0, 0],
     material: { friction: 0.3, restitution: 0.9 }
   }));
@@ -196,7 +196,7 @@ const ParticleScene = () => {
 
   return (
     <Canvas
-      style={{ height: isMobile ? '100vh' : '215vh', width: '100vw', touchAction: 'pan-y' }}
+      style={{ height: isMobile ? '100vh' : '150vh', width: '100vw', touchAction: 'pan-y' }}
       shadows
       onClick={handleCanvasClick}
       dpr={quality === 'low' ? [1, 1] : [1, 2]}
@@ -212,7 +212,7 @@ const ParticleScene = () => {
         <pointLight position={[5, 10, 5]} intensity={0.8} />
         <hemisphereLight skyColor="#bb99ff" groundColor="#664422" intensity={0.4} />
         <Physics
-          gravity={[0, -9.8, 0]}
+          gravity={[0, -12, 0]}
           iterations={quality === 'low' ? 10 : 20}
           allowSleep
           defaultContactMaterial={{

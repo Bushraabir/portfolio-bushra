@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import Splitting from "splitting";
-import "splitting/dist/splitting.css";
 import { motion, AnimatePresence } from "framer-motion";
+import { Tilt } from "react-tilt";
 import {
   FaPython,
   FaReact,
@@ -40,7 +40,6 @@ import {
   SiFreecad,
   SiOpenscad,
   SiJavascript,
-
 } from "react-icons/si";
 import { DiPhotoshop } from "react-icons/di";
 import {
@@ -52,7 +51,6 @@ import {
   GiRock,
 } from "react-icons/gi";
 import skill from "../assets/skill.png";
-import { GiftColor } from "@fluentui/react-icons";
 
 const skillsData = [
   {
@@ -68,7 +66,6 @@ const skillsData = [
       { name: "C", icon: <SiCplusplus /> },
       { name: "C++", icon: <SiCplusplus /> },
       { name: "Python", icon: <FaPython /> },
-
     ],
   },
   {
@@ -84,14 +81,12 @@ const skillsData = [
       { name: "Vite", icon: <SiVite /> },
     ],
   },
-
   {
     category: "Tools",
     items: [
-      
-      { name: "Microsoft Excel",  },
-      { name: "PowerPoint",  },
-      { name: "Microsoft Word",  },
+      { name: "Microsoft Excel", icon: <FaChartBar /> },
+      { name: "PowerPoint", icon: <FaProjectDiagram /> },
+      { name: "Microsoft Word", icon: <FaPen /> },
     ],
   },
   {
@@ -114,7 +109,7 @@ const skillsData = [
   {
     category: "Art & Craft",
     items: [
-      { name: "Acrylic Painting", icon: <GiftColor /> },
+      { name: "Acrylic Painting", icon: <FaPaintBrush /> },
       { name: "Sketching", icon: <GiPencil /> },
       { name: "Sculpting", icon: <GiRock /> },
       { name: "Crafting", icon: <GiCrafting /> },
@@ -136,7 +131,6 @@ const skillsData = [
       { name: "Leadership", icon: <FaStar /> },
       { name: "Team Management", icon: <FaUsersCog /> },
       { name: "Mentoring", icon: <FaChalkboardTeacher /> },
-
     ],
   },
 ];
@@ -147,8 +141,6 @@ const categoryIcons = {
   STEM: <GiAtomicSlashes />,
   Programming: <SiCplusplus />,
   "Web Development": <FaReact />,
-  "HTML & CSS": <SiHtml5 />,
-
   Tools: <SiVite />,
   "Engineering Tools": <SiFreecad />,
   "3D Modeling & Design": <SiAdobeillustrator />,
@@ -172,41 +164,37 @@ const SkillCard = ({ skillCategory }) => {
     const tl = gsap.timeline();
     if (isFlipped) {
       tl.to(innerRef.current, {
-        duration: 0.6,
+        duration: 0.8,
         rotationY: 180,
-        scale: 1.05,
-        ease: "power3.out",
-      }).then(() => {
-        const items = innerRef.current.querySelectorAll(".skill-item");
-        gsap.fromTo(
-          items,
-          {
-            opacity: 0,
-            y: 20,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            stagger: 0.1,
-            duration: 0.5,
-            ease: "power3.out",
-          }
-        );
-      });
-    } else {
-      const items = innerRef.current.querySelectorAll(".skill-item");
-      tl.to(items, {
-        opacity: 0,
-        y: -20,
-        stagger: 0.05,
-        duration: 0.3,
+        scale: 1.1,
+        ease: "elastic.out(1, 0.5)",
       }).to(
+        innerRef.current.querySelectorAll(".skill-item"),
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.15,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+        },
+        "-=0.4"
+      );
+    } else {
+      tl.to(
+        innerRef.current.querySelectorAll(".skill-item"),
+        {
+          opacity: 0,
+          y: 20,
+          stagger: 0.1,
+          duration: 0.4,
+        }
+      ).to(
         innerRef.current,
         {
-          duration: 0.6,
+          duration: 0.8,
           rotationY: 0,
           scale: 1,
-          ease: "power3.out",
+          ease: "elastic.out(1, 0.5)",
         },
         "-=0.3"
       );
@@ -218,44 +206,52 @@ const SkillCard = ({ skillCategory }) => {
   };
 
   return (
-    <motion.div
-      className={`flip-card ${isFlipped ? "flipped" : ""} sm:w-[300px] w-full`}
-      initial={{ opacity: 0, y: 50, rotateY: 10 }}
-      animate={{ opacity: 1, y: 0, rotateY: 0 }}
-      exit={{ opacity: 0, y: -50, rotateY: -10 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      viewport={{ once: true }}
-      onClick={isMobile ? handleFlip : undefined}
-      onMouseEnter={isMobile ? undefined : () => setIsFlipped(true)}
-      onMouseLeave={isMobile ? undefined : () => setIsFlipped(false)}
+    <Tilt
+      className="Tilt w-full"
+      options={{ max: 15, scale: 1.05, speed: 400 }}
     >
-      <div className="glow"></div>
-      <div className="flip-card-inner" ref={innerRef}>
-        <div className="flip-card-front">
-          <div className="category-icon text-6xl sm:text-7xl">
-            {categoryIcons[skillCategory.category]}
+      <motion.div
+        className={`flip-card ${isFlipped ? "flipped" : ""} w-full h-[450px] sm:h-[500px] relative`}
+        initial={{ opacity: 0, y: 50, rotateY: 10 }}
+        animate={{ opacity: 1, y: 0, rotateY: 0 }}
+        exit={{ opacity: 0, y: -50, rotateY: -10 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true }}
+        onClick={isMobile ? handleFlip : undefined}
+        onMouseEnter={isMobile ? undefined : () => setIsFlipped(true)}
+        onMouseLeave={isMobile ? undefined : () => setIsFlipped(false)}
+      >
+        <div className="glow absolute inset-[-20px] bg-radial-gradient from-white/20 to-transparent rounded-xl opacity-0 transition-opacity duration-500" />
+        <div className="flip-card-inner relative w-full h-full transform-style-preserve-3d transition-transform duration-700 ease-in-out" ref={innerRef}>
+          <div className="flip-card-front absolute w-full h-full backface-hidden flex flex-col justify-center items-center p-6 bg-gradient-to-br from-gray-900/80 to-black/50 border-2 border-white/20 rounded-xl shadow-lg">
+            <div className="category-icon text-5xl sm:text-6xl animate-pulse text-primary">
+              {categoryIcons[skillCategory.category]}
+            </div>
+            <p className="category-name mt-4 text-xl sm:text-2xl font-subheading text-lemon_chiffon text-shadow">
+              {skillCategory.category}
+            </p>
           </div>
-          <p className="category-name mt-4 text-xl font-subheading text-lemon_chiffon">
-            {skillCategory.category}
-          </p>
-        </div>
-        <div className="flip-card-back">
-          <div className="card-items">
-            {skillCategory.items.map((item, idx) => (
-              <motion.div
-                key={idx}
-                className="card-item-inner skill-item"
-                whileHover={{ scale: 1.1, rotate: 3 }}
-                transition={{ type: "spring", stiffness: 300, damping: 15 }}
-              >
-                <span className="icon text-2xl">{item.icon}</span>
-                <p className="text-sm font-description">{item.name}</p>
-              </motion.div>
-            ))}
+          <div className="flip-card-back absolute w-full h-full backface-hidden flex justify-center items-center p-4 bg-gradient-to-br from-black/70 to-gray-900/50 border-2 border-white/20 rounded-xl shadow-lg overflow-y-auto transform-rotate-y-180">
+            <div className="card-items grid grid-cols-2 gap-2 w-full">
+              {skillCategory.items.map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  className="card-item-inner skill-item flex items-center gap-2 p-3 bg-white/10 backdrop-blur-md rounded-lg shadow-inner text-white transition-all duration-300 hover:bg-primary/20"
+                  whileHover={{ scale: 1.15, rotate: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <span className="icon text-xl">{item.icon}</span>
+                  <p className="text-sm sm:text-base font-description">{item.name}</p>
+                  <span className="tooltip absolute bottom-full mb-2 w-max bg-black/80 text-white text-xs p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                    {item.name} details...
+                  </span>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </Tilt>
   );
 };
 
@@ -282,12 +278,12 @@ const Skill = () => {
     Splitting();
     const chars = document.querySelectorAll(".split-text .char");
     gsap.from(chars, {
-      duration: 1,
+      duration: 1.2,
       opacity: 0,
-      y: 20,
-      stagger: 0.05,
+      y: 30,
+      stagger: 0.06,
       ease: "power3.out",
-      delay: 0.2,
+      delay: 0.3,
     });
   }, []);
 
@@ -295,33 +291,30 @@ const Skill = () => {
     const container = sectionRef.current;
     const magnifier = container.querySelector(".section-magnifying-glass");
     magnifier.style.background = `url(${bgImageUrl}) no-repeat center center`;
-    let naturalWidth = 0,
-      naturalHeight = 0;
+    let naturalWidth = 0, naturalHeight = 0;
     const img = new Image();
     img.src = bgImageUrl;
     img.onload = () => {
       naturalWidth = img.naturalWidth;
       naturalHeight = img.naturalHeight;
     };
-    const zoom = 2.5;
+    const zoom = 3;
     const updateMagnifier = (x, y, rect) => {
       const mgWidth = magnifier.offsetWidth;
       const mgHeight = magnifier.offsetHeight;
-      const bgWidth = naturalWidth ? naturalWidth * zoom : rect.width * zoom;
-      const bgHeight = naturalHeight
-        ? naturalHeight * zoom
-        : rect.height * zoom;
+      const bgWidth = naturalWidth * zoom;
+      const bgHeight = naturalHeight * zoom;
       magnifier.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
       const ratioX = x / rect.width;
       const ratioY = y / rect.height;
       const bgPosX = -(ratioX * bgWidth - mgWidth / 2);
       const bgPosY = -(ratioY * bgHeight - mgHeight / 2);
       gsap.to(magnifier, {
-        duration: 0.3,
+        duration: 0.4,
         left: `${x - mgWidth / 2}px`,
         top: `${y - mgHeight / 2}px`,
         backgroundPosition: `${bgPosX}px ${bgPosY}px`,
-        ease: "power3.out",
+        ease: "power2.out",
       });
     };
     const handleMove = (e) => {
@@ -336,24 +329,27 @@ const Skill = () => {
       }
       if (x >= 0 && y >= 0 && x <= rect.width && y <= rect.height) {
         gsap.to(magnifier, {
-          duration: 0.3,
-          opacity: 1,
-          ease: "power3.out",
+          duration: 0.4,
+          opacity: 0.9,
+          scale: 1.1,
+          ease: "power2.out",
         });
         updateMagnifier(x, y, rect);
       } else {
         gsap.to(magnifier, {
-          duration: 0.3,
+          duration: 0.4,
           opacity: 0,
-          ease: "power3.out",
+          scale: 1,
+          ease: "power2.out",
         });
       }
     };
     const handleLeave = () => {
       gsap.to(magnifier, {
-        duration: 0.3,
+        duration: 0.4,
         opacity: 0,
-        ease: "power3.out",
+        scale: 1,
+        ease: "power2.out",
       });
     };
     container.addEventListener("pointermove", handleMove);
@@ -390,6 +386,7 @@ const Skill = () => {
           --dark-teal: #1d3557;
           --border-color: rgba(255, 255, 255, 0.3);
           --overlay-bg: rgba(0, 0, 0, 0.6);
+          --glass-bg: rgba(255, 255, 255, 0.1);
         }
         * {
           box-sizing: border-box;
@@ -399,132 +396,126 @@ const Skill = () => {
         .skill-section {
           position: relative;
           min-height: 100vh;
-          background: linear-gradient(135deg, rgba(29,53,87,0.9), rgba(29,53,87,0.7)), url(${bgImageUrl}) center/cover no-repeat;
+          background: linear-gradient(135deg, rgba(29, 53, 87, 0.9), rgba(29, 53, 87, 0.6)), url(${bgImageUrl}) center/cover no-repeat;
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 3rem 2rem;
+          padding: 4rem 2rem;
           overflow: hidden;
           color: var(--secondary-color);
+          animation: bgShift 15s infinite alternate ease-in-out;
+        }
+        @keyframes bgShift {
+          0% { background-position: center; }
+          100% { background-position: 20% 20%; }
         }
         .section-magnifying-glass {
           position: absolute;
-          height: 240px;
-          width: 240px;
-          border-radius: 70%;
+          height: 300px;
+          width: 300px;
+          border-radius: 50%;
           opacity: 0;
           pointer-events: none;
-          box-shadow: 0 0 30px rgba(0,0,0,0.7);
-          border: 2px solid var(--primary-color);
-          transition: opacity 0.3s ease, transform 0.3s ease;
+          box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+          border: 3px solid var(--primary-color);
+          background: transparent;
+          transition: opacity 0.4s ease, transform 0.4s ease, scale 0.4s ease;
         }
         .content {
           position: relative;
           z-index: 2;
           text-align: center;
           width: 100%;
-          max-width: 1200px;
+          max-width: 1400px;
         }
         .content h1 {
-          font-size: 3.5rem;
-          margin-bottom: 2rem;
+          font-size: 4.5rem;
+          margin-bottom: 2.5rem;
           color: var(--primary-color);
-          text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+          text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6);
+          font-family: 'Rubik', sans-serif;
+        }
+        @media (max-width: 1024px) {
+          .content h1 { font-size: 3.5rem; }
         }
         @media (max-width: 768px) {
-          .content h1 {
-            font-size: 2.5rem;
-          }
+          .content h1 { font-size: 2.8rem; }
         }
         @media (max-width: 480px) {
-          .content h1 {
-            font-size: 2rem;
-          }
+          .content h1 { font-size: 2.2rem; }
+        }
+        .sticky-header {
+          position: sticky;
+          top: 1rem;
+          z-index: 10;
+          background: var(--glass-bg);
+          backdrop-filter: blur(10px);
+          padding: 1rem;
+          border-radius: 15px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+          margin-bottom: 2rem;
         }
         .btn-group {
-          margin-bottom: 2rem;
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
           gap: 1rem;
         }
         .btn-group button {
-          padding: 0.6rem 1.2rem;
+          padding: 0.7rem 1.5rem;
           border-radius: 9999px;
-          font-size: 1rem;
+          font-size: 1.1rem;
           font-weight: 600;
           border: 2px solid var(--primary-color);
           background: transparent;
           color: var(--primary-color);
           cursor: pointer;
-          transition: background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
+          transition: all 0.4s ease;
         }
         .btn-group button.active,
         .btn-group button:hover {
-          background: var(--primary-color);
+          background: linear-gradient(135deg, var(--primary-color), #e0d07a);
           color: var(--accent-color);
-          transform: translateY(-3px) scale(1.05);
-          box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+          transform: translateY(-4px) scale(1.1);
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
         @media (max-width: 768px) {
-          .btn-group button {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-          }
+          .btn-group button { padding: 0.6rem 1.2rem; font-size: 1rem; }
         }
         @media (max-width: 480px) {
-          .btn-group button {
-            padding: 0.4rem 0.8rem;
-            font-size: 0.8rem;
-          }
+          .btn-group button { padding: 0.5rem 1rem; font-size: 0.9rem; }
         }
-        .grid {
+        .masonry-grid {
           display: grid;
-          gap: 2rem;
-          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 2.5rem;
           width: 100%;
-          margin: 2rem auto 0;
+          margin: 3rem auto 0;
+          justify-items: center;
         }
         @media (max-width: 768px) {
-          .grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-          }
+          .masonry-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
         }
         @media (max-width: 480px) {
-          .grid {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-          }
+          .masonry-grid { grid-template-columns: 1fr; gap: 1rem; }
         }
         .flip-card {
-          perspective: 1500px;
+          perspective: 2000px;
           width: 100%;
-          max-width: 550px;
-          height: 450px;
-          margin: 0 auto;
+          max-width: 400px;
+          height: 500px;
           cursor: pointer;
           position: relative;
-          backface-visibility: hidden;
         }
-        @media (max-width: 768px) {
-          .flip-card {
-            max-width: 100%;
-            height: 300px;
-          }
-        }
-        @media (max-width: 480px) {
-          .flip-card {
-            max-width: 100%;
-            height: 350px;
-          }
+        .Tilt {
+          transform-style: preserve-3d;
         }
         .flip-card-inner {
           position: relative;
           width: 100%;
           height: 100%;
           transform-style: preserve-3d;
-          transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+          transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
         }
         .flip-card-front,
         .flip-card-back {
@@ -532,163 +523,180 @@ const Skill = () => {
           width: 100%;
           height: 100%;
           backface-visibility: hidden;
-          border-radius: 1rem;
+          border-radius: 1.5rem;
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          padding: 1.5rem;
-          box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+          padding: 2rem;
+          background: var(--glass-bg);
+          backdrop-filter: blur(10px);
+          border: 2px solid var(--border-color);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
         .flip-card-front {
-          background: linear-gradient(135deg, var(--overlay-bg), rgba(0,0,0,0.15));
-          border: 2px solid var(--border-color);
+          background: linear-gradient(135deg, var(--overlay-bg), rgba(0, 0, 0, 0.2));
         }
         .flip-card-back {
-          background: linear-gradient(135deg, rgba(0,0,0,0.25), rgba(0,0,0,0.1));
-          border: 2px solid var(--border-color);
+          background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15));
           transform: rotateY(180deg);
-          overflow: auto;
+          overflow-y: auto;
+          padding: 1.5rem;
         }
         .category-icon {
-          font-size: 4rem;
-          animation: pulse 3s infinite ease-in-out;
+          font-size: 5rem;
+          color: var(--primary-color);
+          animation: pulse 2.5s infinite ease-in-out;
         }
         @keyframes pulse {
           0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
+          50% { transform: scale(1.1); }
         }
         .category-name {
-          font-size: 1.5rem;
+          font-size: 1.8rem;
           color: var(--primary-color);
-          text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-          margin-top: 0.5rem;
+          text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+          margin-top: 1rem;
+          font-family: 'Rubik', sans-serif;
         }
         .glow {
           position: absolute;
-          top: -20px;
-          left: -20px;
-          right: -20px;
-          bottom: -20px;
-          background: radial-gradient(circle, rgba(255,255,255,0.15), transparent);
+          inset: -25px;
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.25), transparent 70%);
           opacity: 0;
-          transition: opacity 0.5s;
-          z-index: -1;
+          transition: opacity 0.6s ease;
+          border-radius: 1.5rem;
         }
         .flip-card.flipped .glow {
           opacity: 1;
         }
         .card-items {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          align-items: center;
-          gap: 0.5rem;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: 1rem;
           width: 100%;
         }
         .card-item-inner {
-          background: rgba(255, 255, 255, 0.15);
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 1rem;
+          background: rgba(255, 255, 255, 0.05);
           backdrop-filter: blur(5px);
-          border-radius: 0.75rem;
-          padding: 0.8rem;
+          border-radius: 10px;
           text-align: center;
           color: var(--primary-color);
           font-family: 'Source Code Pro', monospace;
-          width: calc(50% - 0.5rem);
-          transition: transform 0.3s, background 0.3s;
+          transition: all 0.4s ease;
         }
         .card-item-inner .icon {
-          display: block;
-          font-size: 1.5rem;
-          margin-bottom: 0.5rem;
+          font-size: 1.8rem;
           color: var(--primary-color);
         }
         .card-item-inner p {
-          font-size: 0.8rem;
+          font-size: 1rem;
+          margin: 0;
+        }
+        .tooltip {
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(0, 0, 0, 0.8);
+          color: white;
+          padding: 0.5rem 1rem;
+          border-radius: 5px;
+          font-size: 0.9rem;
+          white-space: nowrap;
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+        .card-item-inner:hover .tooltip {
+          opacity: 1;
         }
         @media (max-width: 768px) {
-          .flip-card-back .card-items {
-            flex-direction: column;
-            gap: 0.5rem;
-          }
-          .flip-card-back .card-item-inner {
-            width: 100%;
-            padding: 0.5rem;
-            box-sizing: border-box;
-          }
-          .flip-card-back .card-item-inner p {
-            font-size: 0.9rem;
-          }
-          .flip-card-back .card-item-inner .icon {
-            font-size: 1.2rem;
-          }
-        }
-        @media (max-width: 768px) {
-          .skill-section {
-            padding: 2rem 1rem;
-          }
+          .flip-card { height: 400px; }
+          .flip-card-back .card-items { grid-template-columns: 1fr; }
+          .card-item-inner { padding: 0.8rem; }
+          .card-item-inner .icon { font-size: 1.5rem; }
+          .card-item-inner p { font-size: 0.9rem; }
         }
         @media (max-width: 480px) {
-          .skill-section {
-            padding: 1.5rem 0.5rem;
-          }
+          .skill-section { padding: 2rem 1rem; }
+          .flip-card { height: 350px; }
+          .category-icon { font-size: 4rem; }
+          .category-name { font-size: 1.5rem; }
         }
         .pagination {
           display: flex;
           justify-content: center;
           align-items: center;
-          margin-top: 2rem;
-          gap: 1rem;
+          margin-top: 3rem;
+          gap: 1.5rem;
         }
         .pagination button {
-          padding: 0.5rem 1rem;
+          padding: 0.7rem 1.5rem;
           border-radius: 9999px;
-          background: var(--primary-color);
+          background: linear-gradient(135deg, var(--primary-color), #e0d07a);
           color: var(--accent-color);
           border: none;
           cursor: pointer;
-          transition: background 0.3s, transform 0.3s;
+          transition: all 0.4s ease;
+          font-family: 'Rubik', sans-serif;
         }
         .pagination button:disabled {
-          background: rgba(255,255,255,0.3);
+          background: rgba(255, 255, 255, 0.2);
           cursor: not-allowed;
+          opacity: 0.6;
         }
         .pagination button:not(:disabled):hover {
           background: var(--secondary-color);
-          transform: translateY(-2px);
+          transform: translateY(-3px) scale(1.05);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         .pagination span {
-          font-size: 1rem;
+          font-size: 1.2rem;
           color: var(--primary-color);
+          font-family: 'Rubik', sans-serif;
         }
-        @media (max-width: 480px) {
-          .pagination button {
-            padding: 0.4rem 0.8rem;
-            font-size: 0.9rem;
-          }
-          .pagination span {
-            font-size: 0.9rem;
-          }
+        .progress-bar {
+          width: 100px;
+          height: 10px;
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 5px;
+          overflow: hidden;
+        }
+        .progress {
+          height: 100%;
+          background: var(--primary-color);
+          transition: width 0.4s ease;
+          border-radius: 5px;
         }
       `}</style>
-      <div ref={sectionRef} className="skill-section">
-        <div className="section-magnifying-glass"></div>
+      <div ref={sectionRef} className="skill-section" aria-label="Skills Section">
+        <div className="section-magnifying-glass" />
         <div className="content">
-          <h1 className="split-text font-heading text-4xl sm:text-5xl md:text-6xl" >
+          <h1 className="split-text font-heading text-5xl sm:text-6xl md:text-7xl" aria-live="polite">
             My Skill Set
           </h1>
-          <div className="btn-group">
-            {categories.map((cat, idx) => (
-              <button
-                key={idx}
-                className={`font-cta ${activeCategory === cat ? "active" : ""}`}
-                onClick={() => setActiveCategory(cat)}
-              >
-                {cat}
-              </button>
-            ))}
+          <div className="sticky-header">
+            <div className="btn-group" role="tablist">
+              {categories.map((cat, idx) => (
+                <button
+                  key={idx}
+                  className={`font-cta ${activeCategory === cat ? "active" : ""}`}
+                  onClick={() => setActiveCategory(cat)}
+                  role="tab"
+                  aria-selected={activeCategory === cat}
+                  aria-controls={`tabpanel-${cat}`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="grid">
+          <div className="masonry-grid">
             <AnimatePresence>
               {currentSkills.map((skill) => (
                 <SkillCard key={skill.category} skillCategory={skill} />
@@ -700,15 +708,21 @@ const Skill = () => {
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
+                aria-label="Previous page"
               >
                 Previous
               </button>
               <span>Page {currentPage} of {totalPages}</span>
+              <div className="progress-bar">
+                <div
+                  className="progress"
+                  style={{ width: `${(currentPage / totalPages) * 100}%` }}
+                />
+              </div>
               <button
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                }
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
+                aria-label="Next page"
               >
                 Next
               </button>
