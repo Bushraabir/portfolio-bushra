@@ -199,11 +199,11 @@ const MyStoryPage = () => (
         <ParticleScene className="min-h-screen overflow-hidden -z-10" />
       </ErrorBoundary>
     </div>
-      <AboutMe id="about" />
-      <Achievements id="achievements" />
-      <Skills id= "skill"/>
-      <Gallery id="gallery" />
-      <Testimonials id="testimonials" />
+      <AboutMe id="about" className="overflow-hidden"/>
+      <Achievements id="achievements" className="overflow-hidden" />
+      <Skills id= "skill" className="overflow-hidden"/>
+      <Gallery id="gallery"  className="overflow-hidden"/>
+      <Testimonials id="testimonials" className="overflow-hidden"/>
     </main>
     <Suspense fallback={<Loader />}>
       <Footer />
