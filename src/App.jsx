@@ -13,7 +13,7 @@ const Testimonials = React.lazy(() => import("./sections/Testimonials"));
 const Footer = React.lazy(() => import("./sections/Footer"));
 const AboutMe = React.lazy(() => import("./sections/Aboutme"));
 const ParticleScene = React.lazy(() => import("./components/Particle"));
-const Gallery = React.lazy(() => import("./sections/Gallery"));
+
 const Art = React.lazy(() => import("./sections/Art"));
 const Skill = React.lazy(() => import("./sections/Skill"));
 
@@ -156,7 +156,7 @@ const App = () => {
         <AboutMe id="about" />
         <Achievements />
         <Skill />
-        <Gallery id="gallery" />
+        
         <Websites id="websites" />
 
         <Art id="digital" />

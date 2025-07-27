@@ -51,14 +51,14 @@ export default function OrganizationGallery() {
         title: "Anti-Smoking Campaign",
         subtitle: "🚭 Championing Healthier Lives 🚭",
         description:
-          "Led by EmpowerEd, this initiative educates communities on smoking’s aging effects, inspiring countless individuals to quit and embrace vitality.",
+          "Led by EmpowerEd, this initiative educates communities on smoking's aging effects, inspiring countless individuals to quit and embrace vitality.",
       },
       {
         img: EcoFriendly,
         title: "Eco-Friendly Campaign",
-        subtitle: "🌍 Sustaining Our Planet’s Future 🌍",
+        subtitle: "🌍 Sustaining Our Planet's Future 🌍",
         description:
-          "Organized through EmpowerEd, this campaign promotes mycorrhizal fungi’s role in ecosystems, fostering sustainable practices for global well-being.",
+          "Organized through EmpowerEd, this campaign promotes mycorrhizal fungi's role in ecosystems, fostering sustainable practices for global well-being.",
       },
       {
         img: Health,
@@ -119,7 +119,7 @@ export default function OrganizationGallery() {
     hover: { scale: 1.05, y: -10, boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)", borderColor: "#90dbf4" },
     tap: { scale: 0.95 },
     hidden: { opacity: 0, scale: 0.8 },
-    visible: { opacity: 1, scale: 1 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
   };
 
   useEffect(() => {
@@ -129,6 +129,7 @@ export default function OrganizationGallery() {
       setIsMobile(window.innerWidth <= 768);
       ScrollTrigger.refresh();
     };
+    
     updateMobile();
     window.addEventListener("resize", updateMobile);
 
@@ -166,9 +167,10 @@ export default function OrganizationGallery() {
             const viewportCenter = viewportWidth / 2;
             const distance = Math.abs(itemCenter - viewportCenter);
             const progress = Math.max(0, 1 - distance / maxDistance);
-            gsap.set(item, {
+            gsap.to(item, {
               scale: 0.8 + 0.2 * progress,
               opacity: progress,
+              duration: 0.3,
             });
           });
         },
@@ -186,6 +188,7 @@ export default function OrganizationGallery() {
       triggers.current = [];
       window.removeEventListener("resize", updateMobile);
       window.removeEventListener("scroll", handleScroll);
+      ScrollTrigger.clearMatchMedia();
     };
   }, [isMobile]);
 
@@ -245,8 +248,14 @@ export default function OrganizationGallery() {
               src={logo}
               alt="EmpowerEd Logo"
               className="w-40 sm:w-48 md:w-64 lg:w-80 h-auto mx-auto mb-6 drop-shadow-2xl"
-              animate={{ rotate: 360, scale: [1, 1.05, 1] }}
-              transition={{ rotate: { duration: 20, repeat: Infinity, ease: "linear" }, scale: { duration: 2, repeat: Infinity, ease: "easeInOut" } }}
+              animate={{ rotate: 360 }}
+              transition={{ 
+                rotate: { 
+                  duration: 20, 
+                  repeat: Infinity, 
+                  ease: "linear" 
+                } 
+              }}
             />
           </motion.div>
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-6xl font-semibold text-dark_teal drop-shadow-2xl">
@@ -255,6 +264,8 @@ export default function OrganizationGallery() {
                 strings: title,
                 autoStart: true,
                 loop: true,
+                delay: 50,
+                deleteSpeed: 30,
               }}
             />
           </h2>
@@ -270,17 +281,16 @@ export default function OrganizationGallery() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.5 }}
+            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.8 }}
             className="max-w-3xl mx-auto font-description text-base sm:text-lg lg:text-xl text-dark_teal mt-4"
           >
-            I organized and led the team by assigning tasks, giving instructions, and deciding what each member would do. I also came up with ideas for different contests and worked closely with my team to successfully organize events like the Idea Hub Contest, Tree Planting Campaign, and Anti-Smoking Campaign. For the anti-smoking campaign, I designed posters that explained the harmful effects of smoking and shared practical ways to quit, reaching a large number of people. We also provided free premium educational software, PDF books, and created solutions for mental health challenges. Many people reached out to us and received free mental health support. To make this service more accessible, we also built a mental health website called Relevia.
+            I organized and led the team by assigning tasks, giving instructions, and deciding what each member would do. I also came up with ideas for different contests and worked closely with my team to successfully organize events like the Idea Hub Contest, Tree Planting Campaign, and Anti-Smoking Campaign.
           </motion.p>
-
 
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 120, damping: 12, delay: 0.8 }}
+            transition={{ type: "spring", stiffness: 120, damping: 12, delay: 1.2 }}
             className="flex justify-center mb-24"
           >
             <Lottie
@@ -295,7 +305,7 @@ export default function OrganizationGallery() {
           className="absolute bottom-10 flex gap-6 z-20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 100, damping: 10, delay: 1 }}
+          transition={{ type: "spring", stiffness: 100, damping: 10, delay: 1.5 }}
         >
           <IconButton href="https://bushraabir.github.io/empowereducation/" label="EmpowerEd Website">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -330,12 +340,16 @@ export default function OrganizationGallery() {
                   variants={imageVariants}
                   initial={isMobile ? "hidden" : "rest"}
                   whileInView={isMobile ? "visible" : undefined}
-                  transition={isMobile ? { duration: 0.5 } : undefined}
-                  viewport={isMobile ? { once: false, amount: 0.5 } : undefined}
                   whileHover={!isMobile ? "hover" : undefined}
                   whileTap="tap"
+                  viewport={{ once: false, amount: 0.5 }}
                 >
-                  <img src={item.img} alt={item.title} loading="lazy" className="w-[280px] sm:w-[350px] h-[350px] sm:h-[450px] object-cover rounded-xl border border-mauve-500" />
+                  <img 
+                    src={item.img} 
+                    alt={item.title} 
+                    loading="lazy" 
+                    className="w-[280px] sm:w-[350px] h-[350px] sm:h-[450px] object-cover rounded-xl border border-mauve-500"
+                  />
                   <h3 className="text-4xl sm:text-6xl font-heading font-semibold text-deep_indigo -mt-10">{item.title}</h3>
                   <h6 className="text-lg sm:text-xl font-subheading font-medium text-dark_teal mt-2">{item.subtitle}</h6>
                   <p className="text-sm sm:text-base font-description font-light text-dark_teal max-w-[90%] sm:max-w-[70%] text-center mt-4">{item.description}</p>
@@ -348,29 +362,36 @@ export default function OrganizationGallery() {
 
       {selectedItem && (
         <motion.div
-          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={() => setSelectedItem(null)}
         >
           <motion.div
-            className="bg-lemon_chiffon p-8 rounded-xl max-w-2xl w-full mx-4"
+            className="bg-lemon_chiffon p-6 sm:p-8 rounded-xl max-w-2xl w-full mx-4"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <img src={selectedItem.img} alt={selectedItem.title} className="w-full h-64 object-cover rounded-xl mb-4" />
+            <img 
+              src={selectedItem.img} 
+              alt={selectedItem.title} 
+              className="w-full h-64 object-cover rounded-xl mb-4"
+            />
             <h3 className="text-3xl font-heading font-semibold text-deep_indigo">{selectedItem.title}</h3>
             <h6 className="text-xl font-subheading font-medium text-dark_teal mt-2">{selectedItem.subtitle}</h6>
             <p className="text-base font-description font-light text-dark_teal mt-4">{selectedItem.description}</p>
-            <button
+            <motion.button
               className="mt-6 px-4 py-2 bg-electric_blue text-lemon_chiffon rounded-full"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setSelectedItem(null)}
             >
               Close
-            </button>
+            </motion.button>
           </motion.div>
         </motion.div>
       )}
@@ -384,34 +405,40 @@ export default function OrganizationGallery() {
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 100, damping: 15 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-deep_indigo text-center">
             Coding Problems Solved on URI
           </h2>
-         
         </motion.div>
+        
         <motion.div
           className="flex flex-col sm:flex-row items-center justify-center mb-12 sm:mb-16"
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 100, damping: 15 }}
+          transition={{ type: "spring", stiffness: 100, damping: 15, delay: 0.2 }}
           viewport={{ once: true }}
         >
           <motion.img
             src={rank}
             alt="URI Rank"
             className="w-[100vw] h-auto sm:w-[70vw] max-w-[500px] mt-4 sm:mt-0 sm:ml-4 
-                       border-4 border-gray-300 rounded-lg shadow-lg 
-                       transition-transform duration-300 ease-in-out hover:scale-105"
+                       border-4 border-gray-300 rounded-lg shadow-lg"
             initial={{ scale: 0.8, rotate: -10, opacity: 0 }}
-            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            whileInView={{ 
+              scale: 1, 
+              rotate: 0, 
+              opacity: 1,
+              transition: { 
+                duration: 0.8, 
+                ease: "easeOut" 
+              } 
+            }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true }}
           />
         </motion.div>
-
-
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 w-full max-w-[90%] sm:max-w-[85%] lg:max-w-6xl px-4 sm:px-6">
           {codingItems.map((item, index) => (
@@ -419,16 +446,29 @@ export default function OrganizationGallery() {
               key={item.lang}
               className="flex flex-col items-center p-6 sm:p-8 bg-lemon_chiffon/30 backdrop-blur-md rounded-2xl shadow-xl border border-champagne_pink-600"
               initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              viewport={{ once: true }}
+              whileInView={{ 
+                opacity: 1, 
+                y: 0,
+                transition: { 
+                  duration: 0.8, 
+                  delay: index * 0.2 
+                } 
+              }}
+              viewport={{ once: true, margin: "0px 0px -50px 0px" }}
               whileHover={{ scale: 1.05, boxShadow: "0 15px 30px rgba(0, 0, 0, 0.2)" }}
               whileTap={{ scale: 0.95 }}
             >
               <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                 <motion.div
                   initial={{ scale: 1 }}
-                  whileInView={{ scale: [1, 1.2, 1], transition: { duration: 0.5, repeat: 2, repeatType: "reverse" } }}
+                  whileInView={{ 
+                    scale: [1, 1.2, 1], 
+                    transition: { 
+                      duration: 0.5, 
+                      repeat: 2, 
+                      repeatType: "reverse" 
+                    } 
+                  }}
                   viewport={{ once: true }}
                 >
                   <item.icon className="text-4xl sm:text-5xl text-jordy_blue" />
@@ -440,21 +480,32 @@ export default function OrganizationGallery() {
                   className={`text-5xl sm:text-6xl font-bold ${item.isRanking ? "text-jordy_blue" : "text-electric_blue"}`}
                 />
               </div>
-              <a
+              <motion.a
                 href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-base sm:text-lg text-dark_teal font-cta font-medium hover:text-lemon_chiffon transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {item.isRanking ? "View Profile" : `Solved ${item.value} in ${item.lang}`}
-              </a>
+              </motion.a>
             </motion.div>
           ))}
         </div>
+        
         <motion.div
-          className="mt-20 p-10 bg-lemon_chiffon/20 backdrop-blur-xl rounded-3xl shadow-3xl max-w-5xl mx-auto border border-champagne_pink-500"
+          className="mt-20 p-6 sm:p-10 bg-lemon_chiffon/20 backdrop-blur-xl rounded-3xl shadow-3xl max-w-5xl mx-auto border border-champagne_pink-500"
           initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
+          whileInView={{ 
+            opacity: 1, 
+            y: 0,
+            transition: { 
+              duration: 1,
+              delay: 0.3
+            } 
+          }}
+          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
         >
           <h3 className="text-3xl md:text-4xl font-heading font-extrabold text-deep_indigo mb-6">
             Data Structure and Algorithm Practice
@@ -486,8 +537,14 @@ export default function OrganizationGallery() {
           >
             <motion.div
               className="absolute inset-0 bg-champagne_pink/20"
-              animate={{ x: ["-100%", "300%"] }}
-              transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+              animate={{ 
+                x: ["-100%", "300%"],
+                transition: { 
+                  repeat: Infinity, 
+                  duration: 1.5, 
+                  ease: "linear" 
+                } 
+              }}
             />
             Explore Repository
             <motion.span
@@ -506,11 +563,22 @@ export default function OrganizationGallery() {
         <motion.button
           className="fixed bottom-10 right-10 bg-deep_indigo text-lemon_chiffon p-4 rounded-full shadow-2xl z-50"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 200 }}
-          whileHover={{ scale: 1.2, boxShadow: "0 0 15px rgba(251, 248, 204, 0.5)" }}
+          animate={{ 
+            opacity: 1, 
+            y: 0,
+            transition: { 
+              type: "spring", 
+              stiffness: 200 
+            } 
+          }}
+          exit={{ opacity: 0, y: 20 }}
+          whileHover={{ 
+            scale: 1.2, 
+            boxShadow: "0 0 15px rgba(251, 248, 204, 0.5)" 
+          }}
           whileTap={{ scale: 0.9 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Scroll to top"
         >
           <FaArrowUp size={24} />
         </motion.button>

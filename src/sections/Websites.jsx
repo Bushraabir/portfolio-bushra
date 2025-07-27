@@ -27,27 +27,19 @@ import StudyBuddy5 from "../assets/Website/StudyBuddy/5.png";
 import StudyBuddy6 from "../assets/Website/StudyBuddy/6.png";
 import StudyBuddy7 from "../assets/Website/StudyBuddy/7.png";
 import StudyBuddy8 from "../assets/Website/StudyBuddy/8.png";
-
 import Space1 from "../assets/Website/Space/1.png";
 import Space2 from "../assets/Website/Space/2.png";
 import Space3 from "../assets/Website/Space/3.png";
 import Tube1 from "../assets/Website/EmpTube/1.png";
 import Tube2 from "../assets/Website/EmpTube/1.png";
 import Tube3 from "../assets/Website/EmpTube/1.png";
-
-
 import relevia1 from "../assets/Website/relevia/1.png";
 import relevia2 from "../assets/Website/relevia/2.png";
 import relevia3 from "../assets/Website/relevia/3.png";
 import relevia4 from "../assets/Website/relevia/4.png";
 import relevia5 from "../assets/Website/relevia/5.png";
 import relevia6 from "../assets/Website/relevia/6.png";
-import relevia7   from "../assets/Website/relevia/7.png";
-
-
-
-
-
+import relevia7 from "../assets/Website/relevia/7.png";
 import Satellite from "../assets/Projects/Satellite.png";
 import Rocket from "../assets/Projects/Rocket.png";
 import Nuclear from "../assets/Projects/Nuclear.png";
@@ -77,10 +69,16 @@ const Website = () => {
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 768);
     window.addEventListener("resize", handleResize);
+    handleResize(); // Initial check
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
+    const cleanup = () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      gsap.killTweensOf([stemRef.current, collabRef.current, lottieContainerRef.current, descriptionRef.current, buttonsRef.current, cardsRef.current?.children]);
+    };
+
     if (isDesktop) {
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -89,6 +87,7 @@ const Website = () => {
           end: "bottom top",
           scrub: 1.5,
           pin: true,
+          anticipatePin: 1,
         },
       });
       tl.to(stemRef.current, { x: -1500, scale: 4, ease: "power4.out" }, 0)
@@ -130,7 +129,7 @@ const Website = () => {
       );
 
       gsap.fromTo(
-        cardsRef.current.children,
+        cardsRef.current?.children,
         { opacity: 0, y: 150 },
         {
           opacity: 1,
@@ -145,17 +144,84 @@ const Website = () => {
           },
         }
       );
+    } else {
+      // Mobile-specific animations (less intense for performance)
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: initialMessageRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+          pin: true,
+        },
+      });
+      tl.to(stemRef.current, { x: -200, scale: 2, ease: "power2.out" }, 0)
+        .to(collabRef.current, { x: 200, scale: 2, ease: "power2.out" }, 0)
+        .to(lottieContainerRef.current, { scale: 10, ease: "power2.out" }, 0)
+        .to(lottieContainerRef.current, { opacity: 0, ease: "power2.out" }, 0.2);
+
+      gsap.fromTo(
+        descriptionRef.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          ease: "expo.out",
+          duration: 1,
+          scrollTrigger: {
+            trigger: descriptionRef.current,
+            start: "top 90%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        buttonsRef.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          ease: "expo.out",
+          duration: 1,
+          delay: 0.2,
+          scrollTrigger: {
+            trigger: buttonsRef.current,
+            start: "top 90%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        cardsRef.current?.children,
+        { opacity: 0, y: 100 },
+        {
+          opacity: 1,
+          y: 0,
+          ease: "expo.out",
+          duration: 1,
+          stagger: 0.15,
+          scrollTrigger: {
+            trigger: cardsRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
     }
+
+    return cleanup;
   }, [isDesktop]);
 
   useEffect(() => {
     if (selectedProject) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     }
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, [selectedProject]);
 
@@ -180,7 +246,6 @@ const Website = () => {
       ],
       images: [Satellite],
       detailedDescription: "An introductory course on satellite systems and engineering, covering the basics of satellite design, operations, and technologies used in modern space exploration.",
-     
     },
     {
       type: "course",
@@ -196,7 +261,6 @@ const Website = () => {
       ],
       images: [Rocket],
       detailedDescription: "An introductory course on rocket propulsion, focusing on the principles of thrust, engine design, and the technologies driving modern rocketry.",
-     
     },
     {
       type: "course",
@@ -211,7 +275,6 @@ const Website = () => {
       ],
       images: [AeroSpace],
       detailedDescription: "An introductory course on aerospace engineering, focusing on the principles of aircraft and spacecraft design, aerodynamics, and propulsion systems.",
-      
     },
     {
       type: "course",
@@ -226,7 +289,6 @@ const Website = () => {
       ],
       images: [Nuclear],
       detailedDescription: "An introductory course on nuclear science, covering the fundamentals of nuclear reactions, reactor design, and applications in energy production and medical technology.",
-     
     },
   ];
 
@@ -249,7 +311,7 @@ const Website = () => {
       images: [emp3, emp1, emp2, emp3, emp4, emp5, emp6],
       detailedDescription: "EmpowerEd is a comprehensive educational platform designed to empower students through various resources and support systems. The website features a clean, modern design with immersive animations and interactive elements that enhance user engagement. Built with React.js, it leverages GSAP for smooth animations, ScrollTrigger for interactive scroll effects, and Framer Motion for additional dynamic movements. The platform includes a contact form integrated with EmailJS for communication, a vertical timeline component to showcase the organization's journey, and responsive design techniques using CSS and media queries to ensure accessibility across devices. React Router manages the navigation between different sections of the platform, creating a seamless user experience. EmpowerEd offers students a range of services including mentorship opportunities, mental health support, research funding, scholarship information, and guidance for studying abroad. The platform's design emphasizes accessibility and usability, making educational resources available to a diverse student population.",
       source_code_link: "https://github.com/Bushraabir/empowereducation",
-      website_link: "https://bushraabir.github.io/empowereducation/"
+      website_link: "https://bushraabir.github.io/empowereducation/",
     },
     {
       type: "website",
@@ -260,36 +322,35 @@ const Website = () => {
         { name: "Streamlit", color: "text-red-400" },
         { name: "Plotly", color: "text-blue-500" },
         { name: "Pandas", color: "text-green-400" },
-        { name: "Data Visualization", color: "text-purple-500" }
+        { name: "Data Visualization", color: "text-purple-500" },
       ],
       images: [PeriodicTableVisualiser2, PeriodicTableVisualiser1, PeriodicTableVisualiser3, PeriodicTableVisualiser4, PeriodicTableVisualiser5, PeriodicTableVisualiser6],
       detailedDescription: "The Periodic Table Visualizer is an interactive web application built with Python, Streamlit, Plotly, and Pandas. It offers a comprehensive exploration of chemical elements through various interactive features including an interactive periodic table, data analysis tools, trend visualization, 3D analytics, element gallery, and detailed element information. The application provides users with the ability to filter elements by various properties, visualize trends across atomic numbers, analyze relationships between element properties in 3D space, and view detailed information about each element including physical and chemical properties.",
       source_code_link: "https://github.com/Bushraabir/periodic_table_visualizer",
-      website_link: "https://periodictablevisualizer.streamlit.app/"
+      website_link: "https://periodictablevisualizer.streamlit.app/",
     },
     {
       type: "website",
       title: "Study Buddy",
       description: "An interactive study companion designed to boost student productivity with smart learning tools.",
       tags: [
-        { "name": "React", "color": "text-blue-400" },
-        { "name": "GSAP", "color": "text-green-400" },
-        { "name": "Framer Motion", "color": "text-purple-400" },
-        { "name": "Lottie Animation", "color": "text-yellow-400" },
-        { "name": "React Router", "color": "text-indigo-400" },
-        { "name": "Firebase Authentication", "color": "text-red-400" },
-        { "name": "Firebase Firestore", "color": "text-orange-400" },
-        { "name": "Formik & Yup", "color": "text-teal-400" },
-        { "name": "ReactQuill", "color": "text-pink-400" },
-        { "name": "Plotly.js", "color": "text-cyan-400" },
-        { "name": "Math.js", "color": "text-emerald-400" }
+        { name: "React", color: "text-blue-400" },
+        { name: "GSAP", color: "text-green-400" },
+        { name: "Framer Motion", color: "text-purple-400" },
+        { name: "Lottie Animation", color: "text-yellow-400" },
+        { name: "React Router", color: "text-indigo-400" },
+        { name: "Firebase Authentication", color: "text-red-400" },
+        { name: "Firebase Firestore", color: "text-orange-400" },
+        { name: "Formik & Yup", color: "text-teal-400" },
+        { name: "ReactQuill", color: "text-pink-400" },
+        { name: "Plotly.js", color: "text-cyan-400" },
+        { name: "Math.js", color: "text-emerald-400" },
       ],
       images: [StudyBuddy2, StudyBuddy1, StudyBuddy3, StudyBuddy4, StudyBuddy5, StudyBuddy6, StudyBuddy7, StudyBuddy8],
       detailedDescription: "Study Buddy is an interactive educational application designed to enhance student productivity through a comprehensive suite of study tools. The platform combines interactive flashcards with quiz functionality, a Pomodoro-based session manager for time tracking, an advanced graphing calculator supporting multiple equation types, and a smart note-taking system with real-time synchronization via Firebase. Built using React.js, GSAP, Framer Motion, and Plotly.js, Study Buddy delivers a modern, responsive learning experience with premium animations and intuitive design. The application implements secure user authentication, personalized study tracking, and mathematical computation capabilities through math.js, creating a complete study solution that helps students maximize their academic performance.",
       source_code_link: "https://github.com/Bushraabir/study-buddy",
-      website_link: "https://bushraabir.github.io/study-buddy/"
+      website_link: "https://bushraabir.github.io/study-buddy/",
     },
-
     {
       type: "website",
       title: "Space Invaders: Nebula Assault",
@@ -303,32 +364,29 @@ const Website = () => {
         { name: "Game Development", color: "text-pink-500" },
         { name: "3D Graphics", color: "text-indigo-500" },
         { name: "Particle Effects", color: "text-orange-500" },
-        { name: "Styled Components", color: "text-teal-500" }
+        { name: "Styled Components", color: "text-teal-500" },
       ],
-      images: [Space2, Space1, Space3, ],
+      images: [Space2, Space1, Space3],
       detailedDescription: "Space Invaders: Nebula Assault is a dynamic space shooter game built with modern web technologies. The game features 3D graphics powered by Three.js, with a dynamic starfield, detailed spaceship models, and enemy ships. Players can control their spaceship using arrow keys and shoot with the spacebar, while fending off waves of enemies with straight or zigzag movement patterns. The game includes collectibles for bonus points, power-ups (speed boost, shield, and multi-shot), and impressive visual effects like explosions and thruster particles. The state management is handled efficiently with Zustand, and the game features post-processing effects like bloom via @react-three/postprocessing. The user interface is styled with styled-components, providing responsive start, game, and game-over screens with a heads-up display (HUD) showing score, lives, and audio toggle.",
       source_code_link: "https://github.com/Bushraabir/space-invaders",
-      website_link: "https://bushraabir.github.io/space-invaders/"
+      website_link: "https://bushraabir.github.io/space-invaders/",
     },
-
     {
       type: "website",
       title: "Relevia",
       description: "An interactive web application designed to help individuals manage and overcome panic attacks through resources, tools, and support.",
       tags: [
-        { "name": "React", "color": "text-cyan-500" },
-        { "name": "JavaScript", "color": "text-yellow-500" },
-        { "name": "Tailwind CSS", "color": "text-blue-500" },
-        { "name": "Framer Motion", "color": "text-purple-500" },
-        { "name": "Mental Health", "color": "text-green-500" }
+        { name: "React", color: "text-cyan-500" },
+        { name: "JavaScript", color: "text-yellow-500" },
+        { name: "Tailwind CSS", color: "text-blue-500" },
+        { name: "Framer Motion", color: "text-purple-500" },
+        { name: "Mental Health", color: "text-green-500" },
       ],
-      images: [relevia1, relevia2, relevia3, relevia4, relevia5 , relevia6, relevia7],
+      images: [relevia1, relevia2, relevia3, relevia4, relevia5, relevia6, relevia7],
       detailedDescription: "Relevia is an interactive web application built with React, Tailwind CSS, and Framer Motion, aimed at assisting individuals in managing and overcoming panic attacks. Developed by EmpowerED Global, it offers a comprehensive set of features including a resource library with articles and guides, interactive tools such as breathing exercises and grounding techniques, and sections for learning about panic attacks, coping strategies, medication information, and contact support. The application features an animated and responsive user interface, ensuring a smooth experience on both mobile and desktop devices. Relevia aims to raise awareness about panic attacks and provide accessible tools for emotional regulation and coping. It includes components like About, Contact, Coping, Home, Medication, and Resources, each designed to be user-friendly and supportive.",
       source_code_link: "https://github.com/Bushraabir/relevia",
-      website_link: "https://bushraabir.github.io/relevia/"
+      website_link: "https://bushraabir.github.io/relevia/",
     },
-
-
     {
       type: "website",
       title: "EmpowerTube - Educational Content Hub",
@@ -338,10 +396,10 @@ const Website = () => {
         { name: "CSS", color: "text-blue-400" },
         { name: "JavaScript", color: "text-yellow-400" },
       ],
-      images: [Tube1, Tube2, Tube3, ],
+      images: [Tube1, Tube2, Tube3],
       detailedDescription: "EmpowerTube is a comprehensive web application designed to help educators and students organize and manage educational content efficiently. The platform supports multiple content formats including YouTube videos, PDF documents, and articles, allowing users to create, read, update, and delete content with ease. Its intelligent organization system enables drag-and-drop rearrangement of content items, making it simple to structure learning materials logically. Advanced filtering options allow users to search by title or content, filter by category, and identify favorite content quickly. Multiple sorting options (Newest, Oldest, Popular) help users find content based on their specific needs. The application features an automatic dark/light mode that detects system preferences for comfortable viewing in any lighting condition. A favorites system allows users to mark and filter their most important content. The modern, minimalist interface with smooth animations ensures an intuitive user experience across all devices. EmpowerTube utilizes LocalStorage for persistent data storage, ensuring content remains available even when offline. Client-side PDF upload and preview functionality allows for seamless document handling without server dependency. Performance optimizations like lazy loading and efficient rendering ensure smooth operation even with large content libraries. Comprehensive error handling and user feedback mechanisms provide a reliable experience, while the use of vanilla JavaScript (without frameworks) keeps the application lightweight and fast. The implementation of CSS Variables and Modern Layout techniques (Grid/Flexbox) creates a responsive, adaptable interface that works perfectly on desktops, tablets, and mobile devices. Font Awesome 6 icons enhance the visual experience with professional-grade symbols throughout the interface.",
       source_code_link: "https://github.com/Bushraabir/EmpowerTube",
-      website_link: "https://bushraabir.github.io/EmpowerTube/"
+      website_link: "https://bushraabir.github.io/EmpowerTube/",
     },
   ];
 
@@ -353,7 +411,6 @@ const Website = () => {
       tags: [],
       images: [Satellite1],
       detailedDescription: "This project involves designing and building a satellite along with a custom rocket, powered by hydrogen and oxygen fuel that is processed by us. The satellite will include a transmitter to send its location back to us. The ultimate goal is to launch the satellite into Low Earth Orbit (LEO), aiming to reach the Kármán Line.",
-      
     },
     {
       type: "project",
@@ -362,7 +419,6 @@ const Website = () => {
       tags: [],
       images: [Aquarium],
       detailedDescription: "This project involves designing and building a custom aquarium water purifier equipped with a 12V water pump. The system will reduce ammonia levels, remove fish waste, and promote the growth of beneficial plankton while maintaining balanced oxygen levels in the water. The purifier will include a filtration mechanism to ensure clean and healthy water for aquatic life. The ultimate goal is to create a self-sustaining ecosystem within the aquarium, ensuring optimal water quality and supporting the well-being of the fish and other aquatic organisms.",
-      
     },
     {
       type: "project",
@@ -371,7 +427,6 @@ const Website = () => {
       tags: [],
       images: [Drone],
       detailedDescription: "This project involves designing and assembling a customizable quadcopter drone using off-the-shelf components. The drone will be equipped with a camera for aerial photography, basic flight stabilization, and remote-control capabilities. The ultimate goal is to create a cost-effective, modular drone for hobbyist aerial imaging, environmental monitoring, or educational purposes, while learning principles of aerodynamics, electronics, and robotics.",
-     
     },
     {
       type: "project",
@@ -380,7 +435,6 @@ const Website = () => {
       tags: [],
       images: [Bio],
       detailedDescription: "This project involves designing and constructing a small-scale bio diesel reactor that converts waste cooking oil, vegetable oil, or animal fats into usable bio diesel fuel. The system will use a chemical process called transesterification to break down triglycerides into fatty acid methyl esters (FAME), producing clean-burning bio diesel. The ultimate goal is to create a sustainable, low-cost method to recycle waste oils into renewable fuel for vehicles, generators, or heating systems, reducing reliance on fossil fuels and lowering carbon emissions.",
-      
     },
     {
       type: "project",
@@ -389,7 +443,6 @@ const Website = () => {
       tags: [],
       images: [Telescope],
       detailedDescription: "This project involves designing and constructing a simple, low-cost refracting telescope using affordable, off-the-shelf components. The telescope will use optical lenses to collect and focus light, enabling observation of celestial objects like the Moon, planets, and bright star clusters. The ultimate goal is to create a functional, portable telescope for educational purposes learning fundamental principles of optics and astronomy.",
-     
     },
     {
       type: "project",
@@ -398,7 +451,6 @@ const Website = () => {
       tags: [],
       images: [Biogas],
       detailedDescription: "This project involves designing and constructing a small-scale bio gas system that converts organic household waste (e.g., kitchen scraps, garden waste, or livestock manure) into methane gas and organic fertilizer. The main goal is to use human feces as it is cost-free and challenging to manage as waste. The system will use anaerobic digestion to break down waste, capture methane for cooking or heating, and produce nutrient-rich slurry for gardening and farming. The ultimate goal is to create a sustainable, closed-loop energy solution that reduces waste, lowers reliance on fossil fuels, and supports eco-friendly agriculture.",
-     
     },
   ];
 
@@ -414,7 +466,7 @@ const Website = () => {
     return (
       <motion.div
         onClick={() => onClick(data)}
-        className="mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-dark_teal cursor-pointer overflow-hidden"
+        className="website-card mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-dark_teal cursor-pointer overflow-hidden"
         whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)" }}
         whileTap={{ scale: 0.98 }}
         initial={{ opacity: 0, y: 50 }}
@@ -534,11 +586,12 @@ const Website = () => {
 
   return (
     <>
-      <style>{`
+      <style jsx>{`
         .website-section {
           background: linear-gradient(135deg, #1E1B4B 0%, #134E5E 50%, #1E1B4B 100%);
           position: relative;
           overflow: hidden;
+          isolation: isolate; /* Prevents style leakage to other sections */
         }
         .website-section::before {
           content: '';
@@ -549,13 +602,26 @@ const Website = () => {
           height: 200%;
           background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%);
           animation: rotateGlow 20s linear infinite;
+          z-index: 0;
         }
         @keyframes rotateGlow {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }
+        .website-card {
+          z-index: 1; /* Ensures cards stay above background effects */
+        }
+        @media (max-width: 768px) {
+          .website-section {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+          }
+          .website-card {
+            padding: 1rem;
+          }
+        }
       `}</style>
-      <section id="websites" className="py-16 lg:py-24 website-section text-lemon_chiffon">
+      <section id="websites" className="website-section py-16 lg:py-24 text-lemon_chiffon">
         <div className="container mx-auto px-6 lg:px-20 relative z-10">
           <div ref={initialMessageRef} className="flex flex-col items-center justify-center min-h-screen mt-20">
             <motion.div
@@ -579,6 +645,7 @@ const Website = () => {
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+                style={{ transformOrigin: "center" }}
               >
                 <Lottie options={lottieOptions} height={isDesktop ? 80 : 40} width={isDesktop ? 80 : 40} />
               </motion.div>
@@ -602,7 +669,7 @@ const Website = () => {
             transition={{ duration: 1, delay: 0.5 }}
           >
             <p className="text-lg sm:text-xl font-description text-lemon_chiffon leading-relaxed">
-              Collaborated with  Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
+              Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
             </p>
           </motion.div>
 
@@ -669,9 +736,7 @@ const Website = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
             onClick={(e) => {
-              if (e.target === e.currentTarget) {
-                setSelectedProject(null);
-              }
+              if (e.target === e.currentTarget) setSelectedProject(null);
             }}
           >
             <motion.div
