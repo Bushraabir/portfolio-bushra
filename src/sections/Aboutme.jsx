@@ -52,7 +52,7 @@ const About = () => {
   return (
     <motion.section
       id="about"
-      className={`relative flex flex-col items-center justify-center min-h-screen ${sectionPadding} pointer-events-none select-none`}
+      className={`relative flex flex-col items-center justify-center min-h-screen ${sectionPadding} ${isMobile ? 'pointer-events-auto' : 'pointer-events-none'} select-none`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={sectionTransition}
