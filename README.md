@@ -128,7 +128,7 @@ Contributions are welcome! If you'd like to improve or add features, please open
 ## Contact
 
 * **Name:** Bushra Khandoker
-* **Email:** [your-email@example.com](mailto:your-email@example.com)
+* **Email:** [bushrakhandoker2@gmail.com](mailto:bushrakhandoker2@gmail.com)
 * **GitHub:** [@Bushraabir](https://github.com/Bushraabir)
 
 ---
