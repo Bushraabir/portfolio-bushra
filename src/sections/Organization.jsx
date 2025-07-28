@@ -282,7 +282,7 @@ Adaptive: Yes
             <motion.img
               src={logo}
               alt="EmpowerEd Logo"
-              className="w-40 sm:w-48 md:w-64 lg:w-80 h-auto mx-auto mb-6 drop-shadow-2xl"
+              className="w-40 sm:w-48 md:w-64 lg:w-80 h-auto mx-auto mb-6 drop-shadow-2xl -z-50"
               animate={{ rotate: 360 }}
               transition={{ 
                 rotate: { 

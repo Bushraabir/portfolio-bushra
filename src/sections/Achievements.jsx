@@ -8,6 +8,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { FaCheck, FaChevronDown } from "react-icons/fa";
 const Ball = lazy(() => import("../assets/3d_model/Ball"));
+const Crystal = lazy(() => import("../assets/3d_model/Crystal.jsx"));
 import Star from "../components/Stars";
 
 if (typeof window !== "undefined") {
@@ -133,58 +134,56 @@ const achievements = [
 class WebGLErrorBoundary extends React.Component {
   state = { hasError: false };
   static getDerivedStateFromError = () => ({ hasError: true });
-  componentDidCatch(error) {
-    console.error("WebGL error:", error);
-  }
+  componentDidCatch(error) { console.error("WebGL error:", error); }
   render() {
     return this.state.hasError ? (
-      <div className="w-[350px] h-[350px] flex items-center justify-center bg-black text-white">
-        WebGL Unavailable
-      </div>
+      <div className="w-[200px] h-[200px] flex items-center justify-center bg-black text-white">WebGL Unavailable</div>
     ) : this.props.children;
   }
 }
 
 const LoadingFallback = () => (
   <mesh>
-    <boxGeometry args={[1, 1, 1]} />
+    <boxGeometry args={[0.5, 0.5, 0.5]} />
     <meshStandardMaterial color="#444" />
   </mesh>
 );
 
-const AnimatedModel = memo(() => (
-  <WebGLErrorBoundary>
-    <Canvas 
-      className="absolute top-[-149px] left-[-145px] z-10" 
-      style={{ width: 350, height: 350 }}
-      gl={{ antialias: false, powerPreference: "high-performance" }}
-    >
-      <ambientLight intensity={3} color="#a3c4f3" />
-      <spotLight position={[15, 25, 10]} angle={0.7} penumbra={0.9} intensity={40} color="#f1c0e8" />
-      <directionalLight position={[-10, 20, -10]} intensity={6} color="#ffcfd2" />
-      <pointLight position={[0, 5, 10]} intensity={30} color="#fde4cf" decay={2} />
-      <Suspense fallback={<LoadingFallback />}>
-        <Ball />
-      </Suspense>
-      <OrbitControls 
-        enableZoom={false} 
-        enablePan={false} 
-        autoRotate 
-        autoRotateSpeed={1.2}
-        enableDamping={false}
-      />
-    </Canvas>
-  </WebGLErrorBoundary>
-));
+const AnimatedModel = memo(() => {
+  const isLowQuality = typeof window !== "undefined" && (
+    window.innerWidth < 768 || 
+    (navigator.deviceMemory && navigator.deviceMemory < 4) || 
+    (navigator.connection && (navigator.connection.downlink < 2.5 || navigator.connection.effectiveType?.includes("2g")))
+  );
+
+  return (
+    <WebGLErrorBoundary>
+      <Canvas
+        className="absolute top-[-145px] left-[-150px] z-10"
+        style={{ width: isLowQuality ? 350 : 400, height: isLowQuality ? 350 : 400 }}
+        gl={{ antialias: !isLowQuality, powerPreference: isLowQuality ? "low-power" : "high-performance" }}
+        dpr={isLowQuality ? 1 : 1.5}
+      >
+        <ambientLight intensity={2} color="#a3c4f3" />
+        <spotLight position={[10, 15, 5]} angle={0.7} penumbra={0.9} intensity={20} color="#f1c0e8" />
+        <Suspense fallback={<LoadingFallback />}>
+          <Crystal />
+        </Suspense>
+        <OrbitControls
+          enableZoom={false}
+          enablePan={false}
+          autoRotate
+          autoRotateSpeed={0.8}
+          enableDamping={false}
+        />
+      </Canvas>
+    </WebGLErrorBoundary>
+  );
+}, () => true); 
 
 const listVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.05
-    }
-  }
+  visible: { opacity: 1, transition: { staggerChildren: 0.03 } }
 };
 
 const itemVariants = {
@@ -200,18 +199,17 @@ const AchievementCard = memo(({ achievement, isMobile }) => {
   const toggleCard = useCallback(() => setIsExpanded(p => !p), []);
 
   useEffect(() => {
-    if (!headingRef.current) return;
+    if (!headingRef.current || !cardRef.current) return;
 
     const ctx = gsap.context(() => {
       gsap.from(headingRef.current, {
-        y: 50,
+        y: 30,
         opacity: 0,
-        duration: 1,
-        delay: 0.2,
-        ease: "power3.out",
+        duration: 0.6,
+        ease: "power2.out",
         scrollTrigger: {
-          trigger: headingRef.current,
-          start: "top 90%",
+          trigger: cardRef.current,
+          start: "top 85%",
           toggleActions: "play none none reverse"
         }
       });
@@ -225,34 +223,31 @@ const AchievementCard = memo(({ achievement, isMobile }) => {
       ref={cardRef}
       className="achievement-card"
       contentStyle={{
-        background: "rgba(20,20,40,0.7)",
-        backdropFilter: "blur(10px)",
-        borderRadius: "1.5rem",
-        padding: isMobile ? "1rem" : "2rem",
+        background: "rgba(20,20,40,0.5)",
+        backdropFilter: "blur(1px)",
+        borderRadius: "1rem",
+        padding: isMobile ? "0.8rem" : "1.5rem",
         border: "1px solid rgba(255,255,255,0.1)",
-        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)"
+        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)"
       }}
-      contentArrowStyle={{ borderRight: "8px solid rgba(241, 192, 232, 0.5)" }}
+      contentArrowStyle={{ borderRight: "6px solid rgba(241, 192, 232, 0.5)" }}
       icon={<AnimatedModel />}
     >
       <motion.div
-        className="cursor-pointer"
-        whileHover={{ y: -5 }}
+        className="cursor-pointer will-change-transform"
+        whileHover={{ y: -3 }}
         transition={{ duration: 0.2 }}
         onClick={toggleCard}
         role="button"
         aria-expanded={isExpanded}
       >
         <h3 ref={headingRef} className={`
-          font-heading font-bold bg-gradient-to-r from-lemon_chiffon to-pink_lavender bg-clip-text
-          ${isMobile ? 
-            "text-2xl tracking-tight" : 
-            "text-3xl sm:text-4xl tracking-tight"}
-          text-transparent transition-transform hover:scale-105 hover:text-white
+          font-heading font-bold bg-gradient-to-r from-champagne_pink to-electric_blue bg-clip-text
+          ${isMobile ? "text-xl tracking-tight" : "text-2xl sm:text-3xl tracking-tight"}
+          text-transparent
         `}>
           {achievement.title}
         </h3>
-        
         <p className={`
           mt-4 font-serif tracking-wide text-champagne_pink opacity-90 transition-colors
           ${isMobile ? "text-sm" : "text-base sm:text-lg"}
@@ -260,42 +255,35 @@ const AchievementCard = memo(({ achievement, isMobile }) => {
         `}>
           {achievement.description}
         </p>
-
-        <motion.div 
-          animate={{ rotate: isExpanded ? 180 : 0 }} 
-          transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="mt-3 inline-block"
+        <motion.div
+          animate={{ rotate: isExpanded ? 180 : 0 }}
+          transition={{ type: "spring", stiffness: 150, damping: 15 }}
+          className="mt-2 inline-block"
         >
-          <FaChevronDown className="text-2xl text-pink_lavender hover:text-white" />
+          <FaChevronDown className="text-xl text-pink_lavender" />
         </motion.div>
       </motion.div>
-
-      <motion.div 
+      <motion.div
         layout
         initial={{ height: 0, opacity: 0 }}
-        animate={{ 
-          height: isExpanded ? "auto" : 0, 
-          opacity: isExpanded ? 1 : 0 
-        }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="overflow-hidden mt-4"
+        animate={{ height: isExpanded ? "auto" : 0, opacity: isExpanded ? 1 : 0 }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+        className="overflow-hidden mt-3"
       >
         <motion.ul
           variants={listVariants}
           initial="hidden"
           animate={isExpanded ? "visible" : "hidden"}
-          className="space-y-3"
+          className="space-y-2"
         >
           {achievement.points.map((point, index) => (
-            <motion.li 
+            <motion.li
               key={index}
               variants={itemVariants}
-              className={`flex items-start space-x-3 font-serif text-champagne_pink ${
-                isMobile ? "text-sm" : "text-base sm:text-lg"
-              }`}
+              className={`flex items-start space-x-2 font-serif text-champagne_pink ${isMobile ? "text-xs" : "text-sm sm:text-base"}`}
             >
-              <div className="flex items-center justify-center w-6 h-6 text-white rounded-full bg-gradient-to-r from-tea_rose to-pink_lavender shadow-md">
-                <FaCheck className="text-lg" />
+              <div className="flex items-center justify-center w-5 h-5 text-white rounded-full bg-gradient-to-r from-tea_rose to-pink_lavender shadow-sm">
+                <FaCheck className="text-sm" />
               </div>
               <span className="tracking-wide">{point}</span>
             </motion.li>
@@ -304,33 +292,41 @@ const AchievementCard = memo(({ achievement, isMobile }) => {
       </motion.div>
     </VerticalTimelineElement>
   );
-}, (prev, next) => 
-  prev.achievement === next.achievement && 
-  prev.isMobile === next.isMobile
-);
+}, (prev, next) => prev.achievement === next.achievement && prev.isMobile === next.isMobile);
 
 const Achievements = () => {
   const [cursorPosition, setCursorPosition] = useState(null);
-  const isMobile = useRef(typeof window !== "undefined" ? window.innerWidth < 600 : false);
+  const [isMobile, setIsMobile] = useState(typeof window !== "undefined" && window.innerWidth < 600);
+  const [deviceQuality, setDeviceQuality] = useState("high");
   const resizeTimeout = useRef();
 
   useEffect(() => {
-    const handleResize = () => {
+    if (typeof window === "undefined") return;
+
+    const checkPerformance = () => {
       clearTimeout(resizeTimeout.current);
       resizeTimeout.current = setTimeout(() => {
-        isMobile.current = window.innerWidth < 600;
+        const mobile = window.innerWidth < 600;
+        let quality = "high";
+        if (mobile || (navigator.deviceMemory && navigator.deviceMemory < 4) || 
+            (navigator.connection && (navigator.connection.downlink < 2.5 || navigator.connection.effectiveType?.includes("2g")))) {
+          quality = "low";
+        }
+        setIsMobile(mobile);
+        setDeviceQuality(quality);
       }, 100);
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    checkPerformance();
+    window.addEventListener("resize", checkPerformance);
+    return () => window.removeEventListener("resize", checkPerformance);
   }, []);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const handleMouseMove = (e) => {
-      requestAnimationFrame(() => {
-        setCursorPosition({ x: e.clientX, y: e.clientY });
-      });
+      requestAnimationFrame(() => setCursorPosition({ x: e.clientX, y: e.clientY }));
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -338,75 +334,87 @@ const Achievements = () => {
   }, []);
 
   useEffect(() => {
-    gsap.utils.toArray(".achievement-card").forEach(card => {
-      ScrollTrigger.create({
-        trigger: card,
-        start: "top 90%",
-        onEnter: () => gsap.to(card, { opacity: 1, y: 0, duration: 0.8 }),
-        onLeaveBack: () => gsap.to(card, { opacity: 0, y: 50, duration: 0.3 })
-      });
+    if (typeof window === "undefined") return;
+
+    const cards = gsap.utils.toArray(".achievement-card");
+    cards.forEach(card => {
+      gsap.fromTo(card, 
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
     });
 
     return () => ScrollTrigger.getAll().forEach(t => t.kill());
   }, []);
 
   return (
-    <section 
+    <section
       id="achievements"
       className={`
-        bg-gradient-to-b from-deep_indigo via-mauve to-pink_lavender backdrop-blur-lg
-        ${isMobile.current ? "p-4 mt-8" : "p-8 mt-16 md:p-12 lg:p-16"}
-      `}
+        bg-gradient-to-b from-deep_indigo via-electric_blue to-pink_lavender
+       `}
     >
-      <motion.div 
-        className="mb-16 text-center relative overflow-visible"
+      <motion.div
+        className="text-center relative overflow-visible"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
       >
         <motion.h2
           className={`
-            font-heading font-extrabold bg-gradient-to-r from-lemon_chiffon to-tea_rose bg-clip-text text-transparent relative z-20
-            ${isMobile.current ? "text-4xl mt-5" : "text-5xl sm:text-6xl md:text-7xl lg:text-8xl mt-5"}
+            font-heading font-extrabold bg-gradient-to-r from-jordy_blue to-tea_rose bg-clip-text text-transparent
+            ${isMobile ? "text-3xl mt-4" : "text-5xl sm:text-6xl mt-6"}
           `}
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
         >
           Accomplishments
         </motion.h2>
         <motion.div
-          className="mt-8 h-1 bg-gradient-to-r from-tea_rose to-pink_lavender rounded-full"
+          className="mt-6 h-1 bg-gradient-to-r from-tea_rose to-jordy_blue rounded-full"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          style={{ width: "6rem", margin: "0 auto" }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          style={{ width: "5rem", margin: "0 auto" }}
         />
         <motion.p
           className={`
-            font-serif text-champagne_pink tracking-wide max-w-3xl mx-auto
-            ${isMobile.current ? "text-sm mt-4" : "text-base sm:text-lg md:text-xl mt-8"}
+            font-serif text-champagne_pink tracking-wide max-w-2xl mx-auto mb-10
+            ${isMobile ? "text-xs mt-3" : "text-base sm:text-lg mt-6"}
           `}
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
-          From the first day of school until now, everything I've done has been driven by my curiosity. This curiosity has not only allowed me to explore my purpose and interests but has also been the catalyst for my continuous personal development. Each step has been a part of a greater journey toward growth.
+          My curiosity has driven my journey from school to now, fueling my exploration of purpose and interests while sparking continuous personal growth. Each step shapes my path forward.
         </motion.p>
       </motion.div>
 
       <Star cursorPosition={cursorPosition} />
-      
-      <VerticalTimeline lineColor="rgba(241, 192, 232, 0.5)">
+      <div className="mt-40">
+      <VerticalTimeline lineColor="rgba(241, 192, 232, 0.0)" className="mt-10">
         {achievements.map((achievement, index) => (
-          <AchievementCard 
-            key={index} 
-            achievement={achievement} 
-            isMobile={isMobile.current} 
+          <AchievementCard
+            key={index}
+            achievement={achievement}
+            isMobile={isMobile}
           />
         ))}
       </VerticalTimeline>
+      </div>
     </section>
   );
 };
 
-export default React.memo(Achievements);
+export default memo(Achievements);

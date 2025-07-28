@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Lottie from "react-lottie";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import animationData from "../assets/animation/myself.json";
 import atheletics from "../assets/gallery/2022_atheletics.jpg";
 import house_champion_2 from "../assets/gallery/2022_house_compitition_2.jpeg";
@@ -345,7 +347,14 @@ const Gallery = () => {
                 onTouchStart={(e) => handleHover(e, true)}
                 onTouchEnd={(e) => handleHover(e, false)}
               >
-                <img src={img.src} alt={img.description} />
+                <LazyLoadImage
+                  src={img.src}
+                  alt={img.description}
+                  effect="blur"
+                  width="100%"
+                  height="200px"
+                  style={{ objectFit: "cover", borderRadius: "8px" }}
+                />
                 <div className="image-description">{img.description}</div>
               </div>
             ))}
@@ -365,13 +374,20 @@ const Gallery = () => {
                 onMouseEnter={(e) => handleHover(e, true)}
                 onMouseLeave={(e) => handleHover(e, false)}
               >
-                <img src={img.src} alt={img.description} />
+                <LazyLoadImage
+                  src={img.src}
+                  alt={img.description}
+                  effect="blur"
+                  width="100%"
+                  height="100%"
+                  style={{ objectFit: "cover", borderRadius: "8px" }}
+                />
                 <div className="image-description">{img.description}</div>
               </div>
             ))}
           </motion.div>
         )}
-        <div className="content z-50">
+        <div className="content z-5">
           <motion.h1
             data-content="In Frame"
             initial={{ opacity: 0, y: 30 }}

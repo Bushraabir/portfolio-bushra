@@ -194,11 +194,7 @@ const MyStoryPage = () => (
   <div className="bg-deep_indigo text-deep_indigo min-h-screen font-description overflow-hidden">
     <NavbarComponent page="myStory" />
     <main className="min-h-screen overflow-hidden">
-    <div className="absolute top-0 left-0 w-full h-full">
-      <ErrorBoundary>
-        <ParticleScene className="min-h-screen overflow-hidden -z-10" />
-      </ErrorBoundary>
-    </div>
+
       <AboutMe id="about" className="overflow-hidden"/>
       <Achievements id="achievements" className="overflow-hidden" />
       <Skills id= "skill" className="overflow-hidden"/>

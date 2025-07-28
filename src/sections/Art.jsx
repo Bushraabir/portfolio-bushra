@@ -273,7 +273,6 @@ const artworksData = {
       title: "Luminescence in Stillness",
       date: "2023"
     }
-  
   ],
   "crafts and models": [
     {
@@ -318,84 +317,82 @@ const artworksData = {
       title: "Terra’s Gambit: A Symphony in Clay",
       date: "2025"
     }
-  
-  
   ],
   modeling: [
-        {
-          src: can,
-          title: "A Digital Rhapsody",
-          description:
-            "A visionary exploration that fuses the precision of digital rendering with the soul of handcrafted narrative. Developed in Blender and enriched by meticulously crafted labels in Illustrator, the artwork presents a harmonious still life where industrial elements—weathered cans, rustic wooden blocks, and textured stone—are bathed in soft, ambient light. The overlaid annotations serve as poetic whispers, inviting the viewer to unravel hidden layers of meaning and engage in a dialogue between form and sentiment. This piece is a celebration of the convergence between modern technology and traditional artistic expression, offering a dynamic interplay of structure and spontaneity that captures the ephemeral essence of creative thought.",
-          medium: "Blender, Adobe Illustrator",
-          date: "2023"
-        },
-        {
-          src: ship,
-          title: "Nebular Vessel: Beacon of Life",
-          description:
-            "A visionary sci‑fi creation rendered in Blender, where art meets cosmic aspiration. The spaceship’s transparent, glass-like hull houses a series of delicate glass containers, each cradling a luminous core that symbolizes the spark of life. This radiant element is portrayed as the essence of human hope—a beacon destined to ignite new worlds. The interplay of reflective surfaces and ethereal light creates an atmosphere of wonder and possibility, embodying the belief that humanity will one day venture into the unknown, carrying the seeds of life across the cosmos. This piece not only celebrates technical mastery and innovative design but also encapsulates a profound narrative of exploration, renewal, and the infinite potential of life beyond Earth.",
-          medium: "Blender",
-          date: "2023"
-        }
+    {
+      src: can,
+      title: "A Digital Rhapsody",
+      description:
+        "A visionary exploration that fuses the precision of digital rendering with the soul of handcrafted narrative. Developed in Blender and enriched by meticulously crafted labels in Illustrator, the artwork presents a harmonious still life where industrial elements—weathered cans, rustic wooden blocks, and textured stone—are bathed in soft, ambient light. The overlaid annotations serve as poetic whispers, inviting the viewer to unravel hidden layers of meaning and engage in a dialogue between form and sentiment. This piece is a celebration of the convergence between modern technology and traditional artistic expression, offering a dynamic interplay of structure and spontaneity that captures the ephemeral essence of creative thought.",
+      medium: "Blender, Adobe Illustrator",
+      date: "2023"
+    },
+    {
+      src: ship,
+      title: "Nebular Vessel: Beacon of Life",
+      description:
+        "A visionary sci‑fi creation rendered in Blender, where art meets cosmic aspiration. The spaceship’s transparent, glass-like hull houses a series of delicate glass containers, each cradling a luminous core that symbolizes the spark of life. This radiant element is portrayed as the essence of human hope—a beacon destined to ignite new worlds. The interplay of reflective surfaces and ethereal light creates an atmosphere of wonder and possibility, embodying the belief that humanity will one day venture into the unknown, carrying the seeds of life across the cosmos. This piece not only celebrates technical mastery and innovative design but also encapsulates a profound narrative of exploration, renewal, and the infinite potential of life beyond Earth.",
+      medium: "Blender",
+      date: "2023"
+    }
   ],
   illustration: [
-        {
-          src: kingdom,
-          title: "Abyssal Dominion",
-          description:
-            "In the shadowy depths where the ocean conceals forgotten legends, Abyssal Dominion emerges as a surreal kingdom shrouded in mystery. This illustration invites viewers into an underworld where ethereal blues and haunting pinks converge to reveal a realm of lost majesty. Amid the silent sway of submerged ruins and the ghostly luminescence of hidden treasures, the artwork tells a story of decay interwoven with regal splendor. Every brushstroke hints at ancient secrets and the enigmatic power of a kingdom that thrives beneath the crushing weight of the deep ocean. These ideas were inspired by themes found in modern reinterpretations of mythic underwater worlds, blending the allure of the unknown with a narrative of regality and mystery.",
-          medium: "Photoshop, Illustrator",
-          date: "2023"
-        },
-        {
-          src: warrior,
-          title: "Crimson Valor: The Spirit of Liberation",
-          description:
-            "This Adobe Illustrator artwork stands as a vivid tribute to the bravery of Bengali freedom fighters during the Liberation War. By reimagining the Bangladesh flag as a resolute, character-like emblem armed with a rifle, the piece powerfully blends modern digital aesthetics with profound national symbolism. The bold incorporation of the nation's map within a red circle further evokes an enduring spirit of sacrifice and unity, celebrating a pivotal moment in history.",
-          medium: "Adobe Illustrator",
-          date: "2023"
-        },
-        {
-          src: buet,
-          title: "Serenity In Structure",
-          description:
-            "This Adobe Illustrator artwork beautifully captures the iconic BUET Architecture Building and the serene bench in front of it. The organic, free-flowing frame blends nature with structural elements, reflecting the harmony between design and environment. The textured rocks, lush greenery, and modern facade create a visual balance, symbolizing the fusion of tradition and innovation in architectural education. The stylized approach adds an artistic depth, making this piece not just a depiction but a tribute to BUET’s architectural legacy.",
-          medium: "Adobe Illustrator",
-          date: "2023"
-        },
-        {
-          src: laran,
-          title: "Monsoon Whisper: The Kadam Bloom",
-          description:
-            "Inspired by the timeless allure of the Kadam flower—a cherished symbol in Bengali culture—this digital creation celebrates nature’s ephemeral poetry amid the monsoon. In this work, soft luminescence meets the rhythmic pulse of rain. The Kadam bloom unfurls gracefully as if in whispered dialogue with the monsoon’s gentle cascade. Rich, luminous hues mingle with delicate misty textures, evoking a serene dreamscape where tradition and modern digital technique coexist. Every petal and droplet hints at the fleeting beauty of life—a visual hymn of renewal and nostalgic longing for rain-soaked afternoons. The piece invites viewers to pause, reflect, and lose themselves in a moment of natural wonder and cultural reverie.",
-          medium: "Digital",
-          date: "2022"
-        },
-        {
-          src: logo,
-          title: "Symphony of Imagination",
-          description:
-            "A vibrant fusion of creativity and self-expression, this is the official logo for the 'Eyes on Talent' Facebook page and group. It seamlessly intertwines the fluid brushstrokes of painting, the captivating lens of photography, and the melodic curves of music. Designed to embody the spirit of a community where students and individuals of all ages showcase their talents and creativity, this logo invites everyone to join a celebration of artistic exploration and innovation.",
-          medium: "Adobe Photoshop",
-          date: "2021"
-        },
-        {
-          src: birth,
-          title: "Eternal Flame of Independence",
-          description:
-            "A heartfelt tribute crafted to celebrate the birthday of the Father of the Nation, Bangabandhu Sheikh Mujibur Rahman. This piece merges a dignified portrait with a mosaic of smaller images, symbolizing the collective memory and unity he ignited in Bangladesh. Warm hues and overlapping visuals highlight his enduring legacy, capturing the spirit of resilience, liberation, and hope that continues to guide the nation forward.",
-          medium: "Adobe Photoshop",
-          date: "2021"
-        },
-        {
-          src: independence,
-          title: "Crimson Echoes of Sacrifice",
-          description:
-            "A dynamic tribute honoring the blood and sacrifice of countless Bangalees who paved the path to freedom. Bold splashes of red and green evoke the national spirit, while powerful imagery and dramatic textures capture the relentless courage and resilience of a people united in their quest for independence. This artwork stands as a heartfelt homage to the enduring legacy of sacrifice and valor that continues to inspire.",
-          medium: "Adobe Illustrator",
-          date: "2021"
-        }
+    {
+      src: kingdom,
+      title: "Abyssal Dominion",
+      description:
+        "In the shadowy depths where the ocean conceals forgotten legends, Abyssal Dominion emerges as a surreal kingdom shrouded in mystery. This illustration invites viewers into an underworld where ethereal blues and haunting pinks converge to reveal a realm of lost majesty. Amid the silent sway of submerged ruins and the ghostly luminescence of hidden treasures, the artwork tells a story of decay interwoven with regal splendor. Every brushstroke hints at ancient secrets and the enigmatic power of a kingdom that thrives beneath the crushing weight of the deep ocean. These ideas were inspired by themes found in modern reinterpretations of mythic underwater worlds, blending the allure of the unknown with a narrative of regality and mystery.",
+      medium: "Photoshop, Illustrator",
+      date: "2023"
+    },
+    {
+      src: warrior,
+      title: "Crimson Valor: The Spirit of Liberation",
+      description:
+        "This Adobe Illustrator artwork stands as a vivid tribute to the bravery of Bengali freedom fighters during the Liberation War. By reimagining the Bangladesh flag as a resolute, character-like emblem armed with a rifle, the piece powerfully blends modern digital aesthetics with profound national symbolism. The bold incorporation of the nation's map within a red circle further evokes an enduring spirit of sacrifice and unity, celebrating a pivotal moment in history.",
+      medium: "Adobe Illustrator",
+      date: "2023"
+    },
+    {
+      src: buet,
+      title: "Serenity In Structure",
+      description:
+        "This Adobe Illustrator artwork beautifully captures the iconic BUET Architecture Building and the serene bench in front of it. The organic, free-flowing frame blends nature with structural elements, reflecting the harmony between design and environment. The textured rocks, lush greenery, and modern facade create a visual balance, symbolizing the fusion of tradition and innovation in architectural education. The stylized approach adds an artistic depth, making this piece not just a depiction but a tribute to BUET’s architectural legacy.",
+      medium: "Adobe Illustrator",
+      date: "2023"
+    },
+    {
+      src: laran,
+      title: "Monsoon Whisper: The Kadam Bloom",
+      description:
+        "Inspired by the timeless allure of the Kadam flower—a cherished symbol in Bengali culture—this digital creation celebrates nature’s ephemeral poetry amid the monsoon. In this work, soft luminescence meets the rhythmic pulse of rain. The Kadam bloom unfurls gracefully as if in whispered dialogue with the monsoon’s gentle cascade. Rich, luminous hues mingle with delicate misty textures, evoking a serene dreamscape where tradition and modern digital technique coexist. Every petal and droplet hints at the fleeting beauty of life—a visual hymn of renewal and nostalgic longing for rain-soaked afternoons. The piece invites viewers to pause, reflect, and lose themselves in a moment of natural wonder and cultural reverie.",
+      medium: "Digital",
+      date: "2022"
+    },
+    {
+      src: logo,
+      title: "Symphony of Imagination",
+      description:
+        "A vibrant fusion of creativity and self-expression, this is the official logo for the 'Eyes on Talent' Facebook page and group. It seamlessly intertwines the fluid brushstrokes of painting, the captivating lens of photography, and the melodic curves of music. Designed to embody the spirit of a community where students and individuals of all ages showcase their talents and creativity, this logo invites everyone to join a celebration of artistic exploration and innovation.",
+      medium: "Adobe Photoshop",
+      date: "2021"
+    },
+    {
+      src: birth,
+      title: "Eternal Flame of Independence",
+      description:
+        "A heartfelt tribute crafted to celebrate the birthday of the Father of the Nation, Bangabandhu Sheikh Mujibur Rahman. This piece merges a dignified portrait with a mosaic of smaller images, symbolizing the collective memory and unity he ignited in Bangladesh. Warm hues and overlapping visuals highlight his enduring legacy, capturing the spirit of resilience, liberation, and hope that continues to guide the nation forward.",
+      medium: "Adobe Photoshop",
+      date: "2021"
+    },
+    {
+      src: independence,
+      title: "Crimson Echoes of Sacrifice",
+      description:
+        "A dynamic tribute honoring the blood and sacrifice of countless Bangalees who paved the path to freedom. Bold splashes of red and green evoke the national spirit, while powerful imagery and dramatic textures capture the relentless courage and resilience of a people united in their quest for independence. This artwork stands as a heartfelt homage to the enduring legacy of sacrifice and valor that continues to inspire.",
+      medium: "Adobe Illustrator",
+      date: "2021"
+    }
   ],
 };
 
@@ -456,6 +453,18 @@ const Art = () => {
     setSelectedArtwork(artworksData[activeTab][prevIndex]);
   }, [activeTab, selectedArtwork]);
 
+  // Disable background scrolling when modal is open
+  useEffect(() => {
+    if (selectedArtwork) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedArtwork]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!selectedArtwork) return;
@@ -474,7 +483,7 @@ const Art = () => {
   }, [selectedArtwork]);
 
   return (
-    <section className="relative p-6 sm:p-10 md:p-14 lg:p-20 min-h-screen overflow-hidden">
+    <section id= "artworks" className=" relative p-6 sm:p-10 md:p-14 lg:p-20 min-h-screen overflow-hidden">
       <motion.div
         className="absolute inset-0 opacity-75 backdrop-blur-lg"
         animate={{ background: `linear-gradient(135deg, ${tabColors[activeTab].from} 0%, ${tabColors[activeTab].to} 100%)` }}
@@ -620,7 +629,7 @@ const Art = () => {
                 ref={modalRef}
                 role="dialog"
                 aria-modal="true"
-                className="relative bg-gradient-to-br from-lemon_chiffon to-champagne_pink p-6 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl"
+                className="relative bg-gradient-to-br from-lemon_chiffon to-champagne_pink p-6 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl z-100000"
                 variants={modalVariants}
                 drag="y"
                 dragConstraints={{ top: 0, bottom: 0 }}

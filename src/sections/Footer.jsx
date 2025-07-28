@@ -12,7 +12,7 @@ export default function Footer() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           viewport={{ once: true }}
-          className="mb-8 md:mb-0 text-center md:text-left"
+          className=" text-center md:text-left"
         >
           <h2 className="font-heading text-4xl md:text-5xl tracking-tight text-lemon_chiffon">
             Bushra Khandoker
