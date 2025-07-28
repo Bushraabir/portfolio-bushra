@@ -87,7 +87,7 @@ const ParticleBackground = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none" />;
+  return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none" style={{ top: 0 }} />;
 };
 
 const About = () => {
@@ -109,7 +109,7 @@ const About = () => {
     AOS.init({ duration: isMobile ? 600 : 1000, once: false, mirror: true });
   }, [isMobile]);
 
-  const sectionPadding = useMemo(() => (isMobile ? "p-4 mt-8" : "p-8 mt-16"), [isMobile]);
+  const sectionPadding = useMemo(() => (isMobile ? "p-4 mt-0" : "p-8 mt-0"), [isMobile]);
   const containerClass = useMemo(
     () =>
       isMobile
@@ -131,14 +131,13 @@ const About = () => {
         : "mb-8 font-description text-lg text-pink-100 leading-relaxed tracking-wider",
     [isMobile]
   );
-  const buttonClass = useMemo(
-    () =>
-      isMobile
-        ? "mt-6 px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-pink-500 rounded-lg transition-all duration-300"
-        : "mt-8 px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-pink-500 rounded-lg transition-all duration-300",
-    [isMobile]
-  );
-
+const buttonClass = useMemo(
+  () =>
+    isMobile
+      ? "mt-6 px-4 py-2 text-sm font-cta text-deep_indigo bg-gradient-to-r from-jordy_blue via-electric_blue to-aquamarine rounded-xl transition-all duration-300 hover:bg-gradient-to-l hover:from-aquamarine hover:via-electric_blue hover:to-jordy_blue hover:shadow-2xl hover:scale-105 active:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-pink_lavender focus:ring-opacity-70 animate-pulse"
+      : "mt-8 px-6 py-3 text-lg font-cta text-deep_indigo bg-gradient-to-r from-jordy_blue via-electric_blue to-aquamarine rounded-xl transition-all duration-300 hover:bg-gradient-to-l hover:from-aquamarine hover:via-electric_blue hover:to-jordy_blue hover:shadow-2xl hover:scale-105 active:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-pink_lavender focus:ring-opacity-70 animate-pulse",
+  [isMobile]
+);
   const sectionTransition = { duration: isMobile ? 0.7 : 1.2, ease: [0.68, -0.55, 0.265, 1.55] };
   const containerTransition = { duration: isMobile ? 0.6 : 0.9, ease: "anticipate" };
   const textVariants = {
@@ -167,7 +166,7 @@ const About = () => {
     <motion.section
       ref={sectionRef}
       id="about"
-      className={`relative flex flex-col items-center justify-center min-h-screen ${sectionPadding} bg-gradient-to-b from-indigo-950/50 to-transparent`}
+      className={`relative flex flex-col items-center justify-center h-screen ${sectionPadding} bg-gradient-to-b from-indigo-950/50 to-transparent`}
       initial={{ opacity: 0, y: 150 }}
       animate={{ opacity: 1, y: 0 }}
       transition={sectionTransition}
@@ -186,7 +185,7 @@ const About = () => {
           tiltMaxAngleX={10}
           tiltMaxAngleY={10}
           perspective={1200}
-          scale={1.02}
+          scale={1.01}
           transitionSpeed={800}
           className="w-full touch-pan-y"
         >
