@@ -19,7 +19,7 @@ const Testimonials = React.lazy(() => import("./sections/Testimonials"));
 const Skills = React.lazy(() => import("./sections/skill"));
 const Footer = React.lazy(() => import("./sections/Footer"));
 
-// Enhanced Error Boundary for better error handling
+//  Error Boundary for  error handling
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -313,7 +313,7 @@ const HomePage = () => {
       <NavbarComponent page="home" />
       <div className="absolute top-0 left-0 w-full h-full">
         <ErrorBoundary>
-          <SectionWrapper fallback={<Loader />}>
+          <SectionWrapper fallback={<Loader1 />}>
             <ParticleScene className="min-h-screen overflow-hidden -z-10" />
           </SectionWrapper>
         </ErrorBoundary>
@@ -365,12 +365,7 @@ const MyStoryPage = () => (
       <SectionWrapper>
         <Achievements id="achievements" className="overflow-hidden" />
       </SectionWrapper>
-      <SectionWrapper>
-        <Skills id="skills" className="overflow-hidden" />
-      </SectionWrapper>
-      <SectionWrapper>
-        <Gallery id="gallery" className="overflow-hidden" />
-      </SectionWrapper>
+
       <SectionWrapper>
         <Testimonials id="testimonials" className="overflow-hidden" />
       </SectionWrapper>
