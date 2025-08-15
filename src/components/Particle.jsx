@@ -125,7 +125,7 @@ const gradientMaterial = useMemo(() => {
       topColor: { value: new THREE.Color('#cfbaf0') }, 
       bottomColor: { value: new THREE.Color('#1d3557') },
       envMap: { value: textureMap },
-      envMix: { value: 0.9 } // Control environment reflection intensity
+      envMix: { value: 0.8 } // Control environment reflection intensity
     },
     vertexShader: `
       varying vec3 vPosition; 
