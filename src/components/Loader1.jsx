@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import Lottie from "react-lottie";
 import loaderAnimation from "../assets/animation/loader1.json";
 
-const fullText = "wait a sec let me create the world for You! 😊";
+const FULL_TEXT = "Fetching my latest projects... 🔍";
 
 const Loader1 = () => {
   const [displayedText, setDisplayedText] = useState("");
 
+  // Memoized Lottie options
   const lottieOptions = useMemo(
     () => ({
       animationData: loaderAnimation,
@@ -19,39 +20,37 @@ const Loader1 = () => {
     []
   );
 
-  useEffect(() => {
+  // Typing effect using requestAnimationFrame
+  const animateText = useCallback(() => {
     let currentIndex = 0;
-    const interval = setInterval(() => {
-      currentIndex++;
-      setDisplayedText(fullText.slice(0, currentIndex));
-      if (currentIndex >= fullText.length) {
-        clearInterval(interval);
+    let rafId;
+
+    const updateText = () => {
+      if (currentIndex < FULL_TEXT.length) {
+        setDisplayedText(FULL_TEXT.slice(0, currentIndex + 1));
+        currentIndex++;
+        rafId = requestAnimationFrame(updateText);
       }
-    }, 100);
-    return () => clearInterval(interval);
+    };
+
+    rafId = requestAnimationFrame(updateText);
+
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
+  useEffect(animateText, [animateText]);
+
   return (
-    <div className="relative h-screen bg-gradient-to-br from-deep_indigo to-dark_teal flex items-center justify-center overflow-hidden">
+    <div className="relative flex h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-900 to-teal-900">
       <div className="absolute inset-0 z-10">
         <Lottie options={lottieOptions} height="100%" width="100%" />
       </div>
-      <div className="absolute inset-0 flex items-center justify-center z-20 text-center p-4">
-        <h2 className="text-lemon_chiffon text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold front-description">
+      <div className="absolute inset-0 z-20 flex items-center justify-center p-4 text-center">
+        <h className="text-xl font-bold text-yellow-200 sm:text-2xl md:text-3xl lg:text-4xl">
           {displayedText}
-          <span className="inline-block blinking-cursor">|</span>
-        </h2>
+          <span className="inline-block animate-blink">|</span>
+        </h>
       </div>
-      <style jsx>{`
-        @keyframes blink {
-          0% { opacity: 1; }
-          50% { opacity: 0; }
-          100% { opacity: 1; }
-        }
-        .blinking-cursor {
-          animation: blink 1s infinite;
-        }
-      `}</style>
     </div>
   );
 };

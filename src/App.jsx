@@ -19,28 +19,35 @@ const Testimonials = React.lazy(() => import("./sections/Testimonials"));
 const Skills = React.lazy(() => import("./sections/skill"));
 const Footer = React.lazy(() => import("./sections/Footer"));
 
-// Error Boundary to catch 3D scene errors
+// Enhanced Error Boundary for better error handling
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, errorMessage: '' };
   }
 
   static getDerivedStateFromError(error) {
-    return { hasError: true };
+    return { hasError: true, errorMessage: error.message || 'Unknown error occurred' };
   }
 
   componentDidCatch(error, info) {
-    console.error('Error in 3D scene:', error, info);
+    console.error('Error in component:', error, info);
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ color: 'lemonchiffon', textAlign: 'center', paddingTop: '20px' }}>
-          Oops! Something went wrong with the 3D scene.
-          <br />
-          You can refresh the screen to reload the model...
+        <div className="fixed inset-0 flex items-center justify-center bg-deep_indigo">
+          <div className="text-center p-8 rounded-lg bg-gradient-to-br from-dark_teal/20 to-deep_indigo/20 backdrop-blur-lg border border-lemon_chiffon/30">
+            <div className="text-lemon_chiffon text-xl mb-4">⚠️ Something went wrong</div>
+            <div className="text-white/70 mb-4">{this.state.errorMessage}</div>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-4 py-2 bg-gradient-to-r from-dark_teal to-deep_indigo text-lemon_chiffon rounded-lg hover:scale-105 transition-transform duration-300 border border-lemon_chiffon/50"
+            >
+              Reload Page
+            </button>
+          </div>
         </div>
       );
     }
@@ -48,31 +55,125 @@ class ErrorBoundary extends React.Component {
   }
 }
 
+// Loading context to manage global loading states
+const LoadingContext = React.createContext({
+  isLoading: true,
+  setLoading: () => {},
+  loadingProgress: 0,
+  setLoadingProgress: () => {}
+});
+
+// Loading provider component
+const LoadingProvider = ({ children }) => {
+  const [isLoading, setLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  return (
+    <LoadingContext.Provider value={{ isLoading, setLoading, loadingProgress, setLoadingProgress }}>
+      {children}
+    </LoadingContext.Provider>
+  );
+};
+
+// Custom hook for loading context
+const useLoading = () => React.useContext(LoadingContext);
+
+// Enhanced loading wrapper for sections
+const SectionWrapper = ({ children, fallback = <Loader /> }) => (
+  <Suspense fallback={fallback}>
+    <ErrorBoundary>
+      {children}
+    </ErrorBoundary>
+  </Suspense>
+);
+
 // Framer Motion variants
 const sidebarVariants = {
-  open: { width: "250px", opacity: 1, transition: { type: "tween", ease: "easeOut", duration: 1 } },
-  closed: { width: "0", opacity: 0, transition: { type: "tween", ease: "easeIn", duration: 1 } },
+  open: { 
+    width: "250px", 
+    opacity: 1, 
+    transition: { 
+      type: "spring", 
+      stiffness: 300, 
+      damping: 30,
+      duration: 0.6 
+    } 
+  },
+  closed: { 
+    width: "0", 
+    opacity: 0, 
+    transition: { 
+      type: "spring", 
+      stiffness: 400, 
+      damping: 40,
+      duration: 0.4 
+    } 
+  },
 };
 
 const navItemVariants = {
-  open: { x: 0, opacity: 1, scale: 1, transition: { type: "tween", ease: "easeOut", delay: 0.9, duration: 0.7 } },
-  closed: { x: -20, opacity: 0, scale: 0.95, transition: { type: "tween", ease: "easeInOut", duration: 0.7 } },
+  open: { 
+    x: 0, 
+    opacity: 1, 
+    scale: 1, 
+    transition: { 
+      type: "spring", 
+      stiffness: 300, 
+      damping: 25,
+      delay: 0.1,
+      staggerChildren: 0.1 
+    } 
+  },
+  closed: { 
+    x: -20, 
+    opacity: 0, 
+    scale: 0.95, 
+    transition: { 
+      type: "spring", 
+      stiffness: 400, 
+      damping: 30,
+      duration: 0.3 
+    } 
+  },
 };
 
-// Toggle Button
+// Enhanced Toggle Button with better animations
 const ToggleButton = ({ isOpen, setIsOpen }) => (
   <motion.div className="flex items-center justify-center w-12 h-12 m-3">
     <motion.button
       onClick={() => setIsOpen(!isOpen)}
-      className="w-12 h-12 border-2 rounded-full shadow-lg cursor-pointer bg-gradient-to-r from-dark_teal to-deep_indigo border-lemon_chiffon"
-      whileHover={{ scale: 1.15, rotateZ: isOpen ? -10 : 10 }}
+      className="w-12 h-12 border-2 rounded-full shadow-lg cursor-pointer bg-gradient-to-r from-dark_teal to-deep_indigo border-lemon_chiffon relative overflow-hidden"
+      whileHover={{ 
+        scale: 1.15, 
+        rotateZ: isOpen ? -10 : 10,
+        boxShadow: "0 0 20px rgba(255, 248, 220, 0.5)"
+      }}
       whileTap={{ scale: 0.95 }}
-      animate={{ rotate: isOpen ? 360 : 0, rotateY: isOpen ? 180 : 0 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
+      animate={{ 
+        rotate: isOpen ? 180 : 0,
+        borderColor: isOpen ? "#F26B38" : "#FFF8DC"
+      }}
+      transition={{ 
+        duration: 0.5, 
+        ease: "easeInOut",
+        type: "spring",
+        stiffness: 300
+      }}
     >
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-lemon_chiffon/20 to-transparent"
+        animate={{ 
+          opacity: isOpen ? 1 : 0,
+          scale: isOpen ? 1.2 : 0.8
+        }}
+        transition={{ duration: 0.3 }}
+      />
       <motion.span
-        className="text-lg font-cta text-light"
-        animate={{ rotateY: isOpen ? 180 : 0 }}
+        className="text-lg font-bold text-lemon_chiffon relative z-10"
+        animate={{ 
+          rotateY: isOpen ? 180 : 0,
+          color: isOpen ? "#F26B38" : "#FFF8DC"
+        }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         {isOpen ? "✖" : "☰"}
@@ -81,36 +182,67 @@ const ToggleButton = ({ isOpen, setIsOpen }) => (
   </motion.div>
 );
 
-// Navbar Component
+// Enhanced Navbar Component with better UX
 const NavbarComponent = ({ page }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest"
+      });
+    }
     setIsOpen(false);
   };
 
+  // Close navbar when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isOpen && !event.target.closest('nav') && !event.target.closest('button')) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+
+  // Close navbar on escape key
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen]);
+
   const navLinks = {
     home: [
-      { to: "/my-works", name: "My Works" },
-      { to: "/my-story", name: "My Story" },
+      { to: "/my-works", name: "My Works", icon: "🚀" },
+      { to: "/my-story", name: "My Story", icon: "📖" },
     ],
     myWorks: [
-      { id: "websites", name: "STEM Projects" },
-      { id: "artworks", name: "Artworks" },
-      { id: "research", name: "Research" },
-      { id: "organization", name: "Volunteering" },
-      { to: "/", name: "← Back to Home" },
-      { to: "/my-story", name: "My Story" },
+      { id: "websites", name: "STEM Projects", icon: "🔬" },
+      { id: "artworks", name: "Artworks", icon: "🎨" },
+      { id: "research", name: "Research", icon: "📚" },
+      { id: "organization", name: "Volunteering", icon: "🤝" },
+      { to: "/", name: "← Back to Home", icon: "🏠" },
+      { to: "/my-story", name: "My Story", icon: "📖" },
     ],
     myStory: [
-      { id: "about", name: "About Me" },
-      { id: "achievements", name: "Achievements" },
-      { id: "skills", name: "Skillset" },
-      { id: "gallery", name: "Gallery" },
-      { id: "testimonials", name: "Appreciations" },
-      { to: "/", name: "← Back to Home" },
-      { to: "/my-works", name: "My Works" },
+      { id: "about", name: "About Me", icon: "👋" },
+      { id: "achievements", name: "Achievements", icon: "🏆" },
+      { id: "skills", name: "Skillset", icon: "⚡" },
+      { id: "gallery", name: "Gallery", icon: "📸" },
+      { id: "testimonials", name: "Appreciations", icon: "💝" },
+      { to: "/", name: "← Back to Home", icon: "🏠" },
+      { to: "/my-works", name: "My Works", icon: "🚀" },
     ],
   };
 
@@ -122,27 +254,45 @@ const NavbarComponent = ({ page }) => {
         animate={isOpen ? "open" : "closed"}
         variants={sidebarVariants}
         style={{ pointerEvents: isOpen ? "auto" : "none" }}
-        className="absolute left-0 flex flex-col p-5 border-2 shadow-xl bg-deep_indigo bg-opacity-80 backdrop-blur-lg rounded-lg w-40 sm:w-60"
+        className="absolute left-0 flex flex-col p-6 border-2 shadow-2xl bg-deep_indigo/90 backdrop-blur-xl rounded-xl border-lemon_chiffon/30 w-64 max-h-screen overflow-y-auto"
       >
-        <motion.ul className="p-0 m-0 list-none">
-          {navLinks[page].map((link) => (
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-lemon_chiffon/5 to-transparent rounded-xl"
+          animate={{ opacity: isOpen ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+        />
+        <motion.ul 
+          className="p-0 m-0 list-none relative z-10"
+          variants={navItemVariants}
+        >
+          {navLinks[page].map((link, index) => (
             <motion.li
               key={link.id || link.to}
-              className="my-4"
-              onClick={() => link.id && scrollToSection(link.id)}
+              className="my-3"
               variants={navItemVariants}
-              whileHover={{ scale: 1.05, x: 5, transition: { duration: 0.3, ease: "easeOut" } }}
+              custom={index}
+              whileHover={{ 
+                scale: 1.05, 
+                x: 8,
+                transition: { duration: 0.2, ease: "easeOut" }
+              }}
               whileTap={{ scale: 0.95 }}
             >
               {link.to ? (
-                <Link to={link.to} className="text-base font-heading tracking-wide uppercase text-mauve-500 hover:text-lemon_chiffon">
+                <Link 
+                  to={link.to} 
+                  className="flex items-center gap-3 px-3 py-2 text-base font-semibold tracking-wide uppercase text-mauve-500 hover:text-lemon_chiffon transition-colors duration-300 rounded-lg hover:bg-lemon_chiffon/10"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <span className="text-lg">{link.icon}</span>
                   {link.name}
                 </Link>
               ) : (
                 <button
                   onClick={() => scrollToSection(link.id)}
-                  className="text-base font-heading tracking-wide uppercase text-mauve-500 hover:text-lemon_chiffon"
+                  className="flex items-center gap-3 px-3 py-2 text-base font-semibold tracking-wide uppercase text-mauve-500 hover:text-lemon_chiffon transition-colors duration-300 rounded-lg hover:bg-lemon_chiffon/10 w-full text-left"
                 >
+                  <span className="text-lg">{link.icon}</span>
                   {link.name}
                 </button>
               )}
@@ -154,82 +304,150 @@ const NavbarComponent = ({ page }) => {
   );
 };
 
-// Home Page
-const HomePage = () => (
-  <div className="bg-deep_indigo text-deep_indigo min-h-screen font-description overflow-hidden">
-    <NavbarComponent page="home" />
-    <div className="absolute top-0 left-0 w-full h-full">
-      <ErrorBoundary>
-        <ParticleScene className="min-h-screen overflow-hidden -z-10" />
-      </ErrorBoundary>
-    </div>
-    <main className="min-h-screen overflow-hidden">
-      <Hero id="hero" />
-    </main>
-    <Suspense fallback={<Loader />}>
-      <Footer />
-    </Suspense>
-  </div>
-);
+// Enhanced Home Page with better loading
+const HomePage = () => {
+  const { isLoading } = useLoading();
 
-// My Works Page
+  return (
+    <div className="bg-deep_indigo text-deep_indigo min-h-screen font-description overflow-hidden">
+      <NavbarComponent page="home" />
+      <div className="absolute top-0 left-0 w-full h-full">
+        <ErrorBoundary>
+          <SectionWrapper fallback={<Loader />}>
+            <ParticleScene className="min-h-screen overflow-hidden -z-10" />
+          </SectionWrapper>
+        </ErrorBoundary>
+      </div>
+      <main className="min-h-screen overflow-hidden relative z-10">
+        <SectionWrapper>
+          <Hero id="hero" />
+        </SectionWrapper>
+      </main>
+      <SectionWrapper>
+        <Footer />
+      </SectionWrapper>
+    </div>
+  );
+};
+
+//  My Works Page
 const MyWorksPage = () => (
   <div className="bg-deep_indigo text-deep_indigo min-h-screen font-description overflow-hidden">
     <NavbarComponent page="myWorks" />
     <main className="min-h-screen overflow-hidden">
-      <Websites id="websites" className= " z-100 "/>
-      
-      <Research id="research" className= " -z-100 "/>
-      <Art id="artworks" />
-      <Organization id="organization" className="bg-lemon_chiffon" />
+      <SectionWrapper>
+        <Websites id="websites" className="z-100" />
+      </SectionWrapper>
+      <SectionWrapper>
+        <Research id="research" className="-z-100" />
+      </SectionWrapper>
+      <SectionWrapper>
+        <Art id="artworks" />
+      </SectionWrapper>
+      <SectionWrapper>
+        <Organization id="organization" className="bg-lemon_chiffon" />
+      </SectionWrapper>
     </main>
-    <Suspense fallback={<Loader />}>
+    <SectionWrapper>
       <Footer />
-    </Suspense>
+    </SectionWrapper>
   </div>
 );
 
-// My Story Page
+// Enhanced My Story Page
 const MyStoryPage = () => (
   <div className="bg-deep_indigo text-deep_indigo min-h-screen font-description overflow-hidden">
     <NavbarComponent page="myStory" />
     <main className="min-h-screen overflow-hidden">
-
-      <AboutMe id="about" className="overflow-hidden"/>
-      <Achievements id="achievements" className="overflow-hidden" />
-      <Skills id= "skill" className="overflow-hidden"/>
-      <Gallery id="gallery"  className="overflow-hidden"/>
-      <Testimonials id="testimonials" className="overflow-hidden"/>
+      <SectionWrapper>
+        <AboutMe id="about" className="overflow-hidden" />
+      </SectionWrapper>
+      <SectionWrapper>
+        <Achievements id="achievements" className="overflow-hidden" />
+      </SectionWrapper>
+      <SectionWrapper>
+        <Skills id="skills" className="overflow-hidden" />
+      </SectionWrapper>
+      <SectionWrapper>
+        <Gallery id="gallery" className="overflow-hidden" />
+      </SectionWrapper>
+      <SectionWrapper>
+        <Testimonials id="testimonials" className="overflow-hidden" />
+      </SectionWrapper>
     </main>
-    <Suspense fallback={<Loader />}>
+    <SectionWrapper>
       <Footer />
-    </Suspense>
+    </SectionWrapper>
   </div>
 );
 
-// App Component
+// Main App Component with enhanced loading logic
 const App = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isAppLoaded, setIsAppLoaded] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   useEffect(() => {
-    const handleLoad = () => setTimeout(() => setIsLoaded(true), 1500);
-    if (document.readyState === "complete") handleLoad();
-    else window.addEventListener("load", handleLoad);
-    return () => window.removeEventListener("load", handleLoad);
+    let progressInterval;
+    
+    const simulateLoading = () => {
+      progressInterval = setInterval(() => {
+        setLoadingProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(progressInterval);
+            return 90;
+          }
+          return prev + Math.random() * 10;
+        });
+      }, 200);
+    };
+
+    const handleAppLoad = () => {
+      // Simulate final loading steps
+      setLoadingProgress(100);
+      
+      setTimeout(() => {
+        setIsAppLoaded(true);
+      }, 800);
+    };
+
+    simulateLoading();
+
+    // Check if everything is ready
+    const checkReadiness = () => {
+      if (document.readyState === "complete") {
+        handleAppLoad();
+      } else {
+        window.addEventListener("load", handleAppLoad);
+      }
+    };
+
+    const readyTimer = setTimeout(checkReadiness, 100);
+
+    return () => {
+      clearTimeout(readyTimer);
+      clearInterval(progressInterval);
+      window.removeEventListener("load", handleAppLoad);
+    };
   }, []);
 
-  if (!isLoaded) return <Loader1 />;
+  if (!isAppLoaded) {
+    return <Loader1 progress={loadingProgress} />;
+  }
 
   return (
-    <Router basename="/portfolio-bushra/">
-      <Suspense fallback={<Loader1 />}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/my-works" element={<MyWorksPage />} />
-          <Route path="/my-story" element={<MyStoryPage />} />
-        </Routes>
-      </Suspense>
-    </Router>
+    <LoadingProvider>
+      <Router basename="/portfolio-bushra/">
+        <ErrorBoundary>
+          <Suspense fallback={<Loader1 progress={50} />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/my-works" element={<MyWorksPage />} />
+              <Route path="/my-story" element={<MyStoryPage />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
+      </Router>
+    </LoadingProvider>
   );
 };
 
