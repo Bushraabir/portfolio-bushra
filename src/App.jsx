@@ -318,10 +318,10 @@ const HomePage = () => {
           </SectionWrapper>
         </ErrorBoundary>
       </div>
-      <main className="min-h-screen overflow-hidden relative z-10">
-        <SectionWrapper>
+      <main className="min-h-screen overflow-hidden relative z-10 pointer-events-none">
+
           <Hero id="hero" />
-        </SectionWrapper>
+
       </main>
       <SectionWrapper>
         <Footer />

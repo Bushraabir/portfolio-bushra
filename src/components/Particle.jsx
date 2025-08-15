@@ -5,6 +5,11 @@ import { OrbitControls, Environment, PerspectiveCamera, Html } from '@react-thre
 import { EffectComposer, Bloom, SSAO, DepthOfField } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import spaceBackground from '../assets/background.jpg';
+import hdr from "../assets/testimonial.hdr";
+import universe from "../assets/universe.jpg";
+import universe1 from "../assets/universe1.jpg";
+import universe2 from "../assets/universe2.jpg";
+
 
 // Mock progress hook since we don't have the actual drei useProgress
 const useProgress = () => ({ progress: 100 });
@@ -51,7 +56,20 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality, text
   }, [radius, quality]);
 
   const colorArray = useMemo(() => [
-    '#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672'
+      '#2E1A47', // Deep cosmic purple
+      '#3B3B98', // Nebula blue
+      '#5F27CD', // Vivid violet
+      '#1B1464', // Space navy blue
+      '#0A3D62', // Deep teal accent
+      '#6C5CE7', // Bright galaxy purple
+      '#341F97', // Dark royal purple
+        '#2E1A47', // Deep cosmic purple
+  '#3B3B98', // Nebula blue
+  '#5F27CD', // Vivid violet
+  '#1B1464', // Space navy blue
+  '#0A3D62', // Deep teal accent
+  '#6C5CE7', // Bright galaxy purple
+  '#341F97'  // Dark royal purple
   ], []);
 
   const handleClick = useCallback(() => {
@@ -101,39 +119,48 @@ const GroundPlane = React.memo(() => {
 const BackgroundScene = React.memo(({ quality, textureMap }) => {
   const segments = useMemo(() => quality === 'low' ? 32 : 64, [quality]);
   
-  const gradientMaterial = useMemo(() => {
-    const material = new THREE.ShaderMaterial({
-      uniforms: { 
-        topColor: { value: new THREE.Color('#0f0f23') }, 
-        bottomColor: { value: new THREE.Color('#2d1b69') },
-        envMap: { value: textureMap }
-      },
-      vertexShader: `
-        varying vec3 vPosition; 
-        varying vec3 vNormal;
-        void main(){ 
-          vPosition = position; 
-          vNormal = normalize(normalMatrix * normal);
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); 
-        }`,
-      fragmentShader: `
-        varying vec3 vPosition; 
-        varying vec3 vNormal;
-        uniform vec3 topColor; 
-        uniform vec3 bottomColor;
-        uniform samplerCube envMap;
-        void main(){ 
-          float mixValue = (vPosition.y+50.0)/100.0;
-          vec3 gradientColor = mix(bottomColor, topColor, mixValue);
-          vec3 envColor = textureCube(envMap, vNormal).rgb;
-          gl_FragColor = vec4(mix(gradientColor, envColor, 0.2), 1.0); 
-        }`,
-      side: THREE.BackSide,
-      depthWrite: false,
-      transparent: true
-    });
-    return material;
-  }, [textureMap]);
+const gradientMaterial = useMemo(() => {
+  const material = new THREE.ShaderMaterial({
+    uniforms: { 
+      topColor: { value: new THREE.Color('#cfbaf0') }, 
+      bottomColor: { value: new THREE.Color('#1d3557') },
+      envMap: { value: textureMap },
+      envMix: { value: 0.9 } // Control environment reflection intensity
+    },
+    vertexShader: `
+      varying vec3 vPosition; 
+      varying vec3 vNormal;
+      void main(){ 
+        vPosition = position; 
+        vNormal = normalize(normalMatrix * normal);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); 
+      }`,
+    fragmentShader: `
+      varying vec3 vPosition; 
+      varying vec3 vNormal;
+      uniform vec3 topColor; 
+      uniform vec3 bottomColor;
+      uniform samplerCube envMap;
+      uniform float envMix;
+      void main(){ 
+        // Vertical gradient
+        float mixValue = (vPosition.y + 50.0) / 100.0;
+        vec3 gradientColor = mix(bottomColor, topColor, mixValue);
+
+        // Environment reflection color
+        vec3 envColor = textureCube(envMap, vNormal).rgb;
+
+        // Blend gradient and environment using envMix
+        vec3 finalColor = mix(gradientColor, envColor, envMix);
+
+        gl_FragColor = vec4(finalColor, 1.0); 
+      }`,
+    side: THREE.BackSide,
+    depthWrite: false,
+    transparent: true
+  });
+  return material;
+}, [textureMap]);
 
   const sphereGeometry = useMemo(() => 
     new THREE.SphereGeometry(100, segments, segments), 
@@ -292,23 +319,34 @@ const ParticleScene = () => {
 
 
 const textureMap = useMemo(() => {
-  const texture = new THREE.TextureLoader().load(spaceBackground);
+  const textures = [universe, universe1, universe2]; // import or define your three image paths
+  const randomTexturePath = textures[Math.floor(Math.random() * textures.length)];
+
+  const texture = new THREE.TextureLoader().load(randomTexturePath);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
   texture.minFilter = THREE.LinearMipmapLinearFilter;
   texture.magFilter = THREE.LinearFilter;
   texture.generateMipmaps = true;
   texture.flipY = false;
+
   return texture;
 }, []);
 
   const initialParticleCount = useMemo(() => {
-    return typeof window !== 'undefined' && window.innerWidth < 768 ? 5 : 19;
+    return typeof window !== 'undefined' && window.innerWidth < 768 ? 15 : 29;
   }, []);
 
-  const colorPalette = useMemo(() => [
-    '#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672'
-  ], []);
+const colorPalette = useMemo(() => [
+  '#2E1A47', // Deep cosmic purple
+  '#3B3B98', // Nebula blue
+  '#5F27CD', // Vivid violet
+  '#1B1464', // Space navy blue
+  '#0A3D62', // Deep teal accent
+  '#6C5CE7', // Bright galaxy purple
+  '#341F97'  // Dark royal purple
+], []);
+
 
   const [particles, setParticles] = useState(() => {
     const arr = [];
@@ -320,7 +358,7 @@ const textureMap = useMemo(() => {
           (Math.random() - 0.5) * 20
         ],
         color: colorPalette[Math.floor(Math.random() * colorPalette.length)],
-        radius: Math.random() * (2.7 - 0.5) + 0.5
+        radius: Math.random() * (3.7 - 1.5) + 0.5
       });
     }
     return arr;
@@ -402,7 +440,20 @@ const textureMap = useMemo(() => {
       const randomOffset = (Math.random() * 2 - 1) * 1.0;
       const offsetVector = raycaster.ray.direction.clone().multiplyScalar(randomOffset);
       intersectPoint.add(offsetVector);
-      const colors = ['#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672'];
+      const colors = [    '#8E2DE2', // Bright violet
+  '#4A00E0', // Electric deep blue
+  '#6C63FF', // Soft glowing purple
+  '#00CFFD', // Bright cyan star color
+  '#A020F0', // Pure vivid purple
+  '#C77DFF' , // Light lavender glow
+    '#2E1A47', // Deep cosmic purple
+  '#3B3B98', // Nebula blue
+  '#5F27CD', // Vivid violet
+  '#1B1464', // Space navy blue
+  '#0A3D62', // Deep teal accent
+  '#6C5CE7', // Bright galaxy purple
+  '#341F97'  // Dark royal purple
+  ];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
       const randomRadius = Math.random() * 1.3 + 0.3;
       let newPosition = intersectPoint.clone();
