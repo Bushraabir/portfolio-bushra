@@ -7,6 +7,8 @@ import "react-vertical-timeline-component/style.min.css";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { FaCheck, FaChevronDown, FaTrophy, FaAward, FaStar } from "react-icons/fa";
+import BackgroundScene from "../components/Background.jsx";
+import Background from "../components/Background.jsx";
 
 // Lazy loaded 3D components
 const Ball = lazy(() => import("../assets/3d_model/Ball"));
@@ -518,7 +520,7 @@ const Achievements = () => {
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(120,119,198,0.1),transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(236,72,153,0.1),transparent_50%)]" />
-     
+      <Background />
       <OptimizedStars cursorPosition={cursorPosition} />
      
       <motion.div
