@@ -11,7 +11,7 @@ import BackgroundScene from "../components/Background.jsx";
 import Background from "../components/Background.jsx";
 
 // Lazy loaded 3D components
-const Ball = lazy(() => import("../assets/3d_model/Ball"));
+
 const Crystal = lazy(() => import("../assets/3d_model/Crystal.jsx"));
 const Star = lazy(() => import("../components/Stars"));
 

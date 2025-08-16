@@ -9,15 +9,9 @@ import hdr from "../assets/testimonial.hdr";
 import universe from "../assets/universe.jpg";
 import universe1 from "../assets/universe1.jpg";
 import universe2 from "../assets/universe2.jpg";
+import Loader1 from './Loader1';
 
 
-// Mock progress hook since we don't have the actual drei useProgress
-const useProgress = () => ({ progress: 100 });
-
-const Loader = React.memo(() => {
-  const { progress } = useProgress();
-  return <Html center>{Math.round(progress)}% loaded</Html>;
-});
 
 const InteractiveParticle = React.memo(({ position, color, radius, quality, textureMap }) => {
   const [ref] = useSphere(() => ({
@@ -33,13 +27,14 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality, text
 
   const materialProps = useMemo(() => ({
     color: new THREE.Color(color).multiplyScalar(1.5),
-    metalness: 0.3,
-    roughness: 5.1,
-    clearcoat: 1,
+    metalness: 0.1,
+    roughness: 0.9,
+    clearcoat: 9,
     clearcoatRoughness: 0.05,
     reflectivity: 1.0,
     envMapIntensity: 1.2,
-    transmission: 0.2,
+    emissiveIntensity: 2.4,
+    transmission: 0.7, 
     ior: 1.45,
     thickness: 0.8,
     sheen: 1.5,
@@ -106,8 +101,8 @@ const GroundPlane = React.memo(() => {
       <planeGeometry args={[200, 200]} />
       <meshStandardMaterial 
         color="#1a1a2e" 
-        roughness={0.8} 
-        metalness={0.2}
+        roughness={0.1} 
+        metalness={0.9}
         transparent={true}
         opacity={0}
         visible={false}
@@ -201,7 +196,7 @@ const CinematicLighting = React.memo(({ quality }) => {
       {/* Key Light - Main cinematic light from upper left */}
       <directionalLight 
         position={[-20, 25, 15]} 
-        intensity={3.5} 
+        intensity={5.5} 
         color="#ffd700"
         castShadow={true}
         shadow-mapSize-width={quality === 'low' ? 1024 : 4096}
@@ -218,20 +213,14 @@ const CinematicLighting = React.memo(({ quality }) => {
       {/* Fill Light - Softer light from right to fill shadows */}
       <directionalLight 
         position={[15, 15, 10]} 
-        intensity={1.8} 
+        intensity={3.8} 
         color="#87ceeb"
         castShadow={quality !== 'low'}
         shadow-mapSize-width={quality === 'low' ? 512 : 2048}
         shadow-mapSize-height={quality === 'low' ? 512 : 2048}
       />
       
-      {/* Rim Light - Creates dramatic edge lighting */}
-      <directionalLight 
-        position={[0, 10, -25]} 
-        intensity={2.2} 
-        color="#ff6b9d"
-        castShadow={false}
-      />
+
       
       {/* Dramatic spot lights for atmosphere */}
       <spotLight 
@@ -410,7 +399,7 @@ const colorPalette = useMemo(() => [
   }, [checkPerformance]);
 
   const physicsConfig = useMemo(() => ({
-    gravity: [0, -12, 0],
+    gravity: [0, -9.8, 0],
     iterations: quality === 'low' ? 8 : 20,
     allowSleep: true,
     broadphase: 'Naive',
@@ -533,7 +522,7 @@ const colorPalette = useMemo(() => [
 
   return (
     <Canvas {...canvasProps}>
-      <Suspense fallback={<Loader />}>
+      <Suspense >
         <PerspectiveCamera 
           makeDefault 
           ref={cameraRef} 
