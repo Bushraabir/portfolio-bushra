@@ -318,7 +318,7 @@ const App = () => {
   return (
     <HelmetProvider>
       <LoadingProvider>
-        <Router basename="/portfolio-bushra/">
+        <Router >
           <ErrorBoundary>
             <Suspense fallback={<Loader1 progress={50} />}>
               <Routes>
