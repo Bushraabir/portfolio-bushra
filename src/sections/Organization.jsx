@@ -16,7 +16,6 @@ import rank from "../assets/EmpowerEd/rank.png";
 import color from "../assets/animation/arrow.json";
 import { SiC, SiCplusplus, SiPython } from "react-icons/si";
 import { FaTrophy, FaArrowUp } from "react-icons/fa";
-import { useCallback } from "react";
 import { loadFull } from "tsparticles";
 import { Particles } from "react-tsparticles";
 import Typewriter from "typewriter-effect";

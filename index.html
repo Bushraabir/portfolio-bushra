@@ -36,15 +36,7 @@
   <!-- Favicon for browser tab -->
   <link rel="icon" type="image/png" href="/src/assets/favicon.png" />
 
-  <!-- Preconnect for fonts or analytics (optional but improves performance) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <!-- Example Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
-
-  <!-- Theme color for mobile browsers -->
-  <meta name="theme-color" content="#2A1B3D" />
+  
 </head>
 
 <body>
@@ -59,50 +51,7 @@
     document.documentElement.style.scrollBehavior = "smooth";
   </script>
 
-  <!-- Accessibility: Skip to content link -->
-  <a href="#root" class="sr-only focus:not-sr-only">Skip to main content</a>
 
-  <!-- Optional: Prevent flash of unstyled content (FOUC) -->
-  <style>
-    html {
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-    }
-
-    body {
-      font-family: 'Roboto', sans-serif;
-      margin: 0;
-      background: #1a1a2e;
-      color: #fefefe;
-    }
-
-    html.loaded {
-      opacity: 1;
-    }
-
-    /* Screen reader only */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    .sr-only:focus:not(:focus-visible) {
-      display: block;
-      width: auto;
-      height: auto;
-      margin: 1rem;
-      clip: auto;
-      overflow: visible;
-      white-space: normal;
-    }
-  </style>
 
   <script>
     // Remove FOUC after React app loads
