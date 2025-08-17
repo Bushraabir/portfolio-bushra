@@ -53,10 +53,24 @@ import Biogas from "../assets/Projects/Biogas.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
+/**
+ * STEM Projects and Websites Portfolio Component
+ * 
+ * A comprehensive React component that showcases websites, projects, and courses
+ * with advanced animations, filtering capabilities, and responsive design.
+ * Features GSAP animations, interactive tabs, and modal project views.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <Website />
+ * )
+ */
 const Website = () => {
   const [activeTab, setActiveTab] = useState("websites");
   const [selectedProject, setSelectedProject] = useState(null);
   const [isDesktop, setIsDesktop] = useState(typeof window !== "undefined" ? window.innerWidth > 768 : true);
+  const [hoveredTab, setHoveredTab] = useState(null);
 
   const initialMessageRef = useRef(null);
   const stemRef = useRef(null);
@@ -65,6 +79,7 @@ const Website = () => {
   const descriptionRef = useRef(null);
   const buttonsRef = useRef(null);
   const cardsRef = useRef(null);
+  const tabIndicatorRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 768);
@@ -84,8 +99,8 @@ const Website = () => {
         scrollTrigger: {
           trigger: initialMessageRef.current,
           start: "top top",
-          endTrigger: cardsRef.current, // End pinning before the cards section
-          end: "top 20%", // Adjust end position to prevent overlap
+          endTrigger: cardsRef.current,
+          end: "top 20%",
           scrub: 1.5,
           pin: true,
           anticipatePin: 1,
@@ -150,8 +165,8 @@ const Website = () => {
         scrollTrigger: {
           trigger: initialMessageRef.current,
           start: "top top",
-          endTrigger: cardsRef.current, // End pinning before the cards section
-          end: "top 30%", // Adjusted for mobile to prevent overlap
+          endTrigger: cardsRef.current,
+          end: "top 30%",
           scrub: 1,
           pin: true,
         },
@@ -239,11 +254,11 @@ const Website = () => {
       name: "Satellite Engineering Course",
       description: "An introductory course on satellite systems and engineering, covering the basics of satellite design, operations, and technologies used in modern space exploration.",
       tags: [
-        { name: "Satellite Engineering", color: "text-cyan-400" },
-        { name: "Space Tech", color: "text-pink-400" },
-        { name: "STEM Education", color: "text-pink-400" },
-        { name: "Satellite System", color: "text-pink-400" },
-        { name: "Space Exploration", color: "text-pink-400" },
+        { name: "Satellite Engineering", color: "text-electric_blue" },
+        { name: "Space Tech", color: "text-pink_lavender" },
+        { name: "STEM Education", color: "text-aquamarine" },
+        { name: "Satellite System", color: "text-jordy_blue" },
+        { name: "Space Exploration", color: "text-mauve" },
       ],
       images: [Satellite],
       detailedDescription: "An introductory course on satellite systems and engineering, covering the basics of satellite design, operations, and technologies used in modern space exploration.",
@@ -253,12 +268,12 @@ const Website = () => {
       name: "Rocket Propulsion Systems",
       description: "An introductory course on rocket propulsion, focusing on the principles of thrust, engine design, and the technologies driving modern rocketry.",
       tags: [
-        { name: "Rocket Production", color: "text-yellow-500" },
-        { name: "Rocket Science", color: "text-green-500" },
-        { name: "Space Engineering", color: "text-pink-400" },
-        { name: "STEM", color: "text-pink-400" },
-        { name: "Thrust", color: "text-pink-400" },
-        { name: "Aerospace Tech", color: "text-pink-400" },
+        { name: "Rocket Production", color: "text-champagne_pink" },
+        { name: "Rocket Science", color: "text-aquamarine" },
+        { name: "Space Engineering", color: "text-pink_lavender" },
+        { name: "STEM", color: "text-tea_rose" },
+        { name: "Thrust", color: "text-electric_blue" },
+        { name: "Aerospace Tech", color: "text-non_photo_blue" },
       ],
       images: [Rocket],
       detailedDescription: "An introductory course on rocket propulsion, focusing on the principles of thrust, engine design, and the technologies driving modern rocketry.",
@@ -268,11 +283,11 @@ const Website = () => {
       name: "Introduction to Aerospace Engineering and Design",
       description: "An introductory course on aerospace engineering, focusing on the principles of aircraft and spacecraft design, aerodynamics, and propulsion systems.",
       tags: [
-        { name: "AeroSpace Engineering", color: "text-cyan-400" },
-        { name: "Aircraft Design", color: "text-pink-400" },
-        { name: "Aerodynamics", color: "text-pink-400" },
-        { name: "Space Tech", color: "text-pink-400" },
-        { name: "Spacecraft Design", color: "text-pink-400" },
+        { name: "AeroSpace Engineering", color: "text-electric_blue" },
+        { name: "Aircraft Design", color: "text-pink_lavender" },
+        { name: "Aerodynamics", color: "text-aquamarine" },
+        { name: "Space Tech", color: "text-jordy_blue" },
+        { name: "Spacecraft Design", color: "text-mauve" },
       ],
       images: [AeroSpace],
       detailedDescription: "An introductory course on aerospace engineering, focusing on the principles of aircraft and spacecraft design, aerodynamics, and propulsion systems.",
@@ -282,11 +297,11 @@ const Website = () => {
       name: "Nuclear Science and Engineering",
       description: "An introductory course on nuclear science, covering the fundamentals of nuclear reactions, reactor design, and applications in energy production and medical technology.",
       tags: [
-        { name: "Nuclear Science", color: "text-cyan-400" },
-        { name: "Nuclear Engineering", color: "text-pink-400" },
-        { name: "Energy Tech", color: "text-pink-400" },
-        { name: "Reactor Design", color: "text-pink-400" },
-        { name: "Atomic Energy", color: "text-pink-400" },
+        { name: "Nuclear Science", color: "text-electric_blue" },
+        { name: "Nuclear Engineering", color: "text-pink_lavender" },
+        { name: "Energy Tech", color: "text-aquamarine" },
+        { name: "Reactor Design", color: "text-jordy_blue" },
+        { name: "Atomic Energy", color: "text-tea_rose" },
       ],
       images: [Nuclear],
       detailedDescription: "An introductory course on nuclear science, covering the fundamentals of nuclear reactions, reactor design, and applications in energy production and medical technology.",
@@ -299,15 +314,15 @@ const Website = () => {
       title: "EmpowerEd Website",
       description: "A dynamic and visually engaging web platform for accessible quality education.",
       tags: [
-        { name: "React", color: "text-cyan-400" },
-        { name: "GSAP", color: "text-pink-400" },
-        { name: "ScrollTrigger", color: "text-pink-400" },
-        { name: "Lottie Animation", color: "text-pink-400" },
-        { name: "React Vertical Timeline Component", color: "text-pink-400" },
-        { name: "EmailJS", color: "text-pink-400" },
-        { name: "Vite", color: "text-pink-400" },
-        { name: "CSS & Media Queries", color: "text-pink-400" },
-        { name: "React Router", color: "text-pink-400" },
+        { name: "React", color: "text-electric_blue" },
+        { name: "GSAP", color: "text-pink_lavender" },
+        { name: "ScrollTrigger", color: "text-aquamarine" },
+        { name: "Lottie Animation", color: "text-jordy_blue" },
+        { name: "React Vertical Timeline Component", color: "text-mauve" },
+        { name: "EmailJS", color: "text-tea_rose" },
+        { name: "Vite", color: "text-champagne_pink" },
+        { name: "CSS & Media Queries", color: "text-non_photo_blue" },
+        { name: "React Router", color: "text-lemon_chiffon" },
       ],
       images: [emp3, emp1, emp2, emp3, emp4, emp5, emp6],
       detailedDescription: "EmpowerEd is a comprehensive educational platform designed to empower students through various resources and support systems. The website features a clean, modern design with immersive animations and interactive elements that enhance user engagement. Built with React.js, it leverages GSAP for smooth animations, ScrollTrigger for interactive scroll effects, and Framer Motion for additional dynamic movements. The platform includes a contact form integrated with EmailJS for communication, a vertical timeline component to showcase the organization's journey, and responsive design techniques using CSS and media queries to ensure accessibility across devices. React Router manages the navigation between different sections of the platform, creating a seamless user experience. EmpowerEd offers students a range of services including mentorship opportunities, mental health support, research funding, scholarship information, and guidance for studying abroad. The platform's design emphasizes accessibility and usability, making educational resources available to a diverse student population.",
@@ -319,11 +334,11 @@ const Website = () => {
       title: "Periodic Table Visualizer",
       description: "An interactive web application for exploring the periodic table with dynamic visualizations.",
       tags: [
-        { name: "Python", color: "text-yellow-500" },
-        { name: "Streamlit", color: "text-red-400" },
-        { name: "Plotly", color: "text-blue-500" },
-        { name: "Pandas", color: "text-green-400" },
-        { name: "Data Visualization", color: "text-purple-500" },
+        { name: "Python", color: "text-champagne_pink" },
+        { name: "Streamlit", color: "text-tea_rose" },
+        { name: "Plotly", color: "text-jordy_blue" },
+        { name: "Pandas", color: "text-aquamarine" },
+        { name: "Data Visualization", color: "text-mauve" },
       ],
       images: [PeriodicTableVisualiser2, PeriodicTableVisualiser1, PeriodicTableVisualiser3, PeriodicTableVisualiser4, PeriodicTableVisualiser5, PeriodicTableVisualiser6],
       detailedDescription: "The Periodic Table Visualizer is an interactive web application built with Python, Streamlit, Plotly, and Pandas. It offers a comprehensive exploration of chemical elements through various interactive features including an interactive periodic table, data analysis tools, trend visualization, 3D analytics, element gallery, and detailed element information. The application provides users with the ability to filter elements by various properties, visualize trends across atomic numbers, analyze relationships between element properties in 3D space, and view detailed information about each element including physical and chemical properties.",
@@ -335,17 +350,17 @@ const Website = () => {
       title: "Study Buddy",
       description: "An interactive study companion designed to boost student productivity with smart learning tools.",
       tags: [
-        { name: "React", color: "text-blue-400" },
-        { name: "GSAP", color: "text-green-400" },
-        { name: "Framer Motion", color: "text-purple-400" },
-        { name: "Lottie Animation", color: "text-yellow-400" },
-        { name: "React Router", color: "text-indigo-400" },
-        { name: "Firebase Authentication", color: "text-red-400" },
-        { name: "Firebase Firestore", color: "text-orange-400" },
-        { name: "Formik & Yup", color: "text-teal-400" },
-        { name: "ReactQuill", color: "text-pink-400" },
-        { name: "Plotly.js", color: "text-cyan-400" },
-        { name: "Math.js", color: "text-emerald-400" },
+        { name: "React", color: "text-jordy_blue" },
+        { name: "GSAP", color: "text-aquamarine" },
+        { name: "Framer Motion", color: "text-mauve" },
+        { name: "Lottie Animation", color: "text-champagne_pink" },
+        { name: "React Router", color: "text-pink_lavender" },
+        { name: "Firebase Authentication", color: "text-tea_rose" },
+        { name: "Firebase Firestore", color: "text-non_photo_blue" },
+        { name: "Formik & Yup", color: "text-electric_blue" },
+        { name: "ReactQuill", color: "text-lemon_chiffon" },
+        { name: "Plotly.js", color: "text-electric_blue" },
+        { name: "Math.js", color: "text-aquamarine" },
       ],
       images: [StudyBuddy2, StudyBuddy1, StudyBuddy3, StudyBuddy4, StudyBuddy5, StudyBuddy6, StudyBuddy7, StudyBuddy8],
       detailedDescription: "Study Buddy is an interactive educational application designed to enhance student productivity through a comprehensive suite of study tools. The platform combines interactive flashcards with quiz functionality, a Pomodoro-based session manager for time tracking, an advanced graphing calculator supporting multiple equation types, and a smart note-taking system with real-time synchronization via Firebase. Built using React.js, GSAP, Framer Motion, and Plotly.js, Study Buddy delivers a modern, responsive learning experience with premium animations and intuitive design. The application implements secure user authentication, personalized study tracking, and mathematical computation capabilities through math.js, creating a complete study solution that helps students maximize their academic performance.",
@@ -357,15 +372,15 @@ const Website = () => {
       title: "Space Invaders: Nebula Assault",
       description: "A modern take on the classic Space Invaders game, built with React, Three.js, and Zustand. Navigate your spaceship through a cosmic battlefield, fend off enemy waves, collect power-ups, and survive the nebula onslaught!",
       tags: [
-        { name: "React", color: "text-blue-500" },
-        { name: "Three.js", color: "text-purple-500" },
-        { name: "Zustand", color: "text-green-500" },
-        { name: "TypeScript", color: "text-yellow-500" },
-        { name: "WebGL", color: "text-red-500" },
-        { name: "Game Development", color: "text-pink-500" },
-        { name: "3D Graphics", color: "text-indigo-500" },
-        { name: "Particle Effects", color: "text-orange-500" },
-        { name: "Styled Components", color: "text-teal-500" },
+        { name: "React", color: "text-jordy_blue" },
+        { name: "Three.js", color: "text-mauve" },
+        { name: "Zustand", color: "text-aquamarine" },
+        { name: "TypeScript", color: "text-champagne_pink" },
+        { name: "WebGL", color: "text-tea_rose" },
+        { name: "Game Development", color: "text-pink_lavender" },
+        { name: "3D Graphics", color: "text-electric_blue" },
+        { name: "Particle Effects", color: "text-non_photo_blue" },
+        { name: "Styled Components", color: "text-lemon_chiffon" },
       ],
       images: [Space2, Space1, Space3],
       detailedDescription: "Space Invaders: Nebula Assault is a dynamic space shooter game built with modern web technologies. The game features 3D graphics powered by Three.js, with a dynamic starfield, detailed spaceship models, and enemy ships. Players can control their spaceship using arrow keys and shoot with the spacebar, while fending off waves of enemies with straight or zigzag movement patterns. The game includes collectibles for bonus points, power-ups (speed boost, shield, and multi-shot), and impressive visual effects like explosions and thruster particles. The state management is handled efficiently with Zustand, and the game features post-processing effects like bloom via @react-three/postprocessing. The user interface is styled with styled-components, providing responsive start, game, and game-over screens with a heads-up display (HUD) showing score, lives, and audio toggle.",
@@ -377,11 +392,11 @@ const Website = () => {
       title: "Relevia",
       description: "An interactive web application designed to help individuals manage and overcome panic attacks through resources, tools, and support.",
       tags: [
-        { name: "React", color: "text-cyan-500" },
-        { name: "JavaScript", color: "text-yellow-500" },
-        { name: "Tailwind CSS", color: "text-blue-500" },
-        { name: "Framer Motion", color: "text-purple-500" },
-        { name: "Mental Health", color: "text-green-500" },
+        { name: "React", color: "text-electric_blue" },
+        { name: "JavaScript", color: "text-champagne_pink" },
+        { name: "Tailwind CSS", color: "text-jordy_blue" },
+        { name: "Framer Motion", color: "text-mauve" },
+        { name: "Mental Health", color: "text-aquamarine" },
       ],
       images: [relevia1, relevia2, relevia3, relevia4, relevia5, relevia6, relevia7],
       detailedDescription: "Relevia is an interactive web application built with React, Tailwind CSS, and Framer Motion, aimed at assisting individuals in managing and overcoming panic attacks. Developed by EmpowerED Global, it offers a comprehensive set of features including a resource library with articles and guides, interactive tools such as breathing exercises and grounding techniques, and sections for learning about panic attacks, coping strategies, medication information, and contact support. The application features an animated and responsive user interface, ensuring a smooth experience on both mobile and desktop devices. Relevia aims to raise awareness about panic attacks and provide accessible tools for emotional regulation and coping. It includes components like About, Contact, Coping, Home, Medication, and Resources, each designed to be user-friendly and supportive.",
@@ -393,9 +408,9 @@ const Website = () => {
       title: "EmpowerTube - Educational Content Hub",
       description: "An web application for managing and organizing educational content. Supports videos, PDFs, and articles with advanced filtering, dark mode, and drag-and-drop functionality.",
       tags: [
-        { name: "HTML", color: "text-green-400" },
-        { name: "CSS", color: "text-blue-400" },
-        { name: "JavaScript", color: "text-yellow-400" },
+        { name: "HTML", color: "text-aquamarine" },
+        { name: "CSS", color: "text-jordy_blue" },
+        { name: "JavaScript", color: "text-champagne_pink" },
       ],
       images: [Tube1, Tube2, Tube3],
       detailedDescription: "EmpowerTube is a comprehensive web application designed to help educators and students organize and manage educational content efficiently. The platform supports multiple content formats including YouTube videos, PDF documents, and articles, allowing users to create, read, update, and delete content with ease. Its intelligent organization system enables drag-and-drop rearrangement of content items, making it simple to structure learning materials logically. Advanced filtering options allow users to search by title or content, filter by category, and identify favorite content quickly. Multiple sorting options (Newest, Oldest, Popular) help users find content based on their specific needs. The application features an automatic dark/light mode that detects system preferences for comfortable viewing in any lighting condition. A favorites system allows users to mark and filter their most important content. The modern, minimalist interface with smooth animations ensures an intuitive user experience across all devices. EmpowerTube utilizes LocalStorage for persistent data storage, ensuring content remains available even when offline. Client-side PDF upload and preview functionality allows for seamless document handling without server dependency. Performance optimizations like lazy loading and efficient rendering ensure smooth operation even with large content libraries. Comprehensive error handling and user feedback mechanisms provide a reliable experience, while the use of vanilla JavaScript (without frameworks) keeps the application lightweight and fast. The implementation of CSS Variables and Modern Layout techniques (Grid/Flexbox) creates a responsive, adaptable interface that works perfectly on desktops, tablets, and mobile devices. Font Awesome 6 icons enhance the visual experience with professional-grade symbols throughout the interface.",
@@ -460,6 +475,27 @@ const Website = () => {
     if (i % 3 === 0) acc.push(activeData.slice(i, i + 3));
     return acc;
   }, []);
+
+  const tabVariants = {
+    inactive: { 
+      scale: 1, 
+      opacity: 0.7, 
+      y: 0,
+      boxShadow: "0px 0px 0px rgba(0,0,0,0)"
+    },
+    active: { 
+      scale: 1.1, 
+      opacity: 1, 
+      y: -8,
+      boxShadow: "0px 15px 35px rgba(152, 245, 225, 0.4)"
+    },
+    hover: { 
+      scale: 1.05, 
+      opacity: 0.9,
+      y: -4,
+      boxShadow: "0px 8px 20px rgba(152, 245, 225, 0.2)"
+    }
+  };
 
   const Card = memo(({ data, onClick }) => {
     const title = data.title || data.name;
@@ -589,11 +625,11 @@ const Website = () => {
     <>
       <style jsx>{`
         .website-section {
-          background: linear-gradient(135deg, #1E1B4B 0%, #134E5E 50%, #1E1B4B 100%);
+          background: linear-gradient(135deg, #2a1b3d 0%, #1d3557 50%, #2a1b3d 100%);
           position: relative;
           overflow: hidden;
           isolation: isolate;
-          min-height: 100vh; /* Ensure minimum height to prevent overlap */
+          min-height: 100vh;
         }
         .website-section::before {
           content: '';
@@ -602,8 +638,21 @@ const Website = () => {
           left: -50%;
           width: 200%;
           height: 200%;
-          background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%);
+          background: radial-gradient(circle, rgba(152, 245, 225, 0.1) 0%, rgba(152, 245, 225, 0.05) 30%, rgba(255,255,255,0) 70%);
           animation: rotateGlow 20s linear infinite;
+          z-index: 0;
+        }
+        .website-section::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: 
+            radial-gradient(circle at 20% 80%, rgba(163, 196, 243, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(241, 192, 232, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(207, 186, 240, 0.1) 0%, transparent 50%);
           z-index: 0;
         }
         @keyframes rotateGlow {
@@ -614,10 +663,67 @@ const Website = () => {
           z-index: 1;
         }
         .intro-text {
-          max-width: 800px;
+          max-width: 900px;
           margin: 0 auto;
-          line-height: 1.8;
+          line-height: 1.9;
           text-align: center;
+        }
+        .intro-text p {
+          background: linear-gradient(135deg, #fbf8cc 0%, #98f5e1 50%, #fde4cf 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-shadow: 0 0 30px rgba(152, 245, 225, 0.3);
+          position: relative;
+        }
+        .intro-text p::before {
+          content: '';
+          position: absolute;
+          top: -10px;
+          left: -20px;
+          right: -20px;
+          bottom: -10px;
+          background: linear-gradient(135deg, rgba(152, 245, 225, 0.1), rgba(251, 248, 204, 0.05));
+          border-radius: 20px;
+          z-index: -1;
+          opacity: 0.7;
+        }
+        .premium-tab {
+          position: relative;
+          overflow: hidden;
+        }
+        .premium-tab::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(152, 245, 225, 0.4),
+            transparent
+          );
+          transition: left 0.5s ease;
+        }
+        .premium-tab:hover::before {
+          left: 100%;
+        }
+        .tab-glow {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(circle, rgba(152, 245, 225, 0.3) 0%, transparent 70%);
+          transform: translate(-50%, -50%);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+        }
+        .premium-tab.active .tab-glow {
+          opacity: 1;
         }
         @media (max-width: 768px) {
           .website-section {
@@ -633,10 +739,10 @@ const Website = () => {
           }
         }
       `}</style>
-      <section id="websites" className="website-section py-16 lg:py-24 text-lemon_chiffon">
+      
+      <section id="websites" className="website-section py-16 lg:py-24 text-lemon_chiffon" role="main" aria-label="STEM Projects Portfolio">
         <div className="container mx-auto px-6 lg:px-20 relative z-10">
-
-
+          {/* Hero Section */}
           <div ref={initialMessageRef} className="flex flex-col items-center justify-center min-h-[60vh] mt-20">
             <motion.div
               className="flex items-center relative"
@@ -650,6 +756,8 @@ const Website = () => {
                 initial={{ x: -10, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 1, ease: "easeOut" }}
+                role="heading"
+                aria-level="1"
               >
                 STEM
               </motion.h1>
@@ -660,6 +768,7 @@ const Website = () => {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
                 style={{ transformOrigin: "center" }}
+                aria-hidden="true"
               >
                 <Lottie options={lottieOptions} height={isDesktop ? 80 : 40} width={isDesktop ? 80 : 40} />
               </motion.div>
@@ -675,17 +784,19 @@ const Website = () => {
             </motion.div>
           </div>
 
+          {/* Enhanced Introduction Text */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
             className="intro-text mb-12"
           >
-            <p className="text-xl sm:text-2xl font-description text-lemon_chiffon leading-relaxed">
-              Driven by an insatiable curiosity, I dive headfirst into the unknown, where every challenge is a call to adventure. Each obstacle I encounter isn’t a barrier but a spark that ignites my imagination, leading me to craft innovative solutions and embark on exciting projects. Through hands-on experimentation with code and design, I not only hone my skills but also keep the flame of excitement burning bright, always eager for the next discovery. This journey is a testament to my unwavering commitment to exploration, problem-solving, and pushing the boundaries of what’s possible, where every creation is a chapter in my story of turning curiosity into impactful innovation.
+            <p className="text-xl sm:text-2xl font-description leading-relaxed">
+              Driven by an insatiable curiosity, I dive headfirst into the unknown, where every challenge is a call to adventure. Each obstacle I encounter isn't a barrier but a spark that ignites my imagination, leading me to craft innovative solutions and embark on exciting projects. Through hands-on experimentation with code and design, I not only hone my skills but also keep the flame of excitement burning bright, always eager for the next discovery. This journey is a testament to my unwavering commitment to exploration, problem-solving, and pushing the boundaries of what's possible, where every creation is a chapter in my story of turning curiosity into impactful innovation.
             </p>
           </motion.div>
 
+          {/* Collaboration Description */}
           <motion.div
             ref={descriptionRef}
             className="text-center mb-12 mt-32 max-w-3xl mx-auto"
@@ -693,45 +804,103 @@ const Website = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
           >
-            <p className="text-lg sm:text-xl font-description text-lemon_chiffon leading-relaxed">
+            <p className="text-lg sm:text-xl font-description leading-relaxed bg-gradient-to-r from-lemon_chiffon via-aquamarine to-champagne_pink bg-clip-text text-transparent">
               Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
             </p>
           </motion.div>
 
+          {/* Enhanced Premium Tab Section */}
           <motion.div
             ref={buttonsRef}
-            className="flex justify-center mb-12 space-x-4 sm:space-x-6 relative"
+            className="flex justify-center mb-16 relative"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.7 }}
           >
-            {["websites", "projects", "courses"].map((tab) => (
-              <motion.button
-                key={tab}
-                className={`py-2 px-4 sm:py-3 sm:px-6 md:py-4 md:px-8 text-base sm:text-lg font-medium rounded-full shadow-xl transition-all duration-300 ${
-                  activeTab === tab
-                    ? "bg-gradient-to-r from-champagne_pink to-tea_rose text-dark_teal"
-                    : "bg-dark_teal/20 text-champagne_pink border border-champagne_pink/50 hover:bg-gradient-to-r hover:from-champagne_pink hover:to-tea_rose hover:text-dark_teal"
-                }`}
-                onClick={() => setActiveTab(tab)}
-                whileHover={{ scale: 1.1, boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)" }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </motion.button>
-            ))}
-            <motion.div
-              className="absolute -bottom-2 h-1 bg-champagne_pink rounded-full"
-              initial={false}
-              animate={{
-                left: `${["websites", "projects", "courses"].indexOf(activeTab) * 33.33}%`,
-                width: "33.33%",
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              style={{ width: "33.33%" }}
-            />
+            {/* Tab Container with Glass Morphism */}
+            <div className="relative bg-gradient-to-r from-deep_indigo/40 via-dark_teal/30 to-deep_indigo/40 backdrop-blur-xl border border-aquamarine/20 rounded-full p-2 shadow-3xl">
+              {/* Floating Background Elements */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-aquamarine/10 to-jordy_blue/10 rounded-full blur-xl opacity-50 animate-pulse"></div>
+              
+              <div className="flex space-x-2 relative z-10">
+                {["websites", "projects", "courses"].map((tab, index) => (
+                  <motion.button
+                    key={tab}
+                    className={`premium-tab relative px-8 py-2 text-base sm:text-lg font-bold font-cta rounded-full transition-all duration-500 ${
+                      activeTab === tab
+                        ? "bg-gradient-to-r from-aquamarine via-electric_blue to-jordy_blue text-deep_indigo shadow-2xl"
+                        : "text-aquamarine hover:text-lemon_chiffon"
+                    }`}
+                    onClick={() => setActiveTab(tab)}
+                    onMouseEnter={() => setHoveredTab(tab)}
+                    onMouseLeave={() => setHoveredTab(null)}
+                    variants={tabVariants}
+                    initial="inactive"
+                    animate={activeTab === tab ? "active" : hoveredTab === tab ? "hover" : "inactive"}
+                    transition={{ 
+                      type: "spring", 
+                      stiffness: 400, 
+                      damping: 30,
+                      duration: 0.4 
+                    }}
+                    aria-pressed={activeTab === tab}
+                    aria-label={`Show ${tab}`}
+                  >
+                    {/* Tab Glow Effect */}
+                    <div className={`tab-glow ${activeTab === tab ? 'active' : ''}`}></div>
+                    
+                    {/* Premium Shimmer Effect */}
+                    {activeTab === tab && (
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                        initial={{ x: "-100%" }}
+                        animate={{ x: "100%" }}
+                        transition={{ 
+                          duration: 1.5, 
+                          repeat: Infinity, 
+                          repeatDelay: 3,
+                          ease: "easeInOut"
+                        }}
+                        style={{ borderRadius: "inherit" }}
+                      />
+                    )}
+                    
+                    <span className="relative z-10">
+                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    </span>
+                    
+                    {/* Active Indicator Dots */}
+                    {activeTab === tab && (
+                      <motion.div
+                        className="absolute -bottom-2 left-1/2 w-2 h-2 bg-aquamarine rounded-full"
+                        initial={{ scale: 0, x: "-50%" }}
+                        animate={{ scale: 1, x: "-50%" }}
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      />
+                    )}
+                  </motion.button>
+                ))}
+              </div>
+              
+              {/* Animated Progress Bar */}
+              <motion.div
+                className="absolute bottom-0 h-1 bg-gradient-to-r from-aquamarine to-electric_blue rounded-full"
+                initial={false}
+                animate={{
+                  left: `${2 + (["websites", "projects", "courses"].indexOf(activeTab) * 33.33)}%`,
+                  width: "29.33%",
+                }}
+                transition={{ 
+                  type: "spring", 
+                  stiffness: 300, 
+                  damping: 25,
+                  duration: 0.6 
+                }}
+              />
+            </div>
           </motion.div>
 
+          {/* Cards Section */}
           <div ref={cardsRef}>
             <AnimatePresence mode="wait">
               <motion.div
@@ -742,139 +911,164 @@ const Website = () => {
                 transition={{ duration: 0.6, ease: "easeInOut" }}
               >
                 {groupedData.map((group, rowIndex) => (
-                  <div key={rowIndex} className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 sm:px-8 mb-12">
+                  <motion.div 
+                    key={rowIndex} 
+                    className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 sm:px-8 mb-12"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: rowIndex * 0.2, duration: 0.6 }}
+                  >
                     {group.map((item, cardIndex) => (
                       <Card key={cardIndex} data={item} onClick={setSelectedProject} />
                     ))}
-                  </div>
+                  </motion.div>
                 ))}
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
 
-        {selectedProject && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 backdrop-blur-md"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-            onClick={(e) => {
-              if (e.target === e.currentTarget) setSelectedProject(null);
-            }}
-          >
+        {/* Modal */}
+        <AnimatePresence>
+          {selectedProject && (
             <motion.div
-              className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-6 sm:p-10 rounded-3xl w-11/12 sm:w-4/5 md:w-3/4 lg:w-3/5 max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-700/50 relative"
-              initial={{ scale: 0.85, opacity: 0, y: 50 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.85, opacity: 0, y: 50 }}
-              transition={{ type: "spring", stiffness: 350, damping: 30 }}
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-lg"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              onClick={(e) => {
+                if (e.target === e.currentTarget) setSelectedProject(null);
+              }}
             >
-              <motion.button
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-gray-700 text-white hover:bg-aquamarine hover:text-gray-900 transition-colors duration-300"
-                whileHover={{ scale: 1.15, rotate: 180 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 500 }}
-              >
-                ✕
-              </motion.button>
-              <motion.h2
-                className="mb-6 font-heading text-3xl sm:text-4xl font-bold text-white tracking-tight"
-                initial={{ opacity: 0, y: -30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-              >
-                {selectedProject.title || selectedProject.name}
-              </motion.h2>
-              <motion.p
-                className="mb-8 text-base sm:text-lg font-description leading-relaxed text-gray-300 z-5000"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-              >
-                {selectedProject.detailedDescription}
-              </motion.p>
               <motion.div
-                className="flex flex-wrap gap-3 mb-8"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.4 }}
+                className="bg-gradient-to-br from-deep_indigo/95 via-dark_teal/90 to-deep_indigo/95 backdrop-blur-xl border border-aquamarine/30 p-6 sm:p-10 rounded-3xl w-11/12 sm:w-4/5 md:w-3/4 lg:w-3/5 max-h-[90vh] overflow-y-auto shadow-3xl relative"
+                initial={{ scale: 0.7, opacity: 0, y: 100, rotateX: -15 }}
+                animate={{ scale: 1, opacity: 1, y: 0, rotateX: 0 }}
+                exit={{ scale: 0.7, opacity: 0, y: 100, rotateX: -15 }}
+                transition={{ 
+                  type: "spring", 
+                  stiffness: 300, 
+                  damping: 30,
+                  duration: 0.6 
+                }}
               >
-                {selectedProject.tags.map((tag, idx) => (
-                  <motion.span
-                    key={idx}
-                    className={`text-sm font-semibold font-description ${tag.color} px-4 py-2 rounded-full bg-gray-700/50 text-gray-200 shadow-lg hover:bg-aquamarine hover:text-gray-900 transition-colors duration-300`}
-                    whileHover={{ scale: 1.15, y: -2 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                  >
-                    #{tag.name}
-                  </motion.span>
-                ))}
-              </motion.div>
-              <motion.div
-                className="relative mb-8"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.5 }}
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {selectedProject.images.map((image, idx) => (
-                    <motion.img
-                      key={idx}
-                      src={image}
-                      alt={`Project image ${idx + 1}`}
-                      className="object-cover w-full h-48 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
-                      loading="lazy"
-                      initial={{ scale: 0.9, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
-                      transition={{ duration: 0.5, delay: 0.5 + idx * 0.1 }}
-                    />
-                  ))}
-                </div>
-              </motion.div>
-              <motion.div
-                className="flex justify-center space-x-6"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.6, ease: "easeOut" }}
-              >
-                {selectedProject.type === "website" && (
-                  <a
-                    href={selectedProject.website_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-6 py-3 text-lg font-medium font-cta rounded-full bg-aquamarine text-gray-900 shadow-lg hover:bg-white hover:shadow-xl transition-all duration-300"
-                  >
+                {/* Close Button */}
+                <motion.button
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute top-4 right-4 p-3 rounded-full bg-gradient-to-r from-tea_rose/20 to-champagne_pink/20 text-aquamarine hover:from-aquamarine hover:to-electric_blue hover:text-deep_indigo backdrop-blur-sm border border-aquamarine/30 transition-all duration-300 z-10"
+                  whileHover={{ scale: 1.15, rotate: 90 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 500 }}
+                  aria-label="Close project details"
+                >
+                  ✕
+                </motion.button>
+                
+                {/* Modal Content */}
+                <motion.h2
+                  className="mb-6 font-heading text-3xl sm:text-4xl font-bold text-transparent bg-gradient-to-r from-aquamarine to-electric_blue bg-clip-text tracking-tight"
+                  initial={{ opacity: 0, y: -30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+                >
+                  {selectedProject.title || selectedProject.name}
+                </motion.h2>
+                
+                <motion.p
+                  className="mb-8 text-base sm:text-lg font-description leading-relaxed text-lemon_chiffon/90"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+                >
+                  {selectedProject.detailedDescription}
+                </motion.p>
+                
+                {/* Tags */}
+                <motion.div
+                  className="flex flex-wrap gap-3 mb-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.7, delay: 0.4 }}
+                >
+                  {selectedProject.tags.map((tag, idx) => (
                     <motion.span
-                      whileHover={{ scale: 1.05 }}
+                      key={idx}
+                      className={`text-sm font-semibold font-description ${tag.color} px-4 py-2 rounded-full bg-dark_teal/30 backdrop-blur-sm border border-aquamarine/20 shadow-lg hover:bg-aquamarine hover:text-deep_indigo transition-all duration-300`}
+                      whileHover={{ scale: 1.15, y: -2 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      #{tag.name}
+                    </motion.span>
+                  ))}
+                </motion.div>
+                
+                {/* Images */}
+                <motion.div
+                  className="relative mb-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.7, delay: 0.5 }}
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {selectedProject.images.map((image, idx) => (
+                      <motion.img
+                        key={idx}
+                        src={image}
+                        alt={`${selectedProject.title || selectedProject.name} screenshot ${idx + 1}`}
+                        className="object-cover w-full h-48 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-aquamarine/20"
+                        loading="lazy"
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        whileHover={{ scale: 1.03, y: -5 }}
+                        transition={{ duration: 0.5, delay: 0.5 + idx * 0.1 }}
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+                
+                {/* Action Buttons */}
+                <motion.div
+                  className="flex flex-col sm:flex-row justify-center gap-4"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.6, ease: "easeOut" }}
+                >
+                  {selectedProject.type === "website" && (
+                    <motion.a
+                      href={selectedProject.website_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-8 py-4 text-lg font-bold font-cta rounded-2xl bg-gradient-to-r from-aquamarine to-electric_blue text-deep_indigo shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 group"
+                      whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 400 }}
                     >
+                      <FaEye className="group-hover:scale-110 transition-transform" />
                       Visit Website
-                    </motion.span>
-                  </a>
-                )}
-                <a
-                  href={selectedProject.source_code_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 text-lg font-medium font-cta rounded-full bg-gray-700 text-white shadow-lg hover:bg-aquamarine hover:text-gray-900 hover:shadow-xl transition-all duration-300"
-                >
-                  <motion.span
-                    whileHover={{ scale: 1.05 }}
+                    </motion.a>
+                  )}
+                  <motion.a
+                    href={selectedProject.source_code_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-8 py-4 text-lg font-bold font-cta rounded-2xl bg-gradient-to-r from-dark_teal/80 to-deep_indigo/80 text-aquamarine border border-aquamarine/30 backdrop-blur-sm shadow-xl hover:from-aquamarine hover:to-electric_blue hover:text-deep_indigo hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 group"
+                    whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 400 }}
                   >
+                    {selectedProject.type === "website" ? (
+                      <FiGithub className="group-hover:scale-110 transition-transform" />
+                    ) : (
+                      <FaEye className="group-hover:scale-110 transition-transform" />
+                    )}
                     {selectedProject.type === "website" ? "Source Code" : "View Project"}
-                  </motion.span>
-                </a>
+                  </motion.a>
+                </motion.div>
               </motion.div>
             </motion.div>
-          </motion.div>
-        )}
+          )}
+        </AnimatePresence>
       </section>
     </>
   );
