@@ -8,7 +8,7 @@ import spaceBackground from '../assets/background.jpg';
 import universe from "../assets/universe.jpg";
 import universe1 from "../assets/universe1.jpg";
 import universe2 from "../assets/universe2.jpg";
-import Loader1 from './Loader1';
+
 
 
 
@@ -57,13 +57,13 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality, text
       '#0A3D62', // Deep teal accent
       '#6C5CE7', // Bright galaxy purple
       '#341F97', // Dark royal purple
-        '#2E1A47', // Deep cosmic purple
-  '#3B3B98', // Nebula blue
-  '#5F27CD', // Vivid violet
-  '#1B1464', // Space navy blue
-  '#0A3D62', // Deep teal accent
-  '#6C5CE7', // Bright galaxy purple
-  '#341F97'  // Dark royal purple
+      '#2E1A47', // Deep cosmic purple
+      '#3B3B98', // Nebula blue
+      '#5F27CD', // Vivid violet
+      '#1B1464', // Space navy blue
+      '#0A3D62', // Deep teal accent
+      '#6C5CE7', // Bright galaxy purple
+      '#341F97'  // Dark royal purple
   ], []);
 
   const handleClick = useCallback(() => {
@@ -119,7 +119,7 @@ const gradientMaterial = useMemo(() => {
       topColor: { value: new THREE.Color('#cfbaf0') }, 
       bottomColor: { value: new THREE.Color('#1d3557') },
       envMap: { value: textureMap },
-      envMix: { value: 0.8 } // Control environment reflection intensity
+      envMix: { value: 0.85 } // Control environment reflection intensity
     },
     vertexShader: `
       varying vec3 vPosition; 
@@ -346,7 +346,7 @@ const colorPalette = useMemo(() => [
           (Math.random() - 0.5) * 20
         ],
         color: colorPalette[Math.floor(Math.random() * colorPalette.length)],
-        radius: Math.random() * (3.7 - 1.5) + 0.5
+        radius: Math.random() * (5.7 - 1.5) + 0.5
       });
     }
     return arr;

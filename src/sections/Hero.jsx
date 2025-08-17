@@ -58,20 +58,21 @@ const Hero = () => {
 
   // Classes
   const textParagraphClass = isMobile
-    ? "text-base text-center text-glow text-lemon_chiffon font-description tracking-wider leading-relaxed"
+    ? "3t-3 text-base text-center text-glow text-lemon_chiffon font-description tracking-wider leading-relaxed"
     : "text-lg sm:text-xl md:text-2xl text-glow text-lemon_chiffon font-description tracking-wider leading-relaxed";
 
   const headingClass = isMobile
-    ? "text-3xl text-center font-heading text-transparent bg-gradient-to-r from-champagne_pink to-pink_lavender bg-clip-text leading-tight tracking-tight"
-    : "text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading text-transparent bg-gradient-to-r from-champagne_pink to-pink_lavender bg-clip-text leading-tight tracking-tight";
+    ? "mt-3 text-3xl text-center font-heading text-transparent bg-gradient-to-r from-champagne_pink to-pink_lavender bg-clip-text leading-tight tracking-tight"
+    : " text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading text-transparent bg-gradient-to-r from-champagne_pink to-pink_lavender bg-clip-text leading-tight tracking-tight";
 
   const subheadingClass = isMobile
     ? "text-sm text-center text-glow text-mauve font-subheading tracking-wide"
-    : "text-lg sm:text-2xl md:text-2xl text-glow text-mauve font-subheading tracking-wide";
+    : " mt-5 text-lg text-left sm:text-2xl md:text-2xl text-glow text-mauve font-subheading tracking-wide";
 
   const profileImgClass = isMobile
-    ? "w-32 h-32 mx-auto transition-transform duration-300 transform shadow-2xl hover:scale-105"
-    : "w-11 h-11 sm:w-40 sm:h-40 md:w-60 md:h-60 lg:w-96 lg:h-96 transition-transform duration-300 transform shadow-2xl";
+    ? "w-32 h-32 mx-auto transition-transform duration-300 transform shadow-2xl"
+    : "w-24 sm:w-72 md:w-[250px] lg:w-[700px] object-contain shadow-2xl transition-transform duration-300 transform"
+;
 
   const descriptionClass = isMobile
     ? "text-sm text-center text-glow text-lemon_chiffon tracking-wide leading-relaxed"
@@ -166,8 +167,8 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 2.2, delay: 0.6, ease: "easeOut" }}
           >
-            I explore the intersection of computation, art, and physics, <br />
-            building solutions that transform cosmic mysteries <br />
+            I explore the intersection of computation, art, and physics, 
+            building solutions that transform cosmic mysteries 
             into tangible, beautiful experiences.
           </motion.p>
         </article>
