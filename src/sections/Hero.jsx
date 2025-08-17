@@ -110,12 +110,13 @@ const Hero = () => {
   };
 
   return (
-    <section
+    <main
       ref={scrollRef}
       className="relative z-10 flex flex-col items-center justify-center min-h-screen overflow-y-auto bg-transparent px-4"
+      role="main"
     >
-      <div className="relative flex flex-col items-center lg:flex-row lg:items-start lg:justify-between lg:w-3/4 xl:w-2/3">
-        <div className="flex flex-col items-center lg:items-start mb-6 lg:mb-0">
+      <header className="relative flex flex-col items-center lg:flex-row lg:items-start lg:justify-between lg:w-3/4 xl:w-2/3">
+        <article className="flex flex-col items-center lg:items-start mb-6 lg:mb-0 text-center lg:text-left">
           <motion.p
             className={textParagraphClass}
             initial={{ opacity: 0, y: isMobile ? 20 : 50 }}
@@ -130,40 +131,50 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
           >
-            Bushra Khandoker✨
+            Bushra Khandoker ✨
           </motion.h1>
-          <motion.p
+          <motion.h2
             className={subheadingClass}
             initial={{ opacity: 0, y: isMobile ? 20 : 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
           >
-            Every algorithm starts with a question. <br />
-            I explore the intersection of computation, art and physics, <br/> building solutions that transform cosmic mysteries <br />
+            Every algorithm starts with a question.
+          </motion.h2>
+          <motion.p
+            className={subheadingClass}
+            initial={{ opacity: 0, y: isMobile ? 20 : 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 2.2, delay: 0.6, ease: "easeOut" }}
+          >
+            I explore the intersection of computation, art and physics, <br />
+            building solutions that transform cosmic mysteries <br />
             into tangible, beautiful experiences.
           </motion.p>
-        </div>
-        <motion.div className="flex justify-center lg:ml-12" ref={profileRef}>
+        </article>
+        <motion.figure className="flex justify-center lg:ml-12" ref={profileRef}>
           <img
             src={profileImage}
-            alt="Bushra Khandoker"
+            alt="Portrait of Bushra Khandoker - Computer Science student, creative innovator and aspiring researcher"
             className={profileImgClass}
             loading="lazy"
+            decoding="async"
             style={{
               objectFit: "cover",
               clipPath:
                 "polygon(50% 0%, 90% 15%, 100% 50%, 90% 85%, 50% 100%, 10% 85%, 0% 50%, 10% 15%)",
             }}
           />
-        </motion.div>
-      </div>
+          <figcaption className="sr-only">Bushra Khandoker Profile Image</figcaption>
+        </motion.figure>
+      </header>
 
-      <div
+      <nav
         ref={buttonRef}
         className="flex flex-row flex-wrap justify-center gap-4 font-cta mt-6"
-        style={{ pointerEvents: "auto" }}
+        aria-label="Primary Navigation"
       >
-        <Link to="/my-story">
+        <Link to="/my-story" aria-label="Read Bushra Khandoker's story">
           <motion.button
             className={buttonStoryClass}
             whileHover={{
@@ -183,12 +194,13 @@ const Hero = () => {
               transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
             }}
             onClick={(e) => createRipple(e, e.currentTarget)}
+            style={{ pointerEvents: "auto" }}
           >
             My Story
           </motion.button>
         </Link>
 
-        <Link to="/my-works">
+        <Link to="/my-works" aria-label="Explore Bushra Khandoker's works and projects">
           <motion.button
             className={buttonWorksClass}
             whileHover={{
@@ -208,6 +220,7 @@ const Hero = () => {
               transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
             }}
             onClick={(e) => createRipple(e, e.currentTarget)}
+            style={{ pointerEvents: "auto" }}
           >
             My Works
           </motion.button>
@@ -217,6 +230,9 @@ const Hero = () => {
           href={resumePDF}
           download="Bushra_Khandoker_Resume.pdf"
           className={buttonCVClass}
+          aria-label="Download Bushra Khandoker's Resume (PDF)"
+          title="Download Resume - Bushra Khandoker"
+          rel="noopener noreferrer"
           whileHover={{
             scale: 1.1,
             boxShadow: "0px 0px 20px 5px rgba(255, 0, 255, 0.6)",
@@ -234,26 +250,25 @@ const Hero = () => {
             transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
           }}
           onClick={(e) => createRipple(e, e.currentTarget)}
+          style={{ pointerEvents: "auto" }}
         >
           Launch My Universe Map
         </motion.a>
-      </div>
+      </nav>
 
-      <motion.div
+      <motion.section
         className="mt-6 px-4 text-center text-lemon_chiffon"
         initial={{ opacity: 0, y: isMobile ? 20 : 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
-        style={{ pointerEvents: "none" }}
       >
         <p className={descriptionClass}>
-          ✨Our universe is similar to a bubble, and it is expanding like one as well.
-          Want to see how a bubble is created and expands?
-          <br />
-          Simply tap on the screen, and you will see🎮
+          ✨ Our universe is similar to a bubble, and it is expanding like one as well.
+          Want to see how a bubble is created and expands? <br />
+          Simply tap on the screen, and you will see 🎮
         </p>
-      </motion.div>
-    </section>
+      </motion.section>
+    </main>
   );
 };
 

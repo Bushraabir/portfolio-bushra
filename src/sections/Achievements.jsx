@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useRef, useCallback, memo, lazy, Suspense } from "react";
 import { motion, useInView } from "framer-motion";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { FaCheck, FaChevronDown, FaTrophy, FaAward, FaStar } from "react-icons/fa";
-import BackgroundScene from "../components/Background.jsx";
 import Background from "../components/Background.jsx";
 
 // Lazy loaded 3D components
 
 const Crystal = lazy(() => import("../assets/3d_model/Crystal.jsx"));
 const Star = lazy(() => import("../components/Stars"));
+// Instead of importing entire GSAP
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -259,7 +259,7 @@ const itemVariants = {
     }
   }
 };
-// Optimized Achievement Card
+//  Achievement Card
 const AchievementCard = memo(({ achievement, isMobile, index }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef(null);
@@ -311,8 +311,6 @@ const AchievementCard = memo(({ achievement, isMobile, index }) => {
       }}
       icon={<AnimatedModel achievement={achievement} />}
     >
-      {/* Animated background gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${achievement.color} opacity-5 group-hover:opacity-10 transition-opacity duration-500`} />
      
       <motion.div
         className="cursor-pointer relative z-10"

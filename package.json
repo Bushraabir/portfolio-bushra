@@ -46,6 +46,7 @@
         "react-colorful": "^5.6.1",
         "react-countup": "^6.5.3",
         "react-dom": "^18.3.1",
+        "react-helmet-async": "^2.0.5",
         "react-horizontal-scrolling-menu": "^8.2.0",
         "react-icons": "^5.5.0",
         "react-intersection-observer": "^9.14.1",

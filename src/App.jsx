@@ -1,11 +1,12 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Loader from "./components/Loader";
 import Loader1 from "./components/Loader1";
 
-// Lazy-load sections and components
+// Lazy-loaded sections/components
 const ParticleScene = React.lazy(() => import("./components/Particle"));
 const Hero = React.lazy(() => import("./sections/Hero"));
 const Websites = React.lazy(() => import("./sections/Websites"));
@@ -19,19 +20,19 @@ const Testimonials = React.lazy(() => import("./sections/Testimonials"));
 const Skills = React.lazy(() => import("./sections/skill"));
 const Footer = React.lazy(() => import("./sections/Footer"));
 
-//  Error Boundary for  error handling
+/* ---------------- Error Boundary ---------------- */
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, errorMessage: '' };
+    this.state = { hasError: false, errorMessage: "" };
   }
 
   static getDerivedStateFromError(error) {
-    return { hasError: true, errorMessage: error.message || 'Unknown error occurred' };
+    return { hasError: true, errorMessage: error.message || "Unknown error occurred" };
   }
 
   componentDidCatch(error, info) {
-    console.error('Error in component:', error, info);
+    console.error("Error in component:", error, info);
   }
 
   render() {
@@ -55,7 +56,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// Loading context to manage global loading states
+/* ---------------- Loading Context ---------------- */
 const LoadingContext = React.createContext({
   isLoading: true,
   setLoading: () => {},
@@ -63,11 +64,9 @@ const LoadingContext = React.createContext({
   setLoadingProgress: () => {}
 });
 
-// Loading provider component
 const LoadingProvider = ({ children }) => {
   const [isLoading, setLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
-
   return (
     <LoadingContext.Provider value={{ isLoading, setLoading, loadingProgress, setLoadingProgress }}>
       {children}
@@ -75,105 +74,45 @@ const LoadingProvider = ({ children }) => {
   );
 };
 
-// Custom hook for loading context
 const useLoading = () => React.useContext(LoadingContext);
 
-// Enhanced loading wrapper for sections
+/* ---------------- Section Wrapper ---------------- */
 const SectionWrapper = ({ children, fallback = <Loader /> }) => (
   <Suspense fallback={fallback}>
-    <ErrorBoundary>
-      {children}
-    </ErrorBoundary>
+    <ErrorBoundary>{children}</ErrorBoundary>
   </Suspense>
 );
 
-// Framer Motion variants
+/* ---------------- Framer Motion Variants ---------------- */
 const sidebarVariants = {
-  open: { 
-    width: "250px", 
-    opacity: 1, 
-    transition: { 
-      type: "spring", 
-      stiffness: 300, 
-      damping: 30,
-      duration: 0.6 
-    } 
-  },
-  closed: { 
-    width: "0", 
-    opacity: 0, 
-    transition: { 
-      type: "spring", 
-      stiffness: 400, 
-      damping: 40,
-      duration: 0.4 
-    } 
-  },
+  open: { width: "250px", opacity: 1, transition: { type: "spring", stiffness: 300, damping: 30, duration: 0.6 } },
+  closed: { width: "0", opacity: 0, transition: { type: "spring", stiffness: 400, damping: 40, duration: 0.4 } }
 };
 
 const navItemVariants = {
-  open: { 
-    x: 0, 
-    opacity: 1, 
-    scale: 1, 
-    transition: { 
-      type: "spring", 
-      stiffness: 300, 
-      damping: 25,
-      delay: 0.1,
-      staggerChildren: 0.1 
-    } 
-  },
-  closed: { 
-    x: -20, 
-    opacity: 0, 
-    scale: 0.95, 
-    transition: { 
-      type: "spring", 
-      stiffness: 400, 
-      damping: 30,
-      duration: 0.3 
-    } 
-  },
+  open: { x: 0, opacity: 1, scale: 1, transition: { type: "spring", stiffness: 300, damping: 25, staggerChildren: 0.1 } },
+  closed: { x: -20, opacity: 0, scale: 0.95, transition: { type: "spring", stiffness: 400, damping: 30, duration: 0.3 } }
 };
 
-// Enhanced Toggle Button with better animations
+/* ---------------- Toggle Button ---------------- */
 const ToggleButton = ({ isOpen, setIsOpen }) => (
   <motion.div className="flex items-center justify-center w-12 h-12 m-3">
     <motion.button
       onClick={() => setIsOpen(!isOpen)}
       className="w-12 h-12 border-2 rounded-full shadow-lg cursor-pointer bg-gradient-to-r from-dark_teal to-deep_indigo border-lemon_chiffon relative overflow-hidden"
-      whileHover={{ 
-        scale: 1.15, 
-        rotateZ: isOpen ? -10 : 10,
-        boxShadow: "0 0 20px rgba(255, 248, 220, 0.5)"
-      }}
+      whileHover={{ scale: 1.15, rotateZ: isOpen ? -10 : 10, boxShadow: "0 0 20px rgba(255, 248, 220, 0.5)" }}
       whileTap={{ scale: 0.95 }}
-      animate={{ 
-        rotate: isOpen ? 180 : 0,
-        borderColor: isOpen ? "#F26B38" : "#FFF8DC"
-      }}
-      transition={{ 
-        duration: 0.5, 
-        ease: "easeInOut",
-        type: "spring",
-        stiffness: 300
-      }}
+      animate={{ rotate: isOpen ? 180 : 0, borderColor: isOpen ? "#F26B38" : "#FFF8DC" }}
+      transition={{ duration: 0.5, ease: "easeInOut", type: "spring", stiffness: 300 }}
     >
       <motion.div
         className="absolute inset-0 bg-gradient-to-r from-lemon_chiffon/20 to-transparent"
-        animate={{ 
-          opacity: isOpen ? 1 : 0,
-          scale: isOpen ? 1.2 : 0.8
-        }}
+        animate={{ opacity: isOpen ? 1 : 0, scale: isOpen ? 1.2 : 0.8 }}
         transition={{ duration: 0.3 }}
       />
       <motion.span
         className="text-lg font-bold text-lemon_chiffon relative z-10"
-        animate={{ 
-          rotateY: isOpen ? 180 : 0,
-          color: isOpen ? "#F26B38" : "#FFF8DC"
-        }}
+        animate={{ rotateY: isOpen ? 180 : 0, color: isOpen ? "#F26B38" : "#FFF8DC" }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         {isOpen ? "✖" : "☰"}
@@ -182,50 +121,36 @@ const ToggleButton = ({ isOpen, setIsOpen }) => (
   </motion.div>
 );
 
-// Enhanced Navbar Component with better UX
+/* ---------------- Navbar ---------------- */
 const NavbarComponent = ({ page }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ 
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest"
-      });
-    }
+    if (element) element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
     setIsOpen(false);
   };
 
-  // Close navbar when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isOpen && !event.target.closest('nav') && !event.target.closest('button')) {
-        setIsOpen(false);
-      }
+      if (isOpen && !event.target.closest("nav") && !event.target.closest("button")) setIsOpen(false);
     };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
-  // Close navbar on escape key
   useEffect(() => {
     const handleEscape = (event) => {
-      if (event.key === 'Escape' && isOpen) {
-        setIsOpen(false);
-      }
+      if (event.key === "Escape" && isOpen) setIsOpen(false);
     };
-
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen]);
 
   const navLinks = {
     home: [
       { to: "/my-works", name: "My Works", icon: "🚀" },
-      { to: "/my-story", name: "My Story", icon: "📖" },
+      { to: "/my-story", name: "My Story", icon: "📖" }
     ],
     myWorks: [
       { id: "websites", name: "STEM Projects", icon: "🔬" },
@@ -233,7 +158,7 @@ const NavbarComponent = ({ page }) => {
       { id: "research", name: "Research", icon: "📚" },
       { id: "organization", name: "Volunteering", icon: "🤝" },
       { to: "/", name: "← Back to Home", icon: "🏠" },
-      { to: "/my-story", name: "My Story", icon: "📖" },
+      { to: "/my-story", name: "My Story", icon: "📖" }
     ],
     myStory: [
       { id: "about", name: "About Me", icon: "👋" },
@@ -242,8 +167,8 @@ const NavbarComponent = ({ page }) => {
       { id: "gallery", name: "Gallery", icon: "📸" },
       { id: "testimonials", name: "Appreciations", icon: "💝" },
       { to: "/", name: "← Back to Home", icon: "🏠" },
-      { to: "/my-works", name: "My Works", icon: "🚀" },
-    ],
+      { to: "/my-works", name: "My Works", icon: "🚀" }
+    ]
   };
 
   return (
@@ -261,21 +186,14 @@ const NavbarComponent = ({ page }) => {
           animate={{ opacity: isOpen ? 1 : 0 }}
           transition={{ duration: 0.3 }}
         />
-        <motion.ul 
-          className="p-0 m-0 list-none relative z-10"
-          variants={navItemVariants}
-        >
+        <motion.ul className="p-0 m-0 list-none relative z-10" variants={navItemVariants}>
           {navLinks[page].map((link, index) => (
             <motion.li
               key={link.id || link.to}
               className="my-3"
               variants={navItemVariants}
               custom={index}
-              whileHover={{ 
-                scale: 1.05, 
-                x: 8,
-                transition: { duration: 0.2, ease: "easeOut" }
-              }}
+              whileHover={{ scale: 1.05, x: 8, transition: { duration: 0.2, ease: "easeOut" } }}
               whileTap={{ scale: 0.95 }}
             >
               {link.to ? (
@@ -304,12 +222,16 @@ const NavbarComponent = ({ page }) => {
   );
 };
 
-// Enhanced Home Page with better loading
+/* ---------------- Pages ---------------- */
 const HomePage = () => {
   const { isLoading } = useLoading();
-
   return (
-    <div className="bg-deep_indigo text-deep_indigo min-h-screen font-description overflow-hidden">
+    <div className="bg-deep_indigo min-h-screen font-description overflow-hidden">
+      <Helmet>
+        <title>Home | Bushra’s Portfolio</title>
+        <meta name="description" content="Welcome to Bushra's portfolio showcasing projects, research, and creative works." />
+        <meta name="keywords" content="Bushra, Portfolio, Web Development, Research, Art, STEM, Volunteering" />
+      </Helmet>
       <NavbarComponent page="home" />
       <div className="absolute top-0 left-0 w-full h-full">
         <ErrorBoundary>
@@ -318,10 +240,8 @@ const HomePage = () => {
           </SectionWrapper>
         </ErrorBoundary>
       </div>
-      <main className="min-h-screen overflow-hidden relative z-10 pointer-events-none">
-
-          <Hero id="hero" />
-
+      <main className="min-h-screen relative z-10 pointer-events-none">
+        <Hero id="hero" />
       </main>
       <SectionWrapper>
         <Footer />
@@ -330,119 +250,87 @@ const HomePage = () => {
   );
 };
 
-//  My Works Page
 const MyWorksPage = () => (
-  <div className="bg-deep_indigo text-deep_indigo min-h-screen font-description overflow-hidden">
+  <div className="bg-deep_indigo min-h-screen font-description overflow-hidden">
+    <Helmet>
+      <title>My Works | Bushra’s Portfolio</title>
+      <meta name="description" content="Explore Bushra's STEM projects, artworks, research, and volunteering initiatives." />
+      <meta name="keywords" content="STEM, Art, Research, Volunteering, Projects, Bushra" />
+    </Helmet>
     <NavbarComponent page="myWorks" />
     <main className="min-h-screen overflow-hidden">
-      <SectionWrapper>
-        <Websites id="websites" className="z-100" />
-      </SectionWrapper>
-      <SectionWrapper>
-        <Research id="research" className="-z-100" />
-      </SectionWrapper>
-      <SectionWrapper>
-        <Art id="artworks" />
-      </SectionWrapper>
-      <SectionWrapper>
-        <Organization id="organization" className="bg-lemon_chiffon" />
-      </SectionWrapper>
+      <SectionWrapper><Websites id="websites" /></SectionWrapper>
+      <SectionWrapper><Research id="research" /></SectionWrapper>
+      <SectionWrapper><Art id="artworks" /></SectionWrapper>
+      <SectionWrapper><Organization id="organization" /></SectionWrapper>
     </main>
-    <SectionWrapper>
-      <Footer />
-    </SectionWrapper>
+    <SectionWrapper><Footer /></SectionWrapper>
   </div>
 );
 
-// Enhanced My Story Page
 const MyStoryPage = () => (
-  <div className="bg-deep_indigo text-deep_indigo min-h-screen font-description overflow-hidden">
+  <div className="bg-deep_indigo min-h-screen font-description overflow-hidden">
+    <Helmet>
+      <title>My Story | Bushra’s Portfolio</title>
+      <meta name="description" content="Discover Bushra’s personal story, achievements, skills, gallery, and appreciations." />
+      <meta name="keywords" content="About, Achievements, Skills, Gallery, Testimonials, Bushra" />
+    </Helmet>
     <NavbarComponent page="myStory" />
     <main className="min-h-screen overflow-hidden">
-      <SectionWrapper>
-        <AboutMe id="about" className="overflow-hidden" />
-      </SectionWrapper>
-      <SectionWrapper>
-        <Achievements id="achievements" className="overflow-hidden" />
-      </SectionWrapper>
-
-      <SectionWrapper>
-        <Testimonials id="testimonials" className="overflow-hidden" />
-      </SectionWrapper>
+      <SectionWrapper><AboutMe id="about" /></SectionWrapper>
+      <SectionWrapper><Achievements id="achievements" /></SectionWrapper>
+      <SectionWrapper><Testimonials id="testimonials" /></SectionWrapper>
     </main>
-    <SectionWrapper>
-      <Footer />
-    </SectionWrapper>
+    <SectionWrapper><Footer /></SectionWrapper>
   </div>
 );
 
-// Main App Component with enhanced loading logic
+/* ---------------- Main App ---------------- */
 const App = () => {
   const [isAppLoaded, setIsAppLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
 
   useEffect(() => {
     let progressInterval;
-    
     const simulateLoading = () => {
       progressInterval = setInterval(() => {
         setLoadingProgress(prev => {
-          if (prev >= 90) {
-            clearInterval(progressInterval);
-            return 90;
-          }
+          if (prev >= 90) { clearInterval(progressInterval); return 90; }
           return prev + Math.random() * 10;
         });
       }, 200);
     };
-
     const handleAppLoad = () => {
-      // Simulate final loading steps
       setLoadingProgress(100);
-      
-      setTimeout(() => {
-        setIsAppLoaded(true);
-      }, 800);
+      setTimeout(() => setIsAppLoaded(true), 800);
     };
-
     simulateLoading();
-
-    // Check if everything is ready
-    const checkReadiness = () => {
-      if (document.readyState === "complete") {
-        handleAppLoad();
-      } else {
-        window.addEventListener("load", handleAppLoad);
-      }
-    };
-
-    const readyTimer = setTimeout(checkReadiness, 100);
-
+    if (document.readyState === "complete") handleAppLoad();
+    else window.addEventListener("load", handleAppLoad);
     return () => {
-      clearTimeout(readyTimer);
       clearInterval(progressInterval);
       window.removeEventListener("load", handleAppLoad);
     };
   }, []);
 
-  if (!isAppLoaded) {
-    return <Loader1 progress={loadingProgress} />;
-  }
+  if (!isAppLoaded) return <Loader1 progress={loadingProgress} />;
 
   return (
-    <LoadingProvider>
-      <Router basename="/portfolio-bushra/">
-        <ErrorBoundary>
-          <Suspense fallback={<Loader1 progress={50} />}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/my-works" element={<MyWorksPage />} />
-              <Route path="/my-story" element={<MyStoryPage />} />
-            </Routes>
-          </Suspense>
-        </ErrorBoundary>
-      </Router>
-    </LoadingProvider>
+    <HelmetProvider>
+      <LoadingProvider>
+        <Router basename="/portfolio-bushra/">
+          <ErrorBoundary>
+            <Suspense fallback={<Loader1 progress={50} />}>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/my-works" element={<MyWorksPage />} />
+                <Route path="/my-story" element={<MyStoryPage />} />
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
+        </Router>
+      </LoadingProvider>
+    </HelmetProvider>
   );
 };
 

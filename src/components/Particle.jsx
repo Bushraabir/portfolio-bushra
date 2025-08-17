@@ -5,7 +5,6 @@ import { OrbitControls, Environment, PerspectiveCamera, Html } from '@react-thre
 import { EffectComposer, Bloom, SSAO, DepthOfField } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import spaceBackground from '../assets/background.jpg';
-import hdr from "../assets/testimonial.hdr";
 import universe from "../assets/universe.jpg";
 import universe1 from "../assets/universe1.jpg";
 import universe2 from "../assets/universe2.jpg";
@@ -267,7 +266,7 @@ const CinematicLighting = React.memo(({ quality }) => {
       <hemisphereLight 
         skyColor="#4834d4" 
         groundColor="#130f40" 
-        intensity={0.6}
+        intensity={2.6}
       />
       
       {/* Additional colored lights for cinematic atmosphere */}
@@ -275,7 +274,7 @@ const CinematicLighting = React.memo(({ quality }) => {
         position={[-15, 15, -10]}
         width={10}
         height={10}
-        intensity={1.5}
+        intensity={3.5}
         color="#ff6348"
       />
       
@@ -283,7 +282,7 @@ const CinematicLighting = React.memo(({ quality }) => {
         position={[15, 15, 10]}
         width={8}
         height={8}
-        intensity={1.2}
+        intensity={6.2}
         color="#1dd1a1"
       />
     </>

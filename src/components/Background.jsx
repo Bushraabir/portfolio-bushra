@@ -19,7 +19,7 @@ const Background = () => {
 
     resizeCanvas();
 
-    // Define a premium color palette inspired by cosmic elegance: soft pastels with metallic sheen
+    // Define  color palette inspired by cosmic theme: soft pastels with metallic sheen
     const colors = [
       "#fbf8cc", // lemon_chiffon (soft gold)
       "#fde4cf", // champagne_pink (rose gold)
@@ -61,7 +61,14 @@ const Background = () => {
       mousePos.current = { x: e.clientX, y: e.clientY };
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    const handleTouchMove = (e) => {
+      if (e.touches.length > 0) {
+        mousePos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
 
     // Simple noise function simulation for organic movement (advanced, non-linear paths)
     const noise = (x, y) => {
@@ -142,12 +149,18 @@ const Background = () => {
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      // Group particles by layer for optimized connection drawing
+      const particlesByLayer = particleLayers.map(() => []);
+      particlesRef.current.forEach(particle => {
+        particlesByLayer[particleLayers.indexOf(particle.layer)].push(particle);
+      });
+
       particlesRef.current.forEach((particle, i) => {
         // Advanced pulsating with easing
         const pulse = 0.7 + Math.sin(Date.now() * 0.0015 + particle.pulsePhase) * 0.3;
         particle.opacity = Math.max(0.3, Math.min(1, pulse * particle.opacity));
 
-        // Mouse interaction with smooth attraction/repulsion
+        // Mouse/touch interaction with smooth attraction/repulsion
         const dx = mousePos.current.x - particle.x;
         const dy = mousePos.current.y - particle.y;
         const distanceToMouse = Math.hypot(dx, dy);
@@ -198,35 +211,28 @@ const Background = () => {
 
         // Draw the star particle
         drawStar(ctx, particle.x, particle.y, particle.size * pulse, particle.rotation, particle.color, particle.opacity, particle.glow);
+      });
 
-        // Draw curved connections to other particles in the same layer
-        particlesRef.current.forEach((otherParticle, j) => {
-          if (i < j && particle.layer === otherParticle.layer) { // Avoid double-drawing
-            drawCurvedConnection(ctx, particle, otherParticle);
+      // Draw connections after particles to optimize layering (connections behind particles if needed, but here after updates)
+      particlesByLayer.forEach(layerParticles => {
+        for (let i = 0; i < layerParticles.length; i++) {
+          for (let j = i + 1; j < layerParticles.length; j++) {
+            drawCurvedConnection(ctx, layerParticles[i], layerParticles[j]);
           }
-        });
+        }
       });
 
       animationFrameId.current = requestAnimationFrame(animate);
     };
 
-    // Performance check for low-end devices
-    const isLowEnd = window.innerWidth < 768 || (navigator.deviceMemory && navigator.deviceMemory < 4);
-
-    if (!isLowEnd) {
-      animate();
-    } else {
-      // Fallback: static stars with no animations
-      particlesRef.current.forEach(particle => {
-        drawStar(ctx, particle.x, particle.y, particle.size, particle.rotation, particle.color, particle.opacity, particle.glow);
-      });
-    }
+    animate();
 
     window.addEventListener("resize", resizeCanvas);
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
       if (animationFrameId.current) {
         cancelAnimationFrame(animationFrameId.current);
       }
