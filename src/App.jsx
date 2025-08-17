@@ -15,9 +15,9 @@ const Art = React.lazy(() => import("./sections/Art"));
 const Organization = React.lazy(() => import("./sections/Organization"));
 const AboutMe = React.lazy(() => import("./sections/Aboutme"));
 const Achievements = React.lazy(() => import("./sections/Achievements"));
-const Gallery = React.lazy(() => import("./sections/Gallery"));
+
 const Testimonials = React.lazy(() => import("./sections/Testimonials"));
-const Skills = React.lazy(() => import("./sections/skill"));
+
 const Footer = React.lazy(() => import("./sections/Footer"));
 
 /* ---------------- Error Boundary ---------------- */
