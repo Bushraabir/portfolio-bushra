@@ -15,6 +15,15 @@ gsap.registerPlugin(ScrollTrigger);
 /**
  * Testimonials data with enhanced metadata for SEO and theming
  * Each testimonial includes structured data for better search engine understanding
+ * @typedef {Object} Testimonial
+ * @property {string} quote - The testimonial quote text
+ * @property {string} name - The name of the person giving the testimonial
+ * @property {string} designation - Their professional title/position
+ * @property {string} theme - Theme category for styling and organization
+ * @property {string} icon - Emoji icon representing the theme
+ * @property {string} institution - The institution they work for
+ * @property {string} department - Their department within the institution
+ * @property {string[]} keywords - SEO keywords related to the testimonial
  */
 const testimonials = [
   {
@@ -81,79 +90,90 @@ const testimonials = [
 
 /**
  * Theme configurations for consistent styling across testimonial cards
+ * Using the provided Tailwind CSS color palette for cohesive design
  * Each theme has its own color palette, gradients, and visual identity
+ * @typedef {Object} ThemeConfig
+ * @property {string} gradient - Tailwind gradient classes for main theme color
+ * @property {string} bgGradient - Background gradient with opacity
+ * @property {string} border - Border color classes
+ * @property {string} shadow - Shadow color classes
+ * @property {string} textAccent - Text accent color
+ * @property {string} iconBg - Icon background color
+ * @property {string} hoverGradient - Hover state gradient
+ * @property {string} description - Theme description for accessibility
  */
 const themeConfigs = {
   dedication: {
-    gradient: "from-amber-400 via-orange-500 to-red-500",
-    bgGradient: "from-amber-50/10 via-orange-100/5 to-red-100/10",
-    border: "border-amber-400/30",
-    shadow: "shadow-amber-500/20",
-    textAccent: "text-amber-400",
-    iconBg: "bg-amber-400/20",
-    hoverGradient: "hover:from-amber-300 hover:via-orange-400 hover:to-red-400",
+    gradient: "from-lemon_chiffon via-champagne_pink to-tea_rose",
+    bgGradient: "from-lemon_chiffon/10 via-champagne_pink/5 to-tea_rose/10",
+    border: "border-lemon_chiffon/30",
+    shadow: "shadow-lemon_chiffon/20",
+    textAccent: "text-lemon_chiffon",
+    iconBg: "bg-lemon_chiffon/20",
+    hoverGradient: "hover:from-lemon_chiffon/80 hover:via-champagne_pink/80 hover:to-tea_rose/80",
     description: "Unwavering commitment to academic excellence"
   },
   excellence: {
-    gradient: "from-blue-400 via-indigo-500 to-purple-600",
-    bgGradient: "from-blue-50/10 via-indigo-100/5 to-purple-100/10",
-    border: "border-blue-400/30",
-    shadow: "shadow-blue-500/20",
-    textAccent: "text-blue-400",
-    iconBg: "bg-blue-400/20",
-    hoverGradient: "hover:from-blue-300 hover:via-indigo-400 hover:to-purple-500",
+    gradient: "from-jordy_blue via-non_photo_blue to-electric_blue",
+    bgGradient: "from-jordy_blue/10 via-non_photo_blue/5 to-electric_blue/10",
+    border: "border-jordy_blue/30",
+    shadow: "shadow-jordy_blue/20",
+    textAccent: "text-jordy_blue",
+    iconBg: "bg-jordy_blue/20",
+    hoverGradient: "hover:from-jordy_blue/80 hover:via-non_photo_blue/80 hover:to-electric_blue/80",
     description: "Outstanding academic performance and achievements"
   },
   understanding: {
-    gradient: "from-emerald-400 via-teal-500 to-cyan-600",
-    bgGradient: "from-emerald-50/10 via-teal-100/5 to-cyan-100/10",
-    border: "border-emerald-400/30",
-    shadow: "shadow-emerald-500/20",
-    textAccent: "text-emerald-400",
-    iconBg: "bg-emerald-400/20",
-    hoverGradient: "hover:from-emerald-300 hover:via-teal-400 hover:to-cyan-500",
+    gradient: "from-aquamarine via-electric_blue to-non_photo_blue",
+    bgGradient: "from-aquamarine/10 via-electric_blue/5 to-non_photo_blue/10",
+    border: "border-aquamarine/30",
+    shadow: "shadow-aquamarine/20",
+    textAccent: "text-aquamarine",
+    iconBg: "bg-aquamarine/20",
+    hoverGradient: "hover:from-aquamarine/80 hover:via-electric_blue/80 hover:to-non_photo_blue/80",
     description: "Deep comprehension of complex academic concepts"
   },
   innovation: {
-    gradient: "from-violet-400 via-purple-500 to-fuchsia-600",
-    bgGradient: "from-violet-50/10 via-purple-100/5 to-fuchsia-100/10",
-    border: "border-violet-400/30",
-    shadow: "shadow-violet-500/20",
-    textAccent: "text-violet-400",
-    iconBg: "bg-violet-400/20",
-    hoverGradient: "hover:from-violet-300 hover:via-purple-400 hover:to-fuchsia-500",
+    gradient: "from-pink_lavender via-mauve to-jordy_blue",
+    bgGradient: "from-pink_lavender/10 via-mauve/5 to-jordy_blue/10",
+    border: "border-pink_lavender/30",
+    shadow: "shadow-pink_lavender/20",
+    textAccent: "text-pink_lavender",
+    iconBg: "bg-pink_lavender/20",
+    hoverGradient: "hover:from-pink_lavender/80 hover:via-mauve/80 hover:to-jordy_blue/80",
     description: "Creative problem-solving and innovative thinking"
   },
   curiosity: {
-    gradient: "from-pink-400 via-rose-500 to-red-600",
-    bgGradient: "from-pink-50/10 via-rose-100/5 to-red-100/10",
-    border: "border-pink-400/30",
-    shadow: "shadow-pink-500/20",
-    textAccent: "text-pink-400",
-    iconBg: "bg-pink-400/20",
-    hoverGradient: "hover:from-pink-300 hover:via-rose-400 hover:to-red-500",
+    gradient: "from-tea_rose via-pink_lavender to-champagne_pink",
+    bgGradient: "from-tea_rose/10 via-pink_lavender/5 to-champagne_pink/10",
+    border: "border-tea_rose/30",
+    shadow: "shadow-tea_rose/20",
+    textAccent: "text-tea_rose",
+    iconBg: "bg-tea_rose/20",
+    hoverGradient: "hover:from-tea_rose/80 hover:via-pink_lavender/80 hover:to-champagne_pink/80",
     description: "Intellectual curiosity and love for learning"
   },
   passion: {
-    gradient: "from-orange-400 via-red-500 to-pink-600",
-    bgGradient: "from-orange-50/10 via-red-100/5 to-pink-100/10",
-    border: "border-orange-400/30",
-    shadow: "shadow-orange-500/20",
-    textAccent: "text-orange-400",
-    iconBg: "bg-orange-400/20",
-    hoverGradient: "hover:from-orange-300 hover:via-red-400 hover:to-pink-500",
+    gradient: "from-champagne_pink via-tea_rose to-lemon_chiffon",
+    bgGradient: "from-champagne_pink/10 via-tea_rose/5 to-lemon_chiffon/10",
+    border: "border-champagne_pink/30",
+    shadow: "shadow-champagne_pink/20",
+    textAccent: "text-champagne_pink",
+    iconBg: "bg-champagne_pink/20",
+    hoverGradient: "hover:from-champagne_pink/80 hover:via-tea_rose/80 hover:to-lemon_chiffon/80",
     description: "Passionate dedication to academic pursuits"
   }
 };
 
 /**
- * Utility function to wrap text for canvas rendering
- * @param {CanvasRenderingContext2D} ctx - Canvas context
- * @param {string} text - Text to wrap
- * @param {number} x - X coordinate
- * @param {number} y - Y coordinate
- * @param {number} maxWidth - Maximum width for wrapping
- * @param {number} lineHeight - Height between lines
+ * Utility function to wrap text for canvas rendering in 3D cube textures
+ * Handles text overflow by breaking into multiple lines
+ * @param {CanvasRenderingContext2D} ctx - Canvas 2D rendering context
+ * @param {string} text - Text content to wrap
+ * @param {number} x - X coordinate for text positioning
+ * @param {number} y - Y coordinate for text positioning
+ * @param {number} maxWidth - Maximum width before text wrapping
+ * @param {number} lineHeight - Vertical spacing between lines
  */
 const wrapText = (ctx, text, x, y, maxWidth, lineHeight) => {
   const words = text.split(" ");
@@ -178,10 +198,12 @@ const wrapText = (ctx, text, x, y, maxWidth, lineHeight) => {
 /**
  * Interactive Testimonial Card Component
  * Renders individual testimonials with theme-based styling and animations
+ * Implements accessibility features and SEO optimization
  * 
- * @param {Object} testimonial - Testimonial data object
- * @param {number} index - Card index for staggered animations
- * @returns {JSX.Element} Animated testimonial card
+ * @param {Object} props - Component properties
+ * @param {Testimonial} props.testimonial - Testimonial data object
+ * @param {number} props.index - Card index for staggered animations
+ * @returns {JSX.Element} Animated testimonial card with accessibility features
  */
 const TestimonialCard = memo(({ testimonial, index }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -189,7 +211,7 @@ const TestimonialCard = memo(({ testimonial, index }) => {
   const isInView = useInView(cardRef, { once: true, margin: "-50px" });
   const theme = themeConfigs[testimonial.theme];
 
-  // Generate structured data for SEO
+  // Generate structured data for SEO optimization
   const structuredData = {
     "@type": "Review",
     "reviewRating": {
@@ -217,7 +239,7 @@ const TestimonialCard = memo(({ testimonial, index }) => {
   return (
     <motion.article
       ref={cardRef}
-      className={`group relative overflow-hidden rounded-2xl border-2 ${theme.border} bg-gradient-to-br ${theme.bgGradient} backdrop-blur-xl transition-all duration-700 hover:scale-105 ${theme.shadow} hover:shadow-2xl`}
+      className={`group relative overflow-hidden rounded-3xl border-2 ${theme.border} bg-gradient-to-br ${theme.bgGradient} backdrop-blur-xl transition-all duration-700 hover:scale-105 ${theme.shadow} hover:shadow-3xl`}
       initial={{ opacity: 0, y: 100, rotateX: -15 }}
       animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
       transition={{ 
@@ -242,13 +264,13 @@ const TestimonialCard = memo(({ testimonial, index }) => {
       role="article"
       aria-label={`Testimonial from ${testimonial.name} about ${testimonial.theme}`}
     >
-      {/* SEO structured data */}
+      {/* SEO structured data - hidden from users but visible to search engines */}
       <script 
         type="application/ld+json" 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} 
       />
 
-      {/* Animated background particles */}
+      {/* Animated background particles for visual enhancement */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         {Array.from({ length: 5 }).map((_, i) => (
           <motion.div
@@ -273,20 +295,20 @@ const TestimonialCard = memo(({ testimonial, index }) => {
         ))}
       </div>
 
-      {/* Gradient border animation */}
+      {/* Gradient border animation on hover */}
       <motion.div
-        className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${theme.gradient} opacity-0 group-hover:opacity-30 transition-opacity duration-500`}
+        className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${theme.gradient} opacity-0 group-hover:opacity-30 transition-opacity duration-500`}
         animate={isHovered ? { rotate: 360 } : { rotate: 0 }}
         transition={{ duration: 3, ease: "linear", repeat: isHovered ? Infinity : 0 }}
         aria-hidden="true"
       />
 
-      {/* Content container */}
+      {/* Main content container */}
       <div className="relative z-10 p-8 h-full flex flex-col">
-        {/* Header with icon and theme */}
+        {/* Header with theme icon and category badge */}
         <header className="flex items-center justify-between mb-6">
           <motion.div 
-            className={`w-16 h-16 rounded-2xl ${theme.iconBg} backdrop-blur-sm flex items-center justify-center text-2xl shadow-lg`}
+            className={`w-16 h-16 rounded-2xl ${theme.iconBg} backdrop-blur-sm flex items-center justify-center text-2xl shadow-xl`}
             whileHover={{ rotate: 360, scale: 1.1 }}
             transition={{ duration: 0.6, type: "spring" }}
             role="img"
@@ -295,14 +317,14 @@ const TestimonialCard = memo(({ testimonial, index }) => {
             {testimonial.icon}
           </motion.div>
           <div 
-            className={`px-4 py-2 rounded-full bg-gradient-to-r ${theme.gradient} text-white text-sm font-bold uppercase tracking-wider shadow-lg`}
+            className={`px-4 py-2 rounded-full bg-gradient-to-r ${theme.gradient} text-deep_indigo text-sm font-bold uppercase tracking-wider shadow-lg font-cta`}
             title={theme.description}
           >
             {testimonial.theme}
           </div>
         </header>
 
-        {/* Quote with semantic markup */}
+        {/* Quote section with proper semantic markup for SEO */}
         <motion.blockquote 
           className="flex-1 mb-8 relative"
           initial={{ opacity: 0 }}
@@ -310,24 +332,29 @@ const TestimonialCard = memo(({ testimonial, index }) => {
           transition={{ delay: index * 0.1 + 0.3, duration: 0.8 }}
           itemProp="reviewBody"
         >
+          {/* Decorative opening quote */}
           <div 
-            className={`absolute -top-2 -left-2 text-6xl ${theme.textAccent} opacity-20 font-serif`}
+            className={`absolute -top-2 -left-2 text-6xl ${theme.textAccent} opacity-20 font-heading`}
             aria-hidden="true"
           >
             "
           </div>
-          <p className="text-lemon_chiffon/90 text-base leading-relaxed font-description relative z-10 pl-6">
+          
+          {/* Main quote text */}
+          <p className="text-lemon_chiffon-700 text-base leading-relaxed font-description relative z-10 pl-6">
             {testimonial.quote}
           </p>
+          
+          {/* Decorative closing quote */}
           <div 
-            className={`absolute -bottom-4 -right-2 text-6xl ${theme.textAccent} opacity-20 font-serif rotate-180`}
+            className={`absolute -bottom-4 -right-2 text-6xl ${theme.textAccent} opacity-20 font-heading rotate-180`}
             aria-hidden="true"
           >
             "
           </div>
         </motion.blockquote>
 
-        {/* Author info with semantic markup */}
+        {/* Author information section with structured data */}
         <motion.footer 
           className="space-y-3"
           whileHover={{ x: 5 }}
@@ -335,8 +362,10 @@ const TestimonialCard = memo(({ testimonial, index }) => {
           itemScope
           itemType="https://schema.org/Person"
         >
+          {/* Decorative accent line */}
           <div className={`h-0.5 w-12 bg-gradient-to-r ${theme.gradient} rounded-full group-hover:w-20 transition-all duration-500`} />
           
+          {/* Author name */}
           <h4 
             className={`font-heading text-lg ${theme.textAccent} font-bold tracking-wide`}
             itemProp="name"
@@ -344,21 +373,22 @@ const TestimonialCard = memo(({ testimonial, index }) => {
             {testimonial.name}
           </h4>
           
+          {/* Professional designation and institution */}
           <p 
-            className="text-champagne_pink/80 text-sm font-description leading-snug"
+            className="text-champagne_pink-700 text-sm font-description leading-snug opacity-90"
             itemProp="jobTitle"
           >
             {testimonial.designation}
           </p>
 
-          {/* Keywords for SEO (hidden) */}
+          {/* Hidden SEO metadata */}
           <div className="sr-only">
             <span itemProp="keywords">{testimonial.keywords.join(", ")}</span>
             <span itemProp="worksFor">{testimonial.institution}</span>
           </div>
         </motion.footer>
 
-        {/* Interactive corner accent */}
+        {/* Interactive corner accent for visual appeal */}
         <motion.div
           className={`absolute top-4 right-4 w-3 h-3 rounded-full bg-gradient-to-r ${theme.gradient}`}
           animate={isHovered ? { 
@@ -369,7 +399,7 @@ const TestimonialCard = memo(({ testimonial, index }) => {
           aria-hidden="true"
         />
 
-        {/* Bottom gradient line */}
+        {/* Bottom progress indicator */}
         <motion.div
           className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r ${theme.gradient} transition-all duration-500`}
           initial={{ width: "0%" }}
@@ -379,9 +409,9 @@ const TestimonialCard = memo(({ testimonial, index }) => {
         />
       </div>
 
-      {/* Glass morphism overlay */}
+      {/* Glass morphism overlay effect */}
       <div 
-        className="absolute inset-0 bg-white/5 backdrop-blur-3xl rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
+        className="absolute inset-0 bg-white/5 backdrop-blur-3xl rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
         aria-hidden="true"
       />
     </motion.article>
@@ -392,9 +422,10 @@ TestimonialCard.displayName = "TestimonialCard";
 
 /**
  * Testimonial Cards Grid Component
- * Renders a responsive grid of testimonial cards with proper accessibility
+ * Renders a responsive grid layout of testimonial cards
+ * Implements proper accessibility and semantic structure
  * 
- * @returns {JSX.Element} Grid of testimonial cards
+ * @returns {JSX.Element} Responsive grid of testimonial cards with accessibility features
  */
 const TestimonialCardsGrid = memo(() => {
   const gridRef = useRef(null);
@@ -408,25 +439,26 @@ const TestimonialCardsGrid = memo(() => {
       animate={isInView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.8, type: "spring", damping: 20 }}
       role="region"
-      aria-label="Testimonial cards"
+      aria-label="Testimonial cards collection"
     >
-      {/* Grid header */}
+      {/* Section header with enhanced styling */}
       <motion.header 
         className="text-center mb-12"
         initial={{ y: -50, opacity: 0 }}
         animate={isInView ? { y: 0, opacity: 1 } : {}}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
-        <h3 className="text-2xl md:text-3xl font-heading text-transparent bg-gradient-to-r from-aquamarine via-jordy_blue to-tea_rose bg-clip-text mb-4">
+        <h3 className="text-2xl md:text-4xl font-heading text-transparent bg-gradient-to-r from-aquamarine via-jordy_blue to-tea_rose bg-clip-text mb-4">
           What My Mentors Say
         </h3>
         <div className="w-24 h-1 bg-gradient-to-r from-tea_rose to-aquamarine rounded-full mx-auto" />
       </motion.header>
 
-      {/* Cards grid with proper accessibility */}
+      {/* Responsive grid layout with accessibility considerations */}
       <div 
         className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
         role="list"
+        aria-label="List of testimonials from academic mentors"
       >
         <AnimatePresence mode="wait">
           {testimonials.map((testimonial, index) => (
@@ -443,7 +475,7 @@ const TestimonialCardsGrid = memo(() => {
         </AnimatePresence>
       </div>
 
-      {/* Interactive background elements */}
+      {/* Animated background particles for visual depth */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         {Array.from({ length: 12 }).map((_, i) => (
           <motion.div
@@ -476,10 +508,10 @@ TestimonialCardsGrid.displayName = "TestimonialCardsGrid";
 
 /**
  * 3D Testimonial Cube Component
- * Renders an interactive 3D cube with testimonials as textures
- * Falls back to cards on low-performance devices
+ * Renders an interactive 3D cube with testimonials as face textures
+ * Implements performance optimization and graceful fallbacks
  * 
- * @returns {JSX.Element} 3D cube or fallback cards
+ * @returns {JSX.Element} Interactive 3D cube or fallback cards based on device capabilities
  */
 const TestimonialCube = memo(() => {
   const containerRef = useRef(null);
@@ -498,8 +530,8 @@ const TestimonialCube = memo(() => {
   const isInView = useInView(containerRef, { once: false, margin: "-100px" });
 
   /**
-   * Detect device performance capabilities
-   * Determines if device can handle 3D rendering
+   * Performance detection system
+   * Analyzes device capabilities to determine optimal rendering approach
    */
   useEffect(() => {
     const detectPerformance = () => {
@@ -523,11 +555,11 @@ const TestimonialCube = memo(() => {
   }, []);
 
   /**
-   * Generate canvas texture for each cube face
-   * Creates high-quality textures with testimonial content
+   * Canvas texture generation for cube faces
+   * Creates high-quality textures with testimonial content and themed styling
    * 
-   * @param {Object} testimonial - Testimonial data
-   * @param {number} size - Canvas size (default: 512px)
+   * @param {Testimonial} testimonial - Testimonial data object
+   * @param {number} size - Canvas dimensions in pixels (default: 512)
    * @returns {THREE.CanvasTexture|null} Generated texture or null on error
    */
   const generateCanvasTexture = useCallback((testimonial, size = 512) => {
@@ -537,45 +569,49 @@ const TestimonialCube = memo(() => {
       canvas.height = size;
       const ctx = canvas.getContext("2d");
 
-      // Background gradient
+      // Enhanced background with theme colors
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, "#1a1a2e");
-      gradient.addColorStop(1, "#16213e");
+      gradient.addColorStop(0, "#2a1b3d"); // deep_indigo
+      gradient.addColorStop(1, "#1d3557"); // dark_teal
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Theme-based accent colors
+      // Theme-based accent colors mapping to new color palette
       const themeColors = {
-        dedication: "#fbbf24",
-        excellence: "#3b82f6",
-        understanding: "#10b981",
-        innovation: "#8b5cf6",
-        curiosity: "#ec4899",
-        passion: "#f97316",
+        dedication: "#fbf8cc", // lemon_chiffon
+        excellence: "#a3c4f3", // jordy_blue
+        understanding: "#98f5e1", // aquamarine
+        innovation: "#f1c0e8", // pink_lavender
+        curiosity: "#ffcfd2", // tea_rose
+        passion: "#fde4cf", // champagne_pink
       };
-      const accentColor = themeColors[testimonial.theme] || "#fbbf24";
+      const accentColor = themeColors[testimonial.theme] || "#fbf8cc";
 
-      // Quote text rendering
-      ctx.fillStyle = "#f1f5f9";
+      // Quote text rendering with improved typography
+      ctx.fillStyle = "#fbf8cc"; // lemon_chiffon for better contrast
       ctx.font = `${size < 384 ? "bold 11px" : "bold 16px"} 'Playfair Display', serif`;
       ctx.textAlign = "center";
       const maxWidth = canvas.width * 0.85;
       const lineHeight = size < 384 ? 18 : 24;
       wrapText(ctx, testimonial.quote, canvas.width / 2, size * 0.15, maxWidth, lineHeight);
 
-      // Author name
+      // Author name with theme accent
       ctx.fillStyle = accentColor;
       ctx.font = `${size < 384 ? "italic 10px" : "italic 14px"} 'Jura', sans-serif`;
       ctx.fillText(testimonial.name, canvas.width / 2, canvas.height * 0.75);
 
-      // Designation
+      // Professional designation
       ctx.font = `${size < 384 ? "8px" : "12px"} 'Jura', sans-serif`;
       ctx.fillText(testimonial.designation, canvas.width / 2, canvas.height * 0.75 + (size < 384 ? 20 : 28));
 
-      // Decorative border
+      // Enhanced decorative border with theme colors
       ctx.strokeStyle = accentColor;
       ctx.lineWidth = 2;
       ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+
+      // Add theme icon in corner
+      ctx.font = `${size < 384 ? "20px" : "32px"} Arial`;
+      ctx.fillText(testimonial.icon, canvas.width - 50, 50);
 
       return new THREE.CanvasTexture(canvas);
     } catch (err) {
@@ -585,8 +621,8 @@ const TestimonialCube = memo(() => {
   }, []);
 
   /**
-   * Initialize Three.js Scene
-   * Sets up 3D environment with proper error handling and cleanup
+   * Three.js Scene Initialization
+   * Sets up complete 3D environment with optimizations and error handling
    */
   useEffect(() => {
     if (!containerRef.current || !isInView || error || showFallback || isLowPerformance) return;
@@ -597,14 +633,14 @@ const TestimonialCube = memo(() => {
       const container = containerRef.current;
       const rect = container.getBoundingClientRect();
 
-      // Scene setup
+      // Scene initialization
       const scene = new THREE.Scene();
       sceneRef.current = scene;
 
-      // Camera configuration
+      // Camera configuration with optimal field of view
       const camera = new THREE.PerspectiveCamera(60, rect.width / rect.height, 0.1, 1000);
 
-      // Renderer setup with performance optimization
+      // WebGL renderer setup with performance optimizations
       const renderer = new THREE.WebGLRenderer({
         antialias: !isLowPerformance,
         alpha: true,
@@ -618,7 +654,7 @@ const TestimonialCube = memo(() => {
       rendererRef.current = renderer;
       container.appendChild(renderer.domElement);
 
-      // HDR environment loading
+      // HDR environment loading for realistic lighting
       if (!isLowPerformance) {
         const rgbeLoader = new RGBELoader();
         rgbeLoader.load(
@@ -633,17 +669,18 @@ const TestimonialCube = memo(() => {
           undefined,
           (err) => {
             console.warn("HDR loading failed, using fallback:", err);
-            scene.background = new THREE.Color(0x1a1a2e);
+            scene.background = new THREE.Color(0x2a1b3d); // deep_indigo fallback
           }
         );
       } else {
-        scene.background = new THREE.Color(0x1a1a2e);
+        scene.background = new THREE.Color(0x2a1b3d); // deep_indigo
       }
 
-      // Cube geometry and materials
+      // Cube geometry and material setup
       const cubeSize = Math.min(rect.width, rect.height) / 12;
       const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
 
+      // Generate materials for each cube face
       const materials = testimonials.map((testimonial) =>
         new THREE.MeshPhysicalMaterial({
           map: generateCanvasTexture(testimonial, isLowPerformance ? 256 : 512),
@@ -657,17 +694,18 @@ const TestimonialCube = memo(() => {
         })
       );
 
+      // Create and position the cube
       const cube = new THREE.Mesh(geometry, materials);
       cube.castShadow = !isLowPerformance;
       cube.receiveShadow = !isLowPerformance;
       scene.add(cube);
       cubeRef.current = cube;
 
-      // Camera positioning
+      // Camera positioning for optimal viewing
       const distance = cubeSize * 1.8;
       camera.position.set(0, 0, distance);
 
-      // Orbit controls setup
+      // Orbit controls configuration
       const controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
@@ -678,7 +716,7 @@ const TestimonialCube = memo(() => {
       controls.autoRotateSpeed = 1;
       controlsRef.current = controls;
 
-      // Auto-rotation pause on interaction
+      // Auto-rotation pause on user interaction
       const onStart = () => {
         controls.autoRotate = false;
         if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
@@ -693,7 +731,7 @@ const TestimonialCube = memo(() => {
       controls.addEventListener("start", onStart);
       controls.addEventListener("end", onEnd);
 
-      // Animation loop with performance optimization
+      // Optimized animation loop with frame rate limiting
       let lastTime = 0;
       const targetFPS = isLowPerformance ? 30 : 60;
       const frameInterval = 1000 / targetFPS;
@@ -717,30 +755,30 @@ const TestimonialCube = memo(() => {
         const newRect = container.getBoundingClientRect();
         const newCubeSize = Math.min(newRect.width, newRect.height) / 12;
 
-        // Update geometry
+        // Update cube geometry
         cube.geometry.dispose();
         cube.geometry = new THREE.BoxGeometry(newCubeSize, newCubeSize, newCubeSize);
 
-        // Update camera
+        // Update camera aspect ratio and projection
         camera.aspect = newRect.width / newRect.height;
         camera.updateProjectionMatrix();
 
-        // Update renderer
+        // Update renderer size
         renderer.setSize(newRect.width, newRect.height);
 
-        // Update controls
+        // Update camera position and controls
         const newDistance = newCubeSize * 2.5;
         camera.position.setZ(newDistance);
         controls.minDistance = newDistance * 0.7;
         controls.maxDistance = newDistance * 2;
       };
 
-      // Event listeners and initialization
+      // Initialize event listeners and start animation
       window.addEventListener("resize", handleResize);
       animationFrameRef.current = requestAnimationFrame(animate);
       setIsLoaded(true);
 
-      // Cleanup function
+      // Cleanup function to prevent memory leaks
       return () => {
         isMounted = false;
         window.removeEventListener("resize", handleResize);
@@ -776,7 +814,7 @@ const TestimonialCube = memo(() => {
     }
   }, [isInView, isLowPerformance, generateCanvasTexture, showFallback, error]);
 
-  // Show fallback cards for low-performance devices or errors
+  // Render fallback cards for low-performance devices or errors
   if (showFallback || error || isLowPerformance) {
     return <TestimonialCardsGrid />;
   }
@@ -787,10 +825,11 @@ const TestimonialCube = memo(() => {
       className="w-full h-full relative" 
       style={{ minHeight: "400px" }}
       role="region"
-      aria-label="Interactive 3D testimonials cube"
+      aria-label="Interactive 3D testimonials cube - use mouse to rotate and zoom"
+      tabIndex={0}
     >
       {!isLoaded && (
-        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-deep_indigo to-dark_teal rounded-2xl border border-jordy_blue/20">
+        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-deep_indigo to-dark_teal rounded-3xl border border-jordy_blue/20">
           <motion.div 
             className="text-center p-8"
             animate={{ opacity: [0.5, 1, 0.5] }}
@@ -799,13 +838,13 @@ const TestimonialCube = memo(() => {
             <div 
               className="w-12 h-12 border-4 border-jordy_blue/30 border-t-jordy_blue rounded-full animate-spin mx-auto mb-4"
               role="status"
-              aria-label="Loading"
+              aria-label="Loading 3D testimonials cube"
             />
-            <h3 className="text-xl font-heading text-champagne_pink mb-2">
+            <h3 className="text-xl font-heading text-lemon_chiffon mb-2">
               Loading 3D Experience...
             </h3>
-            <p className="text-champagne_pink/70 text-sm font-description">
-              Preparing interactive testimonials
+            <p className="text-champagne_pink text-sm font-description opacity-80">
+              Preparing interactive testimonials cube
             </p>
           </motion.div>
         </div>
@@ -818,9 +857,10 @@ TestimonialCube.displayName = "TestimonialCube";
 
 /**
  * Textual Content Component
- * Renders the main heading and description with animations
+ * Renders the main section heading and description with enhanced animations
+ * Implements proper semantic structure and accessibility features
  * 
- * @returns {JSX.Element} Animated text content
+ * @returns {JSX.Element} Animated text content with SEO optimization
  */
 const TextContent = memo(() => {
   const textRef = useRef(null);
@@ -849,7 +889,7 @@ const TextContent = memo(() => {
 
   return (
     <article ref={textRef} className="space-y-6">
-      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold font-heading text-transparent bg-gradient-to-r from-aquamarine via-jordy_blue to-tea_rose bg-clip-text leading-tight">
+      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-12xl font-extrabold font-heading text-transparent bg-gradient-to-r from-aquamarine via-jordy_blue to-tea_rose bg-clip-text leading-tight">
         Insights from My Closest Mentors
       </h1>
       
@@ -858,7 +898,7 @@ const TextContent = memo(() => {
         aria-hidden="true"
       />
       
-      <p className="text-lg md:text-xl font-description leading-relaxed tracking-wide text-lemon_chiffon/90 max-w-2xl">
+      <p className="text-lg md:text-xl font-description leading-relaxed tracking-wide text-lemon_chiffon max-w-2xl">
         Highlighting my journey, character, and achievements through the eyes of those who know me best.
       </p>
       
@@ -872,8 +912,9 @@ TextContent.displayName = "TextContent";
 /**
  * Main Testimonials Section Component
  * Orchestrates the entire testimonials section with responsive behavior
+ * Implements comprehensive accessibility, SEO, and performance optimizations
  * 
- * @returns {JSX.Element} Complete testimonials section
+ * @returns {JSX.Element} Complete testimonials section with all features
  */
 const Testimonials = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -886,7 +927,7 @@ const Testimonials = () => {
       const mobile = window.innerWidth < 1024;
       setIsMobile(mobile);
       
-      // Force cards view on very small screens
+      // Force cards view on very small screens for better UX
       if (window.innerWidth < 768) {
         setShowCards(true);
       }
@@ -898,19 +939,23 @@ const Testimonials = () => {
   }, []);
 
   /**
-   * Toggle between 3D and card view
+   * Toggle between 3D cube and card grid views
    */
   const toggleView = () => {
     setShowCards(!showCards);
   };
 
-  // Generate structured data for the entire section
+  // Generate comprehensive structured data for SEO
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": "Academic Testimonials for Bushra",
-    "description": "Professional testimonials highlighting academic excellence, dedication, and achievements",
+    "description": "Professional testimonials highlighting academic excellence, dedication, and achievements from academic mentors and professors",
     "numberOfItems": testimonials.length,
+    "author": {
+      "@type": "Person",
+      "name": "Bushra"
+    },
     "itemListElement": testimonials.map((testimonial, index) => ({
       "@type": "Review",
       "position": index + 1,
@@ -923,19 +968,26 @@ const Testimonials = () => {
       "author": {
         "@type": "Person",
         "name": testimonial.name,
-        "jobTitle": testimonial.designation
+        "jobTitle": testimonial.designation,
+        "worksFor": {
+          "@type": "Organization",
+          "name": testimonial.institution
+        }
       },
       "reviewBody": testimonial.quote,
+      "datePublished": new Date().toISOString(),
       "about": {
         "@type": "Person",
-        "name": "Bushra"
-      }
+        "name": "Bushra",
+        "description": "Academic student with excellence in STEM fields"
+      },
+      "keywords": testimonial.keywords.join(", ")
     }))
   };
 
   return (
     <>
-      {/* SEO structured data */}
+      {/* SEO structured data for search engine optimization */}
       <script 
         type="application/ld+json" 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} 
@@ -944,13 +996,13 @@ const Testimonials = () => {
       <section
         id="testimonials"
         ref={sectionRef}
-        className="relative min-h-screen bg-gradient-to-b from-deep_indigo via-dark_teal to-purple-900 overflow-hidden"
+        className="relative min-h-screen bg-gradient-to-b from-deep_indigo via-dark_teal to-deep_indigo/90 overflow-hidden"
         role="main"
-        aria-label="Testimonials from Academic Mentors"
+        aria-label="Testimonials from Academic Mentors and Professors"
       >
-        {/* Enhanced background particles */}
+        {/* Enhanced animated background particles */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-          {Array.from({ length: 30 }).map((_, i) => (
+          {Array.from({ length: 25 }).map((_, i) => (
             <motion.div
               key={`bg-particle-main-${i}`}
               className="absolute w-1 h-1 bg-gradient-to-r from-jordy_blue to-aquamarine rounded-full opacity-30"
@@ -975,7 +1027,7 @@ const Testimonials = () => {
           ))}
         </div>
 
-        {/* Floating geometric shapes */}
+        {/* Floating geometric shapes for visual depth */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
           {Array.from({ length: 8 }).map((_, i) => (
             <motion.div
@@ -1009,8 +1061,7 @@ const Testimonials = () => {
           ))}
         </div>
 
-
-        {/* Main content container */}
+        {/* Main content container with responsive layout */}
         <div className={`relative z-10 container mx-auto px-4 py-12 lg:py-20 h-full ${
           (isMobile || showCards) ? 
             "flex flex-col space-y-12" : 
@@ -1023,58 +1074,59 @@ const Testimonials = () => {
               <div className="w-full text-center mb-12">
                 <TextContent />
               </div>
-              {/* Cards grid */}
+              {/* Cards grid layout */}
               <div className="w-full">
                 <TestimonialCardsGrid />
               </div>
             </>
           ) : (
             <>
-              {/* 3D cube view layout */}
+              {/* Desktop 3D cube view layout */}
               <div className="w-full lg:w-7/12 h-[700px]">
                 <TestimonialCube />
               </div>
               <div className="w-full lg:w-5/12 flex items-center">
                 <TextContent />
               </div>
-              <div>
-                        {/* View toggle button (desktop only) */}
-                {!isMobile && (
-                  <motion.button
-                    onClick={toggleView}
-                    className=" relative top-24 left-20 z-50 px-4 py-2 bg-gradient-to-r from-jordy_blue to-aquamarine text-white rounded-full font-bold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20 focus:outline-none focus:ring-2 focus:ring-aquamarine/50"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    initial={{ opacity: 0, x: 100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 1 }}
-                    aria-label={`Switch to ${showCards ? "3D view" : "card view"}`}
-                  >
-                   {showCards ? "3D View" : "Card View"}
-                  </motion.button>
-                )}
-
-              </div>
             </>
           )}
 
-          
+          {/* View toggle button for desktop users */}
+          {!isMobile && (
+            <motion.button
+              onClick={toggleView}
+              className="absolute bottom-8 right-8 z-50 px-6 py-3 bg-gradient-to-r from-jordy_blue to-aquamarine text-deep_indigo rounded-full font-bold shadow-xl hover:shadow-2xl transition-all duration-300 backdrop-blur-sm border border-white/20 focus:outline-none focus:ring-2 focus:ring-aquamarine/50 font-cta"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1 }}
+              aria-label={`Switch to ${showCards ? "3D interactive view" : "card grid view"}`}
+            >
+              {showCards ? "3D View" : "Card View"}
+            </motion.button>
+          )}
         </div>
 
-        
-
-        {/* Gradient overlays for depth */}
+        {/* Gradient overlays for enhanced depth perception */}
         <div 
           className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-deep_indigo/50 to-transparent pointer-events-none" 
           aria-hidden="true"
         />
         <div 
-          className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-purple-900/50 to-transparent pointer-events-none" 
+          className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-deep_indigo/50 to-transparent pointer-events-none" 
           aria-hidden="true"
         />
+
+        {/* Corner accent elements */}
+        <div className="absolute top-8 left-8 w-12 h-12 border-2 border-aquamarine/30 rounded-full animate-pulse" aria-hidden="true" />
+        <div className="absolute bottom-8 right-8 w-16 h-16 border-2 border-tea_rose/30 rounded-lg rotate-45 animate-spin-slow" aria-hidden="true" />
       </section>
     </>
   );
 };
+
+// Set display name for debugging purposes
+Testimonials.displayName = "Testimonials";
 
 export default memo(Testimonials);
