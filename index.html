@@ -1,20 +1,115 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    
-    
+  <!-- Character encoding for proper text rendering -->
+  <meta charset="UTF-8" />
 
+  <!-- Ensure proper scaling on all devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bushra's Portfilo</title>
+  <!-- Page title -->
+  <title>Bushra Khandoker | Computer Science Student & Creative Innovator</title>
 
+  <!-- Meta description for SEO -->
+  <meta name="description" content="Bushra Khandoker - Explore the portfolio of a Computer Science student, creative innovator, and aspiring researcher blending computation, art, and physics into interactive experiences." />
+
+  <!-- Author -->
+  <meta name="author" content="Bushra Khandoker" />
+
+  <!-- Keywords for SEO -->
+  <meta name="keywords" content="Bushra Khandoker, Portfolio, Computer Science, Innovation, Physics, Creative Projects, Interactive Experiences, Coding" />
+
+  <!-- Open Graph / Social Media Sharing -->
+  <meta property="og:title" content="Bushra Khandoker | Portfolio" />
+  <meta property="og:description" content="Discover projects, research, and creative coding experiments by Bushra Khandoker." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://your-portfolio-url.com/" />
+  <meta property="og:image" content="https://your-portfolio-url.com/assets/Bushra.png" />
+
+  <!-- Twitter Card Metadata -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bushra Khandoker | Portfolio" />
+  <meta name="twitter:description" content="Explore Bushra Khandoker's creative and technical portfolio combining CS, physics, and art." />
+  <meta name="twitter:image" content="https://your-portfolio-url.com/assets/Bushra.png" />
+
+  <!-- Favicon for browser tab -->
+  <link rel="icon" type="image/png" href="/src/assets/favicon.png" />
+
+  <!-- Preconnect for fonts or analytics (optional but improves performance) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Example Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Theme color for mobile browsers -->
+  <meta name="theme-color" content="#2A1B3D" />
 </head>
 
 <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+  <!-- Root div for React app -->
+  <div id="root"></div>
+
+  <!-- JavaScript bundle entry point -->
+  <script type="module" src="/src/main.jsx"></script>
+
+  <!-- Optional: Smooth scroll behavior for anchor links -->
+  <script>
+    document.documentElement.style.scrollBehavior = "smooth";
+  </script>
+
+  <!-- Accessibility: Skip to content link -->
+  <a href="#root" class="sr-only focus:not-sr-only">Skip to main content</a>
+
+  <!-- Optional: Prevent flash of unstyled content (FOUC) -->
+  <style>
+    html {
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background: #1a1a2e;
+      color: #fefefe;
+    }
+
+    html.loaded {
+      opacity: 1;
+    }
+
+    /* Screen reader only */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .sr-only:focus:not(:focus-visible) {
+      display: block;
+      width: auto;
+      height: auto;
+      margin: 1rem;
+      clip: auto;
+      overflow: visible;
+      white-space: normal;
+    }
+  </style>
+
+  <script>
+    // Remove FOUC after React app loads
+    window.addEventListener("DOMContentLoaded", () => {
+      document.documentElement.classList.add("loaded");
+    });
+  </script>
 </body>
 
 </html>

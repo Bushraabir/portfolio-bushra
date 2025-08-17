@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import profileImage from "../assets/Bushra.png";
 import resumePDF from "../assets/resume/Bushra.pdf";
 
+// Register GSAP Plugin
 gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
@@ -15,6 +16,7 @@ const Hero = () => {
   const buttonRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Detect mobile screen size
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 600);
@@ -24,6 +26,7 @@ const Hero = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Animations
   useEffect(() => {
     gsap.fromTo(
       scrollRef.current,
@@ -53,6 +56,7 @@ const Hero = () => {
     );
   }, [isMobile]);
 
+  // Classes
   const textParagraphClass = isMobile
     ? "text-base text-center text-glow text-lemon_chiffon font-description tracking-wider leading-relaxed"
     : "text-lg sm:text-xl md:text-2xl text-glow text-lemon_chiffon font-description tracking-wider leading-relaxed";
@@ -81,6 +85,7 @@ const Hero = () => {
   const buttonStoryClass = `${buttonBaseClass} from-mauve/40 to-purple-600/40 border-lemon_chiffon hover:border-mauve focus:ring-mauve`;
   const buttonCVClass = `${buttonBaseClass} from-jordy_blue/40 to-purple-500/40 border-lemon_chiffon hover:border-jordy_blue focus:ring-jordy_blue`;
 
+  // Ripple effect for buttons
   const createRipple = (e, button) => {
     const rect = button.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height);
@@ -115,8 +120,16 @@ const Hero = () => {
       className="relative z-10 flex flex-col items-center justify-center min-h-screen overflow-y-auto bg-transparent px-4"
       role="main"
     >
-      <header className="relative flex flex-col items-center lg:flex-row lg:items-start lg:justify-between lg:w-3/4 xl:w-2/3">
-        <article className="flex flex-col items-center lg:items-start mb-6 lg:mb-0 text-center lg:text-left">
+      {/* HERO HEADER */}
+      <header
+        className="relative flex flex-col items-center lg:flex-row lg:items-start lg:justify-between lg:w-3/4 xl:w-2/3"
+        role="banner"
+      >
+        <article
+          className=" flex flex-col items-center lg:items-start mb-6 lg:mb-0 text-center lg:text-left"
+          itemScope
+          itemType="https://schema.org/Person"
+        >
           <motion.p
             className={textParagraphClass}
             initial={{ opacity: 0, y: isMobile ? 20 : 50 }}
@@ -125,37 +138,46 @@ const Hero = () => {
           >
             Reality is programmable beauty.
           </motion.p>
+
           <motion.h1
             className={headingClass}
+            itemProp="name"
             initial={{ opacity: 0, y: isMobile ? 20 : 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
           >
             Bushra Khandoker ✨
           </motion.h1>
+
           <motion.h2
             className={subheadingClass}
+            itemProp="jobTitle"
             initial={{ opacity: 0, y: isMobile ? 20 : 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
           >
             Every algorithm starts with a question.
           </motion.h2>
+
           <motion.p
             className={subheadingClass}
+            itemProp="description"
             initial={{ opacity: 0, y: isMobile ? 20 : 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 2.2, delay: 0.6, ease: "easeOut" }}
           >
-            I explore the intersection of computation, art and physics, <br />
+            I explore the intersection of computation, art, and physics, <br />
             building solutions that transform cosmic mysteries <br />
             into tangible, beautiful experiences.
           </motion.p>
         </article>
+
+        {/* PROFILE IMAGE */}
         <motion.figure className="flex justify-center lg:ml-12" ref={profileRef}>
           <img
             src={profileImage}
-            alt="Portrait of Bushra Khandoker - Computer Science student, creative innovator and aspiring researcher"
+            alt="Portrait of Bushra Khandoker, Computer Science student, innovator, and aspiring researcher"
+            title="Bushra Khandoker - Computer Science Student and Creative Innovator"
             className={profileImgClass}
             loading="lazy"
             decoding="async"
@@ -164,17 +186,19 @@ const Hero = () => {
               clipPath:
                 "polygon(50% 0%, 90% 15%, 100% 50%, 90% 85%, 50% 100%, 10% 85%, 0% 50%, 10% 15%)",
             }}
+            itemProp="image"
           />
           <figcaption className="sr-only">Bushra Khandoker Profile Image</figcaption>
         </motion.figure>
       </header>
 
+      {/* NAVIGATION BUTTONS */}
       <nav
         ref={buttonRef}
         className="flex flex-row flex-wrap justify-center gap-4 font-cta mt-6"
         aria-label="Primary Navigation"
       >
-        <Link to="/my-story" aria-label="Read Bushra Khandoker's story">
+        <Link to="/my-story" aria-label="Read Bushra Khandoker's personal story">
           <motion.button
             className={buttonStoryClass}
             whileHover={{
@@ -195,12 +219,13 @@ const Hero = () => {
             }}
             onClick={(e) => createRipple(e, e.currentTarget)}
             style={{ pointerEvents: "auto" }}
+            title="Explore Bushra's Story"
           >
             My Story
           </motion.button>
         </Link>
 
-        <Link to="/my-works" aria-label="Explore Bushra Khandoker's works and projects">
+        <Link to="/my-works" aria-label="Explore Bushra Khandoker's projects and works">
           <motion.button
             className={buttonWorksClass}
             whileHover={{
@@ -221,6 +246,7 @@ const Hero = () => {
             }}
             onClick={(e) => createRipple(e, e.currentTarget)}
             style={{ pointerEvents: "auto" }}
+            title="View Bushra's Works"
           >
             My Works
           </motion.button>
@@ -230,7 +256,7 @@ const Hero = () => {
           href={resumePDF}
           download="Bushra_Khandoker_Resume.pdf"
           className={buttonCVClass}
-          aria-label="Download Bushra Khandoker's Resume (PDF)"
+          aria-label="Download Bushra Khandoker's Resume in PDF"
           title="Download Resume - Bushra Khandoker"
           rel="noopener noreferrer"
           whileHover={{
@@ -256,6 +282,7 @@ const Hero = () => {
         </motion.a>
       </nav>
 
+      {/* DESCRIPTION SECTION */}
       <motion.section
         className="mt-6 px-4 text-center text-lemon_chiffon"
         initial={{ opacity: 0, y: isMobile ? 20 : 50 }}
@@ -263,8 +290,8 @@ const Hero = () => {
         transition={{ duration: 1.5, ease: "easeOut" }}
       >
         <p className={descriptionClass}>
-          ✨ Our universe is similar to a bubble, and it is expanding like one as well.
-          Want to see how a bubble is created and expands? <br />
+          ✨ Our universe is similar to a bubble, and it is expanding like one as
+          well. Want to see how a bubble is created and expands? <br />
           Simply tap on the screen, and you will see 🎮
         </p>
       </motion.section>
