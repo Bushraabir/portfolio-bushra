@@ -32,14 +32,14 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality, text
     clearcoatRoughness: 0.05,
     reflectivity: 1.0,
     envMapIntensity: 1.2,
-    emissiveIntensity: 2.4,
+    emissiveIntensity: 1.4,
     transmission: 0.7, 
     ior: 1.45,
     thickness: 0.8,
     sheen: 1.5,
     sheenColor: new THREE.Color(color).multiplyScalar(0.5),
     emissive: new THREE.Color(color).multiplyScalar(0.15),
-    emissiveIntensity: 0.4,
+    
     map: textureMap,
     envMap: textureMap
   }), [color, textureMap]);
