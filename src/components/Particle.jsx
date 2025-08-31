@@ -57,14 +57,14 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality }) =>
 
 const GroundPlane = React.memo(() => {
   const [ref] = usePlane(() => ({
-    position: [0, -2.5, 0],
+    position: [0, -3.5, 0],
     rotation: [-Math.PI / 2, 0, 0],
     material: { friction: 0.3, restitution: 0.9 }
   }));
   return (
     <mesh ref={ref} receiveShadow>
       <planeGeometry args={[200, 200]} />
-      <meshStandardMaterial color="#2a1b3d" roughness={0.8} metalness={0.2} />
+      <meshStandardMaterial color="#16263e" roughness={0.8} metalness={0.2} />
     </mesh>
   );
 });
@@ -165,7 +165,7 @@ const ParticleScene = () => {
       intersectPoint.add(offsetVector);
       const colors = ['#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672'];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      const randomRadius = Math.random() * 0.3 + 0.3;
+      const randomRadius = Math.random() * 1.5 + 0.5;
       let newPosition = intersectPoint.clone();
       if (newPosition.y - randomRadius < groundY + margin) {
         newPosition.y = groundY + randomRadius + margin;
@@ -210,7 +210,7 @@ const ParticleScene = () => {
         <directionalLight position={[15, 20, 10]} intensity={1.2} castShadow shadow-mapSize-width={2048} shadow-mapSize-height={2048} />
         <spotLight position={[-15, 25, -10]} angle={Math.PI / 6} penumbra={0.5} intensity={1.5} castShadow />
         <pointLight position={[5, 10, 5]} intensity={0.8} />
-        <hemisphereLight skyColor="#bb99ff" groundColor="#664422" intensity={0.4} />
+        <hemisphereLight intensity={0.2} />
         <Physics
           gravity={[0, -9.8, 0]}
           iterations={quality === 'low' ? 10 : 20}
