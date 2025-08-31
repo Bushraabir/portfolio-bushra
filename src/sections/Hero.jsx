@@ -177,8 +177,8 @@ const Hero = () => {
         <motion.figure className="flex justify-center lg:ml-12" ref={profileRef}>
           <img
             src={profileImage}
-            alt="Portrait of Bushra Khandoker, Computer Science student, innovator, and aspiring researcher"
-            title="Bushra Khandoker - Computer Science Student and Creative Innovator"
+            alt="Portrait of Bushra Khandoker,a dreamer and an explorer"
+            title="Bushra Khandoker - A dreamer and an explorer"
             className={profileImgClass}
             loading="lazy"
             decoding="async"
