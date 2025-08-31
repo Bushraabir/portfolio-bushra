@@ -24,7 +24,7 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality }) =>
   }), [radius]);
 
   const handleClick = useCallback(() => {
-    const colors = ['#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672', '#F2D966', '#0088A6', '#F79D7D', '#C59700', '#B8B8B8'];
+    const colors = ['#E1C16C', '#88A6B7', '#B8B5B4', '#4A6B64', '#C6A78C', '#C2B9B0'];
     const newColor = colors[Math.floor(Math.random() * colors.length)];
     ref.current.material.color.set(newColor);
   }, [ref]);
@@ -64,7 +64,8 @@ const GroundPlane = React.memo(() => {
   return (
     <mesh ref={ref} receiveShadow>
       <planeGeometry args={[200, 200]} />
-      <meshStandardMaterial color="#16263e" roughness={0.8} metalness={0.2} />
+      {/* Updated premium ground color → dark slate with subtle cool hues */}
+      <meshStandardMaterial color="#2C3E50" roughness={0.8} metalness={0.2} />
     </mesh>
   );
 });
@@ -72,9 +73,25 @@ const GroundPlane = React.memo(() => {
 const BackgroundScene = React.memo(({ quality }) => {
   const segments = quality === 'low' ? 32 : 64;
   const gradientMaterial = useMemo(() => new THREE.ShaderMaterial({
-    uniforms: { topColor: { value: new THREE.Color('#1d3557') }, bottomColor: { value: new THREE.Color('#fbf8cc') } },
-    vertexShader: `varying vec3 vPosition; void main(){ vPosition = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
-    fragmentShader: `varying vec3 vPosition; uniform vec3 topColor; uniform vec3 bottomColor; void main(){ float mixValue = (vPosition.y+50.0)/100.0; gl_FragColor = vec4(mix(bottomColor, topColor, mixValue),1.0); }`,
+    // Premium sky gradient: Dark night sky to a deep cosmic purple
+    uniforms: { 
+      topColor: { value: new THREE.Color('#0E1C29') },    // dark cosmic blue
+      bottomColor: { value: new THREE.Color('#2C3A47') }  // rich deep purple
+    },
+    vertexShader: `
+      varying vec3 vPosition; 
+      void main(){
+        vPosition = position; 
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); 
+      }`,
+    fragmentShader: `
+      varying vec3 vPosition; 
+      uniform vec3 topColor; 
+      uniform vec3 bottomColor; 
+      void main(){ 
+        float mixValue = (vPosition.y+50.0)/100.0; 
+        gl_FragColor = vec4(mix(bottomColor, topColor, mixValue),1.0); 
+      }`,
     side: THREE.BackSide,
     depthWrite: false,
     transparent: true
@@ -110,7 +127,7 @@ const ParticleScene = () => {
       arr.push({
         id: crypto.randomUUID(),
         position: [(Math.random() - 0.5) * 20, Math.random() * 5 + 2, (Math.random() - 0.5) * 20],
-        color: ['#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672', '#F2D966'][Math.floor(Math.random() * 6)],
+        color: ['#E1C16C', '#88A6B7', '#B8B5B4', '#4A6B64', '#C6A78C', '#C2B9B0'][Math.floor(Math.random() * 6)],
         radius: Math.random() * (1.7 - 0.5) + 0.5
       });
     }
@@ -143,8 +160,6 @@ const ParticleScene = () => {
     };
   }, [checkPerformance]);
 
-  const isMobile = quality === 'low';
-
   const handleCanvasClick = (event) => {
     event.stopPropagation();
     const mouse = new THREE.Vector2();
@@ -163,7 +178,7 @@ const ParticleScene = () => {
       const randomOffset = (Math.random() * 2 - 1) * 1.0;
       const offsetVector = raycaster.ray.direction.clone().multiplyScalar(randomOffset);
       intersectPoint.add(offsetVector);
-      const colors = ['#00A7D0', '#F26B38', '#E6B800', '#2F3A58', '#4A5672'];
+      const colors = ['#E1C16C', '#88A6B7', '#B8B5B4', '#4A6B64', '#C6A78C'];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
       const randomRadius = Math.random() * 1.5 + 0.5;
       let newPosition = intersectPoint.clone();

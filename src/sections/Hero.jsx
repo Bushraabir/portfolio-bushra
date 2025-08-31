@@ -58,7 +58,7 @@ const Hero = () => {
 
   // Classes
   const textParagraphClass = isMobile
-    ? "3t-3 text-base text-center text-glow text-lemon_chiffon font-description tracking-wider leading-relaxed"
+    ? "text-base text-center text-glow text-lemon_chiffon font-description tracking-wider leading-relaxed"
     : "text-lg sm:text-xl md:text-2xl text-glow text-lemon_chiffon font-description tracking-wider leading-relaxed";
 
   const headingClass = isMobile
@@ -67,12 +67,11 @@ const Hero = () => {
 
   const subheadingClass = isMobile
     ? "text-sm text-center text-glow text-dark_teal font-subheading tracking-wide"
-    : " text-lg text-left sm:text-2xl md:text-2xl text-glow text-dark_teal font-subheading tracking-wide";
+    : " text-lg text-left sm:text-2xl md:text-2xl text-glow text-champagne_pink font-subheading tracking-wide";
 
   const profileImgClass = isMobile
     ? "w-32 h-32 mx-auto transition-transform duration-300 transform shadow-2xl"
-    : "w-24 sm:w-72 md:w-[250px] lg:w-[700px] object-contain shadow-2xl transition-transform duration-300 transform"
-;
+    : "w-24 sm:w-72 md:w-[250px] lg:w-[700px] object-contain shadow-2xl transition-transform duration-300 transform";
 
   const descriptionClass = isMobile
     ? "text-sm text-center text-glow text-lemon_chiffon tracking-wide leading-relaxed"
@@ -202,22 +201,6 @@ const Hero = () => {
         <Link to="/my-story" aria-label="Read Bushra Khandoker's personal story">
           <motion.button
             className={buttonStoryClass}
-            whileHover={{
-              scale: 1.1,
-              boxShadow: "0px 0px 20px 5px rgba(200, 100, 255, 0.6)",
-              rotate: -2,
-              transition: { duration: 0.3 },
-            }}
-            whileTap={{
-              scale: 0.9,
-              rotate: 10,
-              boxShadow: "0px 0px 10px 2px rgba(200, 100, 255, 0.3)",
-            }}
-            animate={{
-              y: [0, -12, 0],
-              rotate: [0, -1, 1, 0],
-              transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
-            }}
             onClick={(e) => createRipple(e, e.currentTarget)}
             style={{ pointerEvents: "auto" }}
             title="Explore Bushra's Story"
@@ -229,22 +212,6 @@ const Hero = () => {
         <Link to="/my-works" aria-label="Explore Bushra Khandoker's projects and works">
           <motion.button
             className={buttonWorksClass}
-            whileHover={{
-              scale: 1.1,
-              boxShadow: "0px 0px 20px 5px rgba(0, 255, 255, 0.6)",
-              rotate: 2,
-              transition: { duration: 0.3 },
-            }}
-            whileTap={{
-              scale: 0.9,
-              rotate: -10,
-              boxShadow: "0px 0px 10px 2px rgba(0, 255, 255, 0.3)",
-            }}
-            animate={{
-              y: [0, -12, 0],
-              rotate: [0, 1, -1, 0],
-              transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
-            }}
             onClick={(e) => createRipple(e, e.currentTarget)}
             style={{ pointerEvents: "auto" }}
             title="View Bushra's Works"
@@ -260,22 +227,6 @@ const Hero = () => {
           aria-label="Download Bushra Khandoker's Resume in PDF"
           title="Download Resume - Bushra Khandoker"
           rel="noopener noreferrer"
-          whileHover={{
-            scale: 1.1,
-            boxShadow: "0px 0px 20px 5px rgba(255, 0, 255, 0.6)",
-            rotate: -2,
-            transition: { duration: 0.3 },
-          }}
-          whileTap={{
-            scale: 0.9,
-            rotate: 10,
-            boxShadow: "0px 0px 10px 2px rgba(255, 0, 255, 0.3)",
-          }}
-          animate={{
-            y: [0, -12, 0],
-            rotate: [0, -1, 1, 0],
-            transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
-          }}
           onClick={(e) => createRipple(e, e.currentTarget)}
           style={{ pointerEvents: "auto" }}
         >
