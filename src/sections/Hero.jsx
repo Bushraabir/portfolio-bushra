@@ -124,7 +124,7 @@ const Hero = () => {
         role="banner"
       >
         <article
-          className=" flex flex-col items-center lg:items-start mb-6 lg:mb-0 text-center lg:text-left"
+          className="pointer-events-none flex flex-col items-center lg:items-start mb-6 lg:mb-0 text-center lg:text-left"
           itemScope
           itemType="https://schema.org/Person"
         >
