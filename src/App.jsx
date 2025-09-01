@@ -334,7 +334,7 @@ const NavbarComponent = ({ page }) => {
               transition={{ duration: 0.2 }}
             >
               <motion.h2 
-                className="text-2xl font-bold bg-gradient-to-r from-lemon_chiffon via-white to-lemon_chiffon bg-clip-text text-transparent mb-2"
+                className="mt-6 text-2xl font-bold bg-gradient-to-r from-lemon_chiffon via-white to-lemon_chiffon bg-clip-text text-transparent mb-2"
                 animate={{ opacity: isOpen ? 1 : 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
