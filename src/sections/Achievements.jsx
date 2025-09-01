@@ -1,16 +1,8 @@
-import React, { useState, useEffect, useRef, useCallback, memo, lazy, Suspense } from "react";
+import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import { motion, useInView } from "framer-motion";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
 import { FaCheck, FaChevronDown, FaTrophy, FaAward, FaStar } from "react-icons/fa";
-import Crystal from "../components/Crystal";
-
-
-
-
-
 
 const achievements = [
   {
@@ -123,7 +115,7 @@ const achievements = [
     title: "Mentorship & Teaching Experience",
     description: "Mentored students, helped them academically.",
     icon: FaAward,
-    color: "from-jordy_blue to-tea_rose", // Cosmic colors
+    color: "from-aquamarine to-tea_rose", // Cosmic colors
     points: [
       "Provided tuition to 3 students for 2 months, improving their Physics and Mathematics.",
       "Created interactive PDFs and notes.",
@@ -148,106 +140,77 @@ const achievements = [
   }
 ];
 
-
 /**
- * Error Boundary for 3D models
+ * Animated Icon Component - replaces 3D model
  */
-class WebGLErrorBoundary extends React.Component {
-  state = { hasError: false };
-  static getDerivedStateFromError = () => ({ hasError: true });
-  componentDidCatch(error) {
-    console.error("WebGL error:", error);
-  }
-  render() {
-    if (this.state.hasError) {
-      const IconComponent = this.props.fallbackIcon || FaTrophy;
-      return (
-        <div className="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-purple-600 to-blue-600 rounded-full text-white shadow-lg" aria-hidden>
-          <IconComponent className="text-2xl" />
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
-/**
- * Fixed 3D Model Component - now actually shows the Canvas
- */
-const AnimatedModel = memo(({ achievement }) => {
-  const [isLowQuality, setIsLowQuality] = useState(false);
-
-  useEffect(() => {
-    const checkQuality = () => {
-      // Only disable 3D for users who explicitly request reduced motion
-      const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      
-      // Much more relaxed quality check - only disable for very low-end scenarios
-      const isVeryLowEnd = (
-        prefersReducedMotion ||
-        (window.innerWidth < 480) || // Only very small screens
-        (navigator.deviceMemory && navigator.deviceMemory < 2) || // Only very low memory
-        (navigator.connection && navigator.connection.effectiveType === "2g") // Only 2G connections
-      );
-      
-      setIsLowQuality(isVeryLowEnd);
-    };
-    
-    checkQuality();
-    window.addEventListener("resize", checkQuality);
-    return () => window.removeEventListener("resize", checkQuality);
-  }, []);
-
-  if (isLowQuality) {
-    const IconComponent = achievement.icon;
-    return (
-      <div className={`w-16 h-16 flex items-center justify-center bg-gradient-to-br ${achievement.color} rounded-full text-white shadow-lg transform hover:scale-105 transition-transform duration-300`} aria-hidden>
-        <IconComponent className="text-2xl" />
-      </div>
-    );
-  }
-
+const AnimatedIcon = memo(({ achievement }) => {
+  const IconComponent = achievement.icon;
+  
   return (
-    <WebGLErrorBoundary fallbackIcon={achievement.icon}>
-      <div className="relative w-24 h-24" aria-hidden>
-        <Canvas
-          className="absolute top-[-285px] left-[-250px] z-10"
-          style={{ width: 600, height: 600 }}
-          gl={{
-            antialias: false,
-            powerPreference: "low-power",
-            alpha: true
-          }}
-          dpr={Math.min(window.devicePixelRatio, 2)}
-          camera={{ position: [0, 0, 5], fov: 45 }}
-        >
-          <ambientLight intensity={1.5} color="#a3c4f3" />
-          <spotLight
-            position={[5, 10, 5]}
-            angle={0.5}
-            penumbra={0.8}
-            intensity={15}
-            color="#f1c0e8"
-          />
-          <Suspense fallback={
-            <mesh>
-              <octahedronGeometry args={[1.2, 0]} />
-              <meshBasicMaterial color="#6366f1" wireframe />
-            </mesh>
-          }>
-            <Crystal />
-          </Suspense>
-          <OrbitControls
-            enableZoom={false}
-            enablePan={false}
-            autoRotate
-            autoRotateSpeed={2}
-            enableDamping
-            dampingFactor={0.1}
-          />
-        </Canvas>
-      </div>
-    </WebGLErrorBoundary>
+    <motion.div
+      className={`w-16 h-16 flex items-center justify-center bg-gradient-to-br ${achievement.color} rounded-full text-white shadow-lg relative overflow-hidden`}
+      whileHover={{ 
+        scale: 1.1,
+        rotate: [0, -10, 10, -10, 0],
+        transition: { 
+          scale: { duration: 0.2 },
+          rotate: { duration: 0.6 }
+        }
+      }}
+      whileTap={{ scale: 0.95 }}
+      initial={{ scale: 0, rotate: -180 }}
+      animate={{ scale: 1, rotate: 0 }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 200, 
+        damping: 15,
+        delay: 0.1
+      }}
+      aria-hidden
+    >
+      {/* Animated background gradient */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full"
+        animate={{ 
+          rotate: 360,
+          scale: [1, 1.2, 1]
+        }}
+        transition={{ 
+          rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+          scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+        }}
+      />
+      
+      {/* Icon with pulse animation */}
+      <motion.div
+        animate={{ 
+          scale: [1, 1.1, 1],
+        }}
+        transition={{ 
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="relative z-10"
+      >
+        <IconComponent className="text-2xl" />
+      </motion.div>
+      
+      {/* Sparkle effect */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-full"
+        animate={{ 
+          x: [-100, 100],
+          opacity: [0, 1, 0]
+        }}
+        transition={{ 
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1
+        }}
+      />
+    </motion.div>
   );
 }, (prevProps, nextProps) => prevProps.achievement.title === nextProps.achievement.title);
 
@@ -279,7 +242,7 @@ const itemVariants = {
 };
 
 /**
- * AchievementCard with fixes for animation conflicts and accessibility
+ * AchievementCard with animated icon instead of 3D model
  */
 const AchievementCard = memo(({ achievement, isMobile, index }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -310,7 +273,7 @@ const AchievementCard = memo(({ achievement, isMobile, index }) => {
         border: 'none',
         boxShadow: 'none'
       }}
-      icon={<AnimatedModel achievement={achievement} />}
+      icon={<AnimatedIcon achievement={achievement} />}
       aria-label={`${achievement.title} card`}
     >
       {/* Toggle header */}
@@ -396,7 +359,7 @@ const AchievementCard = memo(({ achievement, isMobile, index }) => {
 );
 
 /**
- * Achievements Section with all bug fixes applied
+ * Achievements Section with 3D model removed
  */
 const Achievements = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -532,7 +495,7 @@ const Achievements = () => {
           </motion.p>
         </div>
 
-        {/* Timeline wrapper with Framer Motion - FIXED: Now immediately visible */}
+        {/* Timeline wrapper with Framer Motion */}
         <motion.div
           className="relative min-h-screen"
           initial={{ opacity: 0, y: 50 }}
@@ -558,13 +521,13 @@ const Achievements = () => {
           </nav>
         </motion.div>
 
-        {/* Bottom gradient overlay */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-900 to-transparent pointer-events-none" aria-hidden />
+        
       </motion.div>
-
-      {/* Global styles with bug fixes */}
+{/* Bottom gradient overlay */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-900 to-transparent pointer-events-none w-[100vw]" aria-hidden />
+      {/* Global styles */}
       <style jsx global>{`
-        /* Enable scrollbars (fix for scrolling issues) */
+        /* Enable scrollbars */
         html, body {
           overflow-x: hidden;
           overflow-y: auto;
@@ -605,11 +568,6 @@ const Achievements = () => {
         .vertical-timeline-element-content {
           visibility: visible !important;
           opacity: 1 !important;
-        }
-        
-        /* Ensure 3D Canvas is properly rendered */
-        canvas {
-          display: block !important;
         }
         
         /* Fix timeline icon positioning */

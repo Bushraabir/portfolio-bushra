@@ -128,7 +128,7 @@ const CrystalScene = () => {
       />
 
       {/* The Crystal Component */}
-      <Crystal position={[0, 0, 0]} radius={0.5} />
+      <Crystal position={[0, 0, 0]} radius={0.01} />
     </>
   );
 };

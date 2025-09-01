@@ -2,48 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Smooth Scrolling */
-html {
-  scroll-behavior: smooth;
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html, body {
+/* Root and body setup for proper scrolling */
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+body {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
-  overflow-x: hidden; 
-  overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  position: relative;
 }
 
-/* Cross-browser Custom Scrollbar Styling */
-/* WebKit browsers (Chrome, Safari, newer Edge) */
+#root {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Force scrollbar visibility */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #90dbf4 #1a1a1a;
+}
+
+/* WebKit browsers (Chrome, Safari, newer Edge) - Force visible scrollbar */
 ::-webkit-scrollbar {
-  width: 8px; /* Width of the scrollbar */
+  width: 12px;
+  background: #1a1a1a;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #1a1a1a; /* Track color */
-  border-radius: 10px; /* Rounded edges for the scrollbar track */
+  background-color: #1a1a1a;
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #90dbf4; /* Thumb color (soft celestial cyan) */
-  border-radius: 10px; /* Rounded thumb edges */
-  border: 2px solid #1a1a1a; /* Border around the thumb */
+  background-color: #90dbf4;
+  border-radius: 6px;
+  border: 2px solid #1a1a1a;
+  min-height: 30px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #8eecf5; /* Hover effect with a lighter cyan */
+  background-color: #8eecf5;
 }
 
-/* Firefox scrollbar styling */
-@supports (scrollbar-color: auto) {
-  html {
-    scrollbar-width: thin;
-    scrollbar-color: #90dbf4 #1a1a1a;
-  }
+::-webkit-scrollbar-thumb:active {
+  background-color: #7dd3fc;
+}
+
+/* Force scrollbar to always be visible */
+::-webkit-scrollbar-corner {
+  background: #1a1a1a;
 }
 
 /* Performance optimizations */
@@ -60,6 +85,32 @@ html, body {
 
 *:focus:not(:focus-visible) {
   outline: none;
+}
+
+/* Prevent any elements from hiding overflow */
+.no-scroll-hide {
+  overflow: visible !important;
+}
+
+/* Fix for timeline components */
+.vertical-timeline {
+  overflow: visible !important;
+  contain: none !important;
+}
+
+.vertical-timeline-element {
+  overflow: visible !important;
+}
+
+/* Ensure all containers allow scrolling */
+main, section, article, div {
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+/* Fix for React components that might hide scrollbars */
+.react-component {
+  overflow: visible !important;
 }
 
 /* Reduced motion support */
@@ -83,9 +134,29 @@ html, body {
     background-color: #ffffff;
   }
   
-  @supports (scrollbar-color: auto) {
-    html {
-      scrollbar-color: #ffffff #000000;
-    }
+  html {
+    scrollbar-color: #ffffff #000000;
   }
+}
+
+/* Mobile specific fixes */
+@media (max-width: 768px) {
+  body {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto !important;
+  }
+  
+  /* Ensure mobile Safari shows scrollbars */
+  ::-webkit-scrollbar {
+    width: 8px;
+    -webkit-appearance: none;
+  }
+}
+
+/* Force scrolling on all main containers */
+.scroll-container {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  height: auto !important;
+  min-height: 100vh;
 }

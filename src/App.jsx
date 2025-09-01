@@ -15,9 +15,7 @@ const Art = React.lazy(() => import("./sections/Art"));
 const Organization = React.lazy(() => import("./sections/Organization"));
 const AboutMe = React.lazy(() => import("./sections/Aboutme"));
 const Achievements = React.lazy(() => import("./sections/Achievements"));
-
 const Testimonials = React.lazy(() => import("./sections/Testimonials"));
-
 const Footer = React.lazy(() => import("./sections/Footer"));
 
 /* ---------------- Error Boundary ---------------- */
@@ -146,27 +144,9 @@ const NavbarComponent = ({ page }) => {
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen]);
-// In your app/layout component
-useEffect(() => {
-  // Ensure proper scroll setup
-  document.body.style.overflow = 'auto';
-  document.documentElement.style.overflow = 'auto';
-  document.body.style.webkitOverflowScrolling = 'touch';
-  
-  // Prevent body scroll lock
-  const preventScrollLock = () => {
-    document.body.style.overflow = 'auto';
-    document.documentElement.style.overflow = 'auto';
-  };
-  
-  window.addEventListener('resize', preventScrollLock);
-  window.addEventListener('orientationchange', preventScrollLock);
-  
-  return () => {
-    window.removeEventListener('resize', preventScrollLock);
-    window.removeEventListener('orientationchange', preventScrollLock);
-  };
-}, []);
+
+  // REMOVED the conflicting useEffect that was overriding scroll behavior
+
   const navLinks = {
     home: [
       { to: "/my-works", name: "My Works", icon: "🚀" },
@@ -245,18 +225,27 @@ useEffect(() => {
 /* ---------------- Pages ---------------- */
 const HomePage = () => {
   const { isLoading } = useLoading();
+  
+  // Fix scroll setup for home page
+  useEffect(() => {
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.height = 'auto';
+    document.documentElement.style.height = 'auto';
+  }, []);
+
   return (
-    <div className="bg-deep_indigo min-h-screen font-description overflow-hidden">
+    <div className="bg-deep_indigo min-h-screen font-description scroll-container">
       <Helmet>
-        <title>Home | Bushra’s Portfolio</title>
+        <title>Home | Bushra's Portfolio</title>
         <meta name="description" content="Welcome to Bushra's portfolio showcasing projects, research, and creative works." />
         <meta name="keywords" content="Bushra, Portfolio, Web Development, Research, Art, STEM, Volunteering" />
       </Helmet>
       <NavbarComponent page="home" />
-      <div className="absolute top-0 left-0 w-full h-full">
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
         <ErrorBoundary>
           <SectionWrapper fallback={<Loader1 />}>
-            <ParticleScene className="min-h-screen overflow-hidden -z-10" />
+            <ParticleScene className="min-h-screen -z-10" style={{ pointerEvents: "none" }} />
           </SectionWrapper>
         </ErrorBoundary>
       </div>
@@ -270,55 +259,108 @@ const HomePage = () => {
   );
 };
 
-const MyWorksPage = () => (
-  <div className="bg-deep_indigo min-h-screen font-description overflow-hidden">
-    <Helmet>
-      <title>My Works | Bushra’s Portfolio</title>
-      <meta name="description" content="Explore Bushra's STEM projects, artworks, research, and volunteering initiatives." />
-      <meta name="keywords" content="STEM, Art, Research, Volunteering, Projects, Bushra" />
-    </Helmet>
-    <NavbarComponent page="myWorks" />
-    <main className="min-h-screen overflow-hidden">
-      <SectionWrapper><Websites id="websites" /></SectionWrapper>
-      <SectionWrapper><Research id="research" /></SectionWrapper>
-      <SectionWrapper><Art id="artworks" /></SectionWrapper>
-      <SectionWrapper><Organization id="organization" /></SectionWrapper>
-    </main>
-    <SectionWrapper><Footer /></SectionWrapper>
-  </div>
-);
+const MyWorksPage = () => {
+  // Fix scroll setup for works page
+  useEffect(() => {
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.height = 'auto';
+    document.documentElement.style.height = 'auto';
+  }, []);
 
-const MyStoryPage = () => (
-  <div className="bg-deep_indigo min-h-screen font-description overflow-hidden">
-    <Helmet>
-      <title>My Story | Bushra’s Portfolio</title>
-      <meta name="description" content="Discover Bushra’s personal story, achievements, skills, gallery, and appreciations." />
-      <meta name="keywords" content="About, Achievements, Skills, Gallery, Testimonials, Bushra" />
-    </Helmet>
-    <NavbarComponent page="myStory" />
-          <div className="absolute top-0 left-0 w-full h-full">
+  return (
+    <div className="bg-deep_indigo min-h-screen font-description scroll-container">
+      <Helmet>
+        <title>My Works | Bushra's Portfolio</title>
+        <meta name="description" content="Explore Bushra's STEM projects, artworks, research, and volunteering initiatives." />
+        <meta name="keywords" content="STEM, Art, Research, Volunteering, Projects, Bushra" />
+      </Helmet>
+      <NavbarComponent page="myWorks" />
+      <main className="min-h-screen">
+        <SectionWrapper><Websites id="websites" /></SectionWrapper>
+        <SectionWrapper><Research id="research" /></SectionWrapper>
+        <SectionWrapper><Art id="artworks" /></SectionWrapper>
+        <SectionWrapper><Organization id="organization" /></SectionWrapper>
+      </main>
+      <SectionWrapper><Footer /></SectionWrapper>
+    </div>
+  );
+};
+
+const MyStoryPage = () => {
+  // Fix scroll setup for story page
+  useEffect(() => {
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.height = 'auto';
+    document.documentElement.style.height = 'auto';
+  }, []);
+
+  return (
+    <div className="bg-deep_indigo min-h-screen font-description scroll-container">
+      <Helmet>
+        <title>My Story | Bushra's Portfolio</title>
+        <meta name="description" content="Discover Bushra's personal story, achievements, skills, gallery, and appreciations." />
+        <meta name="keywords" content="About, Achievements, Skills, Gallery, Testimonials, Bushra" />
+      </Helmet>
+      <NavbarComponent page="myStory" />
+      <div className=" top-0 left-0 w-full h-full pointer-events-none fixed">
         <ErrorBoundary>
           <SectionWrapper fallback={<Loader1 />}>
             <ParticleScene 
-              className="min-h-screen overflow-hidden -z-10"
+              className="min-h-screen -z-10"
               style={{ pointerEvents: "none" }}
-               />
+            />
           </SectionWrapper>
         </ErrorBoundary>
       </div>
-    <main className="min-h-screen overflow-hidden">
-      <SectionWrapper><AboutMe id="about" /></SectionWrapper>
-      <SectionWrapper><Achievements id="achievements" /></SectionWrapper>
-      <SectionWrapper><Testimonials id="testimonials" /></SectionWrapper>
-    </main>
-    <SectionWrapper><Footer /></SectionWrapper>
-  </div>
-);
+      <main className="min-h-screen relative z-10">
+        <SectionWrapper><AboutMe id="about" /></SectionWrapper>
+        <SectionWrapper><Achievements id="achievements" /></SectionWrapper>
+        <SectionWrapper><Testimonials id="testimonials" /></SectionWrapper>
+      </main>
+      <SectionWrapper><Footer /></SectionWrapper>
+    </div>
+  );
+};
 
 /* ---------------- Main App ---------------- */
 const App = () => {
   const [isAppLoaded, setIsAppLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
+
+  // Critical: Set up proper scrolling from the start
+  useEffect(() => {
+    // Force proper scroll setup immediately
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.height = 'auto';
+    document.documentElement.style.height = 'auto';
+    document.body.style.webkitOverflowScrolling = 'touch';
+    
+    // Force scrollbar visibility
+    document.documentElement.style.scrollbarWidth = 'thin';
+    document.documentElement.style.scrollbarColor = '#90dbf4 #1a1a1a';
+    
+    // Prevent any library from hiding scroll
+    const preventScrollHiding = () => {
+      document.body.style.overflow = 'auto';
+      document.documentElement.style.overflow = 'auto';
+    };
+    
+    // Run on resize and orientation change
+    window.addEventListener('resize', preventScrollHiding);
+    window.addEventListener('orientationchange', preventScrollHiding);
+    
+    // Run periodically to catch any libraries that change overflow
+    const scrollInterval = setInterval(preventScrollHiding, 1000);
+    
+    return () => {
+      window.removeEventListener('resize', preventScrollHiding);
+      window.removeEventListener('orientationchange', preventScrollHiding);
+      clearInterval(scrollInterval);
+    };
+  }, []);
 
   useEffect(() => {
     let progressInterval;
@@ -348,15 +390,17 @@ const App = () => {
   return (
     <HelmetProvider>
       <LoadingProvider>
-        <Router >
+        <Router>
           <ErrorBoundary>
-            <Suspense fallback={<Loader1 progress={50} />}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/my-works" element={<MyWorksPage />} />
-                <Route path="/my-story" element={<MyStoryPage />} />
-              </Routes>
-            </Suspense>
+            <div className="scroll-container" style={{ overflow: 'visible', height: 'auto' }}>
+              <Suspense fallback={<Loader1 progress={50} />}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/my-works" element={<MyWorksPage />} />
+                  <Route path="/my-story" element={<MyStoryPage />} />
+                </Routes>
+              </Suspense>
+            </div>
           </ErrorBoundary>
         </Router>
       </LoadingProvider>
