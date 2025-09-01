@@ -607,7 +607,7 @@ const HomePage = () => {
       
       <NavbarComponent page="home" />
       
-      <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
+      <div className="fixed top-0 left-0 w-full h-full z-0">
         <ErrorBoundary>
           <SectionWrapper fallback={<Loader1 />}>
             <ParticleScene />
@@ -615,7 +615,7 @@ const HomePage = () => {
         </ErrorBoundary>
       </div>
       
-      <main className="relative z-10" style={{ pointerEvents: 'auto' }}>
+      <main className="relative z-10 pointer-events-none" >
         <div id="hero">
           <SectionWrapper>
             <Hero />
@@ -872,14 +872,7 @@ const App = () => {
                 box-sizing: border-box;
               }
               
-              .pointer-events-none {
-                pointer-events: none !important;
-              }
-              
-              .pointer-events-auto {
-                pointer-events: auto !important;
-              }
-              
+
               @media (prefers-reduced-motion: no-preference) {
                 html {
                   scroll-behavior: smooth;

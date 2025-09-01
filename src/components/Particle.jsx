@@ -48,7 +48,7 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality }) =>
 
   return (
     <mesh ref={ref} castShadow receiveShadow onPointerDown={onPointerDown}>
-      <sphereGeometry args={[radius, quality === 'low' ? 32 : 128, quality === 'low' ? 16 : 128]} />
+      <sphereGeometry args={[radius, quality === 'low' ? 32 : 48 , quality === 'low' ? 16 : 48]} />
       <meshPhysicalMaterial
         color={color}
         metalness={0.9}

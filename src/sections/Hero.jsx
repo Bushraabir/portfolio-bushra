@@ -226,7 +226,7 @@ const Hero = () => {
 
       {/* DESCRIPTION SECTION */}
       <motion.section
-        className="mt-6 px-4 text-center text-lemon_chiffon"
+        className="mt-6 px-4 text-center text-lemon_chiffon pointer-events-none"
         initial={{ opacity: 0, y: isMobile ? 20 : 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
