@@ -19,7 +19,7 @@ export default {
         scale: "transform, scaleX",
       },
       colors: {
-        lemon_chiffon: { DEFAULT: '#fbf8cc', 500: '#fbf8cc', 700: '#fefef5' },
+       lemon_chiffon: { DEFAULT: '#fbf8cc', 500: '#fbf8cc', 700: '#fefef5' },
         champagne_pink: { DEFAULT: '#fde4cf', 500: '#fde4cf', 700: '#fff9f5' },
         tea_rose: { DEFAULT: '#ffcfd2', 500: '#ffcfd2', 700: '#fff6f6' },
         pink_lavender: { DEFAULT: '#f1c0e8', 500: '#f1c0e8', 700: '#fcf2fa' },

@@ -146,7 +146,27 @@ const NavbarComponent = ({ page }) => {
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen]);
-
+// In your app/layout component
+useEffect(() => {
+  // Ensure proper scroll setup
+  document.body.style.overflow = 'auto';
+  document.documentElement.style.overflow = 'auto';
+  document.body.style.webkitOverflowScrolling = 'touch';
+  
+  // Prevent body scroll lock
+  const preventScrollLock = () => {
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+  };
+  
+  window.addEventListener('resize', preventScrollLock);
+  window.addEventListener('orientationchange', preventScrollLock);
+  
+  return () => {
+    window.removeEventListener('resize', preventScrollLock);
+    window.removeEventListener('orientationchange', preventScrollLock);
+  };
+}, []);
   const navLinks = {
     home: [
       { to: "/my-works", name: "My Works", icon: "🚀" },

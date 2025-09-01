@@ -8,23 +8,16 @@ import { FaCheck, FaChevronDown, FaTrophy, FaAward, FaStar } from "react-icons/f
 import Crystal from "../components/Crystal";
 
 
-/**
- * Lazy-loaded 3D components (kept identical to original features)
- * - Crystal 3D model
-const Crystal = lazy(() => import("../assets/3d_model/Crystal.jsx"));
 
 
 
 
-/**
- * DATA: Achievements
- */
 const achievements = [
   {
     title: "Academic Excellence & Scholarships",
     description: "Consistently achieved top ranks, scholarships, and accolades throughout my education.",
     icon: FaTrophy,
-    color: "from-yellow-400 to-orange-500",
+    color: "from-aquamarine to-jordy_blue", // Cosmic colors
     points: [
       "31st in the Bangladesh University of Engineering and Technology (BUET) Architecture admission test (2023)",
       "Upazilla Bitthik Sresto Shikkharti recognition (2024)",
@@ -41,7 +34,7 @@ const achievements = [
     title: "Leadership & Team Management",
     description: "Led teams with discipline, integrity, and vision, promoting excellence in academics and extracurriculars.",
     icon: FaAward,
-    color: "from-blue-400 to-indigo-600",
+    color: "from-pink_lavender to-aquamarine", // Cosmic colors
     points: [
       "Junior Prefect — Appointed as the Junior Prefect of Bir Protik Dr. Captain Sitara Begum House (2021)",
       "House Prefect — Led 92 cadets as the House Prefect of Bir Protik Dr. Captain Sitara Begum House (2022-2023)",
@@ -54,7 +47,7 @@ const achievements = [
     title: "STEM Competitions & Olympiads",
     description: "Excelled in national Olympiads and science fairs, pushing my intellectual boundaries.",
     icon: FaStar,
-    color: "from-purple-400 to-pink-500",
+    color: "from-jordy_blue to-electric_blue", // Cosmic colors
     points: [
       "International Youth Math Challenge (IYMC) — Qualification Round Winner (2024)",
       "Bangladesh Math Olympiad — Regional Winner, National Round Participant (2020)",
@@ -69,7 +62,7 @@ const achievements = [
     title: "Writing & Communication Excellence",
     description: "Earned multiple awards in essay competitions, showcasing strong analytical and expressive skills.",
     icon: FaAward,
-    color: "from-green-400 to-teal-500",
+    color: "from-pink_lavender to-mauve", // Cosmic colors
     points: [
       "1st place — MCSK Essay Writing Competition (2017)",
       "2nd place — Interhouse Essay Writing Competition (2020)",
@@ -82,7 +75,7 @@ const achievements = [
     title: "Creative & Artistic Achievements",
     description: "My artistic skills, in both traditional and digital media, have been recognized in national and institutional competitions.",
     icon: FaStar,
-    color: "from-pink-400 to-rose-500",
+    color: "from-aquamarine to-pink_lavender", // Cosmic colors
     points: [
       "3rd place — Bangla Vision Painting Competition (2013)",
       "1st place — Bissho Shishu o Jubo Theater Dibosh Painting Competition (2019, 2022)",
@@ -95,7 +88,7 @@ const achievements = [
     title: "Innovation & Scientific Research",
     description: "Led projects combining science and technology to provide real-world solutions.",
     icon: FaTrophy,
-    color: "from-cyan-400 to-blue-500",
+    color: "from-pink_lavender to-electric_blue", // Cosmic colors
     points: [
       "Team Leader — InterHouse Science Fair (Senior Group), Developed 'Gusto,' a virtual assistant with Face Recognition, awarded Best Project (2022)",
       "Team Leader - Easy Water Purification and Supply, awarded Best Project (2019)",
@@ -106,7 +99,7 @@ const achievements = [
     title: "Public Speaking & Debate",
     description: "Improved communication skills through speaking competitions.",
     icon: FaAward,
-    color: "from-indigo-400 to-purple-500",
+    color: "from-lemon_chiffon to-tea_rose", // Cosmic colors
     points: [
       "Soujonno Pouroshkar — 7th March Extempore Speech Competition (2022)",
       "Runners-up — Debate Competition (2016)"
@@ -116,7 +109,7 @@ const achievements = [
     title: "Non-Profit & Community Engagement",
     description: "Engaged in a diverse range of non-profit and community initiatives, including founding and holding leadership roles at EmpowerEd, a non-profit dedicated to enhancing educational opportunities, as well as providing design and digital expertise to support local businesses and creative platforms.",
     icon: FaStar,
-    color: "from-emerald-400 to-teal-600",
+    color: "from-jordy_blue to-lemon_chiffon", // Cosmic colors
     points: [
       "Founded EmpowerEd, a non-profit focused on educational opportunities.",
       "Served as Vice President, shaping strategy and leadership at EmpowerEd.",
@@ -130,7 +123,7 @@ const achievements = [
     title: "Mentorship & Teaching Experience",
     description: "Mentored students, helped them academically.",
     icon: FaAward,
-    color: "from-amber-400 to-orange-500",
+    color: "from-jordy_blue to-tea_rose", // Cosmic colors
     points: [
       "Provided tuition to 3 students for 2 months, improving their Physics and Mathematics.",
       "Created interactive PDFs and notes.",
@@ -141,7 +134,7 @@ const achievements = [
     title: "Technical Expertise & Digital Skills",
     description: "Strong technical foundation in programming, design, and 3D visualization to create solutions.",
     icon: FaTrophy,
-    color: "from-violet-400 to-purple-600",
+    color: "from-tea_rose to-lemon_chiffon", // Cosmic colors
     points: [
       "Programming languages : C, C++, Python",
       "Passionate about Machine Learning and Artificial Intelligence with Python",
@@ -154,6 +147,7 @@ const achievements = [
     ]
   }
 ];
+
 
 /**
  * Error Boundary for 3D models
@@ -217,7 +211,7 @@ const AnimatedModel = memo(({ achievement }) => {
     <WebGLErrorBoundary fallbackIcon={achievement.icon}>
       <div className="relative w-24 h-24" aria-hidden>
         <Canvas
-          className="absolute top-[-225px] left-[-250px] z-10"
+          className="absolute top-[-285px] left-[-250px] z-10"
           style={{ width: 600, height: 600 }}
           gl={{
             antialias: false,
