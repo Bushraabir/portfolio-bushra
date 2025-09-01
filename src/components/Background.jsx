@@ -1,14 +1,12 @@
+"use client";
 import React, { useEffect, useRef } from "react";
 
 /**
  * Background.jsx
  * -----------------------------------------------
- * Animated cosmic background with parallax star layers,
- * glowing trails, and interactive mouse/touch movement.
- * Optimized for SEO (semantic + ARIA), accessibility,
- * and responsiveness (reduced star count on smaller screens).
+ * An interactive cosmic background with parallax layers,
+ * glowing stars, and smooth animations optimized for mobile, tablet, and desktop.
  */
-
 const Background = () => {
   const canvasRef = useRef(null);
   const particlesRef = useRef([]);
@@ -21,37 +19,34 @@ const Background = () => {
 
     const ctx = canvas.getContext("2d");
 
-    /**
-     * Resize canvas to always fit screen.
-     * Dynamically adjusts star counts for smaller devices.
-     */
+    // Resize the canvas to fit the screen
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
 
-      // Adaptive particle scaling by screen size
+      // Particle scaling based on screen size
       let scaleFactor = 1;
-      if (window.innerWidth < 768) scaleFactor = 0.6; // Mobile
-      else if (window.innerWidth < 1200) scaleFactor = 0.8; // Tablet
+      if (window.innerWidth < 768) scaleFactor = 0.5; // Mobile
+      else if (window.innerWidth < 1200) scaleFactor = 0.75; // Tablet
 
-      // Define color palette inspired by cosmic theme
+      // Color palette inspired by cosmic themes
       const colors = [
-        "#fbf8cc", // lemon_chiffon (soft gold)
-        "#fde4cf", // champagne_pink (rose gold)
-        "#a3c4f3", // jordy_blue (sapphire blue)
-        "#90dbf4", // non_photo_blue (celestial cyan)
-        "#8eecf5", // electric_blue (iridescent turquoise)
-        "#98f5e1", // aquamarine (emerald glow)
+        "#fbf8cc", // Soft gold (lemon_chiffon)
+        "#fde4cf", // Rose gold (champagne_pink)
+        "#a3c4f3", // Sapphire blue (jordy_blue)
+        "#90dbf4", // Celestial cyan (non_photo_blue)
+        "#8eecf5", // Iridescent turquoise (electric_blue)
+        "#98f5e1", // Emerald glow (aquamarine)
       ];
 
-      // Define particle layers (scaled by device size)
+      // Particle layers with adjusted star count (reduced for a cleaner look)
       const particleLayers = [
-        { count: Math.floor(80 * scaleFactor), sizeRange: [3, 6], speed: 0.2, glow: 25, rotationSpeed: 0.001 },
-        { count: Math.floor(60 * scaleFactor), sizeRange: [4, 8], speed: 0.4, glow: 30, rotationSpeed: 0.002 },
-        { count: Math.floor(40 * scaleFactor), sizeRange: [5, 12], speed: 0.6, glow: 55, rotationSpeed: 0.003 },
+        { count: Math.floor(40 * scaleFactor), sizeRange: [3, 6], speed: 0.2, glow: 25, rotationSpeed: 0.001 },
+        { count: Math.floor(30 * scaleFactor), sizeRange: [4, 8], speed: 0.4, glow: 30, rotationSpeed: 0.002 },
+        { count: Math.floor(20 * scaleFactor), sizeRange: [5, 12], speed: 0.6, glow: 55, rotationSpeed: 0.003 },
       ];
 
-      // Initialize particles
+      // Initialize particles with randomized properties
       particlesRef.current = particleLayers.flatMap(layer =>
         Array.from({ length: layer.count }, () => ({
           x: Math.random() * canvas.width,
@@ -75,7 +70,7 @@ const Background = () => {
 
     resizeCanvas();
 
-    /** Handle user interactions (mouse + touch) */
+    // Handle mouse/touch movement
     const handleMouseMove = (e) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
     };
@@ -88,13 +83,13 @@ const Background = () => {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("touchmove", handleTouchMove, { passive: true });
 
-    /** Simple noise generator for organic motion */
+    // Simple noise function for organic motion
     const noise = (x, y) => {
       const n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
       return n - Math.floor(n);
     };
 
-    /** Draw elegant 5-pointed star */
+    // Draw elegant 5-pointed star
     const drawStar = (ctx, x, y, size, rotation, color, opacity, glow) => {
       ctx.save();
       ctx.shadowBlur = glow;
@@ -124,7 +119,7 @@ const Background = () => {
       ctx.restore();
     };
 
-    /** Draw curved star-to-star connections */
+    // Draw curved star-to-star connections
     const drawCurvedConnection = (ctx, p1, p2) => {
       const distance = Math.hypot(p1.x - p2.x, p1.y - p2.y);
       if (distance < 180) {
@@ -147,7 +142,7 @@ const Background = () => {
       }
     };
 
-    /** Main animation loop */
+    // Main animation loop
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -167,14 +162,7 @@ const Background = () => {
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Group particles by layer
-      const particlesByLayer = {};
-      particlesRef.current.forEach(particle => {
-        if (!particlesByLayer[particle.layer]) particlesByLayer[particle.layer] = [];
-        particlesByLayer[particle.layer].push(particle);
-      });
-
-      // Update + draw particles
+      // Update and draw particles
       particlesRef.current.forEach(particle => {
         const pulse = 0.7 + Math.sin(Date.now() * 0.0015 + particle.pulsePhase) * 0.3;
         particle.opacity = Math.max(0.3, Math.min(1, pulse * particle.opacity));
@@ -223,7 +211,13 @@ const Background = () => {
         drawStar(ctx, particle.x, particle.y, particle.size * pulse, particle.rotation, particle.color, particle.opacity, particle.glow);
       });
 
-      // Draw connections
+      // Draw connections between particles
+      const particlesByLayer = {};
+      particlesRef.current.forEach(particle => {
+        if (!particlesByLayer[particle.layer]) particlesByLayer[particle.layer] = [];
+        particlesByLayer[particle.layer].push(particle);
+      });
+
       Object.values(particlesByLayer).forEach(layerParticles => {
         for (let i = 0; i < layerParticles.length; i++) {
           for (let j = i + 1; j < layerParticles.length; j++) {
@@ -237,8 +231,7 @@ const Background = () => {
 
     animate();
 
-    window.addEventListener("resize", resizeCanvas);
-
+    // Cleanup on component unmount
     return () => {
       window.removeEventListener("resize", resizeCanvas);
       window.removeEventListener("mousemove", handleMouseMove);
