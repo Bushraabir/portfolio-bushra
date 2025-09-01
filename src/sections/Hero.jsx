@@ -5,7 +5,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
 import profileImage from "../assets/Bushra.png";
-import resumePDF from "../assets/resume/Bushra.pdf";
 
 // Register GSAP Plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -71,19 +70,18 @@ const Hero = () => {
 
   const profileImgClass = isMobile
     ? "w-32 h-32 mx-auto transition-transform duration-300 transform shadow-2xl"
-    : "w-24 sm:w-72 md:w-[250px] lg:w-[700px] object-contain shadow-2xl transition-transform duration-300 transform";
+    : "w-24 sm:w-72 md:w-[250px] lg:w-[450px] object-contain shadow-2xl transition-transform duration-300 transform border-2 border-dark_teal";
 
   const descriptionClass = isMobile
     ? "text-sm text-center text-glow text-lemon_chiffon tracking-wide leading-relaxed"
     : "text-sm sm:text-md text-glow text-center text-lemon_chiffon tracking-wide leading-relaxed";
 
   const buttonBaseClass = isMobile
-    ? "relative px-4 py-2.5 text-base font-semibold text-white tracking-wider rounded-full backdrop-blur-lg bg-gradient-to-r border-2 overflow-hidden transition-all duration-300 focus:outline-none focus:ring-2"
-    : "relative px-6 py-3 text-lg font-semibold text-white tracking-wider rounded-full backdrop-blur-lg bg-gradient-to-r border-4 overflow-hidden transition-all duration-300 focus:outline-none focus:ring-4";
+    ? "relative px-4 py-2 text-base font-semibold text-white tracking-wider rounded-full backdrop-blur-lg bg-gradient-to-r border-1 overflow-hidden transition-all duration-300 focus:outline-none focus:ring-2"
+    : "relative px-6 py-2 text-lg font-semibold text-white tracking-wider rounded-full backdrop-blur-lg bg-gradient-to-r border-2 overflow-hidden transition-all duration-300 focus:outline-none focus:ring-4";
 
-  const buttonWorksClass = `${buttonBaseClass} from-dark_teal/40 to-blue-600/40 border-lemon_chiffon hover:border-dark_teal focus:ring-dark_teal`;
-  const buttonStoryClass = `${buttonBaseClass} from-mauve/40 to-purple-600/40 border-lemon_chiffon hover:border-mauve focus:ring-mauve`;
-  const buttonCVClass = `${buttonBaseClass} from-jordy_blue/40 to-purple-500/40 border-lemon_chiffon hover:border-jordy_blue focus:ring-jordy_blue`;
+  const buttonWorksClass = `${buttonBaseClass} from-dark_teal/40 to-blue-600/40 border-lemon_chiffon hover:border-mauve focus:ring-dark_teal`;
+  const buttonStoryClass = `${buttonBaseClass} from-mauve/40 to-purple-600/40 border-lemon_chiffon hover:border-dark_teal  focus:ring-mauve`;
 
   // Ripple effect for buttons
   const createRipple = (e, button) => {
@@ -176,18 +174,22 @@ const Hero = () => {
         <motion.figure className="flex justify-center lg:ml-12" ref={profileRef}>
           <img
             src={profileImage}
-            alt="Portrait of Bushra Khandoker,a dreamer and an explorer"
+            alt="Portrait of Bushra Khandoker, a dreamer and an explorer"
             title="Bushra Khandoker - A dreamer and an explorer"
             className={profileImgClass}
             loading="lazy"
             decoding="async"
             style={{
               objectFit: "cover",
-              clipPath:
-                "polygon(50% 0%, 90% 15%, 100% 50%, 90% 85%, 50% 100%, 10% 85%, 0% 50%, 10% 15%)",
+              borderRadius: "100px",  // Slightly rounded corners for a modern touch
+              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)",  // Subtle shadow for a more realistic feel
+              paddingRight: "20px",  // Space at the bottom for the Polaroid effect
+              marginRight: "20px",  // Add space below the image to emphasize the Polaroid look
+              backgroundColor: "rgba(253, 228, 207, 0.8)",  // White background around the image for the Polaroid feel
             }}
             itemProp="image"
           />
+
           <figcaption className="sr-only">Bushra Khandoker Profile Image</figcaption>
         </motion.figure>
       </header>
@@ -220,18 +222,6 @@ const Hero = () => {
           </motion.button>
         </Link>
 
-        <motion.a
-          href={resumePDF}
-          download="Bushra_Khandoker_Resume.pdf"
-          className={buttonCVClass}
-          aria-label="Download Bushra Khandoker's Resume in PDF"
-          title="Download Resume - Bushra Khandoker"
-          rel="noopener noreferrer"
-          onClick={(e) => createRipple(e, e.currentTarget)}
-          style={{ pointerEvents: "auto" }}
-        >
-          Launch My Universe Map
-        </motion.a>
       </nav>
 
       {/* DESCRIPTION SECTION */}

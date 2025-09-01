@@ -3,18 +3,87 @@
 @tailwind utilities;
 
 /* Smooth Scrolling */
-
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
-
-
 html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100% ;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden; 
+}
 
+/* Cross-browser Custom Scrollbar Styling */
+/* WebKit browsers (Chrome, Safari, newer Edge) */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #1a1a1a; /* Track color */
+  border-radius: 10px; /* Rounded edges for the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #90dbf4; /* Thumb color (soft celestial cyan) */
+  border-radius: 10px; /* Rounded thumb edges */
+  border: 2px solid #1a1a1a; /* Border around the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #8eecf5; /* Hover effect with a lighter cyan */
+}
+
+/* Firefox scrollbar styling */
+@supports (scrollbar-color: auto) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #90dbf4 #1a1a1a;
+  }
+}
+
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Focus management for accessibility */
+*:focus {
+  outline: 2px solid #90dbf4;
+  outline-offset: 2px;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
   
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  ::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+  }
+  
+  @supports (scrollbar-color: auto) {
+    html {
+      scrollbar-color: #ffffff #000000;
+    }
+  }
+}

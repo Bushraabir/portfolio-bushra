@@ -24,7 +24,19 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality }) =>
   }), [radius]);
 
   const handleClick = useCallback(() => {
-    const colors = ['#E1C16C', '#88A6B7', '#B8B5B4', '#4A6B64', '#C6A78C', '#C2B9B0'];
+    const colors = [
+  '#1a1f33', // Deep Space Blue
+  '#3b4a72', // Midnight Blue
+  '#6a4c93', // Nebula Purple
+  '#a1b8d1', // Soft Moonlight Blue
+  '#e3e1e1', // Star Dust White
+  '#f78c6c', // Solar Flare Orange
+  '#ec4d6f', // Galactic Pink
+  '#c17bdb', // Lavender Dream
+  '#50516b', // Twilight Blue
+  '#ffb3e1'  // Cosmic Pink Glow
+];
+
     const newColor = colors[Math.floor(Math.random() * colors.length)];
     ref.current.material.color.set(newColor);
   }, [ref]);
@@ -35,7 +47,7 @@ const InteractiveParticle = React.memo(({ position, color, radius, quality }) =>
   }, [handleClick]);
 
   return (
-    <mesh ref={ref} castShadow onPointerDown={onPointerDown}>
+    <mesh ref={ref} castShadow receiveShadow onPointerDown={onPointerDown}>
       <sphereGeometry args={[radius, quality === 'low' ? 32 : 128, quality === 'low' ? 16 : 128]} />
       <meshPhysicalMaterial
         color={color}
@@ -178,7 +190,19 @@ const ParticleScene = () => {
       const randomOffset = (Math.random() * 2 - 1) * 1.0;
       const offsetVector = raycaster.ray.direction.clone().multiplyScalar(randomOffset);
       intersectPoint.add(offsetVector);
-      const colors = ['#E1C16C', '#88A6B7', '#B8B5B4', '#4A6B64', '#C6A78C'];
+      const colors = [
+  '#1a1f33', // Deep Space Blue
+  '#3b4a72', // Midnight Blue
+  '#6a4c93', // Nebula Purple
+  '#a1b8d1', // Soft Moonlight Blue
+  '#e3e1e1', // Star Dust White
+  '#f78c6c', // Solar Flare Orange
+  '#ec4d6f', // Galactic Pink
+  '#c17bdb', // Lavender Dream
+  '#50516b', // Twilight Blue
+  '#ffb3e1'  // Cosmic Pink Glow
+];
+
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
       const randomRadius = Math.random() * 1.5 + 0.5;
       let newPosition = intersectPoint.clone();
@@ -212,8 +236,12 @@ const ParticleScene = () => {
 
   return (
     <Canvas
-      style={{ height:  '100vh' , width: '100vw', touchAction: 'pan-y' }}
-      shadows
+      style={{ height: '100vh', width: '100vw', touchAction: 'pan-y' }}
+      shadows={{
+        enabled: true,
+        type: THREE.PCFSoftShadowMap,
+        autoUpdate: true
+      }}
       onClick={handleCanvasClick}
       dpr={quality === 'low' ? [1, 1] : [1, 2]}
     >
@@ -221,11 +249,71 @@ const ParticleScene = () => {
         <PerspectiveCamera makeDefault ref={cameraRef} position={[0, 5, 15]} fov={50} near={0.1} far={1000} />
         <BackgroundScene quality={quality} />
         <Environment files={spaceBackground} background />
-        <ambientLight intensity={0.2} color="#404040" />
-        <directionalLight position={[15, 20, 10]} intensity={1.2} castShadow shadow-mapSize-width={2048} shadow-mapSize-height={2048} />
-        <spotLight position={[-15, 25, -10]} angle={Math.PI / 6} penumbra={0.5} intensity={1.5} castShadow />
-        <pointLight position={[5, 10, 5]} intensity={0.8} />
-        <hemisphereLight intensity={0.2} />
+        
+        {/* Enhanced ambient light for better shadow visibility */}
+        <ambientLight intensity={0.3} color="#404040" />
+        
+        {/* Main directional light with expanded shadow camera */}
+        <directionalLight 
+          position={[25, 30, 15]} 
+          intensity={1.5} 
+          castShadow 
+          shadow-mapSize-width={quality === 'low' ? 2048 : 4096} 
+          shadow-mapSize-height={quality === 'low' ? 2048 : 4096}
+          shadow-camera-left={-50}
+          shadow-camera-right={50}
+          shadow-camera-top={50}
+          shadow-camera-bottom={-50}
+          shadow-camera-near={0.1}
+          shadow-camera-far={100}
+          shadow-bias={-0.0001}
+          shadow-radius={quality === 'low' ? 4 : 8}
+        />
+        
+        {/* Secondary directional light for fill lighting and additional shadows */}
+        <directionalLight 
+          position={[-20, 25, -15]} 
+          intensity={0.8} 
+          castShadow 
+          shadow-mapSize-width={quality === 'low' ? 1024 : 2048} 
+          shadow-mapSize-height={quality === 'low' ? 1024 : 2048}
+          shadow-camera-left={-40}
+          shadow-camera-right={40}
+          shadow-camera-top={40}
+          shadow-camera-bottom={-40}
+          shadow-camera-near={0.1}
+          shadow-camera-far={80}
+          shadow-bias={-0.0001}
+          shadow-radius={quality === 'low' ? 3 : 6}
+        />
+        
+        {/* Spotlight for dynamic shadows */}
+        <spotLight 
+          position={[0, 35, 0]} 
+          angle={Math.PI / 3} 
+          penumbra={0.3} 
+          intensity={1.0} 
+          castShadow
+          shadow-mapSize-width={quality === 'low' ? 1024 : 2048}
+          shadow-mapSize-height={quality === 'low' ? 1024 : 2048}
+          shadow-camera-fov={60}
+          shadow-camera-near={1}
+          shadow-camera-far={80}
+          shadow-bias={-0.0001}
+          shadow-radius={quality === 'low' ? 3 : 6}
+        />
+        
+        {/* Additional point lights for ambient lighting */}
+        <pointLight position={[10, 8, 10]} intensity={0.6} />
+        <pointLight position={[-10, 8, -10]} intensity={0.6} />
+        
+        {/* Hemisphere light for natural ambient lighting */}
+        <hemisphereLight 
+          skyColor="#87CEEB" 
+          groundColor="#2C3E50" 
+          intensity={0.4} 
+        />
+        
         <Physics
           gravity={[0, -9.8, 0]}
           iterations={quality === 'low' ? 10 : 20}

@@ -14,16 +14,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Testimonials data with enhanced metadata for SEO and theming
- * Each testimonial includes structured data for better search engine understanding
- * @typedef {Object} Testimonial
- * @property {string} quote - The testimonial quote text
- * @property {string} name - The name of the person giving the testimonial
- * @property {string} designation - Their professional title/position
- * @property {string} theme - Theme category for styling and organization
- * @property {string} icon - Emoji icon representing the theme
- * @property {string} institution - The institution they work for
- * @property {string} department - Their department within the institution
- * @property {string[]} keywords - SEO keywords related to the testimonial
  */
 const testimonials = [
   {
@@ -89,18 +79,7 @@ const testimonials = [
 ];
 
 /**
- * Theme configurations for consistent styling across testimonial cards
- * Using the provided Tailwind CSS color palette for cohesive design
- * Each theme has its own color palette, gradients, and visual identity
- * @typedef {Object} ThemeConfig
- * @property {string} gradient - Tailwind gradient classes for main theme color
- * @property {string} bgGradient - Background gradient with opacity
- * @property {string} border - Border color classes
- * @property {string} shadow - Shadow color classes
- * @property {string} textAccent - Text accent color
- * @property {string} iconBg - Icon background color
- * @property {string} hoverGradient - Hover state gradient
- * @property {string} description - Theme description for accessibility
+ * Theme configurations for consistent styling
  */
 const themeConfigs = {
   dedication: {
@@ -166,14 +145,7 @@ const themeConfigs = {
 };
 
 /**
- * Utility function to wrap text for canvas rendering in 3D cube textures
- * Handles text overflow by breaking into multiple lines
- * @param {CanvasRenderingContext2D} ctx - Canvas 2D rendering context
- * @param {string} text - Text content to wrap
- * @param {number} x - X coordinate for text positioning
- * @param {number} y - Y coordinate for text positioning
- * @param {number} maxWidth - Maximum width before text wrapping
- * @param {number} lineHeight - Vertical spacing between lines
+ * Utility function to wrap text for canvas rendering
  */
 const wrapText = (ctx, text, x, y, maxWidth, lineHeight) => {
   const words = text.split(" ");
@@ -197,13 +169,6 @@ const wrapText = (ctx, text, x, y, maxWidth, lineHeight) => {
 
 /**
  * Interactive Testimonial Card Component
- * Renders individual testimonials with theme-based styling and animations
- * Implements accessibility features and SEO optimization
- * 
- * @param {Object} props - Component properties
- * @param {Testimonial} props.testimonial - Testimonial data object
- * @param {number} props.index - Card index for staggered animations
- * @returns {JSX.Element} Animated testimonial card with accessibility features
  */
 const TestimonialCard = memo(({ testimonial, index }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -211,7 +176,7 @@ const TestimonialCard = memo(({ testimonial, index }) => {
   const isInView = useInView(cardRef, { once: true, margin: "-50px" });
   const theme = themeConfigs[testimonial.theme];
 
-  // Generate structured data for SEO optimization
+  // Generate structured data for SEO
   const structuredData = {
     "@type": "Review",
     "reviewRating": {
@@ -264,13 +229,13 @@ const TestimonialCard = memo(({ testimonial, index }) => {
       role="article"
       aria-label={`Testimonial from ${testimonial.name} about ${testimonial.theme}`}
     >
-      {/* SEO structured data - hidden from users but visible to search engines */}
+      {/* SEO structured data */}
       <script 
         type="application/ld+json" 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} 
       />
 
-      {/* Animated background particles for visual enhancement */}
+      {/* Animated background particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         {Array.from({ length: 5 }).map((_, i) => (
           <motion.div
@@ -295,7 +260,7 @@ const TestimonialCard = memo(({ testimonial, index }) => {
         ))}
       </div>
 
-      {/* Gradient border animation on hover */}
+      {/* Gradient border animation */}
       <motion.div
         className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${theme.gradient} opacity-0 group-hover:opacity-30 transition-opacity duration-500`}
         animate={isHovered ? { rotate: 360 } : { rotate: 0 }}
@@ -324,7 +289,7 @@ const TestimonialCard = memo(({ testimonial, index }) => {
           </div>
         </header>
 
-        {/* Quote section with proper semantic markup for SEO */}
+        {/* Quote section */}
         <motion.blockquote 
           className="flex-1 mb-8 relative"
           initial={{ opacity: 0 }}
@@ -341,7 +306,7 @@ const TestimonialCard = memo(({ testimonial, index }) => {
           </div>
           
           {/* Main quote text */}
-          <p className="text-lemon_chiffon-700 text-base leading-relaxed font-description relative z-10 pl-6">
+          <p className="text-lemon_chiffon text-base leading-relaxed font-description relative z-10 pl-6">
             {testimonial.quote}
           </p>
           
@@ -354,7 +319,7 @@ const TestimonialCard = memo(({ testimonial, index }) => {
           </div>
         </motion.blockquote>
 
-        {/* Author information section with structured data */}
+        {/* Author information */}
         <motion.footer 
           className="space-y-3"
           whileHover={{ x: 5 }}
@@ -373,9 +338,9 @@ const TestimonialCard = memo(({ testimonial, index }) => {
             {testimonial.name}
           </h4>
           
-          {/* Professional designation and institution */}
+          {/* Professional designation */}
           <p 
-            className="text-champagne_pink-700 text-sm font-description leading-snug opacity-90"
+            className="text-champagne_pink text-sm font-description leading-snug opacity-90"
             itemProp="jobTitle"
           >
             {testimonial.designation}
@@ -388,7 +353,7 @@ const TestimonialCard = memo(({ testimonial, index }) => {
           </div>
         </motion.footer>
 
-        {/* Interactive corner accent for visual appeal */}
+        {/* Interactive corner accent */}
         <motion.div
           className={`absolute top-4 right-4 w-3 h-3 rounded-full bg-gradient-to-r ${theme.gradient}`}
           animate={isHovered ? { 
@@ -409,7 +374,7 @@ const TestimonialCard = memo(({ testimonial, index }) => {
         />
       </div>
 
-      {/* Glass morphism overlay effect */}
+      {/* Glass morphism overlay */}
       <div 
         className="absolute inset-0 bg-white/5 backdrop-blur-3xl rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
         aria-hidden="true"
