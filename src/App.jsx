@@ -357,7 +357,7 @@ const NavbarComponent = ({ page }) => {
     if (isSmallMobile) return 'w-full max-w-sm';
     if (isMobile) return 'w-full max-w-md';
     if (isTablet) return 'w-72';
-    return 'w-80';
+    return 'w-300';
   };
 
   const getNavbarHeight = () => {
