@@ -5,28 +5,19 @@ import "react-vertical-timeline-component/style.min.css";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { FaCheck, FaChevronDown, FaTrophy, FaAward, FaStar } from "react-icons/fa";
-import { Helmet } from "react-helmet"; // SEO/meta support
-import Background from "../components/Background.jsx";
+import Crystal from "../components/Crystal";
+
 
 /**
  * Lazy-loaded 3D components (kept identical to original features)
  * - Crystal 3D model
-
- */
 const Crystal = lazy(() => import("../assets/3d_model/Crystal.jsx"));
-const Star = lazy(() => import("../components/Stars"));
 
-// Instead of importing entire GSAP
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+
 
 /**
  * DATA: Achievements
- * NOTE: Do not edit the content here to preserve original information.
  */
 const achievements = [
   {
@@ -166,21 +157,19 @@ const achievements = [
 
 /**
  * Error Boundary for 3D models
- * - Prevents WebGL/Three.js failures from breaking the UI
- * - Displays the same trophy icon fallback as a non-intrusive indicator
  */
 class WebGLErrorBoundary extends React.Component {
   state = { hasError: false };
   static getDerivedStateFromError = () => ({ hasError: true });
   componentDidCatch(error) {
-    // Keep console for debugging without exposing to users
     console.error("WebGL error:", error);
   }
   render() {
     if (this.state.hasError) {
+      const IconComponent = this.props.fallbackIcon || FaTrophy;
       return (
         <div className="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-purple-600 to-blue-600 rounded-full text-white shadow-lg" aria-hidden>
-          <FaTrophy className="text-2xl" />
+          <IconComponent className="text-2xl" />
         </div>
       );
     }
@@ -189,26 +178,30 @@ class WebGLErrorBoundary extends React.Component {
 }
 
 /**
- * Optimized 3D Model Component
- * - Preserves feature parity; adds a11y improvements and reduced-motion support
+ * Fixed 3D Model Component - now actually shows the Canvas
  */
 const AnimatedModel = memo(({ achievement }) => {
   const [isLowQuality, setIsLowQuality] = useState(false);
 
   useEffect(() => {
     const checkQuality = () => {
+      // Only disable 3D for users who explicitly request reduced motion
       const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      setIsLowQuality(
+      
+      // Much more relaxed quality check - only disable for very low-end scenarios
+      const isVeryLowEnd = (
         prefersReducedMotion ||
-        window.innerWidth < 768 ||
-        (navigator.deviceMemory && navigator.deviceMemory < 4) ||
-        (navigator.connection && (
-          navigator.connection.downlink < 2.5 ||
-          navigator.connection.effectiveType?.includes("2g")
-        ))
+        (window.innerWidth < 480) || // Only very small screens
+        (navigator.deviceMemory && navigator.deviceMemory < 2) || // Only very low memory
+        (navigator.connection && navigator.connection.effectiveType === "2g") // Only 2G connections
       );
+      
+      setIsLowQuality(isVeryLowEnd);
     };
+    
     checkQuality();
+    window.addEventListener("resize", checkQuality);
+    return () => window.removeEventListener("resize", checkQuality);
   }, []);
 
   if (isLowQuality) {
@@ -221,17 +214,17 @@ const AnimatedModel = memo(({ achievement }) => {
   }
 
   return (
-    <WebGLErrorBoundary>
+    <WebGLErrorBoundary fallbackIcon={achievement.icon}>
       <div className="relative w-24 h-24" aria-hidden>
         <Canvas
-          className="absolute top-[-145px] left-[-150px] z-10"
-          style={{ width: 400, height: 400 }}
+          className="absolute top-[-225px] left-[-250px] z-10"
+          style={{ width: 600, height: 600 }}
           gl={{
             antialias: false,
             powerPreference: "low-power",
             alpha: true
           }}
-          dpr={1}
+          dpr={Math.min(window.devicePixelRatio, 2)}
           camera={{ position: [0, 0, 5], fov: 45 }}
         >
           <ambientLight intensity={1.5} color="#a3c4f3" />
@@ -242,14 +235,19 @@ const AnimatedModel = memo(({ achievement }) => {
             intensity={15}
             color="#f1c0e8"
           />
-          <Suspense fallback={null}>
+          <Suspense fallback={
+            <mesh>
+              <octahedronGeometry args={[1.2, 0]} />
+              <meshBasicMaterial color="#6366f1" wireframe />
+            </mesh>
+          }>
             <Crystal />
           </Suspense>
           <OrbitControls
             enableZoom={false}
             enablePan={false}
             autoRotate
-            autoRotateSpeed={1}
+            autoRotateSpeed={2}
             enableDamping
             dampingFactor={0.1}
           />
@@ -272,6 +270,7 @@ const listVariants = {
     }
   }
 };
+
 const itemVariants = {
   hidden: { opacity: 0, x: -20, scale: 0.95 },
   visible: {
@@ -286,53 +285,28 @@ const itemVariants = {
 };
 
 /**
- * AchievementCard
- * - Semantic, keyboard-accessible expandable card
- * - Preserves all visuals & interactions
+ * AchievementCard with fixes for animation conflicts and accessibility
  */
 const AchievementCard = memo(({ achievement, isMobile, index }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef(null);
-  const isInView = useInView(cardRef, { once: false, margin: "-100px" });
+  const isInView = useInView(cardRef, { once: false, margin: "-50px" });
   const toggleCard = useCallback(() => setIsExpanded(prev => !prev), []);
   const panelId = `achievement-panel-${index}`;
-
-  // GSAP entrance animation (unchanged behavior)
-  useEffect(() => {
-    if (!cardRef.current || !isInView) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(cardRef.current,
-        {
-          opacity: 0,
-          y: 50,
-          scale: 0.95
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: "power2.out",
-          delay: index * 0.1
-        }
-      );
-    }, cardRef);
-    return () => ctx.revert();
-  }, [isInView, index]);
 
   return (
     <VerticalTimelineElement
       ref={cardRef}
       className="achievement-card group"
       contentStyle={{
-        background: "rgba(15,23,42,0.6)",
-        backdropFilter: "blur(1px)",
+        background: "rgba(15,23,42,0.4)",
+        backdropFilter: "blur(12px)",
         borderRadius: "1.5rem",
         padding: isMobile ? "1.5rem" : "2rem",
-        border: "1px solid rgba(148, 163, 184, 0.1)",
+        border: "1px solid rgba(148, 163, 184, 0.4)",
         boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
         position: "relative",
-        overflow: "hidden"
+        zIndex: 1,
       }}
       contentArrowStyle={{
         borderRight: `7px solid rgba(${achievement.color.includes('yellow') ? '251, 191, 36' : '148, 163, 184'}, 0.3)`
@@ -359,7 +333,7 @@ const AchievementCard = memo(({ achievement, isMobile, index }) => {
       >
         <div className="flex items-start justify-between mb-4">
           <h3 className={
-            `font-heading font-bold bg-gradient-to-r ${achievement.color} bg-clip-text text-transparent ${isMobile ? "text-xl" : "text-2xl lg:text-3xl"} tracking-tight leading-tight flex-1 pr-4`
+            `font-bold bg-gradient-to-r ${achievement.color} bg-clip-text text-transparent ${isMobile ? "text-xl" : "text-2xl lg:text-3xl"} tracking-tight leading-tight flex-1 pr-4`
           }>
             {achievement.title}
           </h3>
@@ -369,20 +343,20 @@ const AchievementCard = memo(({ achievement, isMobile, index }) => {
             className="flex-shrink-0"
             aria-hidden
           >
-            <FaChevronDown className={`${isMobile ? "text-lg" : "text-xl"} text-pink_lavender/70 group-hover:text-pink_lavender transition-colors duration-200`} />
+            <FaChevronDown className={`${isMobile ? "text-lg" : "text-xl"} text-slate-400 group-hover:text-slate-300 transition-colors duration-200`} />
           </motion.div>
         </div>
 
         <p className={
-          `font-description tracking-wide text-champagne_pink/80 leading-relaxed ${isMobile ? "text-sm" : "text-base lg:text-lg"} group-hover:text-champagne_pink transition-colors duration-300`
+          `tracking-wide text-slate-300 leading-relaxed ${isMobile ? "text-sm" : "text-base lg:text-lg"} group-hover:text-white transition-colors duration-300`
         }>
           {achievement.description}
         </p>
       </motion.div>
 
-      {/* Expandable panel */}
+      {/* Expandable content */}
       <motion.div
-        layout
+        layout="position"
         initial={false}
         animate={{
           height: isExpanded ? "auto" : 0,
@@ -394,7 +368,7 @@ const AchievementCard = memo(({ achievement, isMobile, index }) => {
           ease: "easeInOut",
           opacity: { duration: 0.3 }
         }}
-        className="overflow-hidden relative z-10"
+        className="relative z-10 overflow-hidden"
         id={panelId}
         role="region"
         aria-label={`${achievement.title} details`}
@@ -409,7 +383,7 @@ const AchievementCard = memo(({ achievement, isMobile, index }) => {
             <motion.li
               key={pointIndex}
               variants={itemVariants}
-              className={`flex items-start space-x-3 font-description text-champagne_pink/90 ${isMobile ? "text-xs" : "text-sm lg:text-base"} leading-relaxed`}
+              className={`flex items-start space-x-3 text-slate-200 ${isMobile ? "text-xs" : "text-sm lg:text-base"} leading-relaxed`}
             >
               <div className={`flex items-center justify-center w-5 h-5 mt-0.5 text-white rounded-full bg-gradient-to-r ${achievement.color} shadow-md flex-shrink-0`} aria-hidden>
                 <FaCheck className="text-xs" />
@@ -428,41 +402,39 @@ const AchievementCard = memo(({ achievement, isMobile, index }) => {
 );
 
 /**
- * Optimized Stars Component with performance controls
- * - Disables on low-end devices automatically
- */
-const OptimizedStars = memo(({ cursorPosition }) => {
-  const [shouldRender, setShouldRender] = useState(true);
-
-  useEffect(() => {
-    const isLowEnd = window.innerWidth < 768 ||
-      (navigator.deviceMemory && navigator.deviceMemory < 4);
-    setShouldRender(!isLowEnd);
-  }, []);
-
-  if (!shouldRender) return null;
-
-  return (
-    <Suspense fallback={null}>
-      <Star cursorPosition={cursorPosition} />
-    </Suspense>
-  );
-});
-
-/**
- * Achievements Section (default export)
- * - SEO via Helmet (title/description/structured data)
- * - Semantic landmarks for navigation and accessibility
- * - Responsive and interactive across all devices
+ * Achievements Section with all bug fixes applied
  */
 const Achievements = () => {
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
-  const timelineRef = useRef(null);
   const resizeTimeout = useRef();
+
+  // Ensure viewport meta tag is properly set
+  useEffect(() => {
+    const viewportMeta = document.querySelector('meta[name="viewport"]');
+    if (!viewportMeta) {
+      const meta = document.createElement('meta');
+      meta.name = 'viewport';
+      meta.content = 'width=device-width, initial-scale=1.0';
+      document.head.appendChild(meta);
+    } else if (viewportMeta.content.includes('user-scalable=no')) {
+      viewportMeta.content = 'width=device-width, initial-scale=1.0';
+    }
+  }, []);
+
+  // Ensure body overflow is not hidden
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    
+    return () => {
+      if (originalOverflow) {
+        document.body.style.overflow = originalOverflow;
+      }
+    };
+  }, []);
 
   // Optimized resize handler
   useEffect(() => {
@@ -480,88 +452,25 @@ const Achievements = () => {
     };
   }, []);
 
-  // Optimized mouse tracking with rAF throttling
+  // Simple title animation only (no conflicting animations)
   useEffect(() => {
-    let rafId;
-    const handleMouseMove = (e) => {
-      if (rafId) return;
-      rafId = requestAnimationFrame(() => {
-        setCursorPosition({ x: e.clientX, y: e.clientY });
-        rafId = null;
-      });
-    };
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
+    if (!titleRef.current) return;
+    
+    // Simple fade-in animation for title
+    const titleElements = titleRef.current.children;
+    Array.from(titleElements).forEach((element, index) => {
+      element.style.opacity = '0';
+      element.style.transform = 'translateY(50px)';
+      
+      setTimeout(() => {
+        element.style.transition = 'opacity 1s ease-out, transform 1s ease-out';
+        element.style.opacity = '1';
+        element.style.transform = 'translateY(0)';
+      }, index * 200);
+    });
   }, []);
 
-  // Enhanced scroll animations (unchanged visuals)
-  useEffect(() => {
-    if (!isLoaded) return;
-    const ctx = gsap.context(() => {
-      // Title animation
-      if (titleRef.current) {
-        gsap.fromTo(titleRef.current.children,
-          { opacity: 0, y: 50, scale: 0.9 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 1,
-            ease: "power3.out",
-            stagger: 0.2,
-            scrollTrigger: {
-              trigger: titleRef.current,
-              start: "top 85%",
-              toggleActions: "play none none reverse"
-            }
-          }
-        );
-      }
-      // Timeline reveal animation
-      if (timelineRef.current) {
-        gsap.fromTo(timelineRef.current,
-          { opacity: 0, y: 100 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1.2,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: timelineRef.current,
-              start: "top 90%",
-              toggleActions: "play none none reverse"
-            }
-          }
-        );
-      }
-    }, sectionRef);
-    return () => ctx.revert();
-  }, [isLoaded]);
-
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
-
-  // Loading skeleton (unchanged content)
-  if (!isLoaded) {
-    return (
-      <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-deep_indigo via-purple-900 to-pink_lavender" aria-busy="true" aria-live="polite">
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          <div className="animate-spin w-12 h-12 border-4 border-jordy_blue border-t-transparent rounded-full mx-auto mb-4" />
-          <p className="text-champagne_pink text-lg font-description">Loading achievements...</p>
-        </motion.div>
-      </section>
-    );
-  }
-
-  // JSON-LD structured data: ItemList of Achievements
+  // JSON-LD structured data
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -581,34 +490,17 @@ const Achievements = () => {
     <section
       ref={sectionRef}
       id="achievements"
-      className="relative min-h-screen bg-gradient-to-b from-deep_indigo via-purple-900 to-pink_lavender overflow-hidden"
+      className="relative min-h-[200vh] bg-transparent"
       role="region"
       aria-labelledby="achievements-heading"
     >
-      {/* SEO & Metadata for this section */}
-      <Helmet>
-        <title>Accomplishments | Bushra Khandoker</title>
-        <meta
-          name="description"
-          content="Explore Bushra Khandoker's accomplishments across academics, leadership, STEM Olympiads, research, arts, writing, and community engagement."
-        />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Accomplishments | Bushra Khandoker" />
-        <meta property="og:description" content="A curated, interactive timeline of awards and achievements." />
-        <meta property="og:type" content="website" />
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      </Helmet>
+      {/* SEO & Metadata */}
+      <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
 
-      {/* Skip link for keyboard users to jump directly to the timeline */}
-      <a href="#achievements-timeline" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-white focus:text-black focus:px-3 focus:py-2 focus:rounded-lg">
+      {/* Skip link for accessibility */}
+      <a href="#achievements-timeline" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-white focus:text-black focus:px-3 focus:py-2 focus:rounded-lg focus:z-50">
         Skip to achievements timeline
       </a>
-
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(120,119,198,0.1),transparent_50%)]" aria-hidden />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(236,72,153,0.1),transparent_50%)]" aria-hidden />
-      <Background />
-      <OptimizedStars cursorPosition={cursorPosition} />
 
       <motion.div
         className="relative z-10 container mx-auto px-4 py-16 lg:py-24"
@@ -621,7 +513,7 @@ const Achievements = () => {
           <motion.h2
             id="achievements-heading"
             className={
-              `font-heading font-extrabold bg-gradient-to-r from-jordy_blue via-aquamarine to-tea_rose bg-clip-text text-transparent ${isMobile ? "text-4xl mb-6" : "text-5xl lg:text-6xl mb-8"} tracking-tight leading-tight`
+              `font-extrabold bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent ${isMobile ? "text-4xl mb-6" : "text-5xl lg:text-6xl mb-8"} tracking-tight leading-tight`
             }
             style={{ backgroundSize: "200% 200%" }}
           >
@@ -629,7 +521,7 @@ const Achievements = () => {
           </motion.h2>
 
           <motion.div
-            className="w-24 h-1.5 bg-gradient-to-r from-tea_rose via-jordy_blue to-aquamarine rounded-full mx-auto mb-6 lg:mb-8"
+            className="w-24 h-1.5 bg-gradient-to-r from-teal-400 via-blue-400 to-cyan-400 rounded-full mx-auto mb-6 lg:mb-8"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
@@ -639,20 +531,26 @@ const Achievements = () => {
 
           <motion.p
             className={
-              `font-description text-champagne_pink/90 tracking-wide leading-relaxed max-w-3xl mx-auto ${isMobile ? "text-sm px-4" : "text-base lg:text-lg px-6"}`
+              `text-slate-300 tracking-wide leading-relaxed max-w-3xl mx-auto ${isMobile ? "text-sm px-4" : "text-base lg:text-lg px-6"}`
             }
           >
             My curiosity has driven my journey from school to now, fueling my exploration of purpose and interests while sparking continuous personal growth. Each step shapes my path forward.
           </motion.p>
         </div>
 
-        {/* Timeline */}
-        <div ref={timelineRef} className="relative">
+        {/* Timeline wrapper with Framer Motion - FIXED: Now immediately visible */}
+        <motion.div
+          className="relative min-h-screen"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
           <nav aria-label="Achievements timeline navigation">
             <VerticalTimeline
-              lineColor="rgba(163, 196, 243, 0.2)"
-              className="before:bg-gradient-to-b before:from-jordy_blue/30 before:to-pink_lavender/30"
+              lineColor="rgba(163, 196, 243, 0.6)"
+              className="before:bg-gradient-to-b before:from-blue-400/30 before:to-purple-400/30"
               id="achievements-timeline"
+              style={{ contain: 'none' }}
             >
               {achievements.map((achievement, index) => (
                 <AchievementCard
@@ -664,11 +562,69 @@ const Achievements = () => {
               ))}
             </VerticalTimeline>
           </nav>
-        </div>
+        </motion.div>
 
         {/* Bottom gradient overlay */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-pink_lavender to-transparent pointer-events-none" aria-hidden />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-900 to-transparent pointer-events-none" aria-hidden />
       </motion.div>
+
+      {/* Global styles with bug fixes */}
+      <style jsx global>{`
+        /* Enable scrollbars (fix for scrolling issues) */
+        html, body {
+          overflow-x: hidden;
+          overflow-y: auto;
+        }
+        
+        /* Ensure timeline line is visible */
+        .vertical-timeline::before {
+          background: linear-gradient(to bottom, rgba(163, 196, 243, 0.1), rgba(139, 92, 246, 0.1)) !important;
+          width: 4px !important;
+        }
+        
+        /* Fix Safari backdrop-filter issues */
+        .achievement-card .vertical-timeline-element-content {
+          position: relative;
+          z-index: 1;
+          -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
+        }
+        
+        /* Override react-vertical-timeline CSS contain property */
+        .vertical-timeline {
+          contain: none !important;
+        }
+        
+        /* Ensure timeline elements are properly positioned */
+        .vertical-timeline-element {
+          position: relative;
+        }
+        
+        /* Fix for mobile scrolling issues */
+        @media (max-width: 768px) {
+          body {
+            -webkit-overflow-scrolling: touch;
+          }
+        }
+        
+        /* Remove any conflicting styles that might hide content */
+        .vertical-timeline-element-content {
+          visibility: visible !important;
+          opacity: 1 !important;
+        }
+        
+        /* Ensure 3D Canvas is properly rendered */
+        canvas {
+          display: block !important;
+        }
+        
+        /* Fix timeline icon positioning */
+        .vertical-timeline-element-icon {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+      `}</style>
     </section>
   );
 };

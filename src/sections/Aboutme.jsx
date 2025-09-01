@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import Background from "../components/Background";
 
 /**
  * About Section Component
@@ -96,6 +95,7 @@ const About = () => {
     section: {
       padding: isMobile ? "1rem" : "2rem",
       minHeight: "100vh",
+      background: "transparent", // Transparent background
     },
     container: isMobile
       ? "w-full max-w-lg mx-auto p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-2xl backdrop-blur-xl bg-deep_indigo/40"
@@ -117,7 +117,7 @@ const About = () => {
       id="about"
       aria-labelledby="about-heading"
       role="region"
-      className="relative flex flex-col items-center justify-center bg-gradient-to-b from-deep_indigo/80 via-dark_teal/50 to-transparent overflow-hidden"
+      className="relative flex flex-col items-center justify-center overflow-hidden"
       style={{
         ...styles.section,
         opacity: isVisible ? 1 : 0,
@@ -126,9 +126,6 @@ const About = () => {
           "opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
       }}
     >
-      {/* Decorative animated background */}
-      <Background />
-
       {/* Content container */}
       <article className="relative z-10 w-full max-w-6xl">
         <div

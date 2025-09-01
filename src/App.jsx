@@ -276,6 +276,16 @@ const MyStoryPage = () => (
       <meta name="keywords" content="About, Achievements, Skills, Gallery, Testimonials, Bushra" />
     </Helmet>
     <NavbarComponent page="myStory" />
+          <div className="absolute top-0 left-0 w-full h-full">
+        <ErrorBoundary>
+          <SectionWrapper fallback={<Loader1 />}>
+            <ParticleScene 
+              className="min-h-screen overflow-hidden -z-10"
+              style={{ pointerEvents: "none" }}
+               />
+          </SectionWrapper>
+        </ErrorBoundary>
+      </div>
     <main className="min-h-screen overflow-hidden">
       <SectionWrapper><AboutMe id="about" /></SectionWrapper>
       <SectionWrapper><Achievements id="achievements" /></SectionWrapper>
