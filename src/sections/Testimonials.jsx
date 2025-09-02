@@ -204,7 +204,7 @@ const TestimonialCard = memo(({ testimonial, index }) => {
   return (
     <motion.article
       ref={cardRef}
-      className={`group relative overflow-hidden rounded-3xl border-2 ${theme.border} bg-gradient-to-br ${theme.bgGradient} backdrop-blur-xl transition-all duration-700 hover:scale-105 ${theme.shadow} hover:shadow-3xl`}
+      className={`group relative overflow-hidden rounded-3xl border-2 ${theme.border} bg-gradient-to-br ${theme.bgGradient} backdrop-blur-xl transition-all duration-700 hover:scale-105 ${theme.shadow} hover:shadow-3xl opacity-5`}
       initial={{ opacity: 0, y: 100, rotateX: -15 }}
       animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
       transition={{ 
@@ -338,7 +338,7 @@ const TestimonialCard = memo(({ testimonial, index }) => {
             {testimonial.name}
           </h4>
           
-          {/* Professional designation */}
+          {/* designation */}
           <p 
             className="text-champagne_pink text-sm font-description leading-snug opacity-90"
             itemProp="jobTitle"
