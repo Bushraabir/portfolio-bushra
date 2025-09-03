@@ -126,8 +126,27 @@ gsap.registerPlugin(ScrollTrigger);
  * 
  */
 const Website = () => {
-  // ===== STATE MANA
-  //   const stemRef = useRef(null);
+  // ===== STATE MANAGEMENT =====
+  
+  /** @type {[string, Function]} - Active navigation tab state */
+  const [activeTab, setActiveTab] = useState("websites");
+  
+  /** @type {[string|null, Function]} - Hovered tab state for UI feedback */
+  const [hoveredTab, setHoveredTab] = useState(null);
+  
+  /** @type {[Object|null, Function]} - Selected project for modal display */
+  const [selectedProject, setSelectedProject] = useState(null);
+  
+  /** @type {[boolean, Function]} - Desktop/mobile responsive state */
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // ===== REF MANAGEMENT =====
+  
+  /** @type {React.RefObject<HTMLElement>} - Main hero section container */
+  const initialMessageRef = useRef(null);
+  
+  /** @type {React.RefObject<HTMLHeadingElement>} - "STEM" text element */
+  const stemRef = useRef(null);
   
   /** @type {React.RefObject<HTMLHeadingElement>} - "PROJECTS" text element */
   const collabRef = useRef(null);
@@ -152,20 +171,24 @@ const Website = () => {
   /**
    * Effect to handle window resize events and update desktop state
    * Optimizes animations based on screen size for better performance
+   * Initializes on component mount and updates on window resize
    */
   useEffect(() => {
     /**
      * Handles window resize events to update responsive state
+     * Uses 768px as breakpoint to distinguish desktop from mobile
      */
     const handleResize = () => {
       setIsDesktop(window.innerWidth > 768);
     };
 
-    // Add event listener and initialize
-    window.addEventListener("resize", handleResize);
+    // Initialize desktop state on component mount
     handleResize();
+    
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
 
-    // Cleanup event listener
+    // Cleanup event listener on component unmount
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -175,11 +198,13 @@ const Website = () => {
    * Effect to initialize GSAP ScrollTrigger animations
    * Creates different animation sets for desktop and mobile devices
    * Includes proper cleanup to prevent memory leaks
+   * Dependencies: [isDesktop] - Re-runs when device type changes
    */
   useEffect(() => {
     /**
      * Cleanup function to remove all GSAP animations and ScrollTriggers
      * Prevents memory leaks when component unmounts or re-renders
+     * Kills all ScrollTrigger instances and GSAP tweens for referenced elements
      */
     const cleanup = () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -199,6 +224,7 @@ const Website = () => {
       /**
        * Main hero section animation timeline for desktop
        * Creates dramatic zoom and scale effects with pinning
+       * Uses scrub for smooth scroll-based animation progression
        */
       const heroTimeline = gsap.timeline({
         scrollTrigger: {
@@ -277,6 +303,7 @@ const Website = () => {
       /**
        * Mobile-optimized hero animation timeline
        * Reduced scale and movement for better mobile performance
+       * Lighter animations to preserve battery and performance
        */
       const mobileHeroTimeline = gsap.timeline({
         scrollTrigger: {
@@ -359,11 +386,14 @@ const Website = () => {
   /**
    * Effect to manage body scroll when modal is open
    * Prevents background scrolling when modal is active
+   * Restores normal scrolling when modal is closed
    */
   useEffect(() => {
     if (selectedProject) {
+      // Disable body scroll when modal is open
       document.body.style.overflow = "hidden";
     } else {
+      // Re-enable body scroll when modal is closed
       document.body.style.overflow = "auto";
     }
 
@@ -377,6 +407,7 @@ const Website = () => {
   
   /**
    * Configuration object for Lottie animation
+   * Optimized for performance and visual quality
    * @type {Object}
    */
   const lottieOptions = {
@@ -393,6 +424,7 @@ const Website = () => {
   /**
    * Educational courses data array
    * Contains information about STEM courses offered
+   * Each course includes detailed descriptions, tags, and images
    * @type {Array<Object>}
    */
   const courses = [
@@ -462,6 +494,7 @@ const Website = () => {
   /**
    * Websites portfolio data array
    * Contains information about developed web applications
+   * Each website includes comprehensive technical details and live links
    * @type {Array<Object>}
    */
   const websites = [
@@ -578,6 +611,7 @@ const Website = () => {
   /**
    * STEM projects data array
    * Contains information about hands-on engineering and science projects
+   * Each project includes comprehensive descriptions, technical challenges, and learning objectives
    * @type {Array<Object>}
    */
   const projects = [
@@ -677,12 +711,14 @@ const Website = () => {
   
   /**
    * Get active data based on selected tab
+   * Returns the appropriate dataset for rendering based on user selection
    * @type {Array<Object>}
    */
   const activeData = activeTab === "websites" ? websites : activeTab === "projects" ? projects : courses;
   
   /**
-   * Group data into rows of 3 for grid layout
+   * Group data into rows of 3 for responsive grid layout
+   * Creates a 2D array where each sub-array contains up to 3 items
    * @type {Array<Array<Object>>}
    */
   const groupedData = activeData.reduce((acc, cur, i) => {
@@ -695,6 +731,7 @@ const Website = () => {
   /**
    * Framer Motion variants for tab animations
    * Defines different states for smooth tab transitions
+   * Includes hover effects and active state styling
    * @type {Object}
    */
   const tabVariants = {
@@ -723,6 +760,7 @@ const Website = () => {
   /**
    * Memoized Card Component for performance optimization
    * Prevents unnecessary re-renders when parent state changes
+   * Optimizes rendering performance for large datasets
    * 
    * @param {Object} props - Component props
    * @param {Object} props.data - Project/website/course data object
@@ -730,14 +768,15 @@ const Website = () => {
    * @returns {JSX.Element} Rendered card component
    */
   const Card = memo(({ data, onClick }) => {
-    // Extract common properties with fallbacks
+    // Extract common properties with fallbacks for data consistency
     const title = data.title || data.name;
     const { description, tags, images, source_code_link, type, website_link } = data;
     
     /**
      * Handle external link clicks with event propagation prevention
+     * Prevents modal opening when action buttons are clicked
      * @param {Event} e - Click event
-     * @param {string} url - URL to open
+     * @param {string} url - URL to open in new tab
      */
     const handleExternalClick = (e, url) => {
       e.stopPropagation();
@@ -894,7 +933,7 @@ const Website = () => {
     );
   });
 
-  // Set display name for debugging
+  // Set display name for debugging and React DevTools
   Card.displayName = 'ProjectCard';
 
   // ===== RENDER COMPONENT =====
@@ -1445,22 +1484,8 @@ const Website = () => {
  */
 Website.displayName = 'STEMPortfolioWebsite';
 
-/**
- * Default props for the component (if needed for future extensions)
- * @type {Object}
- */
-Website.defaultProps = {
-  // Future props can be added here for customization
-};
 
-/**
- * PropTypes for type checking (uncomment if using prop-types library)
- * Website.propTypes = {
- *   initialTab: PropTypes.oneOf(['websites', 'projects', 'courses']),
- *   showAnimations: PropTypes.bool,
- *   responsiveBreakpoint: PropTypes.number,
- * };
- */
+
+
 
 export default Website;
-
