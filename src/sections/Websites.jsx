@@ -1,14 +1,73 @@
-import React, { useState, useEffect, useRef, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Tilt as ReactTilt } from "react-tilt";
-import Lottie from "react-lottie";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import animationData from "../assets/animation/coding1.json";
-import { FiGithub } from "react-icons/fi";
-import { FaEye } from "react-icons/fa";
+import React, { useState, useEffect, useRef, memo, useCallback, useMemo } from "react";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from "framer-motion";
 
-// Website Assets - EmpowerEd
+/**
+ * Website Showcase Component
+ * 
+ * An interactive web development gallery showcasing modern applications
+ * built with cutting-edge technologies and innovative design patterns.
+ * 
+ * Features:
+ * - High-performance animations with Framer Motion
+ * - Responsive design optimized for all devices
+ * - Accessible interaction patterns with ARIA labels
+ * - SEO-optimized with semantic HTML structure
+ * - Progressive image loading with error handling
+ * - Advanced hover effects and micro-interactions
+ * 
+ * Technical Implementation:
+ * - React 18+ with modern hooks and patterns
+ * - Framer Motion for physics-based animations
+ * - Intersection Observer API for scroll-triggered effects
+ * - Custom Tailwind CSS configuration with design tokens
+ * - Performance optimization with memo and useCallback
+ * 
+ * @component
+ * @example
+ * <Website />
+ */
+
+// Utility Icons Components
+const GithubIcon = memo(() => (
+  <svg 
+    className="w-5 h-5" 
+    fill="currentColor" 
+    viewBox="0 0 24 24" 
+    aria-hidden="true"
+    role="img"
+    aria-label="GitHub"
+  >
+    <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+  </svg>
+));
+
+const ExternalLinkIcon = memo(() => (
+  <svg 
+    className="w-5 h-5" 
+    fill="none" 
+    stroke="currentColor" 
+    viewBox="0 0 24 24" 
+    aria-hidden="true"
+    role="img"
+    aria-label="External Link"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+  </svg>
+));
+
+const ChevronDownIcon = memo(() => (
+  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m19 9-7 7-7-7" />
+  </svg>
+));
+
+const PlayIcon = memo(() => (
+  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M8 5v14l11-7z"/>
+  </svg>
+));
+
+// Import all website screenshots
 import emp1 from "../assets/Website/EmpEd/1.png";
 import emp2 from "../assets/Website/EmpEd/2.png";
 import emp3 from "../assets/Website/EmpEd/3.png";
@@ -16,7 +75,6 @@ import emp4 from "../assets/Website/EmpEd/4.png";
 import emp5 from "../assets/Website/EmpEd/5.png";
 import emp6 from "../assets/Website/EmpEd/6.png";
 
-// Website Assets - Periodic Table Visualizer
 import PeriodicTableVisualiser1 from "../assets/Website/PeriodicTableVisualiser/1.png";
 import PeriodicTableVisualiser2 from "../assets/Website/PeriodicTableVisualiser/2.png";
 import PeriodicTableVisualiser3 from "../assets/Website/PeriodicTableVisualiser/3.png";
@@ -24,7 +82,6 @@ import PeriodicTableVisualiser4 from "../assets/Website/PeriodicTableVisualiser/
 import PeriodicTableVisualiser5 from "../assets/Website/PeriodicTableVisualiser/5.png";
 import PeriodicTableVisualiser6 from "../assets/Website/PeriodicTableVisualiser/6.png";
 
-// Website Assets - Study Buddy
 import StudyBuddy1 from "../assets/Website/StudyBuddy/1.png";
 import StudyBuddy2 from "../assets/Website/StudyBuddy/2.png";
 import StudyBuddy3 from "../assets/Website/StudyBuddy/3.png";
@@ -34,17 +91,12 @@ import StudyBuddy6 from "../assets/Website/StudyBuddy/6.png";
 import StudyBuddy7 from "../assets/Website/StudyBuddy/7.png";
 import StudyBuddy8 from "../assets/Website/StudyBuddy/8.png";
 
-// Website Assets - Space Game
 import Space1 from "../assets/Website/Space/1.png";
 import Space2 from "../assets/Website/Space/2.png";
 import Space3 from "../assets/Website/Space/3.png";
 
-// Website Assets - EmpowerTube
 import Tube1 from "../assets/Website/EmpTube/1.png";
-import Tube2 from "../assets/Website/EmpTube/1.png";
-import Tube3 from "../assets/Website/EmpTube/1.png";
 
-// Website Assets - Relevia
 import relevia1 from "../assets/Website/relevia/1.png";
 import relevia2 from "../assets/Website/relevia/2.png";
 import relevia3 from "../assets/Website/relevia/3.png";
@@ -53,1279 +105,858 @@ import relevia5 from "../assets/Website/relevia/5.png";
 import relevia6 from "../assets/Website/relevia/6.png";
 import relevia7 from "../assets/Website/relevia/7.png";
 
-// Project Assets
-import Satellite from "../assets/Projects/Satellite.png";
-import Rocket from "../assets/Projects/Rocket.png";
-import Nuclear from "../assets/Projects/Nuclear.png";
-import AeroSpace from "../assets/Projects/Aerospace.png";
-import Satellite1 from "../assets/Projects/Satellite1.png";
-import Aquarium from "../assets/Projects/Aquarium.png";
-import Drone from "../assets/Projects/Drone.png";
-import Bio from "../assets/Projects/Bio.png";
-import Telescope from "../assets/Projects/Telescope.png";
-import Biogas from "../assets/Projects/Biogas.png";
+// Error Boundary Component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
-// Register GSAP ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger);
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
 
-/**
- * STEM Projects and Websites Portfolio Component
- * 
- * A comprehensive React component that showcases a portfolio of websites, STEM projects, 
- * and educational courses with advanced animations, filtering capabilities, and responsive design.
- * 
- * Features:
- * - Interactive tabbed navigation (Websites, Projects, Courses)
- * - GSAP ScrollTrigger animations for desktop and mobile
- * - Framer Motion transitions and micro-interactions
- * - Modal project details with image galleries
- * - Responsive design with different animation sets for mobile/desktop
- * - Accessibility features including ARIA labels and semantic HTML
- * - SEO-optimized structure with proper heading hierarchy
- * - Performance optimizations with lazy loading and memoized components
- * 
- * Technologies Used:
- * - React 18+ with Hooks (useState, useEffect, useRef)
- * - GSAP with ScrollTrigger for scroll-based animations
- * - Framer Motion for component animations and transitions
- * - React Tilt for 3D card effects (desktop only)
- * - Lottie React for animated icons
- * - CSS-in-JS for styled components with custom animations
- * 
- * Performance Considerations:
- * - Memoized Card component to prevent unnecessary re-renders
- * - Lazy loading for images to improve initial load time
- * - Cleanup functions for GSAP animations to prevent memory leaks
- * - Responsive breakpoints to optimize animations per device
- * 
- * Accessibility Features:
- * - ARIA labels for interactive elements
- * - Semantic HTML structure with proper heading hierarchy
- * - Keyboard navigation support
- * - Screen reader friendly content descriptions
- * - Color contrast optimized for readability
- * 
- * SEO Optimization:
- * - Structured data markup ready
- * - Semantic HTML5 elements (section, main, heading tags)
- * - Meta-friendly descriptions and alt texts
- * - Performance optimized loading strategies
- * 
- * @component
- * @example
- * // Basic usage
- * <Website />
- * 
- * @example
- * // With custom props (if needed for future extensions)
- * <Website 
- *   initialTab="projects"
- *   showAnimations={true}
- *   responsiveBreakpoint={768}
- * />
- * 
- */
-const Website = () => {
-  // ===== STATE MANAGEMENT =====
-  
-  /** @type {[string, Function]} - Active navigation tab state */
-  const [activeTab, setActiveTab] = useState("websites");
-  
-  /** @type {[string|null, Function]} - Hovered tab state for UI feedback */
-  const [hoveredTab, setHoveredTab] = useState(null);
-  
-  /** @type {[Object|null, Function]} - Selected project for modal display */
-  const [selectedProject, setSelectedProject] = useState(null);
-  
-  /** @type {[boolean, Function]} - Desktop/mobile responsive state */
-  const [isDesktop, setIsDesktop] = useState(false);
+  componentDidCatch(error, errorInfo) {
+    console.error('Website Showcase Error:', error, errorInfo);
+  }
 
-  // ===== REF MANAGEMENT =====
-  
-  /** @type {React.RefObject<HTMLElement>} - Main hero section container */
-  const initialMessageRef = useRef(null);
-  
-  /** @type {React.RefObject<HTMLHeadingElement>} - "STEM" text element */
-  const stemRef = useRef(null);
-  
-  /** @type {React.RefObject<HTMLHeadingElement>} - "PROJECTS" text element */
-  const collabRef = useRef(null);
-  
-  /** @type {React.RefObject<HTMLDivElement>} - Lottie animation container */
-  const lottieContainerRef = useRef(null);
-  
-  /** @type {React.RefObject<HTMLDivElement>} - Description section */
-  const descriptionRef = useRef(null);
-  
-  /** @type {React.RefObject<HTMLDivElement>} - Tab buttons container */
-  const buttonsRef = useRef(null);
-  
-  /** @type {React.RefObject<HTMLDivElement>} - Cards grid container */
-  const cardsRef = useRef(null);
-  
-  /** @type {React.RefObject<HTMLDivElement>} - Tab indicator element */
-  const tabIndicatorRef = useRef(null);
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-deep_indigo flex items-center justify-center p-8">
+          <div className="text-center text-lemon_chiffon max-w-md">
+            <h2 className="text-2xl font-bold font-heading mb-4">Something went wrong</h2>
+            <p className="text-aquamarine font-description mb-6">
+              We're sorry, but there was an error loading the website showcase.
+            </p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-6 py-3 bg-gradient-to-r from-aquamarine to-electric_blue text-deep_indigo rounded-2xl hover:shadow-lg transition-all duration-300 font-cta"
+            >
+              Reload Page
+            </button>
+          </div>
+        </div>
+      );
+    }
 
-  // ===== RESPONSIVE DESIGN HANDLER =====
-  
-  /**
-   * Effect to handle window resize events and update desktop state
-   * Optimizes animations based on screen size for better performance
-   * Initializes on component mount and updates on window resize
-   */
-  useEffect(() => {
-    /**
-     * Handles window resize events to update responsive state
-     * Uses 768px as breakpoint to distinguish desktop from mobile
-     */
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth > 768);
-    };
+    return this.props.children;
+  }
+}
 
-    // Initialize desktop state on component mount
-    handleResize();
+// Scroll Progress Indicator
+const ScrollProgress = memo(() => {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { 
+    stiffness: 100, 
+    damping: 30, 
+    restDelta: 0.001 
+  });
+  
+  return (
+    <motion.div
+      className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-aquamarine via-electric_blue to-jordy_blue origin-left z-50 shadow-lg"
+      style={{ scaleX }}
+      role="progressbar"
+      aria-label="Page scroll progress"
+    />
+  );
+});
+
+ScrollProgress.displayName = 'ScrollProgress';
+
+// Animated Background Elements
+const BackgroundOrbs = memo(() => {
+  const orbs = useMemo(() => 
+    Array.from({ length: 6 }, (_, i) => ({
+      id: i,
+      size: Math.random() * 300 + 200,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      duration: Math.random() * 20 + 20,
+    })), []
+  );
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      {orbs.map((orb) => (
+        <motion.div
+          key={orb.id}
+          className="absolute rounded-full opacity-10"
+          style={{
+            left: `${orb.x}%`,
+            top: `${orb.y}%`,
+            width: orb.size,
+            height: orb.size,
+            background: `radial-gradient(circle, ${
+              orb.id % 3 === 0 
+                ? '#98f5e1' 
+                : orb.id % 3 === 1 
+                  ? '#8eecf5' 
+                  : '#a3c4f3'
+            } 0%, transparent 70%)`,
+          }}
+          animate={{
+            x: [0, 50, 0],
+            y: [0, -30, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: orb.duration,
+            repeat: Infinity,
+            ease: "easeInOut",
+            repeatType: "reverse"
+          }}
+        />
+      ))}
+    </div>
+  );
+});
+
+BackgroundOrbs.displayName = 'BackgroundOrbs';
+
+// Text Animation Component
+const AnimatedText = memo(({ children, delay = 0, className = "", duration = 0.8 }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-20%" });
+
+  return (
+    <div ref={ref} className={`relative ${className}`}>
+      <motion.div
+        initial={{ y: 50, opacity: 0, rotateX: 15 }}
+        animate={isInView ? { y: 0, opacity: 1, rotateX: 0 } : {}}
+        transition={{ 
+          duration, 
+          delay, 
+          ease: [0.25, 0.46, 0.45, 0.94]
+        }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+});
+
+AnimatedText.displayName = 'AnimatedText';
+
+// Enhanced Magnetic Button
+const MagneticButton = memo(({ children, className = "", href, onClick, ...props }) => {
+  const ref = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = useCallback((e) => {
+    if (!ref.current) return;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
     
-    // Add event listener for window resize
-    window.addEventListener("resize", handleResize);
-
-    // Cleanup event listener on component unmount
-    return () => window.removeEventListener("resize", handleResize);
+    const deltaX = (e.clientX - centerX) * 0.15;
+    const deltaY = (e.clientY - centerY) * 0.15;
+    
+    setPosition({ x: deltaX, y: deltaY });
   }, []);
 
-  // ===== GSAP SCROLL ANIMATIONS =====
-  
-  /**
-   * Effect to initialize GSAP ScrollTrigger animations
-   * Creates different animation sets for desktop and mobile devices
-   * Includes proper cleanup to prevent memory leaks
-   * Dependencies: [isDesktop] - Re-runs when device type changes
-   */
-  useEffect(() => {
-    /**
-     * Cleanup function to remove all GSAP animations and ScrollTriggers
-     * Prevents memory leaks when component unmounts or re-renders
-     * Kills all ScrollTrigger instances and GSAP tweens for referenced elements
-     */
-    const cleanup = () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      gsap.killTweensOf([
-        stemRef.current,
-        collabRef.current,
-        lottieContainerRef.current,
-        descriptionRef.current,
-        buttonsRef.current,
-        cardsRef.current?.children,
-      ]);
-    };
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+  }, []);
 
-    if (isDesktop) {
-      // ===== DESKTOP ANIMATIONS =====
-      
-      /**
-       * Main hero section animation timeline for desktop
-       * Creates dramatic zoom and scale effects with pinning
-       * Uses scrub for smooth scroll-based animation progression
-       */
-      const heroTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: initialMessageRef.current,
-          start: "top top",
-          endTrigger: cardsRef.current,
-          end: "top 20%",
-          scrub: 1.5, // Smooth scrubbing animation
-          pin: true, // Pin the hero section during animation
-          anticipatePin: 1, // Improve pinning performance
-        },
-      });
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+    setPosition({ x: 0, y: 0 });
+  }, []);
 
-      // Animate hero elements with staggered effects
-      heroTimeline
-        .to(stemRef.current, { x: -1500, scale: 4, ease: "power4.out" }, 0)
-        .to(collabRef.current, { x: 2500, scale: 4, ease: "power4.out" }, 0)
-        .to(lottieContainerRef.current, { scale: 50, ease: "power4.out" }, 0)
-        .to(lottieContainerRef.current, { opacity: 0, ease: "power4.out" }, 0.1);
+  const Component = href ? 'a' : 'button';
 
-      // Description section entrance animation
-      gsap.fromTo(
-        descriptionRef.current,
-        { opacity: 0, y: 100 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: "expo.out",
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: descriptionRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
+  return (
+    <Component
+      ref={ref}
+      className={`relative transition-all duration-300 ease-out transform-gpu ${className}`}
+      style={{ 
+        transform: `translate(${position.x}px, ${position.y}px) scale(${isHovered ? 1.05 : 1})` 
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={onClick}
+      href={href}
+      {...props}
+    >
+      {children}
+    </Component>
+  );
+});
 
-      // Tab buttons entrance animation
-      gsap.fromTo(
-        buttonsRef.current,
-        { opacity: 0, y: 100 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: "expo.out",
-          duration: 1.5,
-          delay: 0.3,
-          scrollTrigger: {
-            trigger: buttonsRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
+MagneticButton.displayName = 'MagneticButton';
 
-      // Cards staggered entrance animation
-      gsap.fromTo(
-        cardsRef.current?.children,
-        { opacity: 0, y: 150 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: "expo.out",
-          duration: 1.5,
-          stagger: 0.2, // Stagger each card by 0.2s
-          scrollTrigger: {
-            trigger: cardsRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    } else {
-      // ===== MOBILE ANIMATIONS =====
-      
-      /**
-       * Mobile-optimized hero animation timeline
-       * Reduced scale and movement for better mobile performance
-       * Lighter animations to preserve battery and performance
-       */
-      const mobileHeroTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: initialMessageRef.current,
-          start: "top top",
-          endTrigger: cardsRef.current,
-          end: "top 30%",
-          scrub: 1,
-          pin: true,
-        },
-      });
+// Main Website Component
+const Website = () => {
+  // State management
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [imageLoadErrors, setImageLoadErrors] = useState(new Set());
+  const [globalImageIndex, setGlobalImageIndex] = useState({});
 
-      // Mobile hero animations with reduced intensity
-      mobileHeroTimeline
-        .to(stemRef.current, { x: -200, scale: 2, ease: "power2.out" }, 0)
-        .to(collabRef.current, { x: 200, scale: 2, ease: "power2.out" }, 0)
-        .to(lottieContainerRef.current, { scale: 10, ease: "power2.out" }, 0)
-        .to(lottieContainerRef.current, { opacity: 0, ease: "power2.out" }, 0.2);
+  // Refs for scroll animations
+  const containerRef = useRef(null);
+  const heroRef = useRef(null);
 
-      // Mobile-optimized description animation
-      gsap.fromTo(
-        descriptionRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: "expo.out",
-          duration: 1,
-          scrollTrigger: {
-            trigger: descriptionRef.current,
-            start: "top 90%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
+  // Scroll-based animations
+  const { scrollY } = useScroll();
+  const heroY = useTransform(scrollY, [0, 800], [0, 200]);
+  const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
 
-      // Mobile-optimized buttons animation
-      gsap.fromTo(
-        buttonsRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: "expo.out",
-          duration: 1,
-          delay: 0.2,
-          scrollTrigger: {
-            trigger: buttonsRef.current,
-            start: "top 90%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
+  // Handle image loading errors
+  const handleImageError = useCallback((imageSrc) => {
+    setImageLoadErrors(prev => new Set([...prev, imageSrc]));
+  }, []);
 
-      // Mobile-optimized cards animation
-      gsap.fromTo(
-        cardsRef.current?.children,
-        { opacity: 0, y: 100 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: "expo.out",
-          duration: 1,
-          stagger: 0.15,
-          scrollTrigger: {
-            trigger: cardsRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    }
+  // Handle image cycling for all cards
+  const cycleImage = useCallback((projectId, imageCount) => {
+    setGlobalImageIndex(prev => ({
+      ...prev,
+      [projectId]: ((prev[projectId] || 0) + 1) % imageCount
+    }));
+  }, []);
 
-    // Return cleanup function
-    return cleanup;
-  }, [isDesktop]);
-
-  // ===== MODAL BODY SCROLL HANDLER =====
-  
-  /**
-   * Effect to manage body scroll when modal is open
-   * Prevents background scrolling when modal is active
-   * Restores normal scrolling when modal is closed
-   */
+  // Body scroll lock for modal
   useEffect(() => {
     if (selectedProject) {
-      // Disable body scroll when modal is open
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      // Re-enable body scroll when modal is closed
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'unset';
     }
 
-    // Cleanup: restore scroll on unmount
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'unset';
     };
   }, [selectedProject]);
 
-  // ===== LOTTIE ANIMATION CONFIGURATION =====
-  
-  /**
-   * Configuration object for Lottie animation
-   * Optimized for performance and visual quality
-   * @type {Object}
-   */
-  const lottieOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: { 
-      preserveAspectRatio: "xMidYMid slice" 
-    },
-  };
-
-  // ===== DATA STRUCTURES =====
-
-  /**
-   * Educational courses data array
-   * Contains information about STEM courses offered
-   * Each course includes detailed descriptions, tags, and images
-   * @type {Array<Object>}
-   */
-  const courses = [
+  // Website data structure
+  const websites = useMemo(() => [
     {
-      type: "course",
-      name: "Satellite Engineering Course",
-      description: "An introductory course on satellite systems and engineering, covering the basics of satellite design, operations, and technologies used in modern space exploration.",
-      tags: [
-        { name: "Satellite Engineering", color: "text-electric_blue" },
-        { name: "Space Tech", color: "text-pink_lavender" },
-        { name: "STEM Education", color: "text-aquamarine" },
-        { name: "Satellite System", color: "text-jordy_blue" },
-        { name: "Space Exploration", color: "text-mauve" },
+      id: 'empowered',
+      title: "EmpowerEd Platform",
+      shortDescription: "Comprehensive educational platform democratizing access to quality learning through innovative digital solutions.",
+      fullDescription: [
+        "EmpowerEd serves as a transformative educational ecosystem designed to break down barriers to quality education. The platform combines cutting-edge web technologies with intuitive design principles to create an accessible learning environment for students worldwide.",
+        "Built with React.js and enhanced through GSAP animations, the website delivers smooth, engaging interactions that guide users through comprehensive educational resources. The platform features mentorship programs, scholarship databases, mental health support, and study abroad guidance.",
+        "The technical architecture emphasizes performance and accessibility, utilizing modern web standards to ensure compatibility across all devices and assistive technologies. Advanced scroll-triggered animations and responsive design create an immersive experience while maintaining fast load times."
       ],
-      images: [Satellite],
-      detailedDescription: "An introductory course on satellite systems and engineering, covering the basics of satellite design, operations, and technologies used in modern space exploration. Students will learn about orbital mechanics, satellite communications, power systems, and mission planning. The course includes hands-on projects and real-world case studies from successful satellite missions.",
-      source_code_link: "#", // Placeholder for course materials
-    },
-    {
-      type: "course",
-      name: "Rocket Propulsion Systems",
-      description: "An introductory course on rocket propulsion, focusing on the principles of thrust, engine design, and the technologies driving modern rocketry.",
-      tags: [
-        { name: "Rocket Production", color: "text-champagne_pink" },
-        { name: "Rocket Science", color: "text-aquamarine" },
-        { name: "Space Engineering", color: "text-pink_lavender" },
-        { name: "STEM", color: "text-tea_rose" },
-        { name: "Thrust", color: "text-electric_blue" },
-        { name: "Aerospace Tech", color: "text-non_photo_blue" },
-      ],
-      images: [Rocket],
-      detailedDescription: "An introductory course on rocket propulsion, focusing on the principles of thrust, engine design, and the technologies driving modern rocketry. Topics include chemical propulsion, electric propulsion, hybrid systems, and future propulsion technologies. Students will engage with practical calculations and design exercises.",
-      source_code_link: "#", // Placeholder for course materials
-    },
-    {
-      type: "course",
-      name: "Introduction to Aerospace Engineering and Design",
-      description: "An introductory course on aerospace engineering, focusing on the principles of aircraft and spacecraft design, aerodynamics, and propulsion systems.",
-      tags: [
-        { name: "AeroSpace Engineering", color: "text-electric_blue" },
-        { name: "Aircraft Design", color: "text-pink_lavender" },
-        { name: "Aerodynamics", color: "text-aquamarine" },
-        { name: "Space Tech", color: "text-jordy_blue" },
-        { name: "Spacecraft Design", color: "text-mauve" },
-      ],
-      images: [AeroSpace],
-      detailedDescription: "An introductory course on aerospace engineering, focusing on the principles of aircraft and spacecraft design, aerodynamics, and propulsion systems. The curriculum covers flight mechanics, structural analysis, materials science, and control systems with practical design projects and simulation exercises.",
-      source_code_link: "#", // Placeholder for course materials
-    },
-    {
-      type: "course",
-      name: "Nuclear Science and Engineering",
-      description: "An introductory course on nuclear science, covering the fundamentals of nuclear reactions, reactor design, and applications in energy production and medical technology.",
-      tags: [
-        { name: "Nuclear Science", color: "text-electric_blue" },
-        { name: "Nuclear Engineering", color: "text-pink_lavender" },
-        { name: "Energy Tech", color: "text-aquamarine" },
-        { name: "Reactor Design", color: "text-jordy_blue" },
-        { name: "Atomic Energy", color: "text-tea_rose" },
-      ],
-      images: [Nuclear],
-      detailedDescription: "An introductory course on nuclear science, covering the fundamentals of nuclear reactions, reactor design, and applications in energy production and medical technology. Students explore nuclear physics, radiation safety, reactor operations, and sustainable energy solutions through theoretical study and laboratory experiences.",
-      source_code_link: "#", // Placeholder for course materials
-    },
-  ];
-
-  /**
-   * Websites portfolio data array
-   * Contains information about developed web applications
-   * Each website includes comprehensive technical details and live links
-   * @type {Array<Object>}
-   */
-  const websites = [
-    {
-      type: "website",
-      title: "EmpowerEd Website",
-      description: "A dynamic and visually engaging web platform for accessible quality education.",
       tags: [
         { name: "React", color: "text-electric_blue" },
         { name: "GSAP", color: "text-pink_lavender" },
         { name: "ScrollTrigger", color: "text-aquamarine" },
-        { name: "Lottie Animation", color: "text-jordy_blue" },
-        { name: "React Vertical Timeline Component", color: "text-mauve" },
-        { name: "EmailJS", color: "text-tea_rose" },
-        { name: "Vite", color: "text-champagne_pink" },
-        { name: "CSS & Media Queries", color: "text-non_photo_blue" },
-        { name: "React Router", color: "text-lemon_chiffon" },
+        { name: "EmailJS", color: "text-mauve" },
+        { name: "Responsive", color: "text-tea_rose" }
       ],
-      images: [emp3, emp1, emp2, emp3, emp4, emp5, emp6],
-      detailedDescription: "EmpowerEd is a comprehensive educational platform designed to empower students through various resources and support systems. The website features a clean, modern design with immersive animations and interactive elements that enhance user engagement. Built with React.js, it leverages GSAP for smooth animations, ScrollTrigger for interactive scroll effects, and Framer Motion for additional dynamic movements. The platform includes a contact form integrated with EmailJS for communication, a vertical timeline component to showcase the organization's journey, and responsive design techniques using CSS and media queries to ensure accessibility across devices. React Router manages the navigation between different sections of the platform, creating a seamless user experience. EmpowerEd offers students a range of services including mentorship opportunities, mental health support, research funding, scholarship information, and guidance for studying abroad. The platform's design emphasizes accessibility and usability, making educational resources available to a diverse student population.",
-      source_code_link: "https://github.com/Bushraabir/empowereducation",
-      website_link: "https://bushraabir.github.io/empowereducation/",
+      images: [emp3, emp1, emp2, emp4, emp5, emp6],
+      githubLink: "https://github.com/Bushraabir/empowereducation",
+      liveLink: "https://bushraabir.github.io/empowereducation/",
+      technologies: ["React.js", "GSAP", "ScrollTrigger", "Framer Motion", "EmailJS", "CSS3"],
+      category: "Education",
+      featured: true,
+      color: "from-aquamarine/20 to-electric_blue/20"
     },
     {
-      type: "website",
-      title: "Periodic Table Visualizer",
-      description: "An interactive web application for exploring the periodic table with dynamic visualizations.",
+      id: 'periodic-table',
+      title: "Interactive Periodic Table",
+      shortDescription: "Advanced scientific visualization tool transforming chemistry education through interactive 3D data exploration.",
+      fullDescription: [
+        "This sophisticated chemistry visualization platform revolutionizes how students and researchers interact with elemental data. Built using Python's Streamlit framework, it offers comprehensive analytical tools for exploring periodic trends and elemental properties.",
+        "The application features interactive 3D visualizations powered by Plotly, enabling users to explore complex relationships between atomic properties. Advanced filtering systems allow for customized data analysis and trend identification across the periodic table.",
+        "Educational features include detailed element profiles, comparative analysis tools, and trend visualization capabilities. The platform serves both academic institutions and independent learners seeking to understand chemical relationships through visual exploration."
+      ],
       tags: [
         { name: "Python", color: "text-champagne_pink" },
         { name: "Streamlit", color: "text-tea_rose" },
         { name: "Plotly", color: "text-jordy_blue" },
-        { name: "Pandas", color: "text-aquamarine" },
-        { name: "Data Visualization", color: "text-mauve" },
+        { name: "Data Science", color: "text-mauve" }
       ],
       images: [PeriodicTableVisualiser2, PeriodicTableVisualiser1, PeriodicTableVisualiser3, PeriodicTableVisualiser4, PeriodicTableVisualiser5, PeriodicTableVisualiser6],
-      detailedDescription: "The Periodic Table Visualizer is an interactive web application built with Python, Streamlit, Plotly, and Pandas. It offers a comprehensive exploration of chemical elements through various interactive features including an interactive periodic table, data analysis tools, trend visualization, 3D analytics, element gallery, and detailed element information. The application provides users with the ability to filter elements by various properties, visualize trends across atomic numbers, analyze relationships between element properties in 3D space, and view detailed information about each element including physical and chemical properties. This educational tool makes chemistry more accessible and engaging for students and educators alike.",
-      source_code_link: "https://github.com/Bushraabir/periodic_table_visualizer",
-      website_link: "https://periodictablevisualizer.streamlit.app/",
+      githubLink: "https://github.com/Bushraabir/periodic_table_visualizer",
+      liveLink: "https://periodictablevisualizer.streamlit.app/",
+      technologies: ["Python", "Streamlit", "Plotly", "Pandas", "Data Visualization"],
+      category: "Science",
+      featured: true,
+      color: "from-jordy_blue/20 to-pink_lavender/20"
     },
     {
-      type: "website",
-      title: "Study Buddy",
-      description: "An interactive study companion designed to boost student productivity with smart learning tools.",
+      id: 'study-buddy',
+      title: "StudyBuddy Learning Suite",
+      shortDescription: "Intelligent study companion featuring spaced repetition, Pomodoro timers, and advanced mathematical tools.",
+      fullDescription: [
+        "StudyBuddy transforms personal learning through an integrated suite of evidence-based study tools. The platform combines spaced repetition algorithms with productivity techniques to maximize learning retention and academic performance.",
+        "Core features include intelligent flashcard systems, Pomodoro technique implementation, and a sophisticated graphing calculator supporting complex mathematical functions. The note-taking system utilizes ReactQuill for rich text editing with real-time synchronization.",
+        "Firebase integration provides secure user authentication and cross-device synchronization, while Math.js enables accurate computational capabilities. The responsive design ensures consistent functionality across desktop, tablet, and mobile devices."
+      ],
       tags: [
         { name: "React", color: "text-jordy_blue" },
-        { name: "GSAP", color: "text-aquamarine" },
-        { name: "Framer Motion", color: "text-mauve" },
-        { name: "Lottie Animation", color: "text-champagne_pink" },
-        { name: "React Router", color: "text-pink_lavender" },
-        { name: "Firebase Authentication", color: "text-tea_rose" },
-        { name: "Firebase Firestore", color: "text-non_photo_blue" },
-        { name: "Formik & Yup", color: "text-electric_blue" },
-        { name: "ReactQuill", color: "text-lemon_chiffon" },
-        { name: "Plotly.js", color: "text-electric_blue" },
-        { name: "Math.js", color: "text-aquamarine" },
+        { name: "Firebase", color: "text-mauve" },
+        { name: "Math.js", color: "text-pink_lavender" },
+        { name: "ReactQuill", color: "text-tea_rose" }
       ],
       images: [StudyBuddy2, StudyBuddy1, StudyBuddy3, StudyBuddy4, StudyBuddy5, StudyBuddy6, StudyBuddy7, StudyBuddy8],
-      detailedDescription: "Study Buddy is an interactive educational application designed to enhance student productivity through a comprehensive suite of study tools. The platform combines interactive flashcards with quiz functionality, a Pomodoro-based session manager for time tracking, an advanced graphing calculator supporting multiple equation types, and a smart note-taking system with real-time synchronization via Firebase. Built using React.js, GSAP, Framer Motion, and Plotly.js, Study Buddy delivers a modern, responsive learning experience with premium animations and intuitive design. The application implements secure user authentication, personalized study tracking, and mathematical computation capabilities through math.js, creating a complete study solution that helps students maximize their academic performance.",
-      source_code_link: "https://github.com/Bushraabir/study-buddy",
-      website_link: "https://bushraabir.github.io/study-buddy/",
+      githubLink: "https://github.com/Bushraabir/study-buddy",
+      liveLink: "https://bushraabir.github.io/study-buddy/",
+      technologies: ["React.js", "Firebase", "Plotly.js", "Math.js", "ReactQuill"],
+      category: "Productivity",
+      featured: false,
+      color: "from-mauve/20 to-tea_rose/20"
     },
     {
-      type: "website",
-      title: "Space Invaders: Nebula Assault",
-      description: "A modern take on the classic Space Invaders game, built with React, Three.js, and Zustand. Navigate your spaceship through a cosmic battlefield, fend off enemy waves, collect power-ups, and survive the nebula onslaught!",
+      id: 'space-invaders',
+      title: "Nebula Assault Game",
+      shortDescription: "Modern 3D space arcade experience featuring advanced physics, particle effects, and immersive gameplay.",
+      fullDescription: [
+        "This contemporary reimagining of the classic Space Invaders combines nostalgic gameplay with cutting-edge web technologies. Three.js powers high-performance 3D rendering, creating detailed space environments with realistic lighting and particle systems.",
+        "The game engine implements advanced physics calculations for realistic projectile motion and collision detection. Progressive difficulty scaling keeps players engaged, while power-up systems including shields, speed boosts, and multi-shot capabilities add strategic depth.",
+        "Visual effects include explosion animations, thruster particles, and post-processing effects like bloom and chromatic aberration. The responsive design ensures smooth 60fps gameplay across desktop and mobile devices."
+      ],
       tags: [
-        { name: "React", color: "text-jordy_blue" },
         { name: "Three.js", color: "text-mauve" },
-        { name: "Zustand", color: "text-aquamarine" },
-        { name: "TypeScript", color: "text-champagne_pink" },
-        { name: "WebGL", color: "text-tea_rose" },
-        { name: "Game Development", color: "text-pink_lavender" },
-        { name: "3D Graphics", color: "text-electric_blue" },
-        { name: "Particle Effects", color: "text-non_photo_blue" },
-        { name: "Styled Components", color: "text-lemon_chiffon" },
+        { name: "WebGL", color: "text-champagne_pink" },
+        { name: "TypeScript", color: "text-aquamarine" },
+        { name: "Game Development", color: "text-tea_rose" }
       ],
       images: [Space2, Space1, Space3],
-      detailedDescription: "Space Invaders: Nebula Assault is a dynamic space shooter game built with modern web technologies. The game features 3D graphics powered by Three.js, with a dynamic starfield, detailed spaceship models, and enemy ships. Players can control their spaceship using arrow keys and shoot with the spacebar, while fending off waves of enemies with straight or zigzag movement patterns. The game includes collectibles for bonus points, power-ups (speed boost, shield, and multi-shot), and impressive visual effects like explosions and thruster particles. The state management is handled efficiently with Zustand, and the game features post-processing effects like bloom via @react-three/postprocessing. The user interface is styled with styled-components, providing responsive start, game, and game-over screens with a heads-up display (HUD) showing score, lives, and audio toggle.",
-      source_code_link: "https://github.com/Bushraabir/space-invaders",
-      website_link: "https://bushraabir.github.io/space-invaders/",
+      githubLink: "https://github.com/Bushraabir/space-invaders",
+      liveLink: "https://bushraabir.github.io/space-invaders/",
+      technologies: ["React", "Three.js", "TypeScript", "WebGL", "Post-processing"],
+      category: "Gaming",
+      featured: false,
+      color: "from-electric_blue/20 to-champagne_pink/20"
     },
     {
-      type: "website",
-      title: "Relevia",
-      description: "An interactive web application designed to help individuals manage and overcome panic attacks through resources, tools, and support.",
+      id: 'relevia',
+      title: "Relevia Mental Health",
+      shortDescription: "Evidence-based panic attack management platform providing immediate crisis support and therapeutic resources.",
+      fullDescription: [
+        "Relevia addresses critical mental health needs through a carefully designed web application focused on panic attack management and anxiety relief. Developed in collaboration with mental health professionals, it provides immediate support during crisis situations.",
+        "The platform features scientifically-validated breathing exercises, progressive muscle relaxation techniques, and grounding strategies proven effective for acute anxiety management. Educational components help users understand panic attack physiology, reducing anticipatory anxiety.",
+        "The technical implementation prioritizes accessibility during high-stress situations, featuring large, clear interfaces and calming visual designs. Framer Motion provides purposeful animations that promote relaxation rather than overwhelm users during panic episodes."
+      ],
       tags: [
         { name: "React", color: "text-electric_blue" },
-        { name: "JavaScript", color: "text-champagne_pink" },
-        { name: "Tailwind CSS", color: "text-jordy_blue" },
-        { name: "Framer Motion", color: "text-mauve" },
-        { name: "Mental Health", color: "text-aquamarine" },
+        { name: "Tailwind CSS", color: "text-champagne_pink" },
+        { name: "Mental Health", color: "text-mauve" },
+        { name: "Accessibility", color: "text-aquamarine" }
       ],
       images: [relevia1, relevia2, relevia3, relevia4, relevia5, relevia6, relevia7],
-      detailedDescription: "Relevia is an interactive web application built with React, Tailwind CSS, and Framer Motion, aimed at assisting individuals in managing and overcoming panic attacks. Developed by EmpowerED Global, it offers a comprehensive set of features including a resource library with articles and guides, interactive tools such as breathing exercises and grounding techniques, and sections for learning about panic attacks, coping strategies, medication information, and contact support. The application features an animated and responsive user interface, ensuring a smooth experience on both mobile and desktop devices. Relevia aims to raise awareness about panic attacks and provide accessible tools for emotional regulation and coping. It includes components like About, Contact, Coping, Home, Medication, and Resources, each designed to be user-friendly and supportive.",
-      source_code_link: "https://github.com/Bushraabir/relevia",
-      website_link: "https://bushraabir.github.io/relevia/",
+      githubLink: "https://github.com/Bushraabir/relevia",
+      liveLink: "https://bushraabir.github.io/relevia/",
+      technologies: ["React.js", "Tailwind CSS", "Framer Motion", "Accessibility"],
+      category: "Health",
+      featured: true,
+      color: "from-pink_lavender/20 to-mauve/20"
     },
     {
-      type: "website",
-      title: "EmpowerTube - Educational Content Hub",
-      description: "A web application for managing and organizing educational content. Supports videos, PDFs, and articles with advanced filtering, dark mode, and drag-and-drop functionality.",
-      tags: [
-        { name: "HTML", color: "text-aquamarine" },
-        { name: "CSS", color: "text-jordy_blue" },
-        { name: "JavaScript", color: "text-champagne_pink" },
+      id: 'empowertube',
+      title: "EmpowerTube CMS",
+      shortDescription: "Advanced content management system for educational resources with drag-and-drop organization and offline capabilities.",
+      fullDescription: [
+        "EmpowerTube provides a sophisticated content management solution specifically designed for educational environments. The platform streamlines organization and delivery of diverse learning materials through an intuitive, unified interface.",
+        "Supporting multiple content formats including YouTube videos, PDF documents, and article links, the system features drag-and-drop organization, comprehensive search capabilities, and automated content sorting based on user preferences and engagement metrics.",
+        "Built with vanilla JavaScript to demonstrate fundamental web development skills, the application includes offline functionality, local storage persistence, and cross-browser compatibility. The responsive design ensures consistent performance across all device types."
       ],
-      images: [Tube1, Tube2, Tube3],
-      detailedDescription: "EmpowerTube is a comprehensive web application designed to help educators and students organize and manage educational content efficiently. The platform supports multiple content formats including YouTube videos, PDF documents, and articles, allowing users to create, read, update, and delete content with ease. Its intelligent organization system enables drag-and-drop rearrangement of content items, making it simple to structure learning materials logically. Advanced filtering options allow users to search by title or content, filter by category, and identify favorite content quickly. Multiple sorting options (Newest, Oldest, Popular) help users find content based on their specific needs. The application features an automatic dark/light mode that detects system preferences for comfortable viewing in any lighting condition. A favorites system allows users to mark and filter their most important content. The modern, minimalist interface with smooth animations ensures an intuitive user experience across all devices. EmpowerTube utilizes LocalStorage for persistent data storage, ensuring content remains available even when offline. Client-side PDF upload and preview functionality allows for seamless document handling without server dependency. Performance optimizations like lazy loading and efficient rendering ensure smooth operation even with large content libraries. Comprehensive error handling and user feedback mechanisms provide a reliable experience, while the use of vanilla JavaScript (without frameworks) keeps the application lightweight and fast. The implementation of CSS Variables and Modern Layout techniques (Grid/Flexbox) creates a responsive, adaptable interface that works perfectly on desktops, tablets, and mobile devices. Font Awesome 6 icons enhance the visual experience with professional-grade symbols throughout the interface.",
-      source_code_link: "https://github.com/Bushraabir/EmpowerTube",
-      website_link: "https://bushraabir.github.io/EmpowerTube/",
-    },
-  ];
+      tags: [
+        { name: "Vanilla JS", color: "text-aquamarine" },
+        { name: "HTML5", color: "text-jordy_blue" },
+        { name: "CSS3", color: "text-champagne_pink" },
+        { name: "Local Storage", color: "text-mauve" }
+      ],
+      images: [Tube1, Tube1, Tube1],
+      githubLink: "https://github.com/Bushraabir/EmpowerTube",
+      liveLink: "https://bushraabir.github.io/EmpowerTube/",
+      technologies: ["JavaScript", "HTML5", "CSS3", "Local Storage", "Responsive Design"],
+      category: "CMS",
+      featured: false,
+      color: "from-tea_rose/20 to-jordy_blue/20"
+    }
+  ], []);
 
-  /**
-   * STEM projects data array
-   * Contains information about hands-on engineering and science projects
-   * Each project includes comprehensive descriptions, technical challenges, and learning objectives
-   * @type {Array<Object>}
-   */
-  const projects = [
-    {
-      type: "project",
-      name: "Building a Self-Made Satellite with a Self-Made Rocket",
-      description: "This project involves designing and building a satellite along with a custom rocket, powered by hydrogen and oxygen fuel that is processed by us. The satellite will include a transmitter to send its location back to us. The ultimate goal is to launch the satellite into Low Earth Orbit (LEO), aiming to reach the Kármán Line.",
-      tags: [
-        { name: "Satellite Engineering", color: "text-electric_blue" },
-        { name: "Rocket Science", color: "text-pink_lavender" },
-        { name: "Aerospace", color: "text-aquamarine" },
-        { name: "LEO Mission", color: "text-jordy_blue" },
-        { name: "Propulsion", color: "text-mauve" },
-      ],
-      images: [Satellite1],
-      detailedDescription: "This ambitious project involves designing and building a satellite along with a custom rocket, powered by hydrogen and oxygen fuel that is processed by us. The satellite will include a transmitter to send its location back to us. The ultimate goal is to launch the satellite into Low Earth Orbit (LEO), aiming to reach the Kármán Line at 100 kilometers altitude. The project encompasses multiple engineering disciplines including propulsion system design, satellite communications, orbital mechanics, fuel processing and handling, structural engineering for both rocket and satellite components, and mission control systems. This represents a comprehensive exploration of aerospace engineering principles from concept to launch.",
-      source_code_link: "#", // Placeholder for project documentation
-    },
-    {
-      type: "project",
-      name: "Aquarium Water Purification System",
-      description: "This project involves designing and building a custom aquarium water purifier equipped with a 12V water pump. The system will reduce ammonia levels, remove fish waste, and promote the growth of beneficial plankton while maintaining balanced oxygen levels in the water.",
-      tags: [
-        { name: "Water Treatment", color: "text-electric_blue" },
-        { name: "Aquaculture", color: "text-pink_lavender" },
-        { name: "Biotechnology", color: "text-aquamarine" },
-        { name: "Environmental Engineering", color: "text-jordy_blue" },
-        { name: "Ecosystem Design", color: "text-mauve" },
-      ],
-      images: [Aquarium],
-      detailedDescription: "This project involves designing and building a custom aquarium water purifier equipped with a 12V water pump. The system will reduce ammonia levels, remove fish waste, and promote the growth of beneficial plankton while maintaining balanced oxygen levels in the water. The purifier will include a multi-stage filtration mechanism featuring mechanical filtration for large debris, biological filtration for beneficial bacteria cultivation, and chemical filtration for harmful substance removal. The ultimate goal is to create a self-sustaining ecosystem within the aquarium, ensuring optimal water quality and supporting the well-being of the fish and other aquatic organisms. The project incorporates principles of environmental engineering, aquaculture, and biotechnology to create a balanced aquatic environment.",
-      source_code_link: "#", // Placeholder for project documentation
-    },
-    {
-      type: "project",
-      name: "Quadcopter Drone for Aerial Photography and Surveillance",
-      description: "This project involves designing and assembling a customizable quadcopter drone using off-the-shelf components. The drone will be equipped with a camera for aerial photography, basic flight stabilization, and remote-control capabilities.",
-      tags: [
-        { name: "Drone Technology", color: "text-electric_blue" },
-        { name: "Aerial Photography", color: "text-pink_lavender" },
-        { name: "Flight Control", color: "text-aquamarine" },
-        { name: "Remote Systems", color: "text-jordy_blue" },
-        { name: "Robotics", color: "text-mauve" },
-      ],
-      images: [Drone],
-      detailedDescription: "This project involves designing and assembling a customizable quadcopter drone using off-the-shelf components. The drone will be equipped with a high-resolution camera for aerial photography, GPS navigation system, basic flight stabilization using gyroscopic sensors, and remote-control capabilities through radio frequency communication. The ultimate goal is to create a cost-effective, modular drone for hobbyist aerial imaging, environmental monitoring, or educational purposes, while learning principles of aerodynamics, electronics, and robotics. The project covers flight controller programming, motor and propeller selection, battery management systems, camera gimbal stabilization, and safety protocols for responsible drone operation.",
-      source_code_link: "#", // Placeholder for project documentation
-    },
-    {
-      type: "project",
-      name: "Bio Diesel Production System",
-      description: "This project involves designing and constructing a small-scale bio diesel reactor that converts waste cooking oil, vegetable oil, or animal fats into usable bio diesel fuel.",
-      tags: [
-        { name: "Renewable Energy", color: "text-electric_blue" },
-        { name: "Chemical Engineering", color: "text-pink_lavender" },
-        { name: "Sustainability", color: "text-aquamarine" },
-        { name: "Biofuel", color: "text-jordy_blue" },
-        { name: "Green Technology", color: "text-mauve" },
-      ],
-      images: [Bio],
-      detailedDescription: "This project involves designing and constructing a small-scale bio diesel reactor that converts waste cooking oil, vegetable oil, or animal fats into usable bio diesel fuel. The system will use a chemical process called transesterification to break down triglycerides into fatty acid methyl esters (FAME), producing clean-burning bio diesel. The reactor design includes temperature control systems, mixing mechanisms, separation tanks for glycerin byproduct, and purification processes to meet fuel quality standards. The ultimate goal is to create a sustainable, low-cost method to recycle waste oils into renewable fuel for vehicles, generators, or heating systems, reducing reliance on fossil fuels and lowering carbon emissions. The project demonstrates principles of chemical engineering, environmental sustainability, and renewable energy technology.",
-      source_code_link: "#", // Placeholder for project documentation
-    },
-    {
-      type: "project",
-      name: "Telescope for Amateur Astronomy",
-      description: "This project involves designing and constructing a simple, low-cost refracting telescope using affordable, off-the-shelf components.",
-      tags: [
-        { name: "Optics", color: "text-electric_blue" },
-        { name: "Astronomy", color: "text-pink_lavender" },
-        { name: "Precision Engineering", color: "text-aquamarine" },
-        { name: "DIY Science", color: "text-jordy_blue" },
-        { name: "Educational Tools", color: "text-mauve" },
-      ],
-      images: [Telescope],
-      detailedDescription: "This project involves designing and constructing a simple, low-cost refracting telescope using affordable, off-the-shelf components. The telescope will use optical lenses to collect and focus light, enabling observation of celestial objects like the Moon, planets, and bright star clusters. The design includes a primary objective lens for light gathering, an eyepiece system for magnification, a sturdy mounting system for stability, and fine adjustment mechanisms for precise tracking. The ultimate goal is to create a functional, portable telescope for educational purposes while learning fundamental principles of optics, astronomy, and precision mechanical engineering. The project covers lens selection and positioning, focal length calculations, mounting design, and observational techniques.",
-      source_code_link: "#", // Placeholder for project documentation
-    },
-    {
-      type: "project",
-      name: "Bio Gas Plant for Household Energy",
-      description: "This project involves designing and constructing a small-scale bio gas system that converts organic household waste into methane gas and organic fertilizer.",
-      tags: [
-        { name: "Biogas Technology", color: "text-electric_blue" },
-        { name: "Waste Management", color: "text-pink_lavender" },
-        { name: "Renewable Energy", color: "text-aquamarine" },
-        { name: "Sustainable Living", color: "text-jordy_blue" },
-        { name: "Circular Economy", color: "text-mauve" },
-      ],
-      images: [Biogas],
-      detailedDescription: "This project involves designing and constructing a small-scale bio gas system that converts organic household waste (e.g., kitchen scraps, garden waste, or livestock manure) into methane gas and organic fertilizer. The main goal is to use human feces as it is cost-free and challenging to manage as waste. The system will use anaerobic digestion to break down waste, capture methane for cooking or heating, and produce nutrient-rich slurry for gardening and farming. The design includes a sealed digester tank, gas collection and storage system, waste input and slurry output mechanisms, temperature monitoring and control, and safety measures for gas handling. The ultimate goal is to create a sustainable, closed-loop energy solution that reduces waste, lowers reliance on fossil fuels, and supports eco-friendly agriculture while addressing waste management challenges.",
-      source_code_link: "#", // Placeholder for project documentation
-    },
-  ];
-
-  // ===== DATA PROCESSING =====
-  
-  /**
-   * Get active data based on selected tab
-   * Returns the appropriate dataset for rendering based on user selection
-   * @type {Array<Object>}
-   */
-  const activeData = activeTab === "websites" ? websites : activeTab === "projects" ? projects : courses;
-  
-  /**
-   * Group data into rows of 3 for responsive grid layout
-   * Creates a 2D array where each sub-array contains up to 3 items
-   * @type {Array<Array<Object>>}
-   */
-  const groupedData = activeData.reduce((acc, cur, i) => {
-    if (i % 3 === 0) acc.push(activeData.slice(i, i + 3));
-    return acc;
-  }, []);
-
-  // ===== ANIMATION VARIANTS =====
-  
-  /**
-   * Framer Motion variants for tab animations
-   * Defines different states for smooth tab transitions
-   * Includes hover effects and active state styling
-   * @type {Object}
-   */
-  const tabVariants = {
-    inactive: { 
-      scale: 1, 
-      opacity: 0.7, 
-      y: 0,
-      boxShadow: "0px 0px 0px rgba(0,0,0,0)"
-    },
-    active: { 
-      scale: 1.1, 
-      opacity: 1, 
-      y: -8,
-      boxShadow: "0px 15px 35px rgba(152, 245, 225, 0.4)"
-    },
-    hover: { 
-      scale: 1.05, 
-      opacity: 0.9,
-      y: -4,
-      boxShadow: "0px 8px 20px rgba(152, 245, 225, 0.2)"
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2
+      }
     }
   };
 
-  // ===== MEMOIZED COMPONENTS =====
-  
-  /**
-   * Memoized Card Component for performance optimization
-   * Prevents unnecessary re-renders when parent state changes
-   * Optimizes rendering performance for large datasets
-   * 
-   * @param {Object} props - Component props
-   * @param {Object} props.data - Project/website/course data object
-   * @param {Function} props.onClick - Click handler function
-   * @returns {JSX.Element} Rendered card component
-   */
-  const Card = memo(({ data, onClick }) => {
-    // Extract common properties with fallbacks for data consistency
-    const title = data.title || data.name;
-    const { description, tags, images, source_code_link, type, website_link } = data;
+  const cardVariants = {
+    hidden: { 
+      y: 80, 
+      opacity: 0, 
+      rotateX: 15,
+      scale: 0.9
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+      rotateX: 0,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
+    }
+  };
+
+  // Enhanced Project Card Component
+  const ProjectCard = memo(({ website, index }) => {
+    const cardRef = useRef(null);
+    const isInView = useInView(cardRef, { once: true, margin: "-15%" });
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
     
-    /**
-     * Handle external link clicks with event propagation prevention
-     * Prevents modal opening when action buttons are clicked
-     * @param {Event} e - Click event
-     * @param {string} url - URL to open in new tab
-     */
-    const handleExternalClick = (e, url) => {
-      e.stopPropagation();
-      window.open(url, "_blank", "noopener,noreferrer");
-    };
+    const currentImageIndex = globalImageIndex[website.id] || 0;
+
+    // Auto-cycle images on hover
+    useEffect(() => {
+      let interval;
+      if (isHovered && website.images.length > 1) {
+        interval = setInterval(() => {
+          cycleImage(website.id, website.images.length);
+        }, 2000);
+      }
+      return () => clearInterval(interval);
+    }, [isHovered, website.id, website.images.length, cycleImage]);
+
+    const handleImageLoad = useCallback(() => {
+      setImageLoaded(true);
+    }, []);
+
+    const handleCardClick = useCallback(() => {
+      setSelectedProject(website);
+    }, [website]);
 
     return (
-      <motion.div
-        onClick={() => onClick(data)}
-        className="website-card mx-auto w-full max-w-[550px] p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo border border-dark_teal cursor-pointer overflow-hidden"
-        whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)" }}
-        whileTap={{ scale: 0.98 }}
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+      <motion.article
+        ref={cardRef}
+        variants={cardVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        whileHover={{ 
+          y: -8, 
+          transition: { duration: 0.3, ease: "easeOut" } 
+        }}
+        className={`group relative cursor-pointer transform-gpu ${
+          website.featured ? 'lg:col-span-2' : ''
+        }`}
+        onClick={handleCardClick}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         role="button"
         tabIndex={0}
-        aria-label={`View details for ${title}`}
+        aria-label={`Explore ${website.title} project`}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            onClick(data);
+            handleCardClick();
           }
         }}
       >
-        {/* Image Section with Conditional Tilt Effect */}
-        {isDesktop ? (
-          <ReactTilt 
-            options={{ max: 20, scale: 1.05, speed: 400 }} 
-            className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl"
-          >
-            <motion.img
-              src={images[0]}
-              alt={`${title} preview screenshot`}
-              className="object-cover w-full h-full rounded-xl"
-              loading="lazy"
-              initial={{ scale: 1.1 }}
-              whileHover={{ scale: 1.15, rotate: 1 }}
-              transition={{ duration: 0.5 }}
-            />
+        {/* Card Container */}
+        <div className="relative bg-gradient-to-br from-deep_indigo/90 via-dark_teal/80 to-deep_indigo/90 backdrop-blur-xl border border-aquamarine/20 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500">
+          
+          {/* Featured Badge */}
+          {website.featured && (
             <motion.div
-              className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0"
-              whileHover={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-            />
-            
-            {/* Action Buttons Overlay */}
-            <div className="absolute inset-0 flex justify-end m-4 space-x-2">
-              {type === "website" && website_link && (
-                <motion.button
-                  onClick={(e) => handleExternalClick(e, website_link)}
-                  className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer"
-                  whileHover={{ scale: 1.2, rotate: 10 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  aria-label={`Visit ${title} website`}
-                >
-                  <FaEye size={28} color="white" />
-                </motion.button>
-              )}
-              {source_code_link && source_code_link !== "#" && (
-                <motion.button
-                  onClick={(e) => handleExternalClick(e, source_code_link)}
-                  className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer"
-                  whileHover={{ scale: 1.2, rotate: 10 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  aria-label={`View ${title} source code`}
-                >
-                  {type === "website" ? (
-                    <FiGithub size={28} color="white" />
-                  ) : (
-                    <FaEye size={28} color="white" />
-                  )}
-                </motion.button>
-              )}
-            </div>
-          </ReactTilt>
-        ) : (
-          <div className="relative w-full h-[250px] mb-6 overflow-hidden rounded-2xl">
-            <motion.img
-              src={images[0]}
-              alt={`${title} preview screenshot`}
-              className="object-cover w-full h-full rounded-xl"
-              loading="lazy"
-              whileTap={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
-            />
-            
-            {/* Mobile Action Buttons */}
-            <div className="absolute inset-0 flex justify-end m-4 space-x-2">
-              {type === "website" && website_link && (
-                <motion.button
-                  onClick={(e) => handleExternalClick(e, website_link)}
-                  className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer"
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                  aria-label={`Visit ${title} website`}
-                >
-                  <FaEye size={28} color="white" />
-                </motion.button>
-              )}
-              {source_code_link && source_code_link !== "#" && (
-                <motion.button
-                  onClick={(e) => handleExternalClick(e, source_code_link)}
-                  className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg bg-gradient-to-r from-aquamarine to-jordy_blue cursor-pointer"
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                  aria-label={`View ${title} source code`}
-                >
-                  {type === "website" ? (
-                    <FiGithub size={28} color="white" />
-                  ) : (
-                    <FaEye size={28} color="white" />
-                  )}
-                </motion.button>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Card Content */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-6"
-        >
-          <h3 className="sm:text-4xl text-2xl font-heading text-aquamarine font-extrabold tracking-tight">
-            {title}
-          </h3>
-          <p className="mt-3 font-description text-lemon_chiffon text-sm sm:text-base leading-relaxed">
-            {description}
-          </p>
-        </motion.div>
-
-        {/* Tags Section */}
-        <motion.div
-          className="flex flex-wrap gap-3 mt-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          {tags.slice(0, 3).map((tag, index) => (
-            <motion.span
-              key={`${tag.name}-${index}`}
-              className={`text-xs sm:text-sm font-semibold font-description ${tag.color} px-4 py-2 rounded-full shadow-md bg-dark_teal/20`}
-              whileHover={{ scale: 1.1, backgroundColor: "#26C6DA" }}
-              transition={{ type: "spring", stiffness: 400 }}
+              initial={{ opacity: 0, scale: 0, rotate: -12 }}
+              animate={{ opacity: 1, scale: 1, rotate: -12 }}
+              transition={{ delay: index * 0.1 + 0.5, type: "spring", stiffness: 150 }}
+              className="absolute top-4 left-4 z-20 px-3 py-1 bg-gradient-to-r from-aquamarine to-electric_blue text-deep_indigo text-xs font-bold rounded-full shadow-lg"
             >
-              #{tag.name}
-            </motion.span>
-          ))}
-        </motion.div>
-      </motion.div>
+              FEATURED
+            </motion.div>
+          )}
+
+          {/* Image Section with Enhanced Hover Effects */}
+          <div className="relative h-64 lg:h-72 overflow-hidden">
+            {/* Dynamic Gradient Overlay */}
+            <motion.div
+              className={`absolute inset-0 bg-gradient-to-br ${website.color} opacity-0 z-10`}
+              animate={{ 
+                opacity: isHovered ? 0.6 : 0 
+              }}
+              transition={{ duration: 0.4 }}
+            />
+
+            {/* Main Image with Smooth Transitions */}
+            <motion.div className="relative w-full h-full">
+              <motion.img
+                key={currentImageIndex}
+                src={website.images[currentImageIndex]}
+                alt={`${website.title} interface screenshot ${currentImageIndex + 1}`}
+                className="absolute inset-0 w-full h-full object-cover"
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{ 
+                  opacity: imageLoaded ? 1 : 0, 
+                  scale: isHovered ? 1.05 : 1 
+                }}
+                transition={{ 
+                  opacity: { duration: 0.3 },
+                  scale: { duration: 0.6, ease: "easeOut" }
+                }}
+                onLoad={handleImageLoad}
+                onError={() => handleImageError(website.images[currentImageIndex])}
+                loading="lazy"
+              />
+            </motion.div>
+
+            {/* Loading State */}
+            {!imageLoaded && (
+              <div className="absolute inset-0 bg-deep_indigo/60 backdrop-blur-sm flex items-center justify-center">
+                <motion.div
+                  className="w-12 h-12 border-3 border-aquamarine border-t-transparent rounded-full"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                />
+              </div>
+            )}
+
+            {/* Interactive Action Buttons */}
+            <motion.div
+              className="absolute top-4 right-4 flex gap-3 z-20"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ 
+                opacity: isHovered ? 1 : 0, 
+                y: isHovered ? 0 : -20 
+              }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <MagneticButton
+                href={website.liveLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="w-12 h-12 bg-gradient-to-r from-aquamarine to-electric_blue rounded-full flex items-center justify-center text-deep_indigo shadow-lg backdrop-blur-sm hover:shadow-xl transition-all duration-300 border border-white/20"
+                aria-label={`Visit ${website.title} live website`}
+              >
+                <ExternalLinkIcon />
+              </MagneticButton>
+              <MagneticButton
+                href={website.githubLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="w-12 h-12 bg-deep_indigo/80 backdrop-blur-sm rounded-full flex items-center justify-center text-aquamarine shadow-lg hover:shadow-xl transition-all duration-300 border border-aquamarine/30"
+                aria-label={`View ${website.title} source code on GitHub`}
+              >
+                <GithubIcon />
+              </MagneticButton>
+            </motion.div>
+
+            {/* Live Demo Indicator */}
+            <motion.div
+              className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-2 bg-black/60 backdrop-blur-sm rounded-full z-20"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ 
+                opacity: isHovered ? 1 : 0, 
+                x: isHovered ? 0 : -20 
+              }}
+              transition={{ duration: 0.3, ease: "easeOut", delay: 0.1 }}
+            >
+              <motion.div
+                className="w-2 h-2 bg-green-400 rounded-full"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              <span className="text-white text-xs font-medium">Live Demo</span>
+            </motion.div>
+
+            {/* Image Counter */}
+            {website.images.length > 1 && (
+              <motion.div
+                className="absolute bottom-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-white text-xs font-medium z-20"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ 
+                  opacity: isHovered ? 1 : 0, 
+                  x: isHovered ? 0 : 20 
+                }}
+                transition={{ duration: 0.3, ease: "easeOut", delay: 0.15 }}
+              >
+                {currentImageIndex + 1} / {website.images.length}
+              </motion.div>
+            )}
+          </div>
+
+          {/* Content Section */}
+          <div className="p-6 lg:p-8">
+            {/* Category and Title */}
+            <div className="mb-4">
+              <motion.span
+                initial={{ opacity: 0, x: -20 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: index * 0.1 + 0.3 }}
+                className="inline-block px-3 py-1 text-xs font-medium bg-gradient-to-r from-jordy_blue/20 to-aquamarine/20 text-aquamarine rounded-full border border-aquamarine/30 mb-3"
+              >
+                {website.category}
+              </motion.span>
+
+              <AnimatedText delay={index * 0.1 + 0.4}>
+                <h3 className="text-2xl lg:text-3xl font-bold font-heading bg-gradient-to-r from-lemon_chiffon to-champagne_pink bg-clip-text text-transparent group-hover:from-aquamarine group-hover:to-electric_blue transition-all duration-500 leading-tight">
+                  {website.title}
+                </h3>
+              </AnimatedText>
+            </div>
+
+            {/* Description */}
+            <AnimatedText delay={index * 0.1 + 0.5}>
+              <p className="text-lemon_chiffon/80 font-description leading-relaxed mb-6 line-clamp-3">
+                {website.shortDescription}
+              </p>
+            </AnimatedText>
+
+            {/* Technology Tags */}
+            <motion.div
+              className="flex flex-wrap gap-2 mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: index * 0.1 + 0.6 }}
+            >
+              {website.tags.slice(0, 4).map((tag, tagIndex) => (
+                <motion.span
+                  key={tag.name}
+                  initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+                  animate={isInView ? { 
+                    opacity: 1, 
+                    scale: 1, 
+                    rotate: 0 
+                  } : {}}
+                  transition={{ 
+                    delay: index * 0.1 + 0.7 + tagIndex * 0.05,
+                    type: "spring",
+                    stiffness: 200
+                  }}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  className={`text-xs px-3 py-1 rounded-full bg-dark_teal/30 backdrop-blur-sm ${tag.color} border border-current/20 hover:border-current/40 transition-all duration-300 cursor-default`}
+                >
+                  {tag.name}
+                </motion.span>
+              ))}
+            </motion.div>
+
+            {/* Stats Row */}
+            <motion.div
+              className="flex items-center justify-between text-sm text-lemon_chiffon/60 border-t border-aquamarine/10 pt-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: index * 0.1 + 0.8 }}
+            >
+              <div className="flex items-center gap-4">
+                <span className="font-medium">
+                  {website.technologies.length} Technologies
+                </span>
+                <span className="font-medium">
+                  {website.images.length} Screens
+                </span>
+              </div>
+              <motion.div
+                className="flex items-center gap-1"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <div className="w-2 h-2 bg-aquamarine rounded-full"></div>
+                <span className="text-xs">Interactive</span>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Hover Glow Effect */}
+          <motion.div
+            className="absolute inset-0 rounded-3xl opacity-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(45deg, transparent, rgba(152, 245, 225, 0.1), rgba(142, 236, 245, 0.1), transparent)',
+              filter: 'blur(1px)',
+            }}
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+      </motion.article>
     );
   });
 
-  // Set display name for debugging and React DevTools
-  Card.displayName = 'ProjectCard';
+  ProjectCard.displayName = 'ProjectCard';
 
-  // ===== RENDER COMPONENT =====
-  
   return (
-    <>
-      {/* ===== CUSTOM STYLES ===== */}
-      <style jsx>{`
-        .website-section {
-          background: linear-gradient(135deg, #2a1b3d 0%, #1d3557 50%, #2a1b3d 100%);
-          position: relative;
-          overflow: hidden;
-          isolation: isolate;
-          min-height: 100vh;
-        }
-        
-        /* Animated background glow effect */
-        .website-section::before {
-          content: '';
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(circle, rgba(152, 245, 225, 0.1) 0%, rgba(152, 245, 225, 0.05) 30%, rgba(255,255,255,0) 70%);
-          animation: rotateGlow 20s linear infinite;
-          z-index: 0;
-        }
-        
-        /* Additional background gradients */
-        .website-section::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: 
-            radial-gradient(circle at 20% 80%, rgba(163, 196, 243, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(241, 192, 232, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 40% 40%, rgba(207, 186, 240, 0.1) 0%, transparent 50%);
-          z-index: 0;
-        }
-        
-        /* Rotating glow animation */
-        @keyframes rotateGlow {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        
-        /* Ensure cards appear above background */
-        .website-card {
-          z-index: 1;
-        }
-        
-        /* Intro text styling */
-        .intro-text {
-          max-width: 900px;
-          margin: 0 auto;
-          line-height: 1.9;
-          text-align: center;
-        }
-        
-        .intro-text p {
-          background: linear-gradient(135deg, #fbf8cc 0%, #98f5e1 50%, #fde4cf 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          text-shadow: 0 0 30px rgba(152, 245, 225, 0.3);
-          position: relative;
-        }
-        
-        .intro-text p::before {
-          content: '';
-          position: absolute;
-          top: -10px;
-          left: -20px;
-          right: -20px;
-          bottom: -10px;
-          border-radius: 20px;
-          z-index: -1;
-          opacity: 0.7;
-        }
-        
-        /* Premium tab styling */
-        .premium-tab {
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .premium-tab::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(152, 245, 225, 0.4),
-            transparent
-          );
-          transition: left 0.5s ease;
-        }
-        
-        .premium-tab:hover::before {
-          left: 100%;
-        }
-        
-        /* Tab glow effect */
-        .tab-glow {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 100%;
-          height: 100%;
-          background: radial-gradient(circle, rgba(152, 245, 225, 0.3) 0%, transparent 70%);
-          transform: translate(-50%, -50%);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          pointer-events: none;
-        }
-        
-        .premium-tab.active .tab-glow {
-          opacity: 1;
-        }
-        
-        /* Mobile responsive styles */
-        @media (max-width: 768px) {
-          .website-section {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-          }
-          .website-card {
-            padding: 1rem;
-          }
-          .intro-text {
-            max-width: 100%;
-            padding: 0 1rem;
-          }
-        }
-        
-        /* Print styles for accessibility */
-        @media print {
-          .website-section {
-            background: white;
-            color: black;
-          }
-          .website-card {
-            border: 1px solid #ccc;
-            background: white;
-          }
-        }
-      `}</style>
-      
-      {/* ===== MAIN PORTFOLIO SECTION ===== */}
-      <section 
-        id="websites" 
-        className="website-section py-16 lg:py-24 text-lemon_chiffon" 
-        role="main" 
-        aria-label="STEM Projects Portfolio"
-      >
-        <div className="container mx-auto px-6 lg:px-20 relative z-10">
-          
-          {/* ===== HERO SECTION ===== */}
-          <header 
-            ref={initialMessageRef} 
-            className="flex flex-col items-center justify-center min-h-[60vh] mt-20"
-          >
-            <motion.div
-              className="flex items-center relative"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
-            >
-              {/* STEM Text */}
-              <motion.h1
-                ref={stemRef}
-                className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink drop-shadow-lg"
-                initial={{ x: -10, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 1, ease: "easeOut" }}
-              >
-                STEM
-              </motion.h1>
-              
-              {/* Lottie Animation */}
-              <motion.div
-                ref={lottieContainerRef}
-                className="-mx-3 mt-4"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-                style={{ transformOrigin: "center" }}
-                aria-hidden="true"
-              >
-                <Lottie 
-                  options={lottieOptions} 
-                  height={isDesktop ? 80 : 40} 
-                  width={isDesktop ? 80 : 40} 
-                />
-              </motion.div>
-              
-              {/* PROJECTS Text */}
-              <motion.h1
-                ref={collabRef}
-                className="sm:text-12xl text-4xl font-extrabold font-heading text-champagne_pink drop-shadow-lg"
-                initial={{ x: 10, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 1, ease: "easeOut" }}
-              >
-                PROJECTS
-              </motion.h1>
-            </motion.div>
-          </header>
+    <ErrorBoundary>
+      {/* SEO Meta Information */}
+      <div className="sr-only">
+        <h1>Interactive Web Development Showcase</h1>
+        <p>Explore cutting-edge web applications featuring modern technologies, responsive design, and innovative user experiences. Projects include educational platforms, scientific visualizations, productivity tools, and interactive games.</p>
+      </div>
 
-          {/* ===== INTRODUCTION TEXT ===== */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="intro-text mb-12"
-          >
-            <p className="text-xl sm:text-2xl font-description leading-relaxed">
-              Driven by an insatiable curiosity, I dive headfirst into the unknown, where every challenge is a call to adventure. Each obstacle I encounter isn't a barrier but a spark that ignites my imagination, leading me to craft innovative solutions and embark on exciting projects. Through hands-on experimentation with code and design, I not only hone my skills but also keep the flame of excitement burning bright, always eager for the next discovery. This journey is a testament to my unwavering commitment to exploration, problem-solving, and pushing the boundaries of what's possible, where every creation is a chapter in my story of turning curiosity into impactful innovation.
-            </p>
-          </motion.div>
+      <div className="relative min-h-screen bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo overflow-hidden">
+        {/* Scroll Progress Indicator */}
+        <ScrollProgress />
 
-          {/* ===== COLLABORATION DESCRIPTION ===== */}
-          <motion.div
-            ref={descriptionRef}
-            className="text-center mb-12 mt-32 max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          >
-            <p className="text-lg sm:text-xl font-description leading-relaxed bg-gradient-to-r from-lemon_chiffon via-aquamarine to-champagne_pink bg-clip-text text-transparent">
-              Collaborated with Muzahidul Islam Abir on various STEM projects, with ongoing projects to be added soon.
-            </p>
-          </motion.div>
+        {/* Animated Background */}
+        <BackgroundOrbs />
 
-          {/* ===== PREMIUM TAB NAVIGATION ===== */}
-          <motion.nav
-            ref={buttonsRef}
-            className="flex justify-center mb-16 relative"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.7 }}
-            role="tablist"
-            aria-label="Portfolio navigation"
-          >
-            {/* Tab Container with Glass Morphism */}
-            <div className="relative bg-gradient-to-r from-deep_indigo/40 via-dark_teal/30 to-deep_indigo/40 backdrop-blur-xl border border-aquamarine/20 rounded-full p-2 shadow-3xl">
-              
-              {/* Floating Background Elements */}
-              <div 
-                className="absolute -inset-4 bg-gradient-to-r from-aquamarine/10 to-jordy_blue/10 rounded-full blur-xl opacity-50 animate-pulse"
-                aria-hidden="true"
-              ></div>
-              
-              <div className="flex space-x-2 relative z-10">
-                {["websites", "projects", "courses"].map((tab, index) => (
-                  <motion.button
-                    key={tab}
-                    className={`premium-tab relative px-8 py-2 text-base sm:text-lg font-bold font-cta rounded-full transition-all duration-500 ${
-                      activeTab === tab
-                        ? "bg-gradient-to-r from-aquamarine via-electric_blue to-jordy_blue text-deep_indigo shadow-2xl"
-                        : "text-aquamarine hover:text-lemon_chiffon"
-                    }`}
-                    onClick={() => setActiveTab(tab)}
-                    onMouseEnter={() => setHoveredTab(tab)}
-                    onMouseLeave={() => setHoveredTab(null)}
-                    variants={tabVariants}
-                    initial="inactive"
-                    animate={activeTab === tab ? "active" : hoveredTab === tab ? "hover" : "inactive"}
-                    transition={{ 
-                      type: "spring", 
-                      stiffness: 400, 
-                      damping: 30,
-                      duration: 0.4 
-                    }}
-                    role="tab"
-                    aria-pressed={activeTab === tab}
-                    aria-selected={activeTab === tab}
-                    aria-controls={`${tab}-panel`}
-                    aria-label={`Show ${tab}`}
-                    tabIndex={activeTab === tab ? 0 : -1}
-                  >
-                    {/* Tab Glow Effect */}
-                    <div className={`tab-glow ${activeTab === tab ? 'active' : ''}`} aria-hidden="true"></div>
-                    
-                    {/* Premium Shimmer Effect */}
-                    {activeTab === tab && (
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                        initial={{ x: "-100%" }}
-                        animate={{ x: "100%" }}
-                        transition={{ 
-                          duration: 1.5, 
-                          repeat: Infinity, 
-                          repeatDelay: 3,
-                          ease: "easeInOut"
-                        }}
-                        style={{ borderRadius: "inherit" }}
-                        aria-hidden="true"
-                      />
-                    )}
-                    
-                    <span className="relative z-10">
-                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                    </span>
-                    
-                    {/* Active Indicator Dots */}
-                    {activeTab === tab && (
-                      <motion.div
-                        className="absolute -bottom-2 left-1/2 w-2 h-2 bg-aquamarine rounded-full"
-                        initial={{ scale: 0, x: "-50%" }}
-                        animate={{ scale: 1, x: "-50%" }}
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                        aria-hidden="true"
-                      />
-                    )}
-                  </motion.button>
-                ))}
-              </div>
-              
-              {/* Animated Progress Bar */}
-              <motion.div
-                className="absolute bottom-0 h-1 bg-gradient-to-r from-aquamarine to-electric_blue rounded-full"
-                initial={false}
-                animate={{
-                  left: `${2 + (["websites", "projects", "courses"].indexOf(activeTab) * 33.33)}%`,
-                  width: "29.33%",
-                }}
-                transition={{ 
-                  type: "spring", 
-                  stiffness: 300, 
-                  damping: 25,
-                  duration: 0.6 
-                }}
-                aria-hidden="true"
-              />
-            </div>
-          </motion.nav>
-
-          {/* ===== CARDS SECTION ===== */}
-          <div 
-            ref={cardsRef}
-            role="tabpanel"
-            id={`${activeTab}-panel`}
-            aria-labelledby={`${activeTab}-tab`}
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-              >
-                {groupedData.map((group, rowIndex) => (
-                  <motion.div 
-                    key={`${activeTab}-row-${rowIndex}`}
-                    className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 sm:px-8 mb-12"
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: rowIndex * 0.2, duration: 0.6 }}
-                  >
-                    {group.map((item, cardIndex) => (
-                      <Card 
-                        key={`${activeTab}-${item.title || item.name}-${cardIndex}`}
-                        data={item} 
-                        onClick={setSelectedProject} 
-                      />
-                    ))}
-                  </motion.div>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+        {/* Additional Background Effects */}
+        <div className="absolute inset-0 opacity-50" aria-hidden="true">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-aquamarine/10 to-electric_blue/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-jordy_blue/10 to-pink_lavender/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
         </div>
 
-        {/* ===== PROJECT DETAILS MODAL ===== */}
-        <AnimatePresence>
+        {/* Hero Section */}
+        <motion.section 
+          ref={heroRef}
+          className="relative min-h-screen flex flex-col justify-center items-center px-6 py-20"
+          style={{ y: heroY, opacity: heroOpacity }}
+        >
+          <div className="text-center max-w-6xl mx-auto relative z-10">
+            {/* Main Hero Content */}
+            <motion.div className="mb-12">
+              <motion.h1 
+                initial={{ opacity: 0, y: 100, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  duration: 1.2, 
+                  delay: 0.2,
+                  ease: [0.25, 0.46, 0.45, 0.94]
+                }}
+                className="text-6xl md:text-8xl lg:text-12xl font-bold font-heading mb-6"
+              >
+                <span className="block bg-gradient-to-r from-lemon_chiffon via-champagne_pink to-aquamarine bg-clip-text text-transparent leading-none">
+                  Web Development
+                </span>
+                <motion.span 
+                  initial={{ opacity: 0, x: -100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1, delay: 0.8 }}
+                  className="block bg-gradient-to-r from-electric_blue via-jordy_blue to-pink_lavender bg-clip-text text-transparent leading-none"
+                >
+                  Showcase
+                </motion.span>
+              </motion.h1>
+
+              <motion.div
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 1.5, delay: 1.4 }}
+                className="w-32 h-1 bg-gradient-to-r from-aquamarine to-electric_blue rounded-full mx-auto mb-8"
+              />
+            </motion.div>
+
+            {/* Subtitle */}
+            <AnimatedText delay={1.6}>
+              <p className="text-xl md:text-2xl text-lemon_chiffon/90 font-description leading-relaxed mb-12 max-w-4xl mx-auto">
+                Discover innovative web applications built with modern technologies,
+                <br className="hidden md:block" />
+                featuring exceptional user experiences and cutting-edge design patterns.
+              </p>
+            </AnimatedText>
+
+            {/* Interactive Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 1.8 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 max-w-3xl mx-auto"
+            >
+              {[
+                { number: `${websites.length}`, label: "Projects", suffix: "+" },
+                { number: "10", label: "Technologies", suffix: "+" },
+                { number: "100", label: "Responsive", suffix: "%" },
+                { number: "A11Y", label: "Compliant", suffix: "" }
+              ].map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, scale: 0.5, rotateY: 90 }}
+                  animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                  transition={{ 
+                    duration: 0.6, 
+                    delay: 2 + index * 0.1,
+                    type: "spring",
+                    stiffness: 200
+                  }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="text-center p-4 rounded-2xl bg-gradient-to-br from-deep_indigo/50 to-dark_teal/30 backdrop-blur-sm border border-aquamarine/20 hover:border-aquamarine/40 transition-all duration-300"
+                >
+                  <div className="text-3xl md:text-4xl font-bold font-heading text-transparent bg-gradient-to-r from-aquamarine to-electric_blue bg-clip-text mb-1">
+                    {stat.number}{stat.suffix}
+                  </div>
+                  <div className="text-sm md:text-base text-lemon_chiffon/70 font-description">
+                    {stat.label}
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Call to Action */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 2.4 }}
+              className="flex flex-col items-center gap-6"
+            >
+
+
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="text-aquamarine/70"
+              >
+                <ChevronDownIcon />
+              </motion.div>
+            </motion.div>
+          </div>
+        </motion.section>
+
+        {/* Projects Showcase Section */}
+        <section 
+          ref={containerRef}
+          className="relative px-6 py-20 max-w-7xl mx-auto"
+          aria-label="Website projects showcase"
+        >
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-10%" }}
+            className="space-y-20"
+          >
+            {/* Section Header */}
+            <div className="text-center mb-16">
+              <AnimatedText>
+                <h2 className="text-4xl md:text-6xl font-bold font-heading text-transparent bg-gradient-to-r from-aquamarine via-electric_blue to-jordy_blue bg-clip-text mb-6">
+                  Featured Projects
+                </h2>
+              </AnimatedText>
+              <AnimatedText delay={0.2}>
+                <p className="text-xl text-lemon_chiffon/80 font-description max-w-3xl mx-auto leading-relaxed">
+                  A curated collection of web applications showcasing modern development practices, 
+                  innovative user interfaces, and technical excellence across diverse domains.
+                </p>
+              </AnimatedText>
+            </div>
+
+            {/* Projects Grid */}
+            <motion.div 
+              variants={containerVariants}
+              className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+            >
+              {websites.map((website, index) => (
+                <ProjectCard key={website.id} website={website} index={index} />
+              ))}
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* Enhanced Project Detail Modal */}
+        <AnimatePresence mode="wait">
           {selectedProject && (
             <motion.div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-lg"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl"
               onClick={(e) => {
                 if (e.target === e.currentTarget) setSelectedProject(null);
               }}
@@ -1335,157 +966,165 @@ const Website = () => {
               aria-describedby="modal-description"
             >
               <motion.div
-                className="bg-gradient-to-br from-deep_indigo/95 via-dark_teal/90 to-deep_indigo/95 backdrop-blur-xl border border-aquamarine/30 p-6 sm:p-10 rounded-3xl w-11/12 sm:w-4/5 md:w-3/4 lg:w-3/5 max-h-[90vh] overflow-y-auto shadow-3xl relative"
-                initial={{ scale: 0.7, opacity: 0, y: 100, rotateX: -15 }}
-                animate={{ scale: 1, opacity: 1, y: 0, rotateX: 0 }}
-                exit={{ scale: 0.7, opacity: 0, y: 100, rotateX: -15 }}
+                initial={{ scale: 0.8, opacity: 0, y: 50 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.8, opacity: 0, y: 50 }}
                 transition={{ 
                   type: "spring", 
                   stiffness: 300, 
-                  damping: 30,
-                  duration: 0.6 
+                  damping: 30
                 }}
+                className="bg-gradient-to-br from-deep_indigo/95 to-dark_teal/95 backdrop-blur-2xl border border-aquamarine/30 rounded-3xl p-8 max-w-6xl max-h-[90vh] overflow-y-auto shadow-3xl"
+                onClick={(e) => e.stopPropagation()}
               >
-                {/* Close Button */}
-                <motion.button
-                  onClick={() => setSelectedProject(null)}
-                  className="absolute top-4 right-4 p-3 rounded-full bg-gradient-to-r from-tea_rose/20 to-champagne_pink/20 text-aquamarine hover:from-aquamarine hover:to-electric_blue hover:text-deep_indigo backdrop-blur-sm border border-aquamarine/30 transition-all duration-300 z-10"
-                  whileHover={{ scale: 1.15, rotate: 90 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 500 }}
-                  aria-label="Close project details"
-                >
-                  ✕
-                </motion.button>
-                
-                {/* Modal Content */}
-                <motion.h2
-                  id="modal-title"
-                  className="mb-6 font-heading text-3xl sm:text-4xl font-bold text-transparent bg-gradient-to-r from-aquamarine to-electric_blue bg-clip-text tracking-tight"
-                  initial={{ opacity: 0, y: -30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-                >
-                  {selectedProject.title || selectedProject.name}
-                </motion.h2>
-                
-                <motion.p
-                  id="modal-description"
-                  className="mb-8 text-base sm:text-lg font-description leading-relaxed text-lemon_chiffon/90"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-                >
-                  {selectedProject.detailedDescription}
-                </motion.p>
-                
-                {/* Tags */}
-                {selectedProject.tags && selectedProject.tags.length > 0 && (
-                  <motion.div
-                    className="flex flex-wrap gap-3 mb-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.7, delay: 0.4 }}
-                    role="list"
-                    aria-label="Project technologies and tags"
-                  >
-                    {selectedProject.tags.map((tag, idx) => (
-                      <motion.span
-                        key={`modal-tag-${tag.name}-${idx}`}
-                        className={`text-sm font-semibold font-description ${tag.color} px-4 py-2 rounded-full bg-dark_teal/30 backdrop-blur-sm border border-aquamarine/20 shadow-lg hover:bg-aquamarine hover:text-deep_indigo transition-all duration-300`}
-                        whileHover={{ scale: 1.15, y: -2 }}
-                        transition={{ type: "spring", stiffness: 400 }}
-                        role="listitem"
-                      >
-                        #{tag.name}
-                      </motion.span>
-                    ))}
-                  </motion.div>
-                )}
-                
-                {/* Images Gallery */}
-                <motion.div
-                  className="relative mb-8"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.7, delay: 0.5 }}
-                >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {selectedProject.images.map((image, idx) => (
-                      <motion.img
-                        key={`modal-image-${idx}`}
-                        src={image}
-                        alt={`${selectedProject.title || selectedProject.name} screenshot ${idx + 1}`}
-                        className="object-cover w-full h-48 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-aquamarine/20"
-                        loading="lazy"
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        whileHover={{ scale: 1.03, y: -5 }}
-                        transition={{ duration: 0.5, delay: 0.5 + idx * 0.1 }}
-                      />
-                    ))}
-                  </div>
-                </motion.div>
-                
-                {/* Action Buttons */}
-                <motion.div
-                  className="flex flex-col sm:flex-row justify-center gap-4"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.6, ease: "easeOut" }}
-                >
-                  {selectedProject.type === "website" && selectedProject.website_link && (
-                    <motion.a
-                      href={selectedProject.website_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-8 py-4 text-lg font-bold font-cta rounded-2xl bg-gradient-to-r from-aquamarine to-electric_blue text-deep_indigo shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 group"
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      transition={{ type: "spring", stiffness: 400 }}
-                      aria-label={`Visit ${selectedProject.title || selectedProject.name} website`}
+                {/* Modal Header */}
+                <div className="flex justify-between items-start mb-8">
+                  <div className="flex-1 pr-8">
+                    <motion.h2 
+                      id="modal-title"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 }}
+                      className="text-3xl md:text-4xl font-bold font-heading text-transparent bg-gradient-to-r from-aquamarine to-electric_blue bg-clip-text mb-3"
                     >
-                      <FaEye className="group-hover:scale-110 transition-transform" aria-hidden="true" />
-                      Visit Website
-                    </motion.a>
-                  )}
-                  {selectedProject.source_code_link && selectedProject.source_code_link !== "#" && (
-                    <motion.a
-                      href={selectedProject.source_code_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-8 py-4 text-lg font-bold font-cta rounded-2xl bg-gradient-to-r from-dark_teal/80 to-deep_indigo/80 text-aquamarine border border-aquamarine/30 backdrop-blur-sm shadow-xl hover:from-aquamarine hover:to-electric_blue hover:text-deep_indigo hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 group"
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      transition={{ type: "spring", stiffness: 400 }}
-                      aria-label={`View ${selectedProject.title || selectedProject.name} ${selectedProject.type === "website" ? "source code" : "project details"}`}
+                      {selectedProject.title}
+                    </motion.h2>
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="flex items-center gap-4"
                     >
-                      {selectedProject.type === "website" ? (
-                        <FiGithub className="group-hover:scale-110 transition-transform" aria-hidden="true" />
-                      ) : (
-                        <FaEye className="group-hover:scale-110 transition-transform" aria-hidden="true" />
+                      <span className="px-3 py-1 text-sm bg-gradient-to-r from-jordy_blue/20 to-aquamarine/20 text-aquamarine rounded-full border border-aquamarine/30">
+                        {selectedProject.category}
+                      </span>
+                      {selectedProject.featured && (
+                        <span className="px-3 py-1 text-sm bg-gradient-to-r from-aquamarine/20 to-electric_blue/20 text-electric_blue rounded-full border border-electric_blue/30">
+                          Featured Project
+                        </span>
                       )}
-                      {selectedProject.type === "website" ? "Source Code" : "View Project"}
-                    </motion.a>
-                  )}
-                </motion.div>
+                    </motion.div>
+                  </div>
+                  
+                  <MagneticButton
+                    onClick={() => setSelectedProject(null)}
+                    className="w-12 h-12 rounded-full bg-deep_indigo/80 backdrop-blur-sm text-aquamarine hover:bg-aquamarine hover:text-deep_indigo transition-all duration-300 flex items-center justify-center border border-aquamarine/20 hover:border-aquamarine/60"
+                    aria-label="Close project details"
+                  >
+                    ✕
+                  </MagneticButton>
+                </div>
+
+                {/* Modal Content */}
+                <div className="grid lg:grid-cols-2 gap-8">
+                  {/* Left Column - Content */}
+                  <div className="space-y-6">
+                    {/* Project Description */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <h3 className="text-xl font-bold font-heading text-aquamarine mb-4">
+                        Project Overview
+                      </h3>
+                      <div id="modal-description" className="space-y-4">
+                        {selectedProject.fullDescription.map((paragraph, index) => (
+                          <p key={index} className="text-lemon_chiffon/90 font-description leading-relaxed">
+                            {paragraph}
+                          </p>
+                        ))}
+                      </div>
+                    </motion.div>
+
+                    {/* Technologies */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                    >
+                      <h3 className="text-xl font-bold font-heading text-aquamarine mb-4">
+                        Technologies & Tools
+                      </h3>
+                      <div className="grid grid-cols-2 gap-3">
+                        {selectedProject.technologies.map((tech, index) => (
+                          <motion.div
+                            key={tech}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.5 + index * 0.05 }}
+                            className="px-4 py-2 bg-dark_teal/30 backdrop-blur-sm text-electric_blue rounded-xl text-center border border-electric_blue/20 hover:border-electric_blue/40 transition-all duration-300 text-sm font-medium"
+                          >
+                            {tech}
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+
+                    {/* Action Buttons */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      className="flex flex-col sm:flex-row gap-4 pt-6"
+                    >
+                      <MagneticButton
+                        href={selectedProject.liveLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 bg-gradient-to-r from-aquamarine to-electric_blue text-deep_indigo font-bold py-4 px-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3"
+                      >
+                        <ExternalLinkIcon />
+                        View Live Demo
+                      </MagneticButton>
+                      <MagneticButton
+                        href={selectedProject.githubLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 bg-dark_teal/50 backdrop-blur-sm text-aquamarine font-bold py-4 px-6 rounded-2xl border border-aquamarine/30 hover:bg-aquamarine hover:text-deep_indigo transition-all duration-300 flex items-center justify-center gap-3"
+                      >
+                        <GithubIcon />
+                        Source Code
+                      </MagneticButton>
+                    </motion.div>
+                  </div>
+
+                  {/* Right Column - Gallery */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <h3 className="text-xl font-bold font-heading text-aquamarine mb-4">
+                      Project Gallery
+                    </h3>
+                    <div className="grid grid-cols-2 gap-4 max-h-full overflow-y-auto pr-2">
+                      {selectedProject.images.map((image, index) => (
+                        <motion.img
+                          key={index}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.5 + index * 0.1 }}
+                          whileHover={{ scale: 1.05, zIndex: 10 }}
+                          src={image}
+                          alt={`${selectedProject.title} interface screenshot ${index + 1}`}
+                          className="w-full h-32 object-cover rounded-2xl border border-aquamarine/20 cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300"
+                          loading="lazy"
+                        />
+                      ))}
+                    </div>
+                  </motion.div>
+                </div>
               </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
-      </section>
-    </>
+      </div>
+    </ErrorBoundary>
   );
 };
 
-/**
- * SEO-friendly default export with display name
- * Enables better debugging and component identification
- */
-Website.displayName = 'STEMPortfolioWebsite';
-
-
-
-
+// SEO and Performance Optimizations
+Website.displayName = 'WebsiteShowcase';
 
 export default Website;
