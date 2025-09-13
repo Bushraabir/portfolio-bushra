@@ -1,27 +1,7 @@
-/**
- * Navbar Component - Responsive Navigation System
- * 
- * Features:
- * - Animated hamburger menu with smooth transitions
- * - Responsive design for mobile, tablet, and desktop
- * - Dynamic navigation links based on current page
- * - Accessible keyboard and touch interactions
- * - Safe area support for devices with notches
- * - Backdrop blur effects and gradient styling
- * - Smooth scrolling to sections
- * 
- * @author Bushra's Portfolio
- * @version 2.0
- * @since 2025
- */
-
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-/**
- * Animation variants for sidebar navigation
- */
 const sidebarVariants = {
   open: { 
     x: 0, 
@@ -51,9 +31,6 @@ const sidebarVariants = {
   }
 };
 
-/**
- * Animation variants for navigation items
- */
 const navItemVariants = {
   open: { 
     x: 0, 
@@ -79,9 +56,6 @@ const navItemVariants = {
   }
 };
 
-/**
- * Animation variants for backdrop overlay
- */
 const overlayVariants = {
   open: { 
     opacity: 1, 
@@ -95,18 +69,9 @@ const overlayVariants = {
   }
 };
 
-/**
- * Navigation Toggle Button Component
- * Animated hamburger menu with responsive design
- * 
- * @param {boolean} isOpen - Current state of navigation
- * @param {function} setIsOpen - Function to toggle navigation state
- * @returns {JSX.Element} Toggle button component
- */
 const ToggleButton = ({ isOpen, setIsOpen }) => {
   const [isMobile, setIsMobile] = useState(false);
 
-  // Monitor viewport size for responsive behavior
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -140,7 +105,6 @@ const ToggleButton = ({ isOpen, setIsOpen }) => {
           WebkitTapHighlightColor: "transparent"
         }}
       >
-        {/* Background animation layer */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-br from-lemon_chiffon/10 via-dark_teal/10 to-transparent rounded-xl"
           animate={{ 
@@ -151,10 +115,8 @@ const ToggleButton = ({ isOpen, setIsOpen }) => {
           transition={{ duration: 0.4 }}
         />
         
-        {/* Hamburger icon animation */}
         <div className="relative z-10 w-full h-full flex items-center justify-center">
           <motion.div className={`relative ${isMobile ? 'w-6 h-6' : 'w-7 h-7 sm:w-8 sm:h-8'} flex items-center justify-center`}>
-            {/* Top line */}
             <motion.span
               className={`absolute block ${isMobile ? 'h-0.5 w-5' : 'h-0.5 w-5 sm:w-6'} bg-lemon_chiffon rounded-full transform origin-center`}
               animate={{
@@ -164,7 +126,6 @@ const ToggleButton = ({ isOpen, setIsOpen }) => {
               }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
-            {/* Middle line */}
             <motion.span
               className={`absolute block ${isMobile ? 'h-0.5 w-5' : 'h-0.5 w-5 sm:w-6'} bg-lemon_chiffon rounded-full transform origin-center`}
               animate={{
@@ -173,7 +134,6 @@ const ToggleButton = ({ isOpen, setIsOpen }) => {
               }}
               transition={{ duration: 0.2, ease: "easeInOut" }}
             />
-            {/* Bottom line */}
             <motion.span
               className={`absolute block ${isMobile ? 'h-0.5 w-5' : 'h-0.5 w-5 sm:w-6'} bg-lemon_chiffon rounded-full transform origin-center`}
               animate={{
@@ -186,7 +146,6 @@ const ToggleButton = ({ isOpen, setIsOpen }) => {
           </motion.div>
         </div>
 
-        {/* Tap animation feedback */}
         <motion.div
           className="absolute inset-0 bg-lemon_chiffon/20 rounded-xl"
           initial={{ scale: 0, opacity: 0 }}
@@ -198,13 +157,6 @@ const ToggleButton = ({ isOpen, setIsOpen }) => {
   );
 };
 
-/**
- * Main Navigation Component
- * Responsive sidebar navigation with dynamic content based on current page
- * 
- * @param {string} page - Current page identifier ('home', 'myWorks', 'myStory')
- * @returns {JSX.Element} Navigation component
- */
 const NavbarComponent = ({ page }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [windowSize, setWindowSize] = useState({
@@ -212,7 +164,6 @@ const NavbarComponent = ({ page }) => {
     height: typeof window !== 'undefined' ? window.innerHeight : 768
   });
 
-  // Monitor window resize for responsive behavior
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
@@ -225,15 +176,10 @@ const NavbarComponent = ({ page }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Responsive breakpoints
   const isMobile = windowSize.width < 768;
   const isTablet = windowSize.width >= 768 && windowSize.width < 1024;
   const isSmallMobile = windowSize.width < 480;
 
-  /**
-   * Smooth scroll to section functionality
-   * @param {string} id - Target section ID
-   */
   const scrollToSection = (id) => {
     try {
       const element = document.getElementById(id);
@@ -252,7 +198,6 @@ const NavbarComponent = ({ page }) => {
     setIsOpen(false);
   };
 
-  // Handle click outside to close navigation
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (isOpen && 
@@ -274,7 +219,6 @@ const NavbarComponent = ({ page }) => {
     };
   }, [isOpen]);
 
-  // Handle escape key to close navigation
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === "Escape" && isOpen) {
@@ -311,9 +255,6 @@ const NavbarComponent = ({ page }) => {
     };
   }, [isOpen, isMobile]);
 
-  /**
-   * Navigation links configuration for different pages
-   */
   const navLinks = {
     home: [
       { to: "/my-works", name: "My Works", icon: "🚀", description: "Explore my projects" },
@@ -336,9 +277,7 @@ const NavbarComponent = ({ page }) => {
     ]
   };
 
-  /**
-   * Responsive utility functions for dynamic sizing
-   */
+  // Dynamic sizing based on device
   const getNavbarWidth = () => {
     if (isSmallMobile) return 'w-full max-w-sm';
     if (isMobile) return 'w-full max-w-md';
@@ -387,12 +326,10 @@ const NavbarComponent = ({ page }) => {
 
   return (
     <>
-      {/* Toggle Button */}
       <div data-navbar-toggle="true">
         <ToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
       
-      {/* Backdrop Overlay */}
       <motion.div
         className="navbar-overlay fixed inset-0 bg-black/60 backdrop-blur-sm z-[45]"
         initial="closed"
@@ -406,7 +343,6 @@ const NavbarComponent = ({ page }) => {
         }}
       />
 
-      {/* Navigation Sidebar */}
       <motion.nav
         className={`navbar-container fixed ${getNavbarPosition()} ${getNavbarHeight()} ${getNavbarWidth()} z-[50] flex flex-col`}
         initial="closed"
@@ -432,7 +368,7 @@ const NavbarComponent = ({ page }) => {
             aria-hidden="true"
           />
 
-          {/* Header Section */}
+          {/* Header section with responsive sizing */}
           <motion.div 
             className={`${getPadding()} border-b border-lemon_chiffon/10`}
             variants={navItemVariants}
@@ -458,7 +394,7 @@ const NavbarComponent = ({ page }) => {
             </motion.div>
           </motion.div>
 
-          {/* Navigation Links */}
+          {/* Navigation links with enhanced mobile styling */}
           <motion.div 
             className={`flex-1 overflow-y-auto ${isMobile ? 'px-3 py-4' : 'px-4 py-6'} scrollbar-thin scrollbar-thumb-lemon_chiffon/30 scrollbar-track-transparent`}
             variants={navItemVariants}
@@ -477,7 +413,6 @@ const NavbarComponent = ({ page }) => {
                   whileTap={{ scale: 0.98 }}
                 >
                   {link.to ? (
-                    // Router Link
                     <Link 
                       to={link.to} 
                       className={`group flex items-center gap-${isMobile ? '3' : '4'} ${isMobile ? 'px-3 py-2.5' : 'px-4 py-3'} font-medium text-slate-300 hover:text-lemon_chiffon transition-all duration-300 rounded-xl hover:bg-gradient-to-r hover:from-lemon_chiffon/10 hover:to-dark_teal/10 border border-transparent hover:border-lemon_chiffon/20 backdrop-blur-sm active:scale-95 touch-manipulation`}
@@ -510,7 +445,6 @@ const NavbarComponent = ({ page }) => {
                       </motion.span>
                     </Link>
                   ) : (
-                    // Scroll to Section Button
                     <button
                       onClick={() => scrollToSection(link.id)}
                       className={`group w-full flex items-center gap-${isMobile ? '3' : '4'} ${isMobile ? 'px-3 py-2.5' : 'px-4 py-3'} ${sizes.navText} font-medium text-slate-300 hover:text-lemon_chiffon transition-all duration-300 rounded-xl hover:bg-gradient-to-r hover:from-lemon_chiffon/10 hover:to-dark_teal/10 border border-transparent hover:border-lemon_chiffon/20 backdrop-blur-sm text-left active:scale-95 touch-manipulation`}
@@ -547,7 +481,7 @@ const NavbarComponent = ({ page }) => {
             </motion.ul>
           </motion.div>
 
-          {/* Decorative Border */}
+          {/* Decorative border - enhanced for mobile */}
           <div 
             className={`absolute ${isMobile ? 'bottom-0 left-0 w-full h-0.5' : 'right-0 top-0 h-full w-0.5'} bg-gradient-to-${isMobile ? 'r' : 'b'} from-transparent via-lemon_chiffon/30 to-transparent`} 
             aria-hidden="true"

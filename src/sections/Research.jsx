@@ -396,7 +396,7 @@ const PremiumResearchShowcase = () => {
 
             
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 tracking-tight leading-none">
-              <span className="block bg-gradient-to-r from-lemon_chiffon-500 via-dark_teal-500 to-deep_indigo-700 bg-clip-text text-transparent mb-3">
+              <span className="block bg-gradient-to-r from-lemon_chiffon-500 via-non_photo_blue-500 to-deep_indigo-700 bg-clip-text text-transparent mb-3">
                 Discover the
               </span>
               <span className="block bg-gradient-to-r from-jordy_blue-500 via-mauve-500 via-pink_lavender-500 to-aquamarine-500 bg-clip-text text-transparent relative animate-gradient-move bg-[length:200%_200%]">
