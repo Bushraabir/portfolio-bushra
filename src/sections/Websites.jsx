@@ -791,18 +791,13 @@ const Website = () => {
         <p>Explore cutting-edge web applications featuring modern technologies, responsive design, and innovative user experiences. Projects include educational platforms, scientific visualizations, productivity tools, and interactive games.</p>
       </div>
 
-      <div className="relative min-h-screen bg-gradient-to-br from-deep_indigo via-dark_teal to-deep_indigo overflow-hidden">
+      <div className="relative min-h-screen bg-transparent overflow-hidden">
         {/* Scroll Progress Indicator */}
         <ScrollProgress />
 
         {/* Animated Background */}
         <BackgroundOrbs />
 
-        {/* Additional Background Effects */}
-        <div className="absolute inset-0 opacity-50" aria-hidden="true">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-aquamarine/10 to-electric_blue/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-jordy_blue/10 to-pink_lavender/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        </div>
 
         {/* Hero Section */}
         <motion.section 

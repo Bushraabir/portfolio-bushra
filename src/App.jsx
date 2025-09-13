@@ -667,6 +667,14 @@ const MyWorksPage = () => {
       </Helmet>
       
       <NavbarComponent page="myWorks" />
+
+      <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
+        <ErrorBoundary>
+          <SectionWrapper fallback={<Loader1 />}>
+            <ParticleScene />
+          </SectionWrapper>
+        </ErrorBoundary>
+      </div>
       
       <main className="min-h-screen relative z-10">
         <section id="websites">
