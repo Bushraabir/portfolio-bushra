@@ -485,7 +485,7 @@ const Art = () => {
   return (
     <section id= "artworks" className=" relative p-6 sm:p-10 md:p-14 lg:p-20 min-h-screen overflow-hidden">
       <motion.div
-        className="absolute inset-0 opacity-75 backdrop-blur-lg"
+        className="absolute inset-0 opacity-50 backdrop-blur-lg"
         animate={{ background: `linear-gradient(135deg, ${tabColors[activeTab].from} 0%, ${tabColors[activeTab].to} 100%)` }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
       />

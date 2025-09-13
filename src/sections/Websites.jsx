@@ -310,13 +310,7 @@ const Website = () => {
     setImageLoadErrors(prev => new Set([...prev, imageSrc]));
   }, []);
 
-  // Handle image cycling for all cards
-  const cycleImage = useCallback((projectId, imageCount) => {
-    setGlobalImageIndex(prev => ({
-      ...prev,
-      [projectId]: ((prev[projectId] || 0) + 1) % imageCount
-    }));
-  }, []);
+
 
   // Body scroll lock for modal
   useEffect(() => {
@@ -474,36 +468,9 @@ const Website = () => {
     }
   ], []);
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
-      }
-    }
-  };
 
-  const cardVariants = {
-    hidden: { 
-      y: 80, 
-      opacity: 0, 
-      rotateX: 15,
-      scale: 0.9
-    },
-    visible: {
-      y: 0,
-      opacity: 1,
-      rotateX: 0,
-      scale: 1,
-      transition: {
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    }
-  };
+
+
 
   // Enhanced Project Card Component
   const ProjectCard = memo(({ website, index }) => {
@@ -514,16 +481,7 @@ const Website = () => {
     
     const currentImageIndex = globalImageIndex[website.id] || 0;
 
-    // Auto-cycle images on hover
-    useEffect(() => {
-      let interval;
-      if (isHovered && website.images.length > 1) {
-        interval = setInterval(() => {
-          cycleImage(website.id, website.images.length);
-        }, 2000);
-      }
-      return () => clearInterval(interval);
-    }, [isHovered, website.id, website.images.length, cycleImage]);
+
 
     const handleImageLoad = useCallback(() => {
       setImageLoaded(true);
@@ -536,13 +494,10 @@ const Website = () => {
     return (
       <motion.article
         ref={cardRef}
-        variants={cardVariants}
+    
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
-        whileHover={{ 
-          y: -8, 
-          transition: { duration: 0.3, ease: "easeOut" } 
-        }}
+
         className={`group relative cursor-pointer transform-gpu ${
           website.featured ? 'lg:col-span-2' : ''
         }`}
@@ -560,7 +515,7 @@ const Website = () => {
         }}
       >
         {/* Card Container */}
-        <div className="relative bg-gradient-to-br from-deep_indigo/90 via-dark_teal/80 to-deep_indigo/90 backdrop-blur-xl border border-aquamarine/20 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500">
+        <div className="relative bg-gradient-to-br from-deep_indigo/10 via-dark_teal/80 to-deep_indigo/10 backdrop-blur-xl border border-aquamarine/20 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500">
           
           {/* Featured Badge */}
           {website.featured && (
@@ -592,11 +547,7 @@ const Website = () => {
                 src={website.images[currentImageIndex]}
                 alt={`${website.title} interface screenshot ${currentImageIndex + 1}`}
                 className="absolute inset-0 w-full h-full object-cover"
-                initial={{ opacity: 0, scale: 1.1 }}
-                animate={{ 
-                  opacity: imageLoaded ? 1 : 0, 
-                  scale: isHovered ? 1.05 : 1 
-                }}
+
                 transition={{ 
                   opacity: { duration: 0.3 },
                   scale: { duration: 0.6, ease: "easeOut" }
@@ -911,7 +862,7 @@ const Website = () => {
           aria-label="Website projects showcase"
         >
           <motion.div
-            variants={containerVariants}
+           
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-10%" }}
@@ -934,8 +885,8 @@ const Website = () => {
 
             {/* Projects Grid */}
             <motion.div 
-              variants={containerVariants}
-              className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+             
+              className="grid grid-cols-2 lg:grid-cols-3 gap-8"
             >
               {websites.map((website, index) => (
                 <ProjectCard key={website.id} website={website} index={index} />
@@ -1048,7 +999,7 @@ const Website = () => {
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.5 + index * 0.05 }}
-                            className="px-4 py-2 bg-dark_teal/30 backdrop-blur-sm text-electric_blue rounded-xl text-center border border-electric_blue/20 hover:border-electric_blue/40 transition-all duration-300 text-sm font-medium"
+                            className="px-4 py-2 bg-dark_teal/30 backdrop-blur-sm text-electric_blue text-center border border-electric_blue/20 hover:border-electric_blue/40 transition-all duration-300 text-sm font-medium"
                           >
                             {tech}
                           </motion.div>
@@ -1067,7 +1018,7 @@ const Website = () => {
                         href={selectedProject.liveLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 bg-gradient-to-r from-aquamarine to-electric_blue text-deep_indigo font-bold py-4 px-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3"
+                        className="flex-1 bg-gradient-to-r from-aquamarine to-electric_blue text-deep_indigo font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3"
                       >
                         <ExternalLinkIcon />
                         View Live Demo
@@ -1076,7 +1027,7 @@ const Website = () => {
                         href={selectedProject.githubLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 bg-dark_teal/50 backdrop-blur-sm text-aquamarine font-bold py-4 px-6 rounded-2xl border border-aquamarine/30 hover:bg-aquamarine hover:text-deep_indigo transition-all duration-300 flex items-center justify-center gap-3"
+                        className="flex-1 bg-dark_teal/50 backdrop-blur-sm text-aquamarine font-bold py-3 px-4 rounded-xl border border-aquamarine/30 hover:bg-aquamarine hover:text-deep_indigo transition-all duration-300 flex items-center justify-center gap-3"
                       >
                         <GithubIcon />
                         Source Code
@@ -1103,7 +1054,7 @@ const Website = () => {
                           whileHover={{ scale: 1.05, zIndex: 10 }}
                           src={image}
                           alt={`${selectedProject.title} interface screenshot ${index + 1}`}
-                          className="w-full h-32 object-cover rounded-2xl border border-aquamarine/20 cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300"
+                          className="w-full h-32 object-cover  border border-aquamarine/20 cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300"
                           loading="lazy"
                         />
                       ))}
