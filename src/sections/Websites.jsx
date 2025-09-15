@@ -43,7 +43,7 @@ const GithubIcon = memo(() => (
 
 const ExternalLinkIcon = memo(() => (
   <svg 
-    className="w-5 h-5" 
+    className="w-4 h-4 sm:w-5 sm:h-5" 
     fill="none" 
     stroke="currentColor" 
     viewBox="0 0 24 24" 
@@ -56,18 +56,18 @@ const ExternalLinkIcon = memo(() => (
 ));
 
 const ChevronDownIcon = memo(() => (
-  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+  <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m19 9-7 7-7-7" />
   </svg>
 ));
 
 const PlayIcon = memo(() => (
-  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
     <path d="M8 5v14l11-7z"/>
   </svg>
 ));
 
-// Import all website screenshots
+// Import all website screenshots (kept original paths)
 import emp1 from "../assets/Website/EmpEd/1.png";
 import emp2 from "../assets/Website/EmpEd/2.png";
 import emp3 from "../assets/Website/EmpEd/3.png";
@@ -123,15 +123,15 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-deep_indigo flex items-center justify-center p-8">
-          <div className="text-center text-lemon_chiffon max-w-md">
-            <h2 className="text-2xl font-bold font-heading mb-4">Something went wrong</h2>
-            <p className="text-aquamarine font-description mb-6">
+        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 sm:p-8">
+          <div className="text-center text-amber-100 max-w-md">
+            <h2 className="text-xl sm:text-2xl font-bold font-sans mb-4">Something went wrong</h2>
+            <p className="text-cyan-300 font-sans mb-6 text-sm sm:text-base">
               We're sorry, but there was an error loading the website showcase.
             </p>
             <button 
               onClick={() => window.location.reload()} 
-              className="px-6 py-3 bg-gradient-to-r from-aquamarine to-electric_blue text-deep_indigo rounded-2xl hover:shadow-lg transition-all duration-300 font-cta"
+              className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-900 rounded-xl hover:shadow-lg transition-all duration-300 font-semibold text-sm sm:text-base"
             >
               Reload Page
             </button>
@@ -155,7 +155,7 @@ const ScrollProgress = memo(() => {
   
   return (
     <motion.div
-      className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-aquamarine via-electric_blue to-jordy_blue origin-left z-50 shadow-lg"
+      className="fixed top-0 left-0 right-0 h-0.5 sm:h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 origin-left z-50 shadow-lg"
       style={{ scaleX }}
       role="progressbar"
       aria-label="Page scroll progress"
@@ -168,9 +168,9 @@ ScrollProgress.displayName = 'ScrollProgress';
 // Animated Background Elements
 const BackgroundOrbs = memo(() => {
   const orbs = useMemo(() => 
-    Array.from({ length: 6 }, (_, i) => ({
+    Array.from({ length: 4 }, (_, i) => ({
       id: i,
-      size: Math.random() * 300 + 200,
+      size: Math.random() * 200 + 150,
       x: Math.random() * 100,
       y: Math.random() * 100,
       duration: Math.random() * 20 + 20,
@@ -182,7 +182,7 @@ const BackgroundOrbs = memo(() => {
       {orbs.map((orb) => (
         <motion.div
           key={orb.id}
-          className="absolute rounded-full opacity-10"
+          className="absolute rounded-full opacity-5 sm:opacity-10"
           style={{
             left: `${orb.x}%`,
             top: `${orb.y}%`,
@@ -190,16 +190,16 @@ const BackgroundOrbs = memo(() => {
             height: orb.size,
             background: `radial-gradient(circle, ${
               orb.id % 3 === 0 
-                ? '#98f5e1' 
+                ? '#67e8f9' 
                 : orb.id % 3 === 1 
-                  ? '#8eecf5' 
-                  : '#a3c4f3'
+                  ? '#60a5fa' 
+                  : '#a78bfa'
             } 0%, transparent 70%)`,
           }}
           animate={{
-            x: [0, 50, 0],
-            y: [0, -30, 0],
-            scale: [1, 1.2, 1],
+            x: [0, 30, 0],
+            y: [0, -20, 0],
+            scale: [1, 1.1, 1],
           }}
           transition={{
             duration: orb.duration,
@@ -223,7 +223,7 @@ const AnimatedText = memo(({ children, delay = 0, className = "", duration = 0.8
   return (
     <div ref={ref} className={`relative ${className}`}>
       <motion.div
-        initial={{ y: 50, opacity: 0, rotateX: 15 }}
+        initial={{ y: 30, opacity: 0, rotateX: 10 }}
         animate={isInView ? { y: 0, opacity: 1, rotateX: 0 } : {}}
         transition={{ 
           duration, 
@@ -246,19 +246,19 @@ const MagneticButton = memo(({ children, className = "", href, onClick, ...props
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = useCallback((e) => {
-    if (!ref.current) return;
+    if (!ref.current || window.innerWidth < 768) return; // Disable on mobile
     const { left, top, width, height } = ref.current.getBoundingClientRect();
     const centerX = left + width / 2;
     const centerY = top + height / 2;
     
-    const deltaX = (e.clientX - centerX) * 0.15;
-    const deltaY = (e.clientY - centerY) * 0.15;
+    const deltaX = (e.clientX - centerX) * 0.1;
+    const deltaY = (e.clientY - centerY) * 0.1;
     
     setPosition({ x: deltaX, y: deltaY });
   }, []);
 
   const handleMouseEnter = useCallback(() => {
-    setIsHovered(true);
+    if (window.innerWidth >= 768) setIsHovered(true);
   }, []);
 
   const handleMouseLeave = useCallback(() => {
@@ -273,7 +273,7 @@ const MagneticButton = memo(({ children, className = "", href, onClick, ...props
       ref={ref}
       className={`relative transition-all duration-300 ease-out transform-gpu ${className}`}
       style={{ 
-        transform: `translate(${position.x}px, ${position.y}px) scale(${isHovered ? 1.05 : 1})` 
+        transform: `translate(${position.x}px, ${position.y}px) scale(${isHovered ? 1.03 : 1})` 
       }}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
@@ -302,15 +302,13 @@ const Website = () => {
 
   // Scroll-based animations
   const { scrollY } = useScroll();
-  const heroY = useTransform(scrollY, [0, 800], [0, 200]);
+  const heroY = useTransform(scrollY, [0, 800], [0, 100]);
   const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
 
   // Handle image loading errors
   const handleImageError = useCallback((imageSrc) => {
     setImageLoadErrors(prev => new Set([...prev, imageSrc]));
   }, []);
-
-
 
   // Body scroll lock for modal
   useEffect(() => {
@@ -337,11 +335,11 @@ const Website = () => {
         "The technical architecture emphasizes performance and accessibility, utilizing modern web standards to ensure compatibility across all devices and assistive technologies. Advanced scroll-triggered animations and responsive design create an immersive experience while maintaining fast load times."
       ],
       tags: [
-        { name: "React", color: "text-electric_blue" },
-        { name: "GSAP", color: "text-pink_lavender" },
-        { name: "ScrollTrigger", color: "text-aquamarine" },
-        { name: "EmailJS", color: "text-mauve" },
-        { name: "Responsive", color: "text-tea_rose" }
+        { name: "React", color: "text-blue-400" },
+        { name: "GSAP", color: "text-purple-400" },
+        { name: "ScrollTrigger", color: "text-cyan-400" },
+        { name: "EmailJS", color: "text-violet-400" },
+        { name: "Responsive", color: "text-rose-400" }
       ],
       images: [emp3, emp1, emp2, emp4, emp5, emp6],
       githubLink: "https://github.com/Bushraabir/empowereducation",
@@ -349,7 +347,7 @@ const Website = () => {
       technologies: ["React.js", "GSAP", "ScrollTrigger", "Framer Motion", "EmailJS", "CSS3"],
       category: "Education",
       featured: true,
-      color: "from-aquamarine/20 to-electric_blue/20"
+      color: "from-cyan-500/20 to-blue-500/20"
     },
     {
       id: 'periodic-table',
@@ -361,10 +359,10 @@ const Website = () => {
         "Educational features include detailed element profiles, comparative analysis tools, and trend visualization capabilities. The platform serves both academic institutions and independent learners seeking to understand chemical relationships through visual exploration."
       ],
       tags: [
-        { name: "Python", color: "text-champagne_pink" },
-        { name: "Streamlit", color: "text-tea_rose" },
-        { name: "Plotly", color: "text-jordy_blue" },
-        { name: "Data Science", color: "text-mauve" }
+        { name: "Python", color: "text-amber-400" },
+        { name: "Streamlit", color: "text-rose-400" },
+        { name: "Plotly", color: "text-indigo-400" },
+        { name: "Data Science", color: "text-violet-400" }
       ],
       images: [PeriodicTableVisualiser2, PeriodicTableVisualiser1, PeriodicTableVisualiser3, PeriodicTableVisualiser4, PeriodicTableVisualiser5, PeriodicTableVisualiser6],
       githubLink: "https://github.com/Bushraabir/periodic_table_visualizer",
@@ -372,7 +370,7 @@ const Website = () => {
       technologies: ["Python", "Streamlit", "Plotly", "Pandas", "Data Visualization"],
       category: "Science",
       featured: true,
-      color: "from-jordy_blue/20 to-pink_lavender/20"
+      color: "from-indigo-500/20 to-purple-500/20"
     },
     {
       id: 'study-buddy',
@@ -384,10 +382,10 @@ const Website = () => {
         "Firebase integration provides secure user authentication and cross-device synchronization, while Math.js enables accurate computational capabilities. The responsive design ensures consistent functionality across desktop, tablet, and mobile devices."
       ],
       tags: [
-        { name: "React", color: "text-jordy_blue" },
-        { name: "Firebase", color: "text-mauve" },
-        { name: "Math.js", color: "text-pink_lavender" },
-        { name: "ReactQuill", color: "text-tea_rose" }
+        { name: "React", color: "text-indigo-400" },
+        { name: "Firebase", color: "text-violet-400" },
+        { name: "Math.js", color: "text-purple-400" },
+        { name: "ReactQuill", color: "text-rose-400" }
       ],
       images: [StudyBuddy2, StudyBuddy1, StudyBuddy3, StudyBuddy4, StudyBuddy5, StudyBuddy6, StudyBuddy7, StudyBuddy8],
       githubLink: "https://github.com/Bushraabir/study-buddy",
@@ -395,7 +393,7 @@ const Website = () => {
       technologies: ["React.js", "Firebase", "Plotly.js", "Math.js", "ReactQuill"],
       category: "Productivity",
       featured: false,
-      color: "from-mauve/20 to-tea_rose/20"
+      color: "from-violet-500/20 to-rose-500/20"
     },
     {
       id: 'space-invaders',
@@ -407,10 +405,10 @@ const Website = () => {
         "Visual effects include explosion animations, thruster particles, and post-processing effects like bloom and chromatic aberration. The responsive design ensures smooth 60fps gameplay across desktop and mobile devices."
       ],
       tags: [
-        { name: "Three.js", color: "text-mauve" },
-        { name: "WebGL", color: "text-champagne_pink" },
-        { name: "TypeScript", color: "text-aquamarine" },
-        { name: "Game Development", color: "text-tea_rose" }
+        { name: "Three.js", color: "text-violet-400" },
+        { name: "WebGL", color: "text-amber-400" },
+        { name: "TypeScript", color: "text-cyan-400" },
+        { name: "Game Development", color: "text-rose-400" }
       ],
       images: [Space2, Space1, Space3],
       githubLink: "https://github.com/Bushraabir/space-invaders",
@@ -418,7 +416,7 @@ const Website = () => {
       technologies: ["React", "Three.js", "TypeScript", "WebGL", "Post-processing"],
       category: "Gaming",
       featured: false,
-      color: "from-electric_blue/20 to-champagne_pink/20"
+      color: "from-blue-500/20 to-amber-500/20"
     },
     {
       id: 'relevia',
@@ -430,10 +428,10 @@ const Website = () => {
         "The technical implementation prioritizes accessibility during high-stress situations, featuring large, clear interfaces and calming visual designs. Framer Motion provides purposeful animations that promote relaxation rather than overwhelm users during panic episodes."
       ],
       tags: [
-        { name: "React", color: "text-electric_blue" },
-        { name: "Tailwind CSS", color: "text-champagne_pink" },
-        { name: "Mental Health", color: "text-mauve" },
-        { name: "Accessibility", color: "text-aquamarine" }
+        { name: "React", color: "text-blue-400" },
+        { name: "Tailwind CSS", color: "text-amber-400" },
+        { name: "Mental Health", color: "text-violet-400" },
+        { name: "Accessibility", color: "text-cyan-400" }
       ],
       images: [relevia1, relevia2, relevia3, relevia4, relevia5, relevia6, relevia7],
       githubLink: "https://github.com/Bushraabir/relevia",
@@ -441,7 +439,7 @@ const Website = () => {
       technologies: ["React.js", "Tailwind CSS", "Framer Motion", "Accessibility"],
       category: "Health",
       featured: true,
-      color: "from-pink_lavender/20 to-mauve/20"
+      color: "from-purple-500/20 to-violet-500/20"
     },
     {
       id: 'empowertube',
@@ -453,10 +451,10 @@ const Website = () => {
         "Built with vanilla JavaScript to demonstrate fundamental web development skills, the application includes offline functionality, local storage persistence, and cross-browser compatibility. The responsive design ensures consistent performance across all device types."
       ],
       tags: [
-        { name: "Vanilla JS", color: "text-aquamarine" },
-        { name: "HTML5", color: "text-jordy_blue" },
-        { name: "CSS3", color: "text-champagne_pink" },
-        { name: "Local Storage", color: "text-mauve" }
+        { name: "Vanilla JS", color: "text-cyan-400" },
+        { name: "HTML5", color: "text-indigo-400" },
+        { name: "CSS3", color: "text-amber-400" },
+        { name: "Local Storage", color: "text-violet-400" }
       ],
       images: [Tube1, Tube1, Tube1],
       githubLink: "https://github.com/Bushraabir/EmpowerTube",
@@ -464,13 +462,9 @@ const Website = () => {
       technologies: ["JavaScript", "HTML5", "CSS3", "Local Storage", "Responsive Design"],
       category: "CMS",
       featured: false,
-      color: "from-tea_rose/20 to-jordy_blue/20"
+      color: "from-rose-500/20 to-indigo-500/20"
     }
   ], []);
-
-
-
-
 
   // Enhanced Project Card Component
   const ProjectCard = memo(({ website, index }) => {
@@ -480,8 +474,6 @@ const Website = () => {
     const [isHovered, setIsHovered] = useState(false);
     
     const currentImageIndex = globalImageIndex[website.id] || 0;
-
-
 
     const handleImageLoad = useCallback(() => {
       setImageLoaded(true);
@@ -494,12 +486,10 @@ const Website = () => {
     return (
       <motion.article
         ref={cardRef}
-    
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
-
         className={`group relative cursor-pointer transform-gpu ${
-          website.featured ? 'lg:col-span-2' : ''
+          website.featured ? 'sm:col-span-2 md:col-span-1 lg:col-span-2' : ''
         }`}
         onClick={handleCardClick}
         onMouseEnter={() => setIsHovered(true)}
@@ -515,7 +505,7 @@ const Website = () => {
         }}
       >
         {/* Card Container */}
-        <div className="relative bg-gradient-to-br from-deep_indigo/10 via-dark_teal/80 to-deep_indigo/10 backdrop-blur-xl border border-aquamarine/20 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500">
+        <div className="relative bg-gradient-to-br from-slate-800/80 via-slate-700/90 to-slate-800/80 backdrop-blur-xl border border-cyan-400/20 rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500">
           
           {/* Featured Badge */}
           {website.featured && (
@@ -523,14 +513,14 @@ const Website = () => {
               initial={{ opacity: 0, scale: 0, rotate: -12 }}
               animate={{ opacity: 1, scale: 1, rotate: -12 }}
               transition={{ delay: index * 0.1 + 0.5, type: "spring", stiffness: 150 }}
-              className="absolute top-4 left-4 z-20 px-3 py-1 bg-gradient-to-r from-aquamarine to-electric_blue text-deep_indigo text-xs font-bold rounded-full shadow-lg"
+              className="absolute top-2 left-2 sm:top-4 sm:left-4 z-20 px-2 py-1 sm:px-3 sm:py-1 bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-900 text-xs font-bold rounded-full shadow-lg"
             >
               FEATURED
             </motion.div>
           )}
 
           {/* Image Section with Enhanced Hover Effects */}
-          <div className="relative h-64 lg:h-72 overflow-hidden">
+          <div className="relative h-48 sm:h-56 md:h-64 lg:h-72 overflow-hidden">
             {/* Dynamic Gradient Overlay */}
             <motion.div
               className={`absolute inset-0 bg-gradient-to-br ${website.color} opacity-0 z-10`}
@@ -547,7 +537,6 @@ const Website = () => {
                 src={website.images[currentImageIndex]}
                 alt={`${website.title} interface screenshot ${currentImageIndex + 1}`}
                 className="absolute inset-0 w-full h-full object-cover"
-
                 transition={{ 
                   opacity: { duration: 0.3 },
                   scale: { duration: 0.6, ease: "easeOut" }
@@ -560,18 +549,18 @@ const Website = () => {
 
             {/* Loading State */}
             {!imageLoaded && (
-              <div className="absolute inset-0 bg-deep_indigo/60 backdrop-blur-sm flex items-center justify-center">
+              <div className="absolute inset-0 bg-slate-800/60 backdrop-blur-sm flex items-center justify-center">
                 <motion.div
-                  className="w-12 h-12 border-3 border-aquamarine border-t-transparent rounded-full"
+                  className="w-8 h-8 sm:w-12 sm:h-12 border-2 sm:border-3 border-cyan-400 border-t-transparent rounded-full"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 />
               </div>
             )}
 
-            {/* Interactive Action Buttons */}
+            {/* Interactive Action Buttons - Hidden on mobile for better UX */}
             <motion.div
-              className="absolute top-4 right-4 flex gap-3 z-20"
+              className="hidden sm:flex absolute top-4 right-4 gap-3 z-20"
               initial={{ opacity: 0, y: -20 }}
               animate={{ 
                 opacity: isHovered ? 1 : 0, 
@@ -584,7 +573,7 @@ const Website = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="w-12 h-12 bg-gradient-to-r from-aquamarine to-electric_blue rounded-full flex items-center justify-center text-deep_indigo shadow-lg backdrop-blur-sm hover:shadow-xl transition-all duration-300 border border-white/20"
+                className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center text-slate-900 shadow-lg backdrop-blur-sm hover:shadow-xl transition-all duration-300 border border-white/20"
                 aria-label={`Visit ${website.title} live website`}
               >
                 <ExternalLinkIcon />
@@ -594,7 +583,7 @@ const Website = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="w-12 h-12 bg-deep_indigo/80 backdrop-blur-sm rounded-full flex items-center justify-center text-aquamarine shadow-lg hover:shadow-xl transition-all duration-300 border border-aquamarine/30"
+                className="w-10 h-10 lg:w-12 lg:h-12 bg-slate-800/80 backdrop-blur-sm rounded-full flex items-center justify-center text-cyan-400 shadow-lg hover:shadow-xl transition-all duration-300 border border-cyan-400/30"
                 aria-label={`View ${website.title} source code on GitHub`}
               >
                 <GithubIcon />
@@ -603,7 +592,7 @@ const Website = () => {
 
             {/* Live Demo Indicator */}
             <motion.div
-              className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-2 bg-black/60 backdrop-blur-sm rounded-full z-20"
+              className="hidden sm:flex absolute bottom-4 left-4 items-center gap-2 px-3 py-2 bg-black/60 backdrop-blur-sm rounded-full z-20"
               initial={{ opacity: 0, x: -20 }}
               animate={{ 
                 opacity: isHovered ? 1 : 0, 
@@ -622,7 +611,7 @@ const Website = () => {
             {/* Image Counter */}
             {website.images.length > 1 && (
               <motion.div
-                className="absolute bottom-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-white text-xs font-medium z-20"
+                className="hidden sm:block absolute bottom-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-white text-xs font-medium z-20"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ 
                   opacity: isHovered ? 1 : 0, 
@@ -633,23 +622,47 @@ const Website = () => {
                 {currentImageIndex + 1} / {website.images.length}
               </motion.div>
             )}
+
+            {/* Mobile Action Buttons Overlay */}
+            <div className="sm:hidden absolute bottom-2 right-2 flex gap-2 z-20">
+              <MagneticButton
+                href={website.liveLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center text-slate-900 shadow-lg backdrop-blur-sm border border-white/20"
+                aria-label={`Visit ${website.title} live website`}
+              >
+                <ExternalLinkIcon />
+              </MagneticButton>
+              <MagneticButton
+                href={website.githubLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="w-8 h-8 bg-slate-800/80 backdrop-blur-sm rounded-full flex items-center justify-center text-cyan-400 shadow-lg border border-cyan-400/30"
+                aria-label={`View ${website.title} source code on GitHub`}
+              >
+                <GithubIcon />
+              </MagneticButton>
+            </div>
           </div>
 
           {/* Content Section */}
-          <div className="p-6 lg:p-8">
+          <div className="p-3 sm:p-4 lg:p-6 xl:p-8">
             {/* Category and Title */}
-            <div className="mb-4">
+            <div className="mb-3 sm:mb-4">
               <motion.span
                 initial={{ opacity: 0, x: -20 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ delay: index * 0.1 + 0.3 }}
-                className="inline-block px-3 py-1 text-xs font-medium bg-gradient-to-r from-jordy_blue/20 to-aquamarine/20 text-aquamarine rounded-full border border-aquamarine/30 mb-3"
+                className="inline-block px-2 py-1 sm:px-3 sm:py-1 text-xs font-medium bg-gradient-to-r from-indigo-500/20 to-cyan-400/20 text-cyan-400 rounded-full border border-cyan-400/30 mb-2 sm:mb-3"
               >
                 {website.category}
               </motion.span>
 
               <AnimatedText delay={index * 0.1 + 0.4}>
-                <h3 className="text-2xl lg:text-3xl font-bold font-heading bg-gradient-to-r from-lemon_chiffon to-champagne_pink bg-clip-text text-transparent group-hover:from-aquamarine group-hover:to-electric_blue transition-all duration-500 leading-tight">
+                <h3 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold font-sans bg-gradient-to-r from-amber-100 to-amber-300 bg-clip-text text-transparent group-hover:from-cyan-400 group-hover:to-blue-500 transition-all duration-500 leading-tight">
                   {website.title}
                 </h3>
               </AnimatedText>
@@ -657,19 +670,19 @@ const Website = () => {
 
             {/* Description */}
             <AnimatedText delay={index * 0.1 + 0.5}>
-              <p className="text-lemon_chiffon/80 font-description leading-relaxed mb-6 line-clamp-3">
+              <p className="text-amber-100/80 font-sans leading-relaxed mb-3 sm:mb-4 lg:mb-6 text-sm sm:text-base line-clamp-2 sm:line-clamp-3">
                 {website.shortDescription}
               </p>
             </AnimatedText>
 
             {/* Technology Tags */}
             <motion.div
-              className="flex flex-wrap gap-2 mb-6"
+              className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4 lg:mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: index * 0.1 + 0.6 }}
             >
-              {website.tags.slice(0, 4).map((tag, tagIndex) => (
+              {website.tags.slice(0, 3).map((tag, tagIndex) => (
                 <motion.span
                   key={tag.name}
                   initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
@@ -684,25 +697,30 @@ const Website = () => {
                     stiffness: 200
                   }}
                   whileHover={{ scale: 1.05, y: -2 }}
-                  className={`text-xs px-3 py-1 rounded-full bg-dark_teal/30 backdrop-blur-sm ${tag.color} border border-current/20 hover:border-current/40 transition-all duration-300 cursor-default`}
+                  className={`text-xs px-2 py-1 sm:px-3 sm:py-1 rounded-full bg-slate-700/30 backdrop-blur-sm ${tag.color} border border-current/20 hover:border-current/40 transition-all duration-300 cursor-default`}
                 >
                   {tag.name}
                 </motion.span>
               ))}
+              {website.tags.length > 3 && (
+                <span className="text-xs px-2 py-1 sm:px-3 sm:py-1 rounded-full bg-slate-700/30 backdrop-blur-sm text-amber-100/60 border border-amber-100/20">
+                  +{website.tags.length - 3}
+                </span>
+              )}
             </motion.div>
 
             {/* Stats Row */}
             <motion.div
-              className="flex items-center justify-between text-sm text-lemon_chiffon/60 border-t border-aquamarine/10 pt-4"
+              className="flex items-center justify-between text-xs sm:text-sm text-amber-100/60 border-t border-cyan-400/10 pt-2 sm:pt-3 lg:pt-4"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: index * 0.1 + 0.8 }}
             >
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 sm:gap-4">
                 <span className="font-medium">
-                  {website.technologies.length} Technologies
+                  {website.technologies.length} Tech
                 </span>
-                <span className="font-medium">
+                <span className="font-medium hidden sm:inline">
                   {website.images.length} Screens
                 </span>
               </div>
@@ -711,17 +729,17 @@ const Website = () => {
                 animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <div className="w-2 h-2 bg-aquamarine rounded-full"></div>
-                <span className="text-xs">Interactive</span>
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-cyan-400 rounded-full"></div>
+                <span className="text-xs">Live</span>
               </motion.div>
             </motion.div>
           </div>
 
           {/* Hover Glow Effect */}
           <motion.div
-            className="absolute inset-0 rounded-3xl opacity-0 pointer-events-none"
+            className="absolute inset-0 rounded-xl sm:rounded-2xl lg:rounded-3xl opacity-0 pointer-events-none"
             style={{
-              background: 'linear-gradient(45deg, transparent, rgba(152, 245, 225, 0.1), rgba(142, 236, 245, 0.1), transparent)',
+              background: 'linear-gradient(45deg, transparent, rgba(103, 232, 249, 0.1), rgba(96, 165, 250, 0.1), transparent)',
               filter: 'blur(1px)',
             }}
             animate={{ opacity: isHovered ? 1 : 0 }}
@@ -742,41 +760,40 @@ const Website = () => {
         <p>Explore cutting-edge web applications featuring modern technologies, responsive design, and innovative user experiences. Projects include educational platforms, scientific visualizations, productivity tools, and interactive games.</p>
       </div>
 
-      <div className="relative min-h-screen bg-transparent overflow-hidden">
+      <div className="relative min-h-screen bg-transparent  overflow-hidden">
         {/* Scroll Progress Indicator */}
         <ScrollProgress />
 
         {/* Animated Background */}
         <BackgroundOrbs />
 
-
         {/* Hero Section */}
         <motion.section 
           ref={heroRef}
-          className="relative min-h-screen flex flex-col justify-center items-center px-6 py-20"
+          className="relative min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 py-12 sm:py-20"
           style={{ y: heroY, opacity: heroOpacity }}
         >
           <div className="text-center max-w-6xl mx-auto relative z-10">
             {/* Main Hero Content */}
-            <motion.div className="mb-12">
+            <motion.div className="mb-8 sm:mb-12">
               <motion.h1 
-                initial={{ opacity: 0, y: 100, scale: 0.8 }}
+                initial={{ opacity: 0, y: 60, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ 
                   duration: 1.2, 
                   delay: 0.2,
                   ease: [0.25, 0.46, 0.45, 0.94]
                 }}
-                className="text-6xl md:text-8xl lg:text-12xl font-bold font-heading mb-6"
+                className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-12xl font-bold font-sans mb-4 sm:mb-6"
               >
-                <span className="block bg-gradient-to-r from-lemon_chiffon via-champagne_pink to-aquamarine bg-clip-text text-transparent leading-none">
+                <span className="block bg-gradient-to-r from-amber-100 via-amber-300 to-cyan-400 bg-clip-text text-transparent leading-tight">
                   Web Development
                 </span>
                 <motion.span 
-                  initial={{ opacity: 0, x: -100 }}
+                  initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 1, delay: 0.8 }}
-                  className="block bg-gradient-to-r from-electric_blue via-jordy_blue to-pink_lavender bg-clip-text text-transparent leading-none"
+                  className="block bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-400 bg-clip-text text-transparent leading-tight"
                 >
                   Showcase
                 </motion.span>
@@ -786,25 +803,25 @@ const Website = () => {
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ duration: 1.5, delay: 1.4 }}
-                className="w-32 h-1 bg-gradient-to-r from-aquamarine to-electric_blue rounded-full mx-auto mb-8"
+                className="w-16 sm:w-24 lg:w-32 h-0.5 sm:h-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mx-auto mb-6 sm:mb-8"
               />
             </motion.div>
 
             {/* Subtitle */}
             <AnimatedText delay={1.6}>
-              <p className="text-xl md:text-2xl text-lemon_chiffon/90 font-description leading-relaxed mb-12 max-w-4xl mx-auto">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-amber-100/90 font-sans leading-relaxed mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
                 Discover innovative web applications built with modern technologies,
-                <br className="hidden md:block" />
+                <br className="hidden sm:block" />
                 featuring exceptional user experiences and cutting-edge design patterns.
               </p>
             </AnimatedText>
 
             {/* Interactive Stats */}
             <motion.div
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1.8 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 max-w-3xl mx-auto"
+              className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 mb-12 sm:mb-16 max-w-3xl mx-auto px-4"
             >
               {[
                 { number: `${websites.length}`, label: "Projects", suffix: "+" },
@@ -823,12 +840,12 @@ const Website = () => {
                     stiffness: 200
                   }}
                   whileHover={{ scale: 1.05, y: -5 }}
-                  className="text-center p-4 rounded-2xl bg-gradient-to-br from-deep_indigo/50 to-dark_teal/30 backdrop-blur-sm border border-aquamarine/20 hover:border-aquamarine/40 transition-all duration-300"
+                  className="text-center p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-700/30 backdrop-blur-sm border border-cyan-400/20 hover:border-cyan-400/40 transition-all duration-300"
                 >
-                  <div className="text-3xl md:text-4xl font-bold font-heading text-transparent bg-gradient-to-r from-aquamarine to-electric_blue bg-clip-text mb-1">
+                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-sans text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text mb-1">
                     {stat.number}{stat.suffix}
                   </div>
-                  <div className="text-sm md:text-base text-lemon_chiffon/70 font-description">
+                  <div className="text-xs sm:text-sm md:text-base text-amber-100/70 font-sans">
                     {stat.label}
                   </div>
                 </motion.div>
@@ -840,14 +857,12 @@ const Website = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 2.4 }}
-              className="flex flex-col items-center gap-6"
+              className="flex flex-col items-center gap-4 sm:gap-6"
             >
-
-
               <motion.div
-                animate={{ y: [0, 10, 0] }}
+                animate={{ y: [0, 8, 0] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="text-aquamarine/70"
+                className="text-cyan-400/70"
               >
                 <ChevronDownIcon />
               </motion.div>
@@ -858,25 +873,24 @@ const Website = () => {
         {/* Projects Showcase Section */}
         <section 
           ref={containerRef}
-          className="relative px-6 py-20 max-w-7xl mx-auto"
+          className="relative px-4 sm:px-6 py-12 sm:py-16 lg:py-20 max-w-7xl mx-auto"
           aria-label="Website projects showcase"
         >
           <motion.div
-           
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-10%" }}
-            className="space-y-20"
+            className="space-y-12 sm:space-y-16 lg:space-y-20"
           >
             {/* Section Header */}
-            <div className="text-center mb-16">
+            <div className="text-center mb-8 sm:mb-12 lg:mb-16">
               <AnimatedText>
-                <h2 className="text-4xl md:text-6xl font-bold font-heading text-transparent bg-gradient-to-r from-aquamarine via-electric_blue to-jordy_blue bg-clip-text mb-6">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold font-sans text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 bg-clip-text mb-4 sm:mb-6">
                   Featured Projects
                 </h2>
               </AnimatedText>
               <AnimatedText delay={0.2}>
-                <p className="text-xl text-lemon_chiffon/80 font-description max-w-3xl mx-auto leading-relaxed">
+                <p className="text-sm sm:text-base lg:text-xl text-amber-100/80 font-sans max-w-3xl mx-auto leading-relaxed px-4">
                   A curated collection of web applications showcasing modern development practices, 
                   innovative user interfaces, and technical excellence across diverse domains.
                 </p>
@@ -885,8 +899,7 @@ const Website = () => {
 
             {/* Projects Grid */}
             <motion.div 
-             
-              className="grid grid-cols-2 lg:grid-cols-3 gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
             >
               {websites.map((website, index) => (
                 <ProjectCard key={website.id} website={website} index={index} />
@@ -902,7 +915,7 @@ const Website = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl"
+              className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/90 backdrop-blur-xl"
               onClick={(e) => {
                 if (e.target === e.currentTarget) setSelectedProject(null);
               }}
@@ -912,26 +925,26 @@ const Website = () => {
               aria-describedby="modal-description"
             >
               <motion.div
-                initial={{ scale: 0.8, opacity: 0, y: 50 }}
+                initial={{ scale: 0.9, opacity: 0, y: 30 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.8, opacity: 0, y: 50 }}
+                exit={{ scale: 0.9, opacity: 0, y: 30 }}
                 transition={{ 
                   type: "spring", 
                   stiffness: 300, 
                   damping: 30
                 }}
-                className="bg-gradient-to-br from-deep_indigo/95 to-dark_teal/95 backdrop-blur-2xl border border-aquamarine/30 rounded-3xl p-8 max-w-6xl max-h-[90vh] overflow-y-auto shadow-3xl"
+                className="bg-gradient-to-br from-slate-800/95 to-slate-700/95 backdrop-blur-2xl border border-cyan-400/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-3xl"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Modal Header */}
-                <div className="flex justify-between items-start mb-8">
-                  <div className="flex-1 pr-8">
+                <div className="flex justify-between items-start mb-6 sm:mb-8">
+                  <div className="flex-1 pr-4 sm:pr-8">
                     <motion.h2 
                       id="modal-title"
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 }}
-                      className="text-3xl md:text-4xl font-bold font-heading text-transparent bg-gradient-to-r from-aquamarine to-electric_blue bg-clip-text mb-3"
+                      className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-sans text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text mb-2 sm:mb-3"
                     >
                       {selectedProject.title}
                     </motion.h2>
@@ -939,13 +952,13 @@ const Website = () => {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.2 }}
-                      className="flex items-center gap-4"
+                      className="flex items-center gap-2 sm:gap-4 flex-wrap"
                     >
-                      <span className="px-3 py-1 text-sm bg-gradient-to-r from-jordy_blue/20 to-aquamarine/20 text-aquamarine rounded-full border border-aquamarine/30">
+                      <span className="px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm bg-gradient-to-r from-indigo-500/20 to-cyan-400/20 text-cyan-400 rounded-full border border-cyan-400/30">
                         {selectedProject.category}
                       </span>
                       {selectedProject.featured && (
-                        <span className="px-3 py-1 text-sm bg-gradient-to-r from-aquamarine/20 to-electric_blue/20 text-electric_blue rounded-full border border-electric_blue/30">
+                        <span className="px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm bg-gradient-to-r from-cyan-400/20 to-blue-500/20 text-blue-400 rounded-full border border-blue-400/30">
                           Featured Project
                         </span>
                       )}
@@ -954,29 +967,31 @@ const Website = () => {
                   
                   <MagneticButton
                     onClick={() => setSelectedProject(null)}
-                    className="w-12 h-12 rounded-full bg-deep_indigo/80 backdrop-blur-sm text-aquamarine hover:bg-aquamarine hover:text-deep_indigo transition-all duration-300 flex items-center justify-center border border-aquamarine/20 hover:border-aquamarine/60"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-800/80 backdrop-blur-sm text-cyan-400 hover:bg-cyan-400 hover:text-slate-900 transition-all duration-300 flex items-center justify-center border border-cyan-400/20 hover:border-cyan-400/60 flex-shrink-0"
                     aria-label="Close project details"
                   >
-                    ✕
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                   </MagneticButton>
                 </div>
 
                 {/* Modal Content */}
-                <div className="grid lg:grid-cols-2 gap-8">
+                <div className="grid lg:grid-cols-2 gap-6 sm:gap-8">
                   {/* Left Column - Content */}
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     {/* Project Description */}
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 }}
                     >
-                      <h3 className="text-xl font-bold font-heading text-aquamarine mb-4">
+                      <h3 className="text-lg sm:text-xl font-bold font-sans text-cyan-400 mb-3 sm:mb-4">
                         Project Overview
                       </h3>
-                      <div id="modal-description" className="space-y-4">
+                      <div id="modal-description" className="space-y-3 sm:space-y-4">
                         {selectedProject.fullDescription.map((paragraph, index) => (
-                          <p key={index} className="text-lemon_chiffon/90 font-description leading-relaxed">
+                          <p key={index} className="text-amber-100/90 font-sans leading-relaxed text-sm sm:text-base">
                             {paragraph}
                           </p>
                         ))}
@@ -989,17 +1004,17 @@ const Website = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
                     >
-                      <h3 className="text-xl font-bold font-heading text-aquamarine mb-4">
+                      <h3 className="text-lg sm:text-xl font-bold font-sans text-cyan-400 mb-3 sm:mb-4">
                         Technologies & Tools
                       </h3>
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-2 gap-2 sm:gap-3">
                         {selectedProject.technologies.map((tech, index) => (
                           <motion.div
                             key={tech}
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.5 + index * 0.05 }}
-                            className="px-4 py-2 bg-dark_teal/30 backdrop-blur-sm text-electric_blue text-center border border-electric_blue/20 hover:border-electric_blue/40 transition-all duration-300 text-sm font-medium"
+                            className="px-3 py-2 sm:px-4 sm:py-2 bg-slate-700/30 backdrop-blur-sm text-blue-400 text-center border border-blue-400/20 hover:border-blue-400/40 transition-all duration-300 text-xs sm:text-sm font-medium rounded-lg"
                           >
                             {tech}
                           </motion.div>
@@ -1012,13 +1027,13 @@ const Website = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6 }}
-                      className="flex flex-col sm:flex-row gap-4 pt-6"
+                      className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sm:pt-6"
                     >
                       <MagneticButton
                         href={selectedProject.liveLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 bg-gradient-to-r from-aquamarine to-electric_blue text-deep_indigo font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3"
+                        className="flex-1 bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-900 font-bold py-2.5 sm:py-3 px-4 rounded-lg sm:rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base"
                       >
                         <ExternalLinkIcon />
                         View Live Demo
@@ -1027,7 +1042,7 @@ const Website = () => {
                         href={selectedProject.githubLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 bg-dark_teal/50 backdrop-blur-sm text-aquamarine font-bold py-3 px-4 rounded-xl border border-aquamarine/30 hover:bg-aquamarine hover:text-deep_indigo transition-all duration-300 flex items-center justify-center gap-3"
+                        className="flex-1 bg-slate-700/50 backdrop-blur-sm text-cyan-400 font-bold py-2.5 sm:py-3 px-4 rounded-lg sm:rounded-xl border border-cyan-400/30 hover:bg-cyan-400 hover:text-slate-900 transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base"
                       >
                         <GithubIcon />
                         Source Code
@@ -1041,20 +1056,20 @@ const Website = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 }}
                   >
-                    <h3 className="text-xl font-bold font-heading text-aquamarine mb-4">
+                    <h3 className="text-lg sm:text-xl font-bold font-sans text-cyan-400 mb-3 sm:mb-4">
                       Project Gallery
                     </h3>
-                    <div className="grid grid-cols-2 gap-4 max-h-full overflow-y-auto pr-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-h-96 sm:max-h-full overflow-y-auto pr-2">
                       {selectedProject.images.map((image, index) => (
                         <motion.img
                           key={index}
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.5 + index * 0.1 }}
-                          whileHover={{ scale: 1.05, zIndex: 10 }}
+                          whileHover={{ scale: 1.03, zIndex: 10 }}
                           src={image}
                           alt={`${selectedProject.title} interface screenshot ${index + 1}`}
-                          className="w-full h-32 object-cover  border border-aquamarine/20 cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300"
+                          className="w-full h-24 sm:h-28 lg:h-32 object-cover rounded-lg border border-cyan-400/20 cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300"
                           loading="lazy"
                         />
                       ))}
