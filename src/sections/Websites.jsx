@@ -2,32 +2,34 @@ import React, { useState, useEffect, useRef, memo, useCallback, useMemo } from "
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from "framer-motion";
 
 /**
- * Website Showcase Component
+ * Digital Craftsmanship & Innovation Showcase
  * 
- * An interactive web development gallery showcasing modern applications
- * built with cutting-edge technologies and innovative design patterns.
+ * A sophisticated portfolio website showcasing digital craftsmanship through
+ * modern web applications that blend code creativity with human-centered design.
+ * Each project reflects technical precision, meaningful impact, and accessibility.
  * 
  * Features:
  * - High-performance animations with Framer Motion
- * - Responsive design optimized for all devices
- * - Accessible interaction patterns with ARIA labels
- * - SEO-optimized with semantic HTML structure
- * - Progressive image loading with error handling
- * - Advanced hover effects and micro-interactions
+ * - Responsive design optimized for all devices and screen readers
+ * - Accessible interaction patterns with comprehensive ARIA labels
+ * - SEO-optimized with semantic HTML structure and meta information
+ * - Progressive image loading with graceful error handling
+ * - Advanced micro-interactions and magnetic hover effects
  * 
  * Technical Implementation:
- * - React 18+ with modern hooks and patterns
- * - Framer Motion for physics-based animations
+ * - React 18+ with modern hooks and performance optimization
+ * - Framer Motion for physics-based animations and transitions
  * - Intersection Observer API for scroll-triggered effects
- * - Custom Tailwind CSS configuration with design tokens
- * - Performance optimization with memo and useCallback
+ * - Custom Tailwind CSS with design system tokens
+ * - Performance optimization with React.memo and useCallback
+ * - Error boundaries for graceful failure handling
  * 
  * @component
  * @example
  * <Website />
  */
 
-// Utility Icons Components
+// Utility Icons Components - Accessible and performant
 const GithubIcon = memo(() => (
   <svg 
     className="w-5 h-5" 
@@ -35,7 +37,7 @@ const GithubIcon = memo(() => (
     viewBox="0 0 24 24" 
     aria-hidden="true"
     role="img"
-    aria-label="GitHub"
+    aria-label="GitHub Repository"
   >
     <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
   </svg>
@@ -67,7 +69,7 @@ const PlayIcon = memo(() => (
   </svg>
 ));
 
-// Import all website screenshots (kept original paths)
+// Import all website screenshots (paths preserved)
 import emp1 from "../assets/Website/EmpEd/1.png";
 import emp2 from "../assets/Website/EmpEd/2.png";
 import emp3 from "../assets/Website/EmpEd/3.png";
@@ -105,7 +107,7 @@ import relevia5 from "../assets/Website/relevia/5.png";
 import relevia6 from "../assets/Website/relevia/6.png";
 import relevia7 from "../assets/Website/relevia/7.png";
 
-// Error Boundary Component
+// Error Boundary Component for graceful error handling
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -117,23 +119,23 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('Website Showcase Error:', error, errorInfo);
+    console.error('Digital Craftsmanship Showcase Error:', error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 sm:p-8">
+        <div className="min-h-screen bg-transparent flex items-center justify-center p-4 sm:p-8">
           <div className="text-center text-amber-100 max-w-md">
             <h2 className="text-xl sm:text-2xl font-bold font-sans mb-4">Something went wrong</h2>
             <p className="text-cyan-300 font-sans mb-6 text-sm sm:text-base">
-              We're sorry, but there was an error loading the website showcase.
+              We're sorry, but there was an error loading the digital showcase.
             </p>
             <button 
               onClick={() => window.location.reload()} 
               className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-900 rounded-xl hover:shadow-lg transition-all duration-300 font-semibold text-sm sm:text-base"
             >
-              Reload Page
+              Reload Portfolio
             </button>
           </div>
         </div>
@@ -159,13 +161,15 @@ const ScrollProgress = memo(() => {
       style={{ scaleX }}
       role="progressbar"
       aria-label="Page scroll progress"
+      aria-valuemin="0"
+      aria-valuemax="100"
     />
   );
 });
 
 ScrollProgress.displayName = 'ScrollProgress';
 
-// Animated Background Elements
+// Animated Background Elements for visual depth
 const BackgroundOrbs = memo(() => {
   const orbs = useMemo(() => 
     Array.from({ length: 4 }, (_, i) => ({
@@ -215,7 +219,7 @@ const BackgroundOrbs = memo(() => {
 
 BackgroundOrbs.displayName = 'BackgroundOrbs';
 
-// Text Animation Component
+// Text Animation Component with accessibility
 const AnimatedText = memo(({ children, delay = 0, className = "", duration = 0.8 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-20%" });
@@ -239,7 +243,7 @@ const AnimatedText = memo(({ children, delay = 0, className = "", duration = 0.8
 
 AnimatedText.displayName = 'AnimatedText';
 
-// Enhanced Magnetic Button
+// Enhanced Magnetic Button with accessibility
 const MagneticButton = memo(({ children, className = "", href, onClick, ...props }) => {
   const ref = useRef(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -271,7 +275,7 @@ const MagneticButton = memo(({ children, className = "", href, onClick, ...props
   return (
     <Component
       ref={ref}
-      className={`relative transition-all duration-300 ease-out transform-gpu ${className}`}
+      className={`relative transition-all duration-300 ease-out transform-gpu focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-opacity-50 ${className}`}
       style={{ 
         transform: `translate(${position.x}px, ${position.y}px) scale(${isHovered ? 1.03 : 1})` 
       }}
@@ -323,7 +327,7 @@ const Website = () => {
     };
   }, [selectedProject]);
 
-  // Website data structure
+  // Website data structure (preserved from original)
   const websites = useMemo(() => [
     {
       id: 'empowered',
@@ -466,7 +470,7 @@ const Website = () => {
     }
   ], []);
 
-  // Enhanced Project Card Component
+  // Enhanced Project Card Component (preserved styling)
   const ProjectCard = memo(({ website, index }) => {
     const cardRef = useRef(null);
     const isInView = useInView(cardRef, { once: true, margin: "-15%" });
@@ -756,18 +760,20 @@ const Website = () => {
     <ErrorBoundary>
       {/* SEO Meta Information */}
       <div className="sr-only">
-        <h1>Interactive Web Development Showcase</h1>
-        <p>Explore cutting-edge web applications featuring modern technologies, responsive design, and innovative user experiences. Projects include educational platforms, scientific visualizations, productivity tools, and interactive games.</p>
+        <h1>Digital Craftsmanship & Innovation Portfolio</h1>
+        <p>Explore digital experiences where code meets creativity and purpose. Featuring scalable applications, interactive tools, and human-centered design solutions built for performance, accessibility, and meaningful impact.</p>
+        <meta name="description" content="Digital craftsmanship portfolio showcasing innovative web applications, interactive tools, and human-centered design. Projects built with React, Python, Three.js, focusing on performance and accessibility." />
+        <meta name="keywords" content="digital craftsmanship, web development, React applications, interactive tools, UX design, accessibility, performance optimization" />
       </div>
 
-      <div className="relative min-h-screen bg-transparent  overflow-hidden">
+      <div className="relative min-h-screen bg-transparent overflow-hidden">
         {/* Scroll Progress Indicator */}
         <ScrollProgress />
 
         {/* Animated Background */}
         <BackgroundOrbs />
 
-        {/* Hero Section */}
+        {/* Hero Section - New Content */}
         <motion.section 
           ref={heroRef}
           className="relative min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 py-12 sm:py-20"
@@ -787,15 +793,16 @@ const Website = () => {
                 className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-12xl font-bold font-sans mb-4 sm:mb-6"
               >
                 <span className="block bg-gradient-to-r from-amber-100 via-amber-300 to-cyan-400 bg-clip-text text-transparent leading-tight">
-                  Web Development
+                  Digital Craftsmanship
                 </span>
                 <motion.span 
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 1, delay: 0.8 }}
-                  className="block bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-400 bg-clip-text text-transparent leading-tight"
+                  className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-8 text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl leading-tight"
                 >
-                  Showcase
+                  <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">&</span>
+                  <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-400 bg-clip-text text-transparent">Innovation</span>
                 </motion.span>
               </motion.h1>
 
@@ -807,56 +814,31 @@ const Website = () => {
               />
             </motion.div>
 
-            {/* Subtitle */}
+            {/* Hero Paragraph */}
             <AnimatedText delay={1.6}>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-amber-100/90 font-sans leading-relaxed mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
-                Discover innovative web applications built with modern technologies,
-                <br className="hidden sm:block" />
-                featuring exceptional user experiences and cutting-edge design patterns.
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-amber-100/90 font-sans leading-relaxed mb-6 sm:mb-8 max-w-5xl mx-auto px-4">
+                I craft digital experiences where <span className="text-cyan-400 font-semibold">code meets creativity and purpose</span>. 
+                From scalable applications to interactive tools, each project blends technical precision with human-centered design, 
+                solving real problems and anticipating tomorrow's challenges. My work reflects curiosity, deliberate experimentation, 
+                and a commitment to making technology <span className="text-blue-400 font-semibold">impactful and accessible</span>.
               </p>
             </AnimatedText>
 
-            {/* Interactive Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.8 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 mb-12 sm:mb-16 max-w-3xl mx-auto px-4"
-            >
-              {[
-                { number: `${websites.length}`, label: "Projects", suffix: "+" },
-                { number: "10", label: "Technologies", suffix: "+" },
-                { number: "100", label: "Responsive", suffix: "%" },
-                { number: "A11Y", label: "Compliant", suffix: "" }
-              ].map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0.5, rotateY: 90 }}
-                  animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                  transition={{ 
-                    duration: 0.6, 
-                    delay: 2 + index * 0.1,
-                    type: "spring",
-                    stiffness: 200
-                  }}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  className="text-center p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-700/30 backdrop-blur-sm border border-cyan-400/20 hover:border-cyan-400/40 transition-all duration-300"
-                >
-                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-sans text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text mb-1">
-                    {stat.number}{stat.suffix}
-                  </div>
-                  <div className="text-xs sm:text-sm md:text-base text-amber-100/70 font-sans">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+            {/* Supporting Subtitle */}
+            <AnimatedText delay={1.8}>
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-amber-100/70 font-sans leading-relaxed mb-12 sm:mb-16 max-w-4xl mx-auto px-4">
+                Explore projects built for <span className="text-cyan-300">performance</span>, <span className="text-blue-300">accessibility</span>, 
+                and <span className="text-indigo-300">meaningful impact</span>—where innovation transforms ideas into experiences.
+              </p>
+            </AnimatedText>
+
+            
 
             {/* Call to Action */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 2.4 }}
+              transition={{ duration: 1, delay: 2.6 }}
               className="flex flex-col items-center gap-4 sm:gap-6"
             >
               <motion.div
@@ -874,7 +856,7 @@ const Website = () => {
         <section 
           ref={containerRef}
           className="relative px-4 sm:px-6 py-12 sm:py-16 lg:py-20 max-w-7xl mx-auto"
-          aria-label="Website projects showcase"
+          aria-label="Digital craftsmanship projects showcase"
         >
           <motion.div
             initial="hidden"
@@ -891,7 +873,7 @@ const Website = () => {
               </AnimatedText>
               <AnimatedText delay={0.2}>
                 <p className="text-sm sm:text-base lg:text-xl text-amber-100/80 font-sans max-w-3xl mx-auto leading-relaxed px-4">
-                  A curated collection of web applications showcasing modern development practices, 
+                  A curated collection of digital experiences showcasing modern development practices, 
                   innovative user interfaces, and technical excellence across diverse domains.
                 </p>
               </AnimatedText>
@@ -1086,6 +1068,6 @@ const Website = () => {
 };
 
 // SEO and Performance Optimizations
-Website.displayName = 'WebsiteShowcase';
+Website.displayName = 'DigitalCraftsmanshipShowcase';
 
 export default Website;
