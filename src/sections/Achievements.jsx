@@ -491,7 +491,7 @@ const Achievements = () => {
               `text-slate-300 tracking-wide leading-relaxed max-w-3xl mx-auto ${isMobile ? "text-sm px-4" : "text-base lg:text-lg px-6"}`
             }
           >
-            My curiosity has driven my journey from school to now, fueling my exploration of purpose and interests while sparking continuous personal growth. Each step shapes my path forward.
+            Behind every milestone is a story of curiosity, late nights, and a stubborn refusal to settle for “good enough.” From solving tricky problems in STEM competitions to leading teams and building projects that help others, each achievement is a snapshot of moments where effort met imagination. This timeline isn’t just a record of what I’ve done—it’s a reflection of the challenges I’ve embraced, the skills I’ve honed, and the ways I’ve tried to leave a mark.
           </motion.p>
         </div>
 
