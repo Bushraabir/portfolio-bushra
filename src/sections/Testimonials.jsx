@@ -864,7 +864,7 @@ const TextContent = memo(() => {
       />
       
       <p className="text-lg md:text-xl font-description leading-relaxed tracking-wide text-lemon_chiffon max-w-2xl">
-        Highlighting my journey, character, and achievements through the eyes of those who know me best.
+        Sometimes, the best way to understand a journey is through the eyes of those who have walked alongside you. My mentors, teachers, and guides have seen me in moments of challenge, discovery, and growth—long before the projects and milestones appeared on paper. Their reflections capture not just what I’ve accomplished, but who I am when I tackle problems, lead teams, and bring ideas to life. These perspectives reveal the curiosity, determination, and creativity that drive me every day.
       </p>
       
       
