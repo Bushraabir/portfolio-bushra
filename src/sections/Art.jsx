@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, EffectCoverflow, Lazy, A11y } from "swiper/modules";
+import { Navigation, Pagination, EffectCoverflow, Autoplay } from "swiper/modules";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "swiper/css";
@@ -740,7 +740,9 @@ const ArtworkStructuredData = ({ artwork, category }) => {
     document.head.appendChild(script);
 
     return () => {
-      document.head.removeChild(script);
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
     };
   }, [structuredData]);
 
@@ -795,7 +797,7 @@ const ArtworkCard = React.memo(({ artwork, onClick, index, totalItems }) => {
               className="object-cover w-full h-full rounded-2xl transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
               effect="blur"
-              placeholderSrc="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkaWVudCIgeDM9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmM2Y0ZjYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlNWU3ZWIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0idXJsKCNncmFkaWVudCkiLz48L3N2Zz4="
+              placeholderSrc="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkaWVudCIgeDI9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmM2Y0ZjYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlNWU3ZWIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0idXJsKCNncmFkaWVudCkiLz48L3N2Zz4="
               onError={(e) => {
                 e.target.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNmM2Y0ZjYiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5Y2ExYWEiPkltYWdlIG5vdCBhdmFpbGFibGU8L3RleHQ+PC9zdmc+";
               }}
@@ -829,6 +831,8 @@ const ArtworkCard = React.memo(({ artwork, onClick, index, totalItems }) => {
   );
 });
 
+ArtworkCard.displayName = 'ArtworkCard';
+
 /**
  * Modal Navigation Button Component
  */
@@ -846,6 +850,8 @@ const ModalNavButton = React.memo(({ direction, onClick, ariaLabel }) => (
     {direction === 'prev' ? '←' : '→'}
   </motion.button>
 ));
+
+ModalNavButton.displayName = 'ModalNavButton';
 
 /**
  * Main Art Portfolio Component
@@ -965,6 +971,26 @@ const ArtPortfolio = () => {
               A curated collection of artworks across multiple mediums, showcasing creativity, 
               technical skill, and artistic vision through {TABS.length} distinct categories.
             </p>
+            
+            {/* Link to full art portfolio */}
+            <motion.div
+              className="mt-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+            >
+              <a
+                href="https://art-portfolio-rust.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 hover:bg-white/30 text-white border-2 border-white/50 hover:border-white rounded-full font-semibold transition-all duration-300 backdrop-blur-sm"
+              >
+                <span>View Full Art Gallery</span>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </motion.div>
           </motion.header>
 
           {/* Navigation Tabs */}
@@ -1052,7 +1078,7 @@ const ArtPortfolio = () => {
               ) : (
                 /* Artwork Gallery */
                 <Swiper
-                  modules={[Navigation, EffectCoverflow, Lazy, A11y]}
+                  modules={[Navigation, EffectCoverflow, Autoplay]}
                   effect="coverflow"
                   grabCursor
                   centeredSlides
@@ -1069,12 +1095,10 @@ const ArtPortfolio = () => {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
                   }}
-                  lazy={true}
-                  a11y={{
-                    prevSlideMessage: 'Previous artwork',
-                    nextSlideMessage: 'Next artwork',
-                    firstSlideMessage: 'This is the first artwork',
-                    lastSlideMessage: 'This is the last artwork',
+                  autoplay={{
+                    delay: 4000,
+                    disableOnInteraction: true,
+                    pauseOnMouseEnter: true,
                   }}
                   breakpoints={{
                     640: { 

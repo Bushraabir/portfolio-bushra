@@ -18,7 +18,7 @@ const AboutMe = React.lazy(() => import("./sections/Aboutme"));
 const Achievements = React.lazy(() => import("./sections/Achievements"));
 const Testimonials = React.lazy(() => import("./sections/Testimonials"));
 const Footer = React.lazy(() => import("./sections/Footer"));
-
+const Skill = React.lazy(() => import("./sections/Skill"));
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -261,6 +261,9 @@ const MyStoryPage = () => {
         </section>
         <section id="achievements">
           <SectionWrapper><Achievements /></SectionWrapper>
+        </section>
+        <section id="Skill">
+          <SectionWrapper><Skill /></SectionWrapper>
         </section>
         <section id="testimonials">
           <SectionWrapper><Testimonials /></SectionWrapper>
