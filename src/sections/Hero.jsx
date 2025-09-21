@@ -65,7 +65,7 @@ const Hero = () => {
     : " text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading text-transparent bg-gradient-to-r from-champagne_pink to-pink_lavender bg-clip-text leading-tight tracking-tight";
 
   const subheadingClass = isMobile
-    ? "text-sm text-center text-glow text-dark_teal font-subheading tracking-wide"
+    ? "text-sm text-center text-glow text-champagne_pink font-subheading tracking-wide"
     : " text-lg text-left sm:text-2xl md:text-2xl text-glow text-champagne_pink font-subheading tracking-wide";
 
   const profileImgClass = isMobile
