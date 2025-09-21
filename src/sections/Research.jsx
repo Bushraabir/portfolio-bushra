@@ -17,70 +17,234 @@ import Quantum from "../assets/articles/Quantum.webp";
 import Material from "../assets/articles/Material.webp";
 
 /**
- * Enhanced Icon Components with smooth animations
+ * SEO Meta Component for better search engine optimization
+ * Provides structured data and meta information for research articles
+ * @author Bushra Khandoker
+ * @param {Object} props - Component props
+ * @param {Array} props.articles - Array of filtered articles
+ * @param {string} props.currentCategory - Currently selected category
+ * @param {string} props.searchTerm - Current search term
  */
-const SearchIcon = ({ className = "w-5 h-5" }) => (
-  <svg className={`${className} transition-all duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const SEOMetadata = ({ articles, currentCategory, searchTerm }) => {
+  useEffect(() => {
+    // Update document title based on current view
+    const baseTitle = "Scientific Research Showcase - Quantum Physics & Cosmology | Bushra Khandoker";
+    let title = baseTitle;
+    
+    if (searchTerm) {
+      title = `${searchTerm} Research Articles - ${baseTitle}`;
+    } else if (currentCategory && currentCategory !== "All") {
+      title = `${currentCategory} Research - ${baseTitle}`;
+    }
+    
+    document.title = title;
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.content = `Explore ${articles.length}+ cutting-edge research articles on quantum mechanics, cosmology, and theoretical physics. Curated by Bushra Khandoker. Discover insights into the universe's mysteries.`;
+    }
+    
+    // Add structured data for better SEO
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": title,
+      "description": "A curated collection of scientific research articles exploring quantum mechanics, cosmology, and fundamental physics",
+      "url": window.location.href,
+      "numberOfItems": articles.length,
+      "author": {
+        "@type": "Person",
+        "name": "Bushra Khandoker"
+      },
+      "about": [
+        "Quantum Physics",
+        "Cosmology", 
+        "Theoretical Physics",
+        "Scientific Research"
+      ]
+    };
+    
+    // Remove existing structured data
+    const existingScript = document.querySelector('script[type="application/ld+json"]');
+    if (existingScript) {
+      existingScript.remove();
+    }
+    
+    // Add new structured data
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+    
+    return () => {
+      // Cleanup on unmount
+      const scriptToRemove = document.querySelector('script[type="application/ld+json"]');
+      if (scriptToRemove) {
+        scriptToRemove.remove();
+      }
+    };
+  }, [articles.length, currentCategory, searchTerm]);
+  
+  return null;
+};
+
+/**
+ * Enhanced Icon Components with smooth animations and accessibility
+ * @author Bushra Khandoker
+ */
+const SearchIcon = ({ className = "w-5 h-5", ...props }) => (
+  <svg 
+    className={`${className} transition-all duration-300`} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor" 
+    strokeWidth={2}
+    role="img"
+    aria-label="Search"
+    {...props}
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
   </svg>
 );
 
-const ExternalLinkIcon = ({ className = "w-4 h-4" }) => (
-  <svg className={`${className} transition-all duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const ExternalLinkIcon = ({ className = "w-4 h-4", ...props }) => (
+  <svg 
+    className={`${className} transition-all duration-300`} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor" 
+    strokeWidth={2}
+    role="img"
+    aria-label="External link"
+    {...props}
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
   </svg>
 );
 
-const CalendarIcon = ({ className = "w-4 h-4" }) => (
-  <svg className={`${className} transition-all duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const CalendarIcon = ({ className = "w-4 h-4", ...props }) => (
+  <svg 
+    className={`${className} transition-all duration-300`} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor" 
+    strokeWidth={2}
+    role="img"
+    aria-label="Publication date"
+    {...props}
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
   </svg>
 );
 
-const ClockIcon = ({ className = "w-4 h-4" }) => (
-  <svg className={`${className} transition-all duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const ClockIcon = ({ className = "w-4 h-4", ...props }) => (
+  <svg 
+    className={`${className} transition-all duration-300`} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor" 
+    strokeWidth={2}
+    role="img"
+    aria-label="Reading time"
+    {...props}
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
 );
 
-const FilterIcon = ({ className = "w-5 h-5" }) => (
-  <svg className={`${className} transition-all duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const FilterIcon = ({ className = "w-5 h-5", ...props }) => (
+  <svg 
+    className={`${className} transition-all duration-300`} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor" 
+    strokeWidth={2}
+    role="img"
+    aria-label="Filter"
+    {...props}
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
   </svg>
 );
 
-const SparkleIcon = ({ className = "w-5 h-5" }) => (
-  <svg className={`${className} transition-all duration-300`} fill="currentColor" viewBox="0 0 24 24">
+const SparkleIcon = ({ className = "w-5 h-5", ...props }) => (
+  <svg 
+    className={`${className} transition-all duration-300`} 
+    fill="currentColor" 
+    viewBox="0 0 24 24"
+    role="img"
+    aria-label="Featured"
+    {...props}
+  >
     <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
   </svg>
 );
 
-const ChevronLeftIcon = ({ className = "w-5 h-5" }) => (
-  <svg className={`${className} transition-all duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const ChevronLeftIcon = ({ className = "w-5 h-5", ...props }) => (
+  <svg 
+    className={`${className} transition-all duration-300`} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor" 
+    strokeWidth={2}
+    role="img"
+    aria-label="Previous page"
+    {...props}
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
   </svg>
 );
 
-const ChevronRightIcon = ({ className = "w-5 h-5" }) => (
-  <svg className={`${className} transition-all duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const ChevronRightIcon = ({ className = "w-5 h-5", ...props }) => (
+  <svg 
+    className={`${className} transition-all duration-300`} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor" 
+    strokeWidth={2}
+    role="img"
+    aria-label="Next page"
+    {...props}
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
   </svg>
 );
 
-const TrendingIcon = ({ className = "w-5 h-5" }) => (
-  <svg className={`${className} transition-all duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const TrendingIcon = ({ className = "w-5 h-5", ...props }) => (
+  <svg 
+    className={`${className} transition-all duration-300`} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor" 
+    strokeWidth={2}
+    role="img"
+    aria-label="Trending"
+    {...props}
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
   </svg>
 );
 
-const StarIcon = ({ className = "w-4 h-4", filled = false }) => (
-  <svg className={`${className} transition-all duration-300`} fill={filled ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+const StarIcon = ({ className = "w-4 h-4", filled = false, ...props }) => (
+  <svg 
+    className={`${className} transition-all duration-300`} 
+    fill={filled ? "currentColor" : "none"} 
+    viewBox="0 0 24 24" 
+    stroke="currentColor" 
+    strokeWidth={2}
+    role="img"
+    aria-label="Star rating"
+    {...props}
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
   </svg>
 );
 
 /**
- * Enhanced Articles data structure
+ * Enhanced Articles data structure with SEO-friendly metadata
+ * Each article includes comprehensive metadata for better search visibility
+ * @author Bushra Khandoker
  */
 const articles = [
   {
@@ -94,8 +258,8 @@ const articles = [
     readTime: "8 min read",
     publishDate: "2024-01-15",
     featured: true,
-
-    description: "As someone who used to research quantum physics, it always annoys me when Schrödinger's cat is brought up in pop culture. It's often interpreted completely wrong. Typically, the interpretation suggests that you may or may not have murdered the cat, and because the box is closed and you don't know what happened, both things must have happened simultaneously."
+    description: "As someone who used to research quantum physics, it always annoys me when Schrödinger's cat is brought up in pop culture. It's often interpreted completely wrong. Typically, the interpretation suggests that you may or may not have murdered the cat, and because the box is closed and you don't know what happened, both things must have happened simultaneously.",
+    keywords: ["quantum superposition", "schrodinger cat paradox", "quantum mechanics explained", "quantum physics research"]
   },
   {
     id: "photons-journey",
@@ -108,8 +272,8 @@ const articles = [
     readTime: "12 min read",
     publishDate: "2024-02-10",
     featured: true,
-
-    description: "One of the most enduring ideas in cosmology is that all things — stars, galaxies, and even black holes — eventually come to an end. Over unimaginably long time spans, every source of light may fade, and every structure may decay into a uniform heat death state."
+    description: "One of the most enduring ideas in cosmology is that all things — stars, galaxies, and even black holes — eventually come to an end. Over unimaginably long time spans, every source of light may fade, and every structure may decay into a uniform heat death state.",
+    keywords: ["cosmology research", "universe fate", "photon physics", "heat death universe", "galactic evolution"]
   },
   {
     id: "neutrino-astronomy",
@@ -122,8 +286,8 @@ const articles = [
     readTime: "10 min read",
     publishDate: "2024-03-05",
     featured: false,
-
-    description: "At the dawn of the 20th century, physicists categorized three main types of radioactive decay: Alpha decay, Beta decay, and Gamma decay. In beta decay, however, physicists noticed an apparent loss of both energy and momentum until Wolfgang Pauli hypothesized the existence of a ghostly particle."
+    description: "At the dawn of the 20th century, physicists categorized three main types of radioactive decay: Alpha decay, Beta decay, and Gamma decay. In beta decay, however, physicists noticed an apparent loss of both energy and momentum until Wolfgang Pauli hypothesized the existence of a ghostly particle.",
+    keywords: ["neutrino detection", "particle physics", "proton decay", "radioactive decay", "particle astronomy"]
   },
   {
     id: "time-dilation",
@@ -136,8 +300,8 @@ const articles = [
     readTime: "9 min read",
     publishDate: "2024-04-12",
     featured: false,
-
-    description: "Time measurement in relativity depends on how observers and clocks move in relation to one another. In special relativity, two observers in relative motion each perceive the other's clock as running slower."
+    description: "Time measurement in relativity depends on how observers and clocks move in relation to one another. In special relativity, two observers in relative motion each perceive the other's clock as running slower.",
+    keywords: ["time dilation explained", "general relativity", "early universe cosmology", "spacetime physics"]
   },
   {
     id: "universe-shadows",
@@ -150,8 +314,8 @@ const articles = [
     readTime: "11 min read",
     publishDate: "2024-05-18",
     featured: true,
-
-    description: "Modern astronomy has revealed a staggering fact: the familiar matter we see — stars, planets, nebulae — comprises only about 5% of the total energy content of the cosmos. The rest is shrouded in mystery, split between an invisible Dark Matter and an even more enigmatic Dark Energy."
+    description: "Modern astronomy has revealed a staggering fact: the familiar matter we see — stars, planets, nebulae — comprises only about 5% of the total energy content of the cosmos. The rest is shrouded in mystery, split between an invisible Dark Matter and an even more enigmatic Dark Energy.",
+    keywords: ["dark matter research", "dark energy", "universe composition", "astronomical observations", "cosmic mysteries"]
   },
   {
     id: "looking-past",
@@ -164,8 +328,8 @@ const articles = [
     readTime: "7 min read",
     publishDate: "2024-06-22",
     featured: false,
-
-    description: "Astronomy offers us a remarkable window into the distant past. When we look at faint galaxies and other celestial objects through powerful telescopes, we see them as they once were, not as they currently are."
+    description: "Astronomy offers us a remarkable window into the distant past. When we look at faint galaxies and other celestial objects through powerful telescopes, we see them as they once were, not as they currently are.",
+    keywords: ["james webb telescope", "astronomical observations", "deep space imaging", "cosmic history"]
   },
   {
     id: "nature-of-light",
@@ -178,8 +342,8 @@ const articles = [
     readTime: "8 min read",
     publishDate: "2024-07-08",
     featured: false,
-
-    description: "Recent developments such as images from the James Webb Space Telescope highlight our ability to glimpse the cosmos at earlier stages of its evolution. However, it is crucial to distinguish between various speed limits in physics."
+    description: "Recent developments such as images from the James Webb Space Telescope highlight our ability to glimpse the cosmos at earlier stages of its evolution. However, it is crucial to distinguish between various speed limits in physics.",
+    keywords: ["speed of light", "fundamental physics", "electromagnetic radiation", "cosmic speed limit"]
   },
   {
     id: "expanding-universe",
@@ -192,8 +356,8 @@ const articles = [
     readTime: "13 min read",
     publishDate: "2024-08-14",
     featured: true,
-
-    description: "For millennia, humanity saw the cosmos as eternal and unchanging. Yet, in the early 20th century, a revolutionary discovery emerged: the universe is expanding. Over the years, cosmologists have pieced together evidence of this expansion."
+    description: "For millennia, humanity saw the cosmos as eternal and unchanging. Yet, in the early 20th century, a revolutionary discovery emerged: the universe is expanding. Over the years, cosmologists have pieced together evidence of this expansion.",
+    keywords: ["universe expansion", "hubble constant", "big bang theory", "cosmological models", "dark energy effects"]
   },
   {
     id: "universe-birth-end",
@@ -206,9 +370,8 @@ const articles = [
     readTime: "14 min read",
     publishDate: "2024-09-03",
     featured: false,
-
-
-    description: "From our vantage point on Earth, we see an immense cosmos filled with stars, galaxies, and mysterious forces. Modern astrophysics tells us our universe emerged from an extremely hot, dense state about 13.8 billion years ago."
+    description: "From our vantage point on Earth, we see an immense cosmos filled with stars, galaxies, and mysterious forces. Modern astrophysics tells us our universe emerged from an extremely hot, dense state about 13.8 billion years ago.",
+    keywords: ["universe origin", "big bang cosmology", "cosmic evolution", "theoretical astrophysics"]
   },
   {
     id: "quantum-vacuum",
@@ -221,8 +384,8 @@ const articles = [
     readTime: "12 min read",
     publishDate: "2024-10-15",
     featured: false,
-
-    description: "In quantum physics, what we traditionally call empty space or vacuum is far from empty. Instead, it is a dynamic field teeming with fleeting particles, fields, and fluctuations."
+    description: "In quantum physics, what we traditionally call empty space or vacuum is far from empty. Instead, it is a dynamic field teeming with fleeting particles, fields, and fluctuations.",
+    keywords: ["quantum vacuum", "zero point energy", "quantum field theory", "vacuum fluctuations"]
   },
   {
     id: "black-hole-material",
@@ -235,20 +398,31 @@ const articles = [
     readTime: "9 min read",
     publishDate: "2024-11-20",
     featured: true,
-
-    description: "Black holes are famously known as cosmic objects from which nothing, not even light, can escape. Yet, recent observations challenge this notion, showing material being ejected from the vicinity of black holes at near-light speeds."
+    description: "Black holes are famously known as cosmic objects from which nothing, not even light, can escape. Yet, recent observations challenge this notion, showing material being ejected from the vicinity of black holes at near-light speeds.",
+    keywords: ["black hole physics", "relativistic jets", "hawking radiation", "event horizon", "cosmic phenomena"]
   }
 ];
 
 /**
- * Get unique categories from articles
+ * Get unique categories from articles for filtering
  */
 const categories = [...new Set(articles.map(article => article.category))];
 
 /**
- * Premium Scientific Research Showcase with Enhanced Glassmorphism
+ * Premium Scientific Research Showcase Component
+ * A comprehensive, SEO-optimized showcase for scientific research articles
+ * 
+ * Features:
+ * - Advanced search and filtering capabilities
+ * - Responsive design with glassmorphism effects
+ * - SEO-friendly structure and metadata
+ * - Accessibility compliance
+ * - Performance optimized with lazy loading
+ * 
+ * @component
+ * @author Bushra Khandoker
  */
-const PremiumResearchShowcase = () => {
+const Research = () => {
   // Core state management
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -261,7 +435,7 @@ const PremiumResearchShowcase = () => {
   const [hoveredArticle, setHoveredArticle] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Enhanced debounced search handler
+  // Enhanced debounced search handler for better UX
   const debouncedSearch = useCallback(
     debounce((term) => {
       setIsLoading(true);
@@ -285,14 +459,14 @@ const PremiumResearchShowcase = () => {
     setSearchInput(value);
   };
 
-  // Clear search
+  // Clear search functionality
   const clearSearch = () => {
     setSearchInput("");
     setSearchTerm("");
     setCurrentPage(1);
   };
 
-  // Enhanced filter and sort articles
+  // Enhanced filter and sort articles with comprehensive search
   const filteredAndSortedArticles = useMemo(() => {
     let filtered = articles.filter(article => {
       const searchLower = searchTerm.toLowerCase();
@@ -300,13 +474,15 @@ const PremiumResearchShowcase = () => {
         article.title.toLowerCase().includes(searchLower) ||
         article.description.toLowerCase().includes(searchLower) ||
         article.tags.some(tag => tag.toLowerCase().includes(searchLower)) ||
-        article.category.toLowerCase().includes(searchLower);
+        article.category.toLowerCase().includes(searchLower) ||
+        (article.keywords && article.keywords.some(keyword => keyword.toLowerCase().includes(searchLower)));
       
       const matchesCategory = selectedCategory === "All" || article.category === selectedCategory;
  
-      return matchesSearch && matchesCategory ;
+      return matchesSearch && matchesCategory;
     });
 
+    // Enhanced sorting with multiple criteria
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "newest":
@@ -319,14 +495,13 @@ const PremiumResearchShowcase = () => {
           return a.title.localeCompare(b.title);
         case "featured":
           return b.featured - a.featured;
-
         default:
           return 0;
       }
     });
 
     return filtered;
-  }, [searchTerm, selectedCategory,  sortBy]);
+  }, [searchTerm, selectedCategory, sortBy]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredAndSortedArticles.length / articlesPerPage);
@@ -335,7 +510,7 @@ const PremiumResearchShowcase = () => {
     currentPage * articlesPerPage
   );
 
-  // Page navigation
+  // Page navigation functions
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -354,7 +529,7 @@ const PremiumResearchShowcase = () => {
     }
   };
 
-  // Format date
+  // Utility functions
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
@@ -370,8 +545,6 @@ const PremiumResearchShowcase = () => {
     sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
     return articleDate > sixtyDaysAgo;
   };
-
-
 
   // Clear all filters
   const clearFilters = () => {
@@ -389,73 +562,73 @@ const PremiumResearchShowcase = () => {
 
   return (
     <div className="min-h-screen bg-transparent relative overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative pt-12 pb-8 px-4 sm:px-6 lg:px-8">
+      {/* SEO Metadata Component */}
+      <SEOMetadata 
+        articles={filteredAndSortedArticles} 
+        currentCategory={selectedCategory}
+        searchTerm={searchTerm}
+      />
+
+      {/* Enhanced Hero Section with SEO-optimized content */}
+      <header className="relative pt-12 pb-8 px-4 sm:px-6 lg:px-8" role="banner">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-
-            
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 tracking-tight leading-none">
               <span className="block bg-gradient-to-r from-lemon_chiffon-500 via-non_photo_blue-500 to-deep_indigo-700 bg-clip-text text-transparent mb-3">
                 Discover the
               </span>
-              <span className="block bg-gradient-to-r from-jordy_blue-500 via-mauve-500 via-pink_lavender-500 to-aquamarine-500 bg-clip-text text-transparent relative animate-gradient-move bg-[length:200%_200%]">
+              <span className="block bg-gradient-to-r from-jordy_blue-500 via-mauve-500 to-aquamarine-500 bg-clip-text text-transparent relative animate-gradient-move bg-[length:200%_200%]">
                 Universe's Secrets
                 <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-32 h-1.5 bg-gradient-to-r from-jordy_blue-500 to-mauve-500 rounded-full animate-pulse" />
               </span>
             </h1>
             
-            <p className="font-description text-lg sm:text-xl text-lemon_chiffon-500 max-w-3xl mx-auto leading-relaxed mb-8">
+            <p className="font-description text-lg sm:text-xl text-lemon_chiffon-500 max-w-3xl mx-auto leading-relaxed mb-6">
               Journey through cutting-edge research articles exploring quantum mechanics, cosmology, 
               and the fundamental mysteries that shape our understanding of reality.
             </p>
 
-            {/* Enhanced Stats */}
-            <div className="flex flex-wrap justify-center gap-8 mt-8">
-              <div className="text-center group cursor-pointer">
-                <div className="text-3xl font-bold bg-gradient-to-r from-jordy_blue-500 to-mauve-500 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300 font-heading">
-                  {articles.length}+
-                </div>
-                <div className="font-description text-deep_indigo-500 font-medium mt-1">Research Articles</div>
-              </div>
-              <div className="text-center group cursor-pointer">
-                <div className="text-3xl font-bold bg-gradient-to-r from-mauve-500 to-pink_lavender-500 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300 font-heading">
-                  {categories.length}+
-                </div>
-                <div className="font-description text-deep_indigo-500 font-medium mt-1">Categories</div>
-              </div>
+\
 
-            </div>
+           
           </div>
         </div>
-      </section>
+      </header>
 
       {/* Main Content Section */}
-      <section className="px-4 sm:px-6 lg:px-8 pb-8" >
-        <div className="max-w-7xl mx-auto ">
+      <main className="px-4 sm:px-6 lg:px-8 pb-8" role="main">
+        <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             {/* Left Panel - Search & Filters */}
-            <div className="lg:col-span-1">
-              <div className="bg-transparent  rounded-3xl p-6  sticky top-4  overflow-y-auto">
+            <aside className="lg:col-span-1" role="complementary" aria-label="Search and filter options">
+              <div className="bg-transparent rounded-3xl p-6 sticky top-4 overflow-y-auto">
                 <h2 className="font-heading py-6 text-2xl font-bold bg-gradient-to-r from-jordy_blue-500 to-mauve-500 bg-clip-text text-transparent mb-6">
                   Explore Research
                 </h2>
                 
-                {/* Search Bar */}
+                {/* Enhanced Search Bar with ARIA labels */}
                 <div className="relative mb-6 group">
+                  <label htmlFor="research-search" className="sr-only">Search research articles</label>
                   <input
+                    id="research-search"
                     type="text"
                     placeholder="Search quantum mechanics, cosmology..."
                     value={searchInput}
                     onChange={handleSearchChange}
                     className="w-full px-4 py-4 bg-white/80 border-2 border-white/60 rounded-2xl focus:outline-none focus:border-jordy_blue-500 focus:ring-4 focus:ring-jordy_blue-500/20 transition-all duration-300 text-deep_indigo-500 placeholder-deep_indigo-500/70 font-description font-medium shadow-xl backdrop-blur-2xl pr-12"
+                    aria-describedby="search-help"
                   />
+                  <div id="search-help" className="sr-only">
+                    Search through research articles by title, description, category, or tags
+                  </div>
                   <SearchIcon className="absolute right-9 -z-20 top-1/2 transform -translate-y-1/2 text-pink_lavender-500/70 pointer-events-none opacity-45" />
                   {searchInput && (
                     <button
                       onClick={clearSearch}
                       className="absolute right-12 top-1/2 transform -translate-y-1/2 text-deep_indigo-500/70 hover:text-deep_indigo-500 transition-colors duration-200 p-1"
+                      aria-label="Clear search"
+                      title="Clear search"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -464,53 +637,61 @@ const PremiumResearchShowcase = () => {
                   )}
                 </div>
 
-                {/* Category Filter */}
+                {/* Category Filter with enhanced accessibility */}
                 <div className="mb-6">
-                  <label className="block text-sm font-subheading font-semibold text-deep_indigo-500 mb-3">
+                  <label htmlFor="category-filter" className="block text-sm font-subheading font-semibold text-deep_indigo-500 mb-3">
                     Category
                   </label>
                   <select
+                    id="category-filter"
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     className="w-full px-4 py-3 bg-white/70 border-2 border-white/60 rounded-2xl focus:outline-none focus:border-jordy_blue-500 focus:ring-3 focus:ring-jordy_blue-500/20 transition-all duration-300 text-deep_indigo-500 font-description font-medium shadow-lg backdrop-blur-2xl appearance-none cursor-pointer"
+                    aria-describedby="category-help"
                   >
                     <option value="All">All Categories</option>
                     {categories.map(category => (
                       <option key={category} value={category}>{category}</option>
                     ))}
                   </select>
+                  <div id="category-help" className="sr-only">
+                    Filter articles by scientific category
+                  </div>
                 </div>
 
-
-                {/* Sort Filter */}
+                {/* Sort Filter with enhanced accessibility */}
                 <div className="mb-6">
-                  <label className="block text-sm font-subheading font-semibold text-lemon_chiffon-500 mb-3">
+                  <label htmlFor="sort-filter" className="block text-sm font-subheading font-semibold text-lemon_chiffon-500 mb-3">
                     Sort Articles
                   </label>
                   <select
+                    id="sort-filter"
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
                     className="w-full px-4 py-3 bg-white/70 border-2 border-white/60 rounded-2xl focus:outline-none focus:border-pink_lavender-500 focus:ring-3 focus:ring-pink_lavender-500/20 transition-all duration-300 text-deep_indigo-500 font-description font-medium shadow-lg backdrop-blur-2xl appearance-none cursor-pointer"
+                    aria-describedby="sort-help"
                   >
                     <option value="newest">Latest First</option>
                     <option value="oldest">Oldest First</option>
-                   
-                   
                     <option value="readTime">Quick Reads</option>
                     <option value="alphabetical">A-Z</option>
                     <option value="featured">Featured</option>
                   </select>
+                  <div id="sort-help" className="sr-only">
+                    Sort articles by date, reading time, or other criteria
+                  </div>
                 </div>
 
                 {/* Quick Actions */}
                 <div className="mb-6">
-                  <label className="block text-sm font-subheading font-semibold text-lemon_chiffon-500 mb-3">
+                  <h3 className="block text-sm font-subheading font-semibold text-lemon_chiffon-500 mb-3">
                     Quick Actions
-                  </label>
-                  <div className="space-y-3">
+                  </h3>
+                  <div className="space-y-3" role="group" aria-label="Quick filter options">
                     <button
                       onClick={() => {setSortBy("featured"); setSelectedCategory("All");}}
                       className="w-full px-4 py-3 bg-gradient-to-r from-lemon_chiffon-500/30 to-champagne_pink-500/30 text-deep_indigo-500 rounded-2xl text-sm font-cta hover:from-lemon_chiffon-500/50 hover:to-champagne_pink-500/50 transition-all duration-300 flex items-center gap-3 backdrop-blur-xl border border-white/40"
+                      aria-label="Show featured articles"
                     >
                       <StarIcon className="w-4 h-4" filled />
                       Featured Articles
@@ -518,6 +699,7 @@ const PremiumResearchShowcase = () => {
                     <button
                       onClick={() => {setSortBy("newest"); setCurrentPage(1);}}
                       className="w-full px-4 py-3 bg-gradient-to-r from-aquamarine-500/30 to-electric_blue-500/30 text-deep_indigo-500 rounded-2xl text-sm font-cta hover:from-aquamarine-500/50 hover:to-electric_blue-500/50 transition-all duration-300 flex items-center gap-3 backdrop-blur-xl border border-white/40"
+                      aria-label="Show latest research"
                     >
                       <SparkleIcon className="w-4 h-4" />
                       Latest Research
@@ -525,24 +707,25 @@ const PremiumResearchShowcase = () => {
                   </div>
                 </div>
 
-                {/* Results Counter */}
-                <div className="flex items-center gap-3 mb-4">
+                {/* Results Counter with loading state */}
+                <div className="flex items-center gap-3 mb-4" role="status" aria-live="polite">
                   {isLoading ? (
-                    <div className="animate-spin w-5 h-5 border-2 border-jordy_blue-500 border-t-transparent rounded-full" />
+                    <div className="animate-spin w-5 h-5 border-2 border-jordy_blue-500 border-t-transparent rounded-full" aria-label="Loading search results" />
                   ) : (
                     <div className="w-2.5 h-2.5 bg-aquamarine-500 rounded-full animate-pulse" />
                   )}
                   <p className="font-description text-champagne_pink-500 font-medium">
                     <span className="font-bold text-champagne_pink-700">{filteredAndSortedArticles.length}</span> 
-                    {filteredAndSortedArticles.length === 1 ? ' article' : ' articles'}
+                    {filteredAndSortedArticles.length === 1 ? ' article found' : ' articles found'}
                   </p>
                 </div>
 
                 {/* Clear Filters */}
-                {(searchTerm || selectedCategory !== "All"  || sortBy !== "newest") && (
+                {(searchTerm || selectedCategory !== "All" || sortBy !== "newest") && (
                   <button
                     onClick={clearFilters}
                     className="w-full px-4 py-3 text-jordy_blue-500 hover:text-jordy_blue-700 font-cta transition-all duration-300 hover:bg-white/50 rounded-2xl flex items-center justify-center gap-2 border-2 border-transparent hover:border-jordy_blue-500/30 backdrop-blur-xl"
+                    aria-label="Clear all search filters and reset view"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -551,11 +734,11 @@ const PremiumResearchShowcase = () => {
                   </button>
                 )}
               </div>
-            </div>
+            </aside>
 
             {/* Right Panel - Articles List */}
-            <div className="lg:col-span-2">
-              <div className="bg-transparent backdrop-blur-3xl rounded-3xl shadow-3xl border border-white/40  flex flex-col" >
+            <section className="lg:col-span-2" role="region" aria-label="Research articles">
+              <div className="bg-transparent backdrop-blur-3xl rounded-3xl shadow-3xl border border-white/40 flex flex-col">
                 {filteredAndSortedArticles.length > 0 ? (
                   <>
                     {/* Articles List */}
@@ -565,16 +748,20 @@ const PremiumResearchShowcase = () => {
                           <article
                             key={article.id}
                             className="group bg-white/10 backdrop-blur-2xl rounded-2xl overflow-hidden shadow-xl border border-white/50 hover:border-white/70 transition-all duration-500 hover:shadow-2xl flex"
-
+                            itemScope 
+                            itemType="https://schema.org/ScholarlyArticle"
+                            onMouseEnter={() => setHoveredArticle(article.id)}
+                            onMouseLeave={() => setHoveredArticle(null)}
                           >
                             {/* Article Image */}
-                            <div className="w-40  flex-shrink-0 relative overflow-hidden">
+                            <div className="w-40 flex-shrink-0 relative overflow-hidden">
                               <LazyLoadImage
                                 src={article.img}
-                                alt={article.title}
+                                alt={`Illustration for ${article.title}`}
                                 effect="blur"
-                                className="w-full h-full object-cover transition-transform "
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                                 wrapperClassName="w-full h-full"
+                                itemProp="image"
                               />
                               <div className="absolute inset-0 bg-gradient-to-r from-transparent to-deep_indigo-500/20" />
                               
@@ -588,6 +775,7 @@ const PremiumResearchShowcase = () => {
                                 {article.featured && (
                                   <span className="px-2 py-1 bg-gradient-to-r from-lemon_chiffon-500 to-champagne_pink-500 text-deep_indigo-700 rounded-full text-xs font-bold flex items-center gap-1">
                                     <StarIcon className="w-3 h-3" filled />
+                                    FEATURED
                                   </span>
                                 )}
                               </div>
@@ -597,33 +785,46 @@ const PremiumResearchShowcase = () => {
                             <div className="flex-1 p-5 flex flex-col">
                               <div className="flex items-start justify-between mb-3">
                                 <div className="flex items-center gap-3">
-
-                                  <span className="px-3 py-1 bg-gradient-to-r from-jordy_blue-500/20 to-mauve-500/20 text-jordy_blue-500 rounded-full text-xs font-cta border border-jordy_blue-500/30">
+                                  <span 
+                                    className="px-3 py-1 bg-gradient-to-r from-jordy_blue-500/20 to-mauve-500/20 text-jordy_blue-500 rounded-full text-xs font-cta border border-jordy_blue-500/30"
+                                    itemProp="about"
+                                  >
                                     {article.category}
                                   </span>
                                 </div>
-
                               </div>
 
-                              <h3 className="font-heading text-3xl text-lemon_chiffon-700 mb-3 leading-tight group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-jordy_blue-500 group-hover:to-mauve-500 group-hover:bg-clip-text transition-all duration-300 line-clamp-2">
+                              <h3 
+                                className="font-heading text-xl md:text-2xl lg:text-3xl text-lemon_chiffon-700 mb-3 leading-tight group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-jordy_blue-500 group-hover:to-mauve-500 group-hover:bg-clip-text transition-all duration-300 line-clamp-2"
+                                itemProp="headline"
+                              >
                                 {article.title}
                               </h3>
 
-                              <p className="font-description text-lemon_chiffon-500 mb-4 leading-relaxed text-sm line-clamp-2 flex-grow">
+                              <p 
+                                className="font-description text-lemon_chiffon-500 mb-4 leading-relaxed text-sm line-clamp-3 flex-grow"
+                                itemProp="description"
+                              >
                                 {article.description}
                               </p>
+
+                              {/* Tags for SEO */}
+                              <div className="hidden" itemProp="keywords">
+                                {article.keywords?.join(", ")}
+                              </div>
 
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-4 text-champagne_pink-500 text-xs font-description">
                                   <div className="flex items-center gap-1">
                                     <CalendarIcon className="w-3 h-3" />
-                                    <span>{formatDate(article.publishDate)}</span>
+                                    <time dateTime={article.publishDate} itemProp="datePublished">
+                                      {formatDate(article.publishDate)}
+                                    </time>
                                   </div>
                                   <div className="flex items-center gap-1">
                                     <ClockIcon className="w-3 h-3" />
-                                    <span>{article.readTime}</span>
+                                    <span itemProp="timeRequired">{article.readTime}</span>
                                   </div>
-                                  
                                 </div>
 
                                 <a
@@ -631,11 +832,23 @@ const PremiumResearchShowcase = () => {
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="group/button inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-jordy_blue-500 to-mauve-500 text-white rounded-xl font-cta text-sm transition-all duration-300 hover:shadow-lg hover:shadow-jordy_blue-500/30 transform hover:scale-105 relative overflow-hidden border border-white/30"
+                                  itemProp="url"
+                                  aria-label={`Read full article: ${article.title}`}
                                 >
                                   <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover/button:opacity-100 transition-opacity duration-300" />
-                                  <span className="relative z-10">Read</span>
+                                  <span className="relative z-10">Read Article</span>
                                   <ExternalLinkIcon className="w-4 h-4 relative z-10" />
                                 </a>
+                              </div>
+
+                              {/* Hidden structured data */}
+                              <div className="hidden">
+                                <span itemProp="author" itemScope itemType="https://schema.org/Person">
+                                  <span itemProp="name">Bushra Khandoker</span>
+                                </span>
+                                <span itemProp="publisher" itemScope itemType="https://schema.org/Organization">
+                                  <span itemProp="name">{article.platform}</span>
+                                </span>
                               </div>
                             </div>
 
@@ -647,9 +860,9 @@ const PremiumResearchShowcase = () => {
                       </div>
                     </div>
 
-                    {/* Pagination */}
+                    {/* Enhanced Pagination with accessibility */}
                     {totalPages > 1 && (
-                      <div className="p-6 border-t border-white/30">
+                      <nav className="p-6 border-t border-white/30" aria-label="Article pagination">
                         <div className="flex items-center justify-center">
                           <div className="bg-white/10 backdrop-blur-2xl rounded-2xl p-4 shadow-lg border border-white/50 flex items-center gap-3">
                             {/* Previous Button */}
@@ -661,13 +874,14 @@ const PremiumResearchShowcase = () => {
                                   ? 'bg-white/20 text-deep_indigo-500/50 cursor-not-allowed'
                                   : 'bg-gradient-to-r from-deep_indigo-500 to-dark_teal-500 text-white hover:shadow-lg transform hover:scale-105'
                               }`}
+                              aria-label="Go to previous page"
                             >
                               <ChevronLeftIcon className="w-4 h-4" />
-                              <span>Prev</span>
+                              <span>Previous</span>
                             </button>
 
                             {/* Page Numbers */}
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2" role="group" aria-label="Page numbers">
                               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                                 let pageNum;
                                 if (totalPages <= 5) {
@@ -691,6 +905,8 @@ const PremiumResearchShowcase = () => {
                                         ? 'bg-gradient-to-r from-jordy_blue-500 to-mauve-500 text-white shadow-lg transform scale-110'
                                         : 'bg-white/60 text-deep_indigo-500 hover:bg-gradient-to-r hover:from-jordy_blue-500/20 hover:to-mauve-500/20 hover:text-jordy_blue-500 transform hover:scale-105'
                                     }`}
+                                    aria-label={`Go to page ${pageNum}`}
+                                    aria-current={isCurrentPage ? "page" : undefined}
                                   >
                                     {pageNum}
                                   </button>
@@ -707,6 +923,7 @@ const PremiumResearchShowcase = () => {
                                   ? 'bg-white/20 text-deep_indigo-500/50 cursor-not-allowed'
                                   : 'bg-gradient-to-r from-deep_indigo-500 to-dark_teal-500 text-white hover:shadow-lg transform hover:scale-105'
                               }`}
+                              aria-label="Go to next page"
                             >
                               <span>Next</span>
                               <ChevronRightIcon className="w-4 h-4" />
@@ -714,53 +931,55 @@ const PremiumResearchShowcase = () => {
                           </div>
                         </div>
                         
-                        <div className="text-center mt-4">
+                        <div className="text-center mt-4" role="status" aria-live="polite">
                           <span className="text-sm text-champagne_pink-500 font-description">
-                            Page {currentPage} of {totalPages} • {filteredAndSortedArticles.length} articles
+                            Page {currentPage} of {totalPages} • {filteredAndSortedArticles.length} articles total
                           </span>
                         </div>
-                      </div>
+                      </nav>
                     )}
                   </>
                 ) : (
-                  /* No Results */
-                  <div className="flex-1 flex items-center justify-center p-8">
-                    <div className="text-center">
+                  
+                  <div className="flex-1 flex items-center justify-center p-8" role="region" aria-label="No results found">
+                    <div className="text-center max-w-md">
                       <div className="w-24 h-24 mx-auto bg-gradient-to-br from-jordy_blue-500/20 to-mauve-500/20 rounded-full flex items-center justify-center mb-6 backdrop-blur-xl border border-white/40">
                         <SearchIcon className="w-12 h-12 text-jordy_blue-500" />
                       </div>
                       <h3 className="font-heading text-2xl bg-gradient-to-r from-deep_indigo-700 to-deep_indigo-500 bg-clip-text text-transparent mb-4">
-                        No Articles Found
+                        No Research Articles Found
                       </h3>
                       <p className="font-description text-deep_indigo-500 mb-6 leading-relaxed">
-                        Try adjusting your search criteria or explore different categories.
+                        We could not find any articles matching your search criteria. Try adjusting your filters or explore different research categories.
                       </p>
                       <div className="flex flex-col sm:flex-row gap-3 justify-center">
                         <button
                           onClick={clearFilters}
                           className="px-6 py-3 bg-gradient-to-r from-jordy_blue-500 to-mauve-500 text-white rounded-2xl font-cta transition-all duration-300 hover:shadow-lg transform hover:scale-105"
+                          aria-label="Reset all filters to show all articles"
                         >
-                          Reset Filters
+                          Reset All Filters
                         </button>
                         <button
                           onClick={() => {setSearchInput("quantum"); setSearchTerm("quantum");}}
                           className="px-6 py-3 bg-white/60 border border-white/60 text-deep_indigo-500 rounded-2xl font-cta transition-all duration-300 hover:bg-white/80"
+                          aria-label="Search for quantum physics articles"
                         >
-                          Try "Quantum"
+                          Try "Quantum Physics"
                         </button>
                       </div>
                     </div>
                   </div>
                 )}
               </div>
-            </div>
+            </section>
           </div>
         </div>
-      </section>
+      </main>
 
-
+     
     </div>
   );
 };
 
-export default PremiumResearchShowcase;
+export default Research;
