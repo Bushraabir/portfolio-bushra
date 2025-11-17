@@ -393,7 +393,7 @@ const Website = () => {
       ],
       images: [StudyBuddy2, StudyBuddy1, StudyBuddy3, StudyBuddy4, StudyBuddy5, StudyBuddy6, StudyBuddy7, StudyBuddy8],
       githubLink: "https://github.com/Bushraabir/study-buddy",
-      liveLink: "https://bushraabir.github.io/study-buddy/",
+      liveLink: "https://study-buddy-seven-blush.vercel.app/",
       technologies: ["React.js", "Firebase", "Plotly.js", "Math.js", "ReactQuill"],
       category: "Productivity",
       featured: false,
