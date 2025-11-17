@@ -1,8 +1,10 @@
 "use client";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const About = () => {
+  const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -50,13 +52,17 @@ const About = () => {
   }, []);
 
   const handleWorksClick = useCallback((event) => {
+    event.preventDefault();
     const btn = event.target.closest("button");
     if (btn) {
       btn.style.opacity = "0.7";
       btn.style.transform = "scale(0.95)";
     }
-    setTimeout(() => (window.location.href = "/my-works"), 150);
-  }, []);
+    setTimeout(() => {
+      navigate("/my-works");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 150);
+  }, [navigate]);
 
   // Ripple effect (same as Hero)
   const createRipple = (e, button) => {
