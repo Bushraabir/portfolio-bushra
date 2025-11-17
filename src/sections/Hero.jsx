@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
-import profileImage from "../assets/Bushra.png";
+import profileImage from "../assets/Bushra1.png";
 
 // Register GSAP Plugin
 gsap.registerPlugin(ScrollTrigger);
