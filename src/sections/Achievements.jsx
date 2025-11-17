@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import { motion, useInView } from "framer-motion";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import { FaCheck, FaChevronDown, FaTrophy, FaAward, FaStar } from "react-icons/fa";
+import { FaCheck, FaChevronDown, FaTrophy, FaAward, FaStar, FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 
 const achievements = [
   {
     title: "Academic Excellence & Scholarships",
     description: "Consistently achieved top ranks, scholarships, and accolades throughout my education.",
     icon: FaTrophy,
-    color: "from-aquamarine to-jordy_blue", // Cosmic colors
+    color: "from-aquamarine to-jordy_blue",
     points: [
       "31st in the Bangladesh University of Engineering and Technology (BUET) Architecture admission test (2023)",
       "Upazilla Bitthik Sresto Shikkharti recognition (2024)",
@@ -26,7 +26,7 @@ const achievements = [
     title: "Leadership & Team Management",
     description: "Led teams with discipline, integrity, and vision, promoting excellence in academics and extracurriculars.",
     icon: FaAward,
-    color: "from-pink_lavender to-aquamarine", // Cosmic colors
+    color: "from-pink_lavender to-aquamarine",
     points: [
       "Junior Prefect — Appointed as the Junior Prefect of Bir Protik Dr. Captain Sitara Begum House (2021)",
       "House Prefect — Led 92 cadets as the House Prefect of Bir Protik Dr. Captain Sitara Begum House (2022-2023)",
@@ -39,7 +39,7 @@ const achievements = [
     title: "STEM Competitions & Olympiads",
     description: "Excelled in national Olympiads and science fairs, pushing my intellectual boundaries.",
     icon: FaStar,
-    color: "from-jordy_blue to-electric_blue", // Cosmic colors
+    color: "from-jordy_blue to-electric_blue",
     points: [
       "International Youth Math Challenge (IYMC) — Qualification Round Winner (2024)",
       "Bangladesh Math Olympiad — Regional Winner, National Round Participant (2020)",
@@ -54,7 +54,7 @@ const achievements = [
     title: "Writing & Communication Excellence",
     description: "Earned multiple awards in essay competitions, showcasing strong analytical and expressive skills.",
     icon: FaAward,
-    color: "from-pink_lavender to-mauve", // Cosmic colors
+    color: "from-pink_lavender to-mauve",
     points: [
       "1st place — MCSK Essay Writing Competition (2017)",
       "2nd place — Interhouse Essay Writing Competition (2020)",
@@ -67,7 +67,7 @@ const achievements = [
     title: "Creative & Artistic Achievements",
     description: "My artistic skills, in both traditional and digital media, have been recognized in national and institutional competitions.",
     icon: FaStar,
-    color: "from-aquamarine to-pink_lavender", // Cosmic colors
+    color: "from-aquamarine to-pink_lavender",
     points: [
       "3rd place — Bangla Vision Painting Competition (2013)",
       "1st place — Bissho Shishu o Jubo Theater Dibosh Painting Competition (2019, 2022)",
@@ -80,7 +80,7 @@ const achievements = [
     title: "Innovation & Scientific Research",
     description: "Led projects combining science and technology to provide real-world solutions.",
     icon: FaTrophy,
-    color: "from-pink_lavender to-electric_blue", // Cosmic colors
+    color: "from-pink_lavender to-electric_blue",
     points: [
       "Team Leader — InterHouse Science Fair (Senior Group), Developed 'Gusto,' a virtual assistant with Face Recognition, awarded Best Project (2022)",
       "Team Leader - Easy Water Purification and Supply, awarded Best Project (2019)",
@@ -91,7 +91,7 @@ const achievements = [
     title: "Public Speaking & Debate",
     description: "Improved communication skills through speaking competitions.",
     icon: FaAward,
-    color: "from-lemon_chiffon to-tea_rose", // Cosmic colors
+    color: "from-lemon_chiffon to-tea_rose",
     points: [
       "Soujonno Pouroshkar — 7th March Extempore Speech Competition (2022)",
       "Runners-up — Debate Competition (2016)"
@@ -101,7 +101,7 @@ const achievements = [
     title: "Non-Profit & Community Engagement",
     description: "Engaged in a diverse range of non-profit and community initiatives, including founding and holding leadership roles at EmpowerEd, a non-profit dedicated to enhancing educational opportunities, as well as providing design and digital expertise to support local businesses and creative platforms.",
     icon: FaStar,
-    color: "from-jordy_blue to-lemon_chiffon", // Cosmic colors
+    color: "from-jordy_blue to-lemon_chiffon",
     points: [
       "Founded EmpowerEd, a non-profit focused on educational opportunities.",
       "Served as Vice President, shaping strategy and leadership at EmpowerEd.",
@@ -115,7 +115,7 @@ const achievements = [
     title: "Mentorship & Teaching Experience",
     description: "Mentored students, helped them academically.",
     icon: FaAward,
-    color: "from-aquamarine to-tea_rose", // Cosmic colors
+    color: "from-aquamarine to-tea_rose",
     points: [
       "Provided tuition to 3 students for 2 months, improving their Physics and Mathematics.",
       "Created interactive PDFs and notes.",
@@ -126,7 +126,7 @@ const achievements = [
     title: "Technical Expertise & Digital Skills",
     description: "Strong technical foundation in programming, design, and 3D visualization to create solutions.",
     icon: FaTrophy,
-    color: "from-tea_rose to-lemon_chiffon", // Cosmic colors
+    color: "from-tea_rose to-lemon_chiffon",
     points: [
       "Programming languages : C, C++, Python",
       "Passionate about Machine Learning and Artificial Intelligence with Python",
@@ -141,7 +141,7 @@ const achievements = [
 ];
 
 /**
- * Animated Icon Component - replaces 3D model
+ * Animated Icon Component
  */
 const AnimatedIcon = memo(({ achievement }) => {
   const IconComponent = achievement.icon;
@@ -242,13 +242,11 @@ const itemVariants = {
 };
 
 /**
- * AchievementCard with animated icon instead of 3D model
+ * AchievementCard with controlled expansion
  */
-const AchievementCard = memo(({ achievement, isMobile, index }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const AchievementCard = memo(({ achievement, isMobile, index, isExpanded, onToggle }) => {
   const cardRef = useRef(null);
   const isInView = useInView(cardRef, { once: false, margin: "-50px" });
-  const toggleCard = useCallback(() => setIsExpanded(prev => !prev), []);
   const panelId = `achievement-panel-${index}`;
 
   return (
@@ -281,10 +279,10 @@ const AchievementCard = memo(({ achievement, isMobile, index }) => {
         className="cursor-pointer relative z-10"
         whileHover={{ y: -2 }}
         transition={{ duration: 0.2 }}
-        onClick={toggleCard}
+        onClick={onToggle}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), toggleCard())}
+        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onToggle())}
         aria-expanded={isExpanded}
         aria-controls={panelId}
       >
@@ -355,14 +353,17 @@ const AchievementCard = memo(({ achievement, isMobile, index }) => {
 }, (prevProps, nextProps) =>
   prevProps.achievement.title === nextProps.achievement.title &&
   prevProps.isMobile === nextProps.isMobile &&
-  prevProps.index === nextProps.index
+  prevProps.index === nextProps.index &&
+  prevProps.isExpanded === nextProps.isExpanded
 );
 
 /**
- * Achievements Section with 3D model removed
+ * Achievements Section with Expand All button
  */
 const Achievements = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [expandedCards, setExpandedCards] = useState({});
+  const [allExpanded, setAllExpanded] = useState(false);
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const resizeTimeout = useRef();
@@ -409,11 +410,10 @@ const Achievements = () => {
     };
   }, []);
 
-  // Simple title animation only (no conflicting animations)
+  // Simple title animation only
   useEffect(() => {
     if (!titleRef.current) return;
     
-    // Simple fade-in animation for title
     const titleElements = titleRef.current.children;
     Array.from(titleElements).forEach((element, index) => {
       element.style.opacity = '0';
@@ -426,6 +426,25 @@ const Achievements = () => {
       }, index * 200);
     });
   }, []);
+
+  // Toggle individual card
+  const toggleCard = useCallback((index) => {
+    setExpandedCards(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  }, []);
+
+  // Toggle all cards
+  const toggleAllCards = useCallback(() => {
+    const newExpandedState = !allExpanded;
+    const newExpandedCards = {};
+    achievements.forEach((_, index) => {
+      newExpandedCards[index] = newExpandedState;
+    });
+    setExpandedCards(newExpandedCards);
+    setAllExpanded(newExpandedState);
+  }, [allExpanded]);
 
   // JSON-LD structured data
   const jsonLd = {
@@ -491,9 +510,76 @@ const Achievements = () => {
               `text-slate-300 tracking-wide leading-relaxed max-w-3xl mx-auto ${isMobile ? "text-sm px-4" : "text-base lg:text-lg px-6"}`
             }
           >
-            Behind every milestone is a story of curiosity, late nights, and a stubborn refusal to settle for “good enough.” From solving tricky problems in STEM competitions to leading teams and building projects that help others, each achievement is a snapshot of moments where effort met imagination. This timeline isn’t just a record of what I’ve done—it’s a reflection of the challenges I’ve embraced, the skills I’ve honed, and the ways I’ve tried to leave a mark.
+            Behind every milestone is a story of curiosity, late nights, and a stubborn refusal to settle for "good enough." From solving tricky problems in STEM competitions to leading teams and building projects that help others, each achievement is a snapshot of moments where effort met imagination. This timeline isn't just a record of what I've done—it's a reflection of the challenges I've embraced, the skills I've honed, and the ways I've tried to leave a mark.
           </motion.p>
-        </div>
+
+ {/* Expand/Collapse All Button - Styled like Hero Buttons */}
+          <motion.div
+            className="mt-8 flex justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+          >
+            <motion.button
+              onClick={(e) => {
+                toggleAllCards();
+                // Ripple effect
+                const rect = e.currentTarget.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+
+                const ripple = document.createElement("span");
+                ripple.style.position = "absolute";
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                ripple.style.background = "rgba(255, 255, 255, 0.3)";
+                ripple.style.borderRadius = "50%";
+                ripple.style.pointerEvents = "none";
+                ripple.style.transform = "scale(0)";
+                ripple.style.opacity = "1";
+                ripple.style.transition = "transform 0.6s ease-out, opacity 0.6s ease-out";
+
+                e.currentTarget.appendChild(ripple);
+
+                setTimeout(() => {
+                  ripple.style.transform = "scale(2)";
+                  ripple.style.opacity = "0";
+                }, 0);
+
+                setTimeout(() => ripple.remove(), 600);
+              }}
+              className={`relative ${isMobile ? "px-6 py-3 text-base" : "px-8 py-3 text-lg"} font-semibold text-white tracking-wider rounded-full backdrop-blur-lg bg-gradient-to-r from-jordy_blue/40 to-electric_blue/40 border-2 border-lemon_chiffon hover:border-aquamarine overflow-hidden transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-jordy_blue font-cta flex items-center gap-3`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label={allExpanded ? "Collapse all achievements" : "Expand all achievements"}
+              style={{ pointerEvents: "auto" }}
+            >
+              {/* Animated icon */}
+              <motion.div
+                animate={{ 
+                  rotate: allExpanded ? 180 : 0,
+                }}
+                transition={{ 
+                  duration: 0.3,
+                  ease: "easeInOut"
+                }}
+              >
+                {allExpanded ? (
+                  <FaAngleDoubleUp className={isMobile ? "text-xl" : "text-2xl"} />
+                ) : (
+                  <FaAngleDoubleDown className={isMobile ? "text-xl" : "text-2xl"} />
+                )}
+              </motion.div>
+              
+              {/* Button text */}
+              <span>
+                {allExpanded ? "Collapse All" : "Expand All"}
+              </span>
+            </motion.button>
+          </motion.div>        
+          </div>
 
         {/* Timeline wrapper with Framer Motion */}
         <motion.div
@@ -515,31 +601,30 @@ const Achievements = () => {
                   achievement={achievement}
                   isMobile={isMobile}
                   index={index}
+                  isExpanded={expandedCards[index] || false}
+                  onToggle={() => toggleCard(index)}
                 />
               ))}
             </VerticalTimeline>
           </nav>
         </motion.div>
-
-        
       </motion.div>
-{/* Bottom gradient overlay */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-900 to-transparent pointer-events-none w-[100vw]" aria-hidden />
+
+      {/* Bottom gradient overlay */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-900 to-transparent pointer-events-none w-[100vw]" aria-hidden />
+      
       {/* Global styles */}
       <style jsx global>{`
-        /* Enable scrollbars */
         html, body {
           overflow-x: hidden;
           overflow-y: auto;
         }
         
-        /* Ensure timeline line is visible */
         .vertical-timeline::before {
           background: linear-gradient(to bottom, rgba(163, 196, 243, 0.1), rgba(139, 92, 246, 0.1)) !important;
           width: 4px !important;
         }
         
-        /* Fix Safari backdrop-filter issues */
         .achievement-card .vertical-timeline-element-content {
           position: relative;
           z-index: 1;
@@ -547,30 +632,25 @@ const Achievements = () => {
           backdrop-filter: blur(12px);
         }
         
-        /* Override react-vertical-timeline CSS contain property */
         .vertical-timeline {
           contain: none !important;
         }
         
-        /* Ensure timeline elements are properly positioned */
         .vertical-timeline-element {
           position: relative;
         }
         
-        /* Fix for mobile scrolling issues */
         @media (max-width: 768px) {
           body {
             -webkit-overflow-scrolling: touch;
           }
         }
         
-        /* Remove any conflicting styles that might hide content */
         .vertical-timeline-element-content {
           visibility: visible !important;
           opacity: 1 !important;
         }
         
-        /* Fix timeline icon positioning */
         .vertical-timeline-element-icon {
           display: flex !important;
           align-items: center !important;
