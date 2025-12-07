@@ -12,7 +12,7 @@ const achievements = [
     color: "from-aquamarine to-jordy_blue",
     points: [
       "31st in the Bangladesh University of Engineering and Technology (BUET) Architecture admission test (2023)",
-      "Upazilla Bitthik Sresto Shikkharti recognition (2024)",
+      "Performace Based Grants for Secondary Institutions (PBGSI) Scheme (2023)- Higher Secondary Completion Award(HSCA) in Science Group Based on the results of the Board of Intermediate and Secondary Education,Jashore",
       "GPA 5.00 in Higher Secondary Certificate (HSC) (2023)",
       "General Grade Scholarship in HSC (2023)",
       "GPA 5.00 in Secondary School Certificate (SSC) (2021)",
